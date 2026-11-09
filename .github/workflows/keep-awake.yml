@@ -1,0 +1,16 @@
+# Keeps the free online account (Supabase) awake: it sleeps after 7 days with no use.
+# Runs every 3 days and makes one tiny "are you there" call.
+name: Keep account awake
+on:
+  schedule:
+    - cron: "37 4 */3 * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the account
+        run: |
+          curl -fsS -X POST "https://rdtnikmsxyejimvudzvc.supabase.co/rest/v1/rpc/blo_ping" \
+            -H "apikey: sb_publishable_Qy84k0vqQTGupexO6HHlQQ_cDqrgYc0" \
+            -H "Content-Type: application/json" -d '{}'
