@@ -1644,7 +1644,7 @@ const TEMPLATES = {
     })] }
   ],
   "sadarem-declaration": [
-    { bg: "sadarem-1", items: [
+    { bg: "sadarem-1", gap: 50, items: [
       T(322, 363, 420, "name"), T(893, 363, 190, () => D("dob")), T(335, 413, 370, "aadhaar"), T(888, 413, 190, "mobile"),
       TICK(242, 473, () => V("gender") === "Male"), TICK(326, 473, () => V("gender") === "Female"),
       TICK(431, 473, () => ["Other", "Transgender"].includes(V("gender"))),
@@ -1741,7 +1741,7 @@ const boxHeaderItems = (dy, nameX = 205) => [
 ];
 
 Object.assign(TEMPLATES, {
-  "birth-certificate": [{ bg: "birth-1", items: [
+  "birth-certificate": [{ bg: "birth-1", gap: 40, items: [
     T(360, 475, 800, "circle"), T(365, 555, 500, () => D("child_dob")), T(365, 595, 500, "child_sex"), T(365, 635, 800, "child_name"),
     T(435, 795, 740, "father_name"), T(435, 835, 740, "mother_name"), T(430, 875, 740, "birth_place_type"),
     T(485, 995, 690, "hospital_name"), T(470, 1035, 700, "house_address"), T(470, 1075, 700, "other_place"),
@@ -1750,7 +1750,7 @@ Object.assign(TEMPLATES, {
     T(335, 1316, 330, () => [V("name"), V("address_line")].filter(Boolean).join(", "), { size: 22 }),
     T(305, 1357, 330, "mobile")
   ] }],
-  "late-birth-registration": [{ bg: "latebirth-1", items: [
+  "late-birth-registration": [{ bg: "latebirth-1", gap: 33, items: [
     T(248, 370, 160, "rdo_division", { size: 20 }), T(248, 392, 160, "rdo_district", { size: 20 }),
     T(322, 526, 185, "name", { size: 22 }), T(755, 526, 205, "father", { size: 22 }),
     T(282, 560, 36, "age", { size: 20 }), T(485, 560, 80, "occupation", { size: 20 }), T(662, 560, 52, "house_no", { size: 20 }),
@@ -1764,7 +1764,7 @@ Object.assign(TEMPLATES, {
     T(400, 1098, 84, "council", { size: 18 }),
     T(425, 1232, 330, "phone"), T(355, 1258, 330, "mobile"), T(340, 1284, 400, "email")
   ] }],
-  "late-death-registration": [{ bg: "latedeath-1", items: [
+  "late-death-registration": [{ bg: "latedeath-1", gap: 33, items: [
     T(152, 400, 180, "rdo_division", { size: 20 }), T(152, 422, 180, "rdo_district", { size: 20 }),
     T(695, 512, 215, "relation", { size: 22 }),
     T(232, 556, 265, "name", { size: 22 }), T(738, 556, 290, "father", { size: 22 }),
@@ -1781,7 +1781,7 @@ Object.assign(TEMPLATES, {
     T(212, 1095, 170, "council", { size: 20 }), T(620, 1095, 140, "relation", { size: 20 }),
     T(325, 1263, 330, "phone"), T(250, 1297, 330, "mobile"), T(230, 1330, 400, "email")
   ] }],
-  "non-availability-birth": [{ bg: "nab-1", items: [
+  "non-availability-birth": [{ bg: "nab-1", gap: 54, items: [
     T(220, 485, 345, "name"), T(240, 540, 340, () => [V("house_no"), V("address_line")].filter(Boolean).join(", "), { size: 20 }),
     T(300, 594, 270, "mobile"),
     T(800, 533, 270, "reg_unit"), T(738, 587, 340, "district"),
@@ -1899,7 +1899,7 @@ Object.assign(TEMPLATES, {
     TICK(375, 1377, () => V("auth_type") === "OTP"), TICK(494, 1377, () => V("auth_type") === "Biometric")
   ] }],
   "labour-registration": [
-    { bg: "labour-1", items: [
+    { bg: "labour-1", gap: 45, items: [
       TICK(274, 398, () => true),
       TICK(303, 443, () => V("area") === "SEZ"), TICK(362, 443, () => V("area") === "Registering / licensing officer wise"), TICK(666, 443, () => V("area") === "State wide"),
       T(662, 486, 425, "nature", { size: 22 }),
@@ -1910,7 +1910,7 @@ Object.assign(TEMPLATES, {
       ...ticksFor("classification", [[430, 1398], [571, 1398], [735, 1398], [932, 1398], [238, 1424], [482, 1424], [672, 1424]], LABOUR_CLASS),
       ...ticksFor("category", [[391, 1468], [456, 1468], [694, 1468], [959, 1468], [434, 1493], [831, 1493], [277, 1518], [474, 1518], [618, 1518], [1040, 1518]], LABOUR_CAT)
     ] },
-    { bg: "labour-2", items: [
+    { bg: "labour-2", gap: 45, items: [
       T(305, 264, 152, "est_door", { size: 20 }), T(530, 264, 125, "est_locality", { size: 20 }), T(738, 264, 152, "est_district", { size: 20 }),
       T(225, 309, 148, "est_mandal", { size: 20 }), T(450, 309, 152, "est_village", { size: 20 }), T(697, 309, 145, "est_pin", { size: 20 }),
       T(950, 309, 132, "est_mobile", { size: 20 }), T(235, 354, 400, "est_email", { size: 20 }),
@@ -2126,7 +2126,7 @@ Object.assign(TEMPLATES, {
     { bg: "ews-2", items: [ T(252, 920, 300, todayText) ] }
   ],
   "obc-certificate": [
-    { bg: "obc-1", items: [
+    { bg: "obc-1", gap: 26, items: [
       vt(475, "name"), vt(501, "gender"), vt(527, () => D("dob")),
       T(448, 605, 125, "perm_door", { size: 20 }), T(660, 605, 125, "perm_locality", { size: 20 }), T(862, 605, 270, "perm_village", { size: 20 }),
       T(450, 631, 130, "perm_mandal", { size: 20 }), T(660, 631, 120, "perm_district", { size: 20 }), T(862, 631, 200, "perm_pin", { size: 20 }),
@@ -2141,7 +2141,7 @@ Object.assign(TEMPLATES, {
       vt(1409, "int_org"), vt(1435, "int_desig"),
       T(832, 1461, 80, () => D("int_from"), { size: 18 }), T(955, 1461, 170, () => D("int_to"), { size: 18 })
     ] },
-    { bg: "obc-2", items: [
+    { bg: "obc-2", gap: 26, items: [
       vt(174, () => D("death_date")), vt(200, "incap"),
       vt(304, "psu_org"), vt(330, "psu_desig"), vt(356, () => D("psu_date")),
       vt(486, "arm_desig"), vt(512, "arm_pay"), vt(668, "profession"),
@@ -2150,7 +2150,7 @@ Object.assign(TEMPLATES, {
       vt(1109, "land_pct"), vt(1214, "land_conv"), vt(1290, "land_pct2"),
       vt(1473, "pl_crops"), vt(1499, "pl_loc"), vt(1525, "pl_area")
     ] },
-    { bg: "obc-3", items: [
+    { bg: "obc-3", gap: 26, items: [
       vt(174, "ub_loc"), vt(200, "ub_details"), vt(226, "ub_use"),
       vt(408, "income"),
       RING(855, 460, 28, 14, () => V("tax_paid") === "Yes"), RING(905, 460, 22, 14, () => V("tax_paid") === "No"),
@@ -2207,6 +2207,33 @@ async function sharePdfFromPreview() {
   } finally { btn.disabled = false; }
 }
 
+/* Split text into lines that fit the width; long words (e.g. secretariat names) are broken where needed */
+function wrapText(ctx, text, maxW, maxLines) {
+  const out = [];
+  let cur = "";
+  const pushWord = w => {
+    while (ctx.measureText(w).width > maxW && w.length > 1) {       // a single word wider than the box
+      let k = w.length;
+      while (k > 1 && ctx.measureText(w.slice(0, k)).width > maxW) k--;
+      const hy = w.slice(0, k).lastIndexOf("-");
+      if (hy > 3) k = hy + 1;
+      if (cur) { out.push(cur); cur = ""; }
+      out.push(w.slice(0, k)); w = w.slice(k);
+    }
+    const test = cur ? cur + " " + w : w;
+    if (ctx.measureText(test).width <= maxW) cur = test; else { out.push(cur); cur = w; }
+  };
+  text.split(/\s+/).forEach(pushWord);
+  if (cur) out.push(cur);
+  if (out.length > maxLines) {
+    const keep = out.slice(0, maxLines);
+    let last = out.slice(maxLines - 1).join(" ");
+    while (last.length > 1 && ctx.measureText(last + "…").width > maxW) last = last.slice(0, -1);
+    keep[maxLines - 1] = last + "…";
+    return keep;
+  }
+  return out;
+}
 const loadImg = src => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
 const PEN = "#0b2a7a";
 const FONT_FAMILY = "'Noto Sans Telugu', 'Nirmala UI', 'Gautami', Arial, sans-serif";
@@ -2225,6 +2252,15 @@ async function renderOriginal() {
     ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
     ctx.drawImage(img, 0, 0, c.width, c.height);
     ctx.fillStyle = PEN; ctx.strokeStyle = PEN; ctx.textBaseline = "middle";
+    const textItems = pg.items.filter(t => !t.tick && !t.ring && !t.line && !(t.lines > 1));
+    textItems.forEach(t => {
+      let gap = pg.gap || 60;
+      textItems.forEach(o => {
+        if (o === t || o.y === t.y) return;
+        if (o.x < t.x + t.w && t.x < o.x + o.w) gap = Math.min(gap, Math.abs(o.y - t.y));
+      });
+      if (t.gap === undefined) t.gap = gap;
+    });
     for (const it of pg.items) {
       if (it.line) {
         ctx.save(); ctx.strokeStyle = "#333"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(it.x1, it.y1); ctx.lineTo(it.x2, it.y2); ctx.stroke(); ctx.restore();
@@ -2257,11 +2293,31 @@ async function renderOriginal() {
         lines.forEach((ln, i) => { let t = ln; while (t.length > 1 && ctx.measureText(t).width > it.w) t = t.slice(0, -2) + "…"; ctx.fillText(t, it.x, it.y + i * (it.lineH || 40)); });
         continue;
       }
-      if (/\s\(\d{8}\)$/.test(text)) { ctx.font = `${weight} 20px ${FONT_FAMILY}`; if (ctx.measureText(text).width > it.w) text = text.replace(/\s\(\d{8}\)$/, ""); }
-      for (;;) { ctx.font = `${weight} ${size}px ${FONT_FAMILY}`; if (ctx.measureText(text).width <= it.w || size <= 15) break; size--; }
-      if (ctx.measureText(text).width > it.w) { while (text.length > 1 && ctx.measureText(text + "…").width > it.w) text = text.slice(0, -1); text += "…"; }
-      if (it.bg) { const w = ctx.measureText(text).width; ctx.save(); ctx.fillStyle = "#fff"; ctx.fillRect(it.x - 6, it.y - size * 0.75, Math.max(w + 12, it.w), size * 1.5); ctx.restore(); }
-      ctx.fillText(text, it.x, it.y);
+      // Keep text readable: shrink only a little, then continue on the next line(s) where the box has room
+      const MIN = 21, FLOOR = 17;
+      size = Math.max(size, MIN);
+      const fits = () => ctx.measureText(text).width <= it.w;
+      for (;;) { ctx.font = `${weight} ${size}px ${FONT_FAMILY}`; if (fits() || size <= MIN) break; size--; }
+      let lines = [text];
+      if (!fits()) {
+        const lh0 = Math.round(MIN * 1.06);
+        const room = it.gap - MIN / 2 - 3;                              // half-height the block may use without touching the neighbouring rows
+        const maxLines = Math.min(it.maxLines || 3, Math.max(1, 1 + Math.floor((2 * room - MIN) / lh0)));
+        if (maxLines >= 2) {
+          size = MIN; ctx.font = `${weight} ${size}px ${FONT_FAMILY}`;
+          lines = wrapText(ctx, text, it.w, maxLines);
+        } else {
+          // no room below: shrink a little more, then drop the secretariat code, then shorten
+          for (;;) { ctx.font = `${weight} ${size}px ${FONT_FAMILY}`; if (fits() || size <= FLOOR) break; size--; }
+          if (!fits() && /\s\(\d{8}\)$/.test(text)) text = text.replace(/\s\(\d{8}\)$/, "");
+          if (!fits()) { while (text.length > 1 && ctx.measureText(text + "…").width > it.w) text = text.slice(0, -1); text += "…"; }
+          lines = [text];
+        }
+      }
+      const lh = Math.round(size * 1.06);
+      const y0 = it.y - (lines.length - 1) * lh / 2;          // keep the block centred on the line
+      if (it.bg) { ctx.save(); ctx.fillStyle = "#fff"; ctx.fillRect(it.x - 6, y0 - size * 0.75, it.w + 12, (lines.length - 1) * lh + size * 1.5); ctx.restore(); }
+      lines.forEach((ln, i) => ctx.fillText(ln, it.x, y0 + i * lh));
     }
     pages.push(c);
   }
