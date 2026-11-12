@@ -247,7 +247,6 @@
   <div class="muted">Choose a format. You will see a preview before downloading.</div>
   <button class="dl-opt" type="button" id="dlOriginal"><span class="ic">🧾</span><span><b>Original government form</b><small>The official application, filled in on its own lines and boxes</small></span></button>
   <button class="dl-opt" type="button" id="dlLetterhead"><span class="ic">🏛️</span><span><b>Letterhead format</b><small>AP Government heading with emblem on both sides, Telugu + English</small></span></button>
-  <button class="dl-opt" type="button" id="dlSimple"><span class="ic">📋</span><span><b>Simple table</b><small>Plain English table, small file</small></span></button>
   <button class="btn ghost" type="button" id="dlCancel" style="width:100%;margin-top:12px">✕ Cancel</button>
 </div>
 <div class="pv" id="preview" hidden role="dialog" aria-label="Preview">
@@ -2357,7 +2356,8 @@ let pvState = null;
 
 function chooseDownload() {
   if (!current || !validate()) return;
-  $("dlOriginal").hidden = !TEMPLATES[current.id];
+  if (!TEMPLATES[current.id]) { openPreview("letterhead"); return; }
+  $("dlOriginal").hidden = false;
   $("dlSheet").classList.add("show"); $("scrim").classList.add("show");
 }
 function closeDlSheet() { $("dlSheet").classList.remove("show"); if (!$("menu").classList.contains("show")) $("scrim").classList.remove("show"); }
@@ -2660,7 +2660,6 @@ $("closeMenu").addEventListener("click", closeMenu);
 $("scrim").addEventListener("click", () => { closeMenu(); closeDlSheet(); });
 $("dlOriginal").addEventListener("click", () => openPreview("original"));
 $("dlLetterhead").addEventListener("click", () => openPreview("letterhead"));
-$("dlSimple").addEventListener("click", () => openPreview("simple"));
 $("pvClose").addEventListener("click", closePreview);
 $("pvBack").addEventListener("click", closePreview);
 $("pvDownload").addEventListener("click", downloadFromPreview);
