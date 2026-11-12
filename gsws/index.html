@@ -7,7 +7,10 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>GSWS Application Forms</title>
+<title>GSWS Forms</title>
+<meta name="application-name" content="GSWS Forms">
+<meta name="apple-mobile-web-app-title" content="GSWS Forms">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -129,6 +132,7 @@
            transition:opacity .2s, transform .2s; max-width:calc(100% - 32px); text-align:center; }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
+  .card.install { border-color:var(--accent); background:linear-gradient(0deg, #fff, var(--accent-soft)); }
   footer { text-align:center; color:var(--muted); font-size:12px; padding:16px 12px 8px; }
 
   /* Download choice sheet */
@@ -207,7 +211,7 @@
 
 <header class="topbar">
   <button class="icon-btn" id="homeBtn" type="button" aria-label="Home">🏠</button>
-  <h1 id="barTitle">📋 GSWS Application Forms</h1>
+  <h1 id="barTitle">📋 GSWS Forms</h1>
 </header>
 
 <main id="main"></main>
@@ -1048,11 +1052,38 @@ function renderMenu() {
   body.appendChild(menuItem("💾", "Saved applications (30 days)", "saved", openSaved, true));
 }
 
+/* ================= Install as an app + offline ================= */
+let installPrompt = null;
+const isInstalled = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installPrompt = e; if (activeId === "home") showHome(); });
+window.addEventListener("appinstalled", () => { installPrompt = null; toast("✅ GSWS Forms installed. Open it from your home screen."); if (activeId === "home") showHome(); });
+function installCard() {
+  if (isInstalled()) return null;
+  const card = el("div", { class: "card install" });
+  card.append(el("h3", {}, "📲 Install GSWS Forms app"),
+              el("p", { class: "muted" }, "Add it to your phone like an app. It opens from the home screen and works without internet after the first visit."));
+  if (installPrompt) {
+    const b = el("button", { type: "button", class: "btn", style: "width:100%" }, "📲 Install app");
+    b.addEventListener("click", async () => { installPrompt.prompt(); const r = await installPrompt.userChoice; if (r.outcome === "accepted") installPrompt = null; showHome(); });
+    card.appendChild(b);
+  } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+    card.appendChild(el("p", { class: "muted" }, "On iPhone: tap the Share button ⬆️ in Safari, then “Add to Home Screen”."));
+  } else {
+    card.appendChild(el("p", { class: "muted" }, "In Chrome: tap the ⋮ menu, then “Install app” or “Add to Home screen”."));
+  }
+  return card;
+}
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", { scope: "./" }).catch(() => {}));
+}
+
 /* ================= Home ================= */
 function showHome() {
   current = null;
-  setView("home", "📋 GSWS Application Forms");
+  setView("home", "📋 GSWS Forms");
   const main = $("main");
+  const inst = installCard();
+  if (inst) main.appendChild(inst);
   const intro = el("div", { class: "card" });
   intro.append(el("h2", {}, "👋 Welcome"),
     el("p", { class: "muted" }, "Tap a form to fill it. ⬇️ Download gives a PDF, and every download is kept under 💾 Saved applications for 30 days. Nothing you type is sent to any server."));
