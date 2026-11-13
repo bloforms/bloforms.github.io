@@ -2232,11 +2232,11 @@ async function sharePdfFromPreview() {
         formId: current.id, data: snapshotValues(), name, size: file.size, addedAt: Date.now(), days: FILLED_DAYS, blob: file });
     } catch (e) {}
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: current.title, text: current.title + " – filled application" }); toast("✅ Shared"); }
+      try { await navigator.share({ files: [file], title: current.title, text: current.title + " – filled application" }); toast(`✅ Shared (${Math.max(1, Math.round(file.size / 1024))} KB)`); }
       catch (e) { if (e.name !== "AbortError") toast("⚠️ Could not share. The PDF was saved instead."); }
     } else {
       doc.save(name);
-      toast("⬇️ PDF downloaded – attach it in WhatsApp (📎 → Document)");
+      toast(`⬇️ PDF downloaded (${Math.max(1, Math.round(file.size / 1024))} KB) – attach it in WhatsApp (📎 → Document)`);
     }
   } finally { btn.disabled = false; }
 }
@@ -2408,22 +2408,37 @@ async function renderLetterhead() {
 }
 
 /* Pages (canvases) -> one PDF, each page fitted onto A4 */
+/* The whole PDF (form pages + attached documents) is kept under this size */
+const PDF_LIMIT_KB = 600;
+const PDF_STEPS = [            // tried in order until the PDF is small enough: picture size and JPEG quality
+  { f: 1, q: 0.85 }, { f: 1, q: 0.7 }, { f: 0.9, q: 0.6 }, { f: 0.8, q: 0.55 }, { f: 0.7, q: 0.5 },
+  { f: 0.6, q: 0.45 }, { f: 0.5, q: 0.42 }, { f: 0.42, q: 0.4 }, { f: 0.35, q: 0.38 }];
+function shrunk(c, f) {
+  if (f >= 1) return c;
+  const o = document.createElement("canvas");
+  o.width = Math.max(1, Math.round(c.width * f)); o.height = Math.max(1, Math.round(c.height * f));
+  const x = o.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, o.width, o.height);
+  x.imageSmoothingQuality = "high"; x.drawImage(c, 0, 0, o.width, o.height);
+  return o;
+}
 function pagesToPdf(pages) {
   const { jsPDF } = window.jspdf;
+  const all = [...pages.map(c => ({ c, att: false })), ...attachments.map(a => ({ c: a.canvas, att: true }))];
+  // choose the first setting whose pictures fit in the limit (leaving room for the PDF's own bytes)
+  const budget = PDF_LIMIT_KB * 1024 - 6000 - all.length * 1500;
+  let imgs = null;
+  for (const st of PDF_STEPS) {
+    imgs = all.map(p => shrunk(p.c, st.f).toDataURL("image/jpeg", st.q));
+    const bytes = imgs.reduce((t, d) => t + Math.floor((d.length - d.indexOf(",") - 1) * 3 / 4), 0);
+    if (bytes <= budget) break;
+  }
   const doc = new jsPDF({ unit: "mm", format: "a4" });
-  pages.forEach((c, i) => {
+  all.forEach((p, i) => {
     if (i) doc.addPage();
-    let w = 210, h = 210 * c.height / c.width;
-    if (h > 297) { h = 297; w = 297 * c.width / c.height; }
-    doc.addImage(c.toDataURL("image/jpeg", 0.88), "JPEG", (210 - w) / 2, 0, w, h);
-  });
-  // attached documents: one per page, fitted inside an 8 mm margin
-  attachments.forEach(a => {
-    doc.addPage();
-    const m = 8, maxW = 210 - 2 * m, maxH = 297 - 2 * m;
-    let w = maxW, h = maxW * a.canvas.height / a.canvas.width;
-    if (h > maxH) { h = maxH; w = maxH * a.canvas.width / a.canvas.height; }
-    doc.addImage(a.canvas.toDataURL("image/jpeg", 0.8), "JPEG", (210 - w) / 2, m, w, h);
+    const m = p.att ? 8 : 0, maxW = 210 - 2 * m, maxH = 297 - 2 * m;   // documents get an 8 mm margin
+    let w = maxW, h = maxW * p.c.height / p.c.width;
+    if (h > maxH) { h = maxH; w = maxH * p.c.width / p.c.height; }
+    doc.addImage(imgs[i], "JPEG", (210 - w) / 2, m, w, h);
   });
   return doc;
 }
@@ -2769,7 +2784,7 @@ async function saveFilled(doc, fileName) {
     const blob = doc.output("blob");
     await addDoc({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()),
                    kind: "filled", title: current.title, formId: current.id, data: snapshotValues(), name: fileName, size: blob.size, addedAt: Date.now(), days: FILLED_DAYS, blob });
-    toast("✅ Form downloaded · 💾 saved for 30 days");
+    toast(`✅ Form downloaded (${Math.max(1, Math.round(blob.size / 1024))} KB) · 💾 saved for 30 days`);
     const s = $("status"); if (s) s.textContent = "✅ Downloaded and saved under 💾 Saved applications.";
   } catch (e) { toast("✅ Form downloaded (could not keep a copy on this phone)"); }
 }
