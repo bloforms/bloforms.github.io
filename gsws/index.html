@@ -2698,18 +2698,21 @@ function renderAttachDialog() {
     if (attachments.length && attachments.length < ATT_MAX) {
       const plus = el("button", { type: "button", class: "att-plus", id: "attPlus", "aria-label": "Add one more document" });
       plus.append(el("span", {}, "➕"), el("small", {}, "Add more"));
-      plus.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); $("attCamera").click(); });
+      plus.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); });
       grid.appendChild(plus);
     }
     box.appendChild(grid);
     if (attachMode === "more") {
       const q = el("div", { class: "att-more" }, `✅ ${attachments.length} document(s) added. Do you want to add one more?`);
       const row = el("div", { class: "row-btns" });
-      const y = el("button", { type: "button", class: "btn", id: "attMoreYes" }, "➕ Yes, add one more");
-      const n = el("button", { type: "button", class: "btn ghost", id: "attMoreNo" }, "❌ No, continue");
-      y.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); $("attCamera").click(); });
+      const cam = el("button", { type: "button", class: "btn", id: "attMoreCam" }, "📷 Camera");
+      const gal = el("button", { type: "button", class: "btn ghost", id: "attMoreGal" }, "🖼️ Gallery");
+      cam.addEventListener("click", () => $("attCamera").click());
+      gal.addEventListener("click", () => $("attGallery").click());
+      row.append(cam, gal); q.appendChild(row);
+      const n = el("button", { type: "button", class: "btn ghost", id: "attMoreNo", style: "width:100%;margin-top:8px" }, "❌ No, continue");
       n.addEventListener("click", continueAfterAttach);
-      row.append(y, n); q.appendChild(row); box.appendChild(q);
+      q.appendChild(n); box.appendChild(q);
     } else {
       box.appendChild(el("p", { class: "muted", style: "margin:10px 0 0" }, attachMode === "full" ? `✅ ${ATT_MAX} documents added (maximum)` :
                                 attachments.length ? `✅ ${attachments.length} document(s) added` : "No photo added yet."));
