@@ -2698,7 +2698,7 @@ function renderAttachDialog() {
     if (attachments.length && attachments.length < ATT_MAX) {
       const plus = el("button", { type: "button", class: "att-plus", id: "attPlus", "aria-label": "Add one more document" });
       plus.append(el("span", {}, "➕"), el("small", {}, "Add more"));
-      plus.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); });
+      plus.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); $("attCamera").click(); });
       grid.appendChild(plus);
     }
     box.appendChild(grid);
@@ -2707,7 +2707,7 @@ function renderAttachDialog() {
       const row = el("div", { class: "row-btns" });
       const y = el("button", { type: "button", class: "btn", id: "attMoreYes" }, "➕ Yes, add one more");
       const n = el("button", { type: "button", class: "btn ghost", id: "attMoreNo" }, "❌ No, continue");
-      y.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); });
+      y.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); $("attCamera").click(); });
       n.addEventListener("click", continueAfterAttach);
       row.append(y, n); q.appendChild(row); box.appendChild(q);
     } else {
