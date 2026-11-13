@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sivananda Pujari — Ward Secretariat, Guntakal</title>
+<meta name="description" content="Official profile, office details, ward applications and digital tools of Sivananda Pujari, Mahaboob Nagar Colony-01 Ward Secretariat, Guntakal.">
+<style>
+:root{--navy:#0b2a4a;--navy2:#1a4f7a;--saff:#f28c28;--gold:#ffd166;--green:#1e7b4f;--bg:#f3f6fa;--card:#fff;--ink:#1c2630;--mute:#5d6b78;--line:#dde4ec;--warn:#fff4e5}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;min-height:100vh}
+a{color:var(--navy2)}
+button{font:inherit}
+
+/* ---------- header ---------- */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--saff),var(--gold),var(--green));z-index:99}
+header.top{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.bar{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px}
+.brand{color:#fff;text-decoration:none;font-weight:700;line-height:1.25}
+.brand small{display:block;font-weight:400;font-size:.76rem;opacity:.85}
+.tools{display:flex;gap:8px;align-items:center}
+.pill{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.9rem}
+.pill:hover{background:var(--navy2)}
+.top-nav{display:none;gap:2px}
+.top-nav a{color:#fff;text-decoration:none;padding:8px 10px;border-radius:6px;font-size:.95rem}
+.top-nav a:hover,.top-nav a.on{background:var(--navy2)}
+@media(min-width:960px){.top-nav{display:flex}.menu-btn{display:none}}
+.drawer{display:none;background:var(--navy2);padding:6px 16px 12px}
+.drawer.open{display:block}
+.drawer a{display:block;color:#fff;text-decoration:none;padding:11px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+
+/* ---------- ribbon headings ---------- */
+.ribbon{position:relative;display:inline-block;max-width:100%;margin:0 0 14px;padding:10px 46px 10px 30px;color:#fff;font-size:1.4rem;letter-spacing:.3px;background:linear-gradient(90deg,var(--navy),var(--navy2) 70%,#2b6ea3);clip-path:polygon(0 0,100% 0,calc(100% - 18px) 50%,100% 100%,0 100%,18px 50%);box-shadow:0 8px 18px rgba(11,42,74,.25);animation:ribbonIn .8s cubic-bezier(.2,.7,.2,1) both}
+.ribbon::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);background-size:250% 100%;animation:shine 3.2s linear infinite}
+.lead{color:var(--mute);margin:0 0 22px;animation:up .9s .15s ease both}
+
+/* ---------- landing menu ---------- */
+#landing{max-width:1100px;margin:auto;padding:34px 16px 70px}
+.landing-head{text-align:center;margin-bottom:26px;animation:up .8s ease both}
+.landing-head h1{margin:0 0 4px;font-size:1.7rem;color:var(--navy)}
+.landing-head p{margin:0;color:var(--mute)}
+.tiles{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:760px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:104px;padding:14px;border-radius:16px;background:#fff;border:1px solid var(--line);color:var(--navy);text-decoration:none;font-weight:700;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .25s,box-shadow .25s,color .25s;animation:up .6s ease backwards;animation-delay:calc(var(--i,0)*60ms)}
+.tile .ico{font-size:1.6rem;line-height:1}
+.tile small{font-weight:400;color:var(--mute);font-size:.8rem}
+.tile::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--navy),var(--navy2));opacity:0;transition:opacity .25s;z-index:0}
+.tile>*{position:relative;z-index:1}
+.tile:hover{transform:translateY(-5px);box-shadow:0 14px 26px rgba(11,42,74,.2);color:#fff}
+.tile:hover small{color:#dbe6f2}
+.tile:hover::before{opacity:1}
+
+/* ---------- views ---------- */
+.panel{max-width:1100px;margin:auto;padding:30px 16px 90px}
+.back{display:inline-block;margin-bottom:14px;padding:8px 14px;border-radius:20px;background:#fff;border:1px solid var(--line);color:var(--navy);text-decoration:none;font-weight:600;font-size:.92rem;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.back:hover{background:var(--navy);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 2px 6px rgba(0,0,0,.04);transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(11,42,74,.14)}
+.card h3{margin:0 0 8px;color:var(--navy);font-size:1.1rem}
+.card p{margin:0 0 8px}
+.grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:720px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:6px 12px;margin:0}
+.kv dt{color:var(--mute)}
+.kv dd{margin:0;font-weight:500;word-break:break-word}
+.todo{background:var(--warn);color:#9a5a00;border-radius:4px;padding:0 6px;font-weight:600}
+.note{color:var(--mute);font-size:.9rem}
+.tag{display:inline-block;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:20px;background:#e5f4ec;color:var(--green);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px}
+.tag.soon{background:var(--warn);color:#9a5a00}
+.btn{display:inline-block;padding:10px 18px;border-radius:10px;text-decoration:none;font-weight:700;background:var(--saff);color:#1b1b1b;border:0;cursor:pointer;box-shadow:0 6px 14px rgba(242,140,40,.35);transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6);box-shadow:none}
+.app{display:flex;flex-direction:column}
+.app .go{margin-top:auto;padding-top:10px}
+.app .go a{font-weight:700}
+/* ---------- home hero ---------- */
+.hero{position:relative;overflow:hidden;border-radius:20px;color:#fff;background:linear-gradient(135deg,#0b2a4a,#1a4f7a,#2b6ea3,#0b2a4a);background-size:300% 300%;animation:heroBg 14s ease infinite;padding:44px 26px;display:grid;gap:22px;grid-template-columns:1fr;align-items:center;box-shadow:0 18px 40px rgba(11,42,74,.3)}
+@media(min-width:800px){.hero{grid-template-columns:1.4fr 1fr;padding:54px 40px}}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.6}
+.hero>*:not(canvas){position:relative;z-index:1}
+.hero h1{margin:0 0 4px;font-size:2.1rem;line-height:1.2;background:linear-gradient(90deg,#fff,var(--gold),#fff);background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+.hero .role{margin:0 0 10px;color:#ffd9b0;font-weight:600}
+.hero p.intro{margin:0 0 20px;opacity:.92}
+.hero .photo{width:190px;height:190px;margin:auto;border-radius:50%;border:4px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;font-size:.9rem;animation:float 5s ease-in-out infinite;box-shadow:0 0 0 8px rgba(242,140,40,.2),0 0 42px rgba(242,140,40,.35)}
+.hero .photo img{width:100%;height:100%;object-fit:cover}
+.ring{position:absolute;right:-90px;top:-90px;width:280px;height:280px;border-radius:50%;border:2px dashed rgba(255,217,176,.35);animation:float 9s ease-in-out infinite;pointer-events:none}
+/* ads */
+.ads{position:relative;height:180px;margin-top:22px;border-radius:16px;overflow:hidden;box-shadow:0 14px 30px rgba(11,42,74,.22);color:#fff}
+@media(min-width:800px){.ads{height:200px}}
+.ad-slide{position:absolute;inset:0;padding:22px 28px;display:flex;flex-direction:column;justify-content:center;gap:6px;opacity:0;transform:translateX(40px);transition:opacity .8s,transform .8s;pointer-events:none}
+.ad-slide.on{opacity:1;transform:none;pointer-events:auto}
+.ad-slide::after{content:"";position:absolute;right:-70px;top:-70px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.1);animation:float 7s ease-in-out infinite}
+.ad-slide>*{position:relative;z-index:1}
+.ad-slide h3{margin:0;font-size:1.35rem}
+.ad-slide p{margin:0;max-width:640px;opacity:.95}
+.ad-tag{align-self:flex-start;background:var(--gold);color:#1b1b1b;font-size:.74rem;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.ad-dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
+.ad-dots button{width:10px;height:10px;border-radius:6px;border:0;background:#b8c4d0;cursor:pointer;padding:0;transition:all .3s}
+.ad-dots button.on{background:var(--saff);width:26px}
+.ticker{margin-top:22px;background:linear-gradient(90deg,var(--saff),#ffb347,var(--saff));color:#1b1b1b;overflow:hidden;white-space:nowrap;padding:9px 0;font-weight:600;border-radius:10px}
+.ticker-track{display:inline-flex;gap:48px;padding-left:48px;animation:tick 48s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span::before{content:"✦ ";color:var(--navy)}
+/* photos */
+.office-photo{margin:0 0 16px;border-radius:16px;overflow:hidden;box-shadow:0 10px 26px rgba(11,42,74,.18)}
+.office-photo img{width:100%;max-height:420px;object-fit:cover;display:block}
+.about-photo{width:130px;height:130px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 12px;border:3px solid var(--saff);box-shadow:0 6px 16px rgba(0,0,0,.2)}
+.gal img{object-position:center top}
+/* gallery + timeline */
+.gal{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:800px){.gal{grid-template-columns:repeat(4,1fr)}}
+.gal figure{margin:0;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:12px;transition:transform .3s,box-shadow .3s}
+.gal figure:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.14)}
+.gal .ph{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;color:var(--mute);font-size:.85rem;background:linear-gradient(135deg,#dfe8f2,#f4f7fa)}
+.gal img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;transition:transform .6s}
+.gal figure:hover img{transform:scale(1.07)}
+.gal figcaption{padding:8px 10px;font-size:.88rem}
+.timeline{list-style:none;margin:0;padding:0 0 0 20px;border-left:3px solid var(--saff)}
+.timeline li{position:relative;margin:0 0 18px;padding-left:4px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+.timeline li::before{content:"";position:absolute;left:-30px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--navy2);border:3px solid #fff;box-shadow:0 0 0 2px var(--saff)}
+.timeline .when{font-size:.84rem;color:var(--saff);font-weight:700}
+/* dashboard */
+.stat{text-align:center}
+.stat .num{font-size:2.1rem;font-weight:800;background:linear-gradient(90deg,var(--navy),var(--saff));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat .lbl{color:var(--mute);font-size:.9rem}
+.bar-row{display:grid;grid-template-columns:160px 1fr 56px;gap:10px;align-items:center;font-size:.92rem;margin:10px 0}
+.track{height:14px;background:var(--line);border-radius:7px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--saff),var(--green));border-radius:7px;transform-origin:left;animation:grow 1.3s cubic-bezier(.2,.7,.2,1) both}
+/* news & notices */
+.news li,.notice li{list-style:none;padding:12px 0;border-bottom:1px solid var(--line)}
+.news ul,.notice ul{margin:0;padding:0}
+.news .d{color:var(--saff);font-size:.84rem;font-weight:700}
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.tabs button{background:#fff;border:1px solid var(--line);color:var(--navy);padding:8px 14px;border-radius:20px;cursor:pointer;font-weight:600;font-size:.92rem;transition:all .2s}
+.tabs button:hover{border-color:var(--saff)}
+.tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.pane{animation:up .5s ease both}
+/* form */
+form.contact{display:grid;gap:10px}
+form.contact input,form.contact textarea{font:inherit;padding:10px 12px;border:1px solid #c5ced9;border-radius:10px;width:100%}
+form.contact .btn{justify-self:start}
+footer{background:var(--navy);color:#dbe6f2;text-align:center;padding:24px 16px;font-size:.92rem}
+footer strong{color:#fff}
+
+/* ---------- animations ---------- */
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes ribbonIn{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes shine{from{background-position:150% 0}to{background-position:-150% 0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes heroBg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.stagger>*{animation:up .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--i,0)*80ms)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!--
+============================================================
+ OWNER UPDATE PANEL — edit ONLY this block to update the site.
+ Empty ("") fields show a yellow "To be updated" marker.
+============================================================
+-->
+<script>
+const DATA = {
+  defaultLang: "en",
+  person: {
+    name: "Sivananda Pujari",
+    nameTe: "శివానంద పుజారి",
+    role: "Ward Education Secretary & Ward Data Processing Secretary",
+    roleTe: "వార్డ్ ఎడ్యుకేషన్ సెక్రటరీ & వార్డ్ డేటా ప్రాసెసింగ్ సెక్రటరీ",
+    photo: "img/profile.jpg",  // replace with another image path or URL if you change it
+    service: "Ward Secretariat, Guntakal Municipal Corporation",
+    phone: "",                 // e.g. "+91 xxxxx xxxxx"
+    email: "",
+    dob: "",
+    bloodGroup: "",
+    languages: "English, Telugu"
+  },
+  office: {
+    name: "Mahaboob Nagar Colony-01 Ward Secretariat",
+    address: "Mahaboob Nagar Colony-01, near Masthanaiah Darga, Guntakal",
+    hours: "10:00 AM – 5:00 PM",
+    phone: "",
+    mapLink: ""                // Google Maps link
+  },
+  home: {
+    address: "",               // your home address
+    showOnSite: false          // true = show it; false = "Available on request"
+  },
+  qualifications: [
+    { degree: "B.Sc (Computer Science)", institution: "", year: "" }
+  ],
+  dashboard: {
+    asOf: "",                  // e.g. "13 Nov 2026"
+    stats: [
+      { label: "Applications received", value: 0 },
+      { label: "Applications onlined", value: 0 },
+      { label: "Pending", value: 0 },
+      { label: "Challans", value: 0 },
+      { label: "Field visits", value: 0 }
+    ]
+  },
+  apps: [
+    { name: "Samvidhan Article Index", te: "సంవిధాన్ ఆర్టికల్ ఇండెక్స్", desc: "Telugu–English Constitution study app: articles, amendments, cases, Prelims and Mains.", url: "https://bloforms.github.io/constitution", live: true },
+    { name: "BLO Forms", te: "BLO ఫారమ్స్", desc: "Voter roll register and BLO forms for electoral roll work.", url: "https://bloforms.github.io/blo", live: true },
+    { name: "GSWS Forms", te: "GSWS ఫారమ్స్", desc: "Ward and village secretariat application forms; filled forms download as PDF.", url: "https://bloforms.github.io/gsws", live: true },
+    { name: "English Vocabulary", te: "ఇంగ్లీష్ వొకాబ్యులరీ", desc: "A–Z words, confused words, idioms, phrasal verbs and a daily exam.", url: "https://bloforms.github.io/english", live: true },
+    { name: "Audio to Text", te: "ఆడియో టు టెక్స్ట్", desc: "Convert audio to text and save it as PDF or TXT.", url: "https://bloforms.github.io/audio", live: true }
+  ],
+  comingSoon: [
+    "Daily dashboard: applications, challans, search, field-visit log",
+    "Citizen application tracker (Aadhaar / phone based)",
+    "WhatsApp auto-reply information desk"
+  ],
+  gallery: [
+    { src: "img/office.jpg", caption: "Ward secretariat team at work" },
+    { src: "img/office-chair.jpg", caption: "At the secretariat office" },
+    { src: "img/portrait.jpg", caption: "Portrait" },
+    { src: "img/team-temple.jpg", caption: "Community festival team" },
+    { src: "img/railing.jpg", caption: "Portrait" },
+    { src: "img/casual-yellow.jpg", caption: "Portrait" },
+    { src: "img/walk-two.jpg", caption: "With colleagues" },
+    { src: "img/walk-group.jpg", caption: "With colleagues" }
+  ],
+  achievements: [
+    // { date: "2026", title: "Title", text: "Short description" }
+  ],
+  news: [
+    { date: "2026-11-13", title: "Official website launched", text: "The ward secretariat website is online with office details, official tools and the dashboard." }
+  ],
+  notices: [
+    // { date: "2026-11-13", title: "Circular title", file: "https://…/file.pdf" }
+  ],
+  ads: [
+    { tag: "New tool", title: "Samvidhan Article Index", text: "Study the Constitution article by article, in Telugu and English.", cta: "Open app", url: "https://bloforms.github.io/constitution", bg: "linear-gradient(120deg,#0b2a4a 0%,#1a4f7a 60%,#f28c28 130%)" },
+    { tag: "Ward services", title: "GSWS application forms", text: "Fill ward and village secretariat forms online and download them as PDF.", cta: "Open forms", url: "https://bloforms.github.io/gsws", bg: "linear-gradient(120deg,#1e7b4f 0%,#0b2a4a 80%)" },
+    { tag: "Coming soon", title: "Citizen service tracker", text: "Track applications by Aadhaar or phone number. Launching soon from this office.", cta: "", url: "", bg: "linear-gradient(120deg,#f28c28 0%,#c9501c 55%,#0b2a4a 140%)" }
+  ]
+};
+
+/* ---- load live content from the ward database (falls back to the list above) ---- */
+const SB_URL = "https://zzrycdearolcnjsntxvx.supabase.co";
+const SB_KEY = "sb_publishable__rOXxZUyGKDZ8KovCo9uZg_wHZOwfDj";
+window.DATA_READY = (async () => {
+  try {
+    if (!window.supabase) return;
+    const sb = window.supabase.createClient(SB_URL, SB_KEY);
+    const [s, i] = await Promise.all([
+      sb.from("site_settings").select("key,value"),
+      sb.from("site_items").select("*").eq("active", true).order("sort_order", {ascending: true}).order("created_at", {ascending: true})
+    ]);
+    if (s.error || i.error) { console.warn("Content load failed", s.error || i.error); return; }
+    const S = Object.fromEntries((s.data || []).map(r => [r.key, r.value]));
+    Object.assign(DATA.person, S.person || {});
+    Object.assign(DATA.office, S.office || {});
+    Object.assign(DATA.home, S.home || {});
+    DATA.dashboard.asOf = (S.dashboard || {}).asOf || "";
+    const items = i.data || [];
+    const it = sec => items.filter(x => x.section === sec);
+    DATA.qualifications = it("qualification").map(x => ({degree: x.title, institution: x.subtitle, year: x.body}));
+    DATA.apps = it("app").map(x => ({name: x.title, te: x.subtitle, desc: x.body, url: x.url, live: true}));
+    DATA.comingSoon = it("coming_soon").map(x => x.title);
+    DATA.dashboard.stats = it("stat").map(x => ({label: x.title, value: x.num || 0}));
+    DATA.news = it("news").map(x => ({date: x.item_date || "", title: x.title, text: x.body}));
+    DATA.notices = it("notice").map(x => ({date: x.item_date || "", title: x.title, file: x.file_url || x.url}));
+    DATA.eligible = it("eligible_list").map(x => ({date: x.item_date || "", title: x.title, text: x.body, tag: x.label, file: x.file_url || x.url}));
+    const BG = ["linear-gradient(120deg,#0b2a4a 0%,#1a4f7a 60%,#f28c28 130%)", "linear-gradient(120deg,#1e7b4f 0%,#0b2a4a 80%)", "linear-gradient(120deg,#f28c28 0%,#c9501c 55%,#0b2a4a 140%)"];
+    DATA.ads = it("ad").map((x, k) => ({tag: x.subtitle, title: x.title, text: x.body, cta: x.label, url: x.url, bg: BG[k % BG.length]}));
+    DATA.gallery = it("gallery").map(x => ({src: x.image_url, caption: x.title}));
+    DATA.achievements = it("achievement").map(x => ({date: x.item_date || "", title: x.title, text: x.body}));
+  } catch (err) { console.warn("Content load error", err); }
+})();
+</script>
+
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="#" id="brandLink"><span id="brandName"></span><small id="brandSub"></small></a>
+    <nav class="top-nav" id="topNav" aria-label="Main menu"></nav>
+    <div class="tools">
+      <button class="pill" id="langBtn" aria-label="Switch language"></button>
+      <button class="pill menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer">☰</button>
+    </div>
+  </div>
+  <div class="drawer" id="drawer"></div>
+</header>
+<div class="progress" id="progress"></div>
+
+<!-- MENU LANDING -->
+<div id="landing">
+  <div class="landing-head">
+    <div class="ribbon" data-k="menuTitle" style="margin-bottom:10px"></div>
+    <p data-k="menuSub"></p>
+  </div>
+  <div class="tiles stagger" id="tiles"></div>
+</div>
+
+<!-- VIEWS -->
+<main>
+
+  <!-- HOME -->
+  <div class="panel" id="p-home" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <div class="hero" id="heroBox">
+      <canvas id="fx" aria-hidden="true"></canvas>
+      <div class="ring" aria-hidden="true"></div>
+      <div>
+        <h1 id="heroName"></h1>
+        <p class="role" id="heroRole"></p>
+        <p class="intro" id="heroIntro"></p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <a class="btn" href="#apps" data-k="btnApps"></a>
+          <a class="btn ghost" href="#contact" data-k="btnContact"></a>
+        </div>
+      </div>
+      <div><div class="photo" id="heroPhoto"></div></div>
+    </div>
+    <div class="ads" id="adSlides"></div>
+    <div class="ad-dots" id="adDots"></div>
+    <div class="ticker"><div class="ticker-track" id="tickerTrack"></div></div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="panel" id="p-about" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secAbout"></h2>
+    <p class="lead" data-k="leadAbout"></p>
+    <div class="grid g2 stagger">
+      <div class="card"><img class="about-photo" src="img/profile.jpg" alt="Sivananda Pujari"><h3 data-k="personal"></h3><dl class="kv" id="personalKv"></dl></div>
+      <div class="card"><h3 data-k="homeAddr"></h3><p id="homeAddr"></p><p class="note" data-k="homeNote"></p></div>
+    </div>
+  </div>
+
+  <!-- QUALIFICATIONS -->
+  <div class="panel" id="p-qual" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secQual"></h2>
+    <p class="lead" data-k="leadQual"></p>
+    <div class="grid g3 stagger" id="qualGrid"></div>
+  </div>
+
+  <!-- OFFICIAL (tabbed) -->
+  <div class="panel" id="p-official" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secOfficial"></h2>
+    <p class="lead" data-k="leadOfficial"></p>
+    <div class="tabs" id="tabs">
+      <button data-tab="office" data-k="tabOffice"></button>
+      <button data-tab="apps" data-k="tabApps"></button>
+      <button data-tab="dashboard" data-k="tabDash"></button>
+      <button data-tab="news" data-k="tabNews"></button>
+      <button data-tab="notices" data-k="tabNotices"></button>
+    </div>
+
+    <div class="pane" id="pane-office">
+      <figure class="office-photo"><img src="img/office.jpg" alt="Ward secretariat office team"></figure>
+      <div class="grid g2 stagger">
+        <div class="card"><h3 id="officeName"></h3><dl class="kv" id="officeKv"></dl></div>
+        <div class="card"><h3 data-k="visit"></h3><p id="mapWrap"></p><p class="note" data-k="noteOffice"></p></div>
+      </div>
+    </div>
+
+    <div class="pane" id="pane-apps" hidden>
+      <div class="grid g3 stagger" id="appGrid"></div>
+      <div class="card" style="margin-top:16px"><h3 data-k="upcoming"></h3><ul id="soonList" style="margin:0;padding-left:20px"></ul></div>
+    </div>
+
+    <div class="pane" id="pane-dashboard" hidden>
+      <p class="note" id="asOf"></p>
+      <div class="grid g4 stagger" id="statGrid"></div>
+      <div class="card" style="margin-top:16px"><h3 data-k="chartTitle"></h3><div id="barsWrap"></div></div>
+    </div>
+
+    <div class="pane" id="pane-news" hidden>
+      <div class="card news"><ul id="newsList"></ul></div>
+    </div>
+
+    <div class="pane" id="pane-notices" hidden>
+      <div class="card notice"><ul id="noticeList"></ul><p class="note" id="noNotice"></p></div>
+    </div>
+  </div>
+
+  <!-- ELIGIBLE LISTS -->
+  <div class="panel" id="p-eligible" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secEligible"></h2>
+    <p class="lead" data-k="leadEligible"></p>
+    <div class="grid g2 stagger" id="eligibleGrid"></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="panel" id="p-gallery" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secGallery"></h2>
+    <p class="lead" data-k="leadGallery"></p>
+    <div class="gal stagger" id="galGrid"></div>
+  </div>
+
+  <!-- ACHIEVEMENTS -->
+  <div class="panel" id="p-ach" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secAch"></h2>
+    <p class="lead" data-k="leadAch"></p>
+    <ul class="timeline stagger" id="achList"></ul>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="panel" id="p-contact" hidden>
+    <a class="back" href="#" data-k="back"></a>
+    <h2 class="ribbon" data-k="secContact"></h2>
+    <p class="lead" data-k="leadContact"></p>
+    <div class="grid g2 stagger">
+      <div class="card"><h3 data-k="direct"></h3><dl class="kv" id="contactKv"></dl></div>
+      <div class="card">
+        <h3 data-k="msg"></h3>
+        <form class="contact" id="contactForm">
+          <input id="cName" placeholder="" aria-label="Name" required>
+          <input id="cPhone" placeholder="" aria-label="Phone" required>
+          <textarea id="cMsg" rows="4" placeholder="" aria-label="Message"></textarea>
+          <button class="btn" type="submit" data-k="send"></button>
+        </form>
+        <p class="note" id="formNote"></p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div id="footText"></div>
+  <div style="margin-top:6px"><strong>Designed by Sivananda Pujari</strong></div>
+</footer>
+
+<script>
+(function(){
+  /* ---------- text in two languages (menus & headings) ---------- */
+  const T = {
+    en: {
+      menuTitle:"Menu", menuSub:"Choose a section to open it.", back:"← Back to menu",
+      eligibleTitle:"Eligible Lists", secEligible:"Eligible Lists", leadEligible:"Lists and downloads for eligibility and registration.", download:"Download",
+      home:"Home", about:"About", qual:"Qualifications", official:"Official", gallery:"Gallery", ach:"Achievements", contact:"Contact",
+      tabOffice:"Office", tabApps:"Official Apps", tabDash:"Dashboard", tabNews:"Latest News", tabNotices:"Notices",
+      secAbout:"About & Personal Details", leadAbout:"Personal and contact information.", personal:"Personal details",
+      homeAddr:"Home address", homeNote:"Shared only if you choose to show it.",
+      secQual:"Qualifications", leadQual:"Academic and professional qualifications.",
+      secOfficial:"Official", leadOfficial:"Office, applications, dashboard, news and notices.",
+      visit:"Visit us", noteOffice:"Office hours 10 AM to 5 PM. Field visits follow the commissioner's orders.",
+      upcoming:"Coming soon", chartTitle:"Comparison",
+      secGallery:"Gallery", leadGallery:"Photos from office work, field visits and events.",
+      secAch:"Achievements", leadAch:"Awards, recognitions and milestones.",
+      secContact:"Contact", leadContact:"Reach the office or send a message.", direct:"Direct contact", msg:"Send a message", send:"Prepare message",
+      btnApps:"Official Apps", btnContact:"Contact",
+      name:"Name", role:"Designation", service:"Service", phone:"Phone", email:"Email", dob:"Date of birth", blood:"Blood group", lang:"Languages",
+      address:"Address", hours:"Office hours", office:"Office", map:"Open in Maps", open:"Open app", live:"Live", soon:"Coming soon",
+      inst:"Institution", year:"Year", tbu:"To be updated", nothing:"Nothing added yet.", noNotice:"No notices published yet.",
+      asOf:"As on", onHome:"Available on request", addPhoto:"Add photo", addProfile:"Add profile photo",
+      formNote:"This page does not send your message. Please call the office or use the phone number above.",
+      formNeed:"Please fill in your name and phone number.", footText:"Mahaboob Nagar Colony-01 Ward Secretariat, Guntakal · Office hours 10 AM – 5 PM",
+      heroIntro:"Dedicated to serving citizens and making ward services simpler through digital tools.",
+      phNameP:"Your name", phPhoneP:"Phone number", phMsgP:"Your message", upAt:""
+    },
+    te: {
+      menuTitle:"మెనూ", menuSub:"విభాగాన్ని ఎంచుకోండి.", back:"← మెనూకి తిరిగి",
+      eligibleTitle:"అర్హత జాబితాలు", secEligible:"అర్హత జాబితాలు", leadEligible:"అర్హత మరియు నమోదు కోసం జాబితాలు & డౌన్‌లోడ్స్.", download:"డౌన్‌లోడ్",
+      home:"హోమ్", about:"నా గురించి", qual:"విద్యార్హతలు", official:"అధికారిక", gallery:"గ్యాలరీ", ach:"విజయాలు", contact:"సంప్రదించండి",
+      tabOffice:"కార్యాలయం", tabApps:"అధికారిక యాప్స్", tabDash:"డ్యాష్‌బోర్డ్", tabNews:"తాజా వార్తలు", tabNotices:"నోటీసులు",
+      secAbout:"నా గురించి & వ్యక్తిగత వివరాలు", leadAbout:"వ్యక్తిగత మరియు సంప్రదింపు వివరాలు.", personal:"వ్యక్తిగత వివరాలు",
+      homeAddr:"ఇంటి చిరునామా", homeNote:"మీరు ఎంచుకుంటేనే చూపబడుతుంది.",
+      secQual:"విద్యార్హతలు", leadQual:"విద్యా మరియు వృత్తిపరమైన అర్హతలు.",
+      secOfficial:"అధికారిక", leadOfficial:"కార్యాలయం, యాప్స్, డ్యాష్‌బోర్డ్, వార్తలు మరియు నోటీసులు.",
+      visit:"కార్యాలయం", noteOffice:"కార్యాలయ వేళలు ఉదయం 10 నుండి సాయంత్రం 5 వరకు.",
+      upcoming:"త్వరలో", chartTitle:"పోలిక",
+      secGallery:"గ్యాలరీ", leadGallery:"కార్యాలయ పని, క్షేత్ర పర్యటనలు మరియు కార్యక్రమాల ఫోటోలు.",
+      secAch:"విజయాలు", leadAch:"అవార్డులు, గుర్తింపులు మరియు మైలురాళ్లు.",
+      secContact:"సంప్రదించండి", leadContact:"కార్యాలయాన్ని సంప్రదించండి లేదా సందేశం పంపండి.", direct:"నేరుగా సంప్రదించండి", msg:"సందేశం పంపండి", send:"సిద్ధం చేయండి",
+      btnApps:"అధికారిక యాప్స్", btnContact:"సంప్రదించండి",
+      name:"పేరు", role:"హోదా", service:"సర్వీస్", phone:"ఫోన్", email:"ఇమెయిల్", dob:"పుట్టిన తేదీ", blood:"రక్త వర్గం", lang:"భాషలు",
+      address:"చిరునామా", hours:"కార్యాలయ వేళలు", office:"కార్యాలయం", map:"మ్యాప్స్‌లో తెరవండి", open:"యాప్ తెరవండి", live:"అందుబాటులో", soon:"త్వరలో",
+      inst:"సంస్థ", year:"సంవత్సరం", tbu:"త్వరలో నవీకరించబడుతుంది", nothing:"ఇంకా ఏమీ చేర్చలేదు.", noNotice:"ఇంకా నోటీసులు ప్రచురించలేదు.",
+      asOf:"తేదీ నాటికి", onHome:"కోరినప్పుడు అందుబాటులో", addPhoto:"ఫోటో జోడించండి", addProfile:"ప్రొఫైల్ ఫోటో జోడించండి",
+      formNote:"ఈ పేజీ మీ సందేశాన్ని పంపదు. దయచేసి కార్యాలయానికి కాల్ చేయండి.",
+      formNeed:"దయచేసి పేరు మరియు ఫోన్ నంబర్ నమోదు చేయండి.", footText:"మహబూబ్ నగర్ కాలనీ-01 వార్డ్ సచివాలయం, గుంతకల్ · వేళలు ఉదయం 10 – సాయంత్రం 5",
+      heroIntro:"పౌరులకు సేవ చేయడానికి మరియు డిజిటల్ సాధనాలతో వార్డ్ సేవలను సులభతరం చేయడానికి అంకితం.",
+      phNameP:"మీ పేరు", phPhoneP:"ఫోన్ నంబర్", phMsgP:"మీ సందేశం"
+    }
+  };
+
+  const ROUTES = {
+    home:{p:"p-home"}, about:{p:"p-about"}, qualifications:{p:"p-qual"},
+    official:{p:"p-official", tab:"office"}, office:{p:"p-official", tab:"office"},
+    apps:{p:"p-official", tab:"apps"}, dashboard:{p:"p-official", tab:"dashboard"},
+    news:{p:"p-official", tab:"news"}, notices:{p:"p-official", tab:"notices"},
+    eligible:{p:"p-eligible"}, gallery:{p:"p-gallery"}, achievements:{p:"p-ach"}, contact:{p:"p-contact"}
+  };
+  const MENU = [
+    ["home","home","⌂"],["about","about","👤"],["qualifications","qual","🎓"],["official","official","🏛"],
+    ["apps","tabApps","🧩"],["dashboard","tabDash","📊"],["news","tabNews","📰"],["notices","tabNotices","📄"],
+    ["eligible","eligibleTitle","📋"],["gallery","gallery","🖼"],["achievements","ach","🏆"],["contact","contact","✉"]
+  ];
+  const TAB_ROUTE = {office:"official", apps:"apps", dashboard:"dashboard", news:"news", notices:"notices"};
+
+  const P = DATA.person, O = DATA.office;
+  let lang = DATA.defaultLang || "en";
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const L = k => (T[lang][k] ?? T.en[k] ?? k);
+  const tbu = () => `<span class="todo">${L("tbu")}</span>`;
+  const val = v => (v && String(v).trim()) ? esc(v) : tbu();
+
+  /* ---------- static text ---------- */
+  function applyText(){
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-k]").forEach(el => { el.textContent = L(el.dataset.k); });
+    document.querySelectorAll("[data-k-attr]").forEach(el => {});
+    $("langBtn").textContent = lang === "en" ? "తెలుగు" : "English";
+    $("brandName").textContent = lang === "te" && P.nameTe ? P.nameTe : P.name;
+    $("brandSub").textContent = O.name;
+    $("heroIntro").textContent = L("heroIntro");
+    $("cName").placeholder = L("phNameP"); $("cPhone").placeholder = L("phPhoneP"); $("cMsg").placeholder = L("phMsgP");
+    $("topNav").innerHTML = MENU.filter((m,i) => i < 8).map(m => `<a href="#${m[0]}" data-r="${m[0]}">${L(m[1])}</a>`).join("");
+    $("drawer").innerHTML = MENU.map(m => `<a href="#${m[0]}">${m[2]}  ${L(m[1])}</a>`).join("");
+    $("tiles").innerHTML = MENU.map((m,i) => `<a class="tile" style="--i:${i}" href="#${m[0]}"><span class="ico">${m[2]}</span><span>${L(m[1])}</span></a>`).join("");
+  }
+
+  /* ---------- content ---------- */
+  function renderContent(){
+    const name = lang === "te" && P.nameTe ? P.nameTe : P.name;
+    const role = lang === "te" && P.roleTe ? P.roleTe : P.role;
+    $("heroName").textContent = name;
+    $("heroRole").textContent = role;
+    $("heroPhoto").innerHTML = P.photo ? `<img src="${esc(P.photo)}" alt="${esc(name)}">` : `<span>${L("addProfile")}</span>`;
+
+    $("personalKv").innerHTML = [
+      [L("name"), name], [L("role"), role], [L("service"), P.service], [L("phone"), P.phone],
+      [L("email"), P.email], [L("dob"), P.dob], [L("blood"), P.bloodGroup], [L("lang"), P.languages]
+    ].map(([k,v]) => `<dt>${k}</dt><dd>${(k===L("name")||k===L("role")||k===L("service")||k===L("lang")) ? esc(v) : val(v)}</dd>`).join("");
+
+    $("homeAddr").innerHTML = DATA.home.showOnSite && DATA.home.address ? esc(DATA.home.address)
+      : (DATA.home.address ? L("onHome") : tbu());
+
+    $("qualGrid").innerHTML = DATA.qualifications.length ? DATA.qualifications.map(q =>
+      `<div class="card"><h3>${val(q.degree)}</h3><p class="note">${L("inst")}: ${val(q.institution)}</p><p class="note">${L("year")}: ${val(q.year)}</p></div>`
+    ).join("") : `<div class="card"><p>${L("nothing")}</p></div>`;
+
+    $("officeName").textContent = O.name;
+    $("officeKv").innerHTML = [[L("address"), O.address], [L("hours"), O.hours], [L("phone"), O.phone]]
+      .map(([k,v]) => `<dt>${k}</dt><dd>${val(v)}</dd>`).join("");
+    $("mapWrap").innerHTML = O.mapLink ? `<a class="btn" href="${esc(O.mapLink)}" target="_blank" rel="noopener">${L("map")}</a>` : tbu();
+
+    $("appGrid").innerHTML = DATA.apps.map(a => `
+      <div class="card app">
+        <span class="tag ${a.live ? "" : "soon"}">${a.live ? L("live") : L("soon")}</span>
+        <h3>${lang === "te" && a.te ? esc(a.te) : esc(a.name)}</h3>
+        <p>${esc(a.desc)}</p>
+        <div class="go"><a href="${esc(a.url)}" target="_blank" rel="noopener">${L("open")} →</a></div>
+      </div>`).join("");
+    $("soonList").innerHTML = DATA.comingSoon.map(s => `<li>${esc(s)}</li>`).join("");
+
+    const D = DATA.dashboard;
+    $("asOf").textContent = D.asOf ? `${L("asOf")}: ${D.asOf}` : "";
+    $("statGrid").innerHTML = D.stats.map(s =>
+      `<div class="card stat"><div class="num" data-to="${Number(s.value)||0}">${Number(s.value)||0}</div><div class="lbl">${esc(s.label)}</div></div>`).join("");
+    const max = Math.max(1, ...D.stats.map(s => Number(s.value) || 0));
+    $("barsWrap").innerHTML = D.stats.map(s => {
+      const pct = Math.round((Number(s.value) || 0) / max * 100);
+      return `<div class="bar-row"><span>${esc(s.label)}</span><div class="track"><div class="fill" style="width:${pct}%"></div></div><strong>${Number(s.value)||0}</strong></div>`;
+    }).join("");
+
+    $("newsList").innerHTML = DATA.news.length ? DATA.news.map(n =>
+      `<li><div class="d">${esc(n.date)}</div><strong>${esc(n.title)}</strong><div>${esc(n.text)}</div></li>`).join("") : `<li>${L("nothing")}</li>`;
+    $("noticeList").innerHTML = DATA.notices.map(n =>
+      `<li><span class="note">${esc(n.date)}</span> — ${n.file ? `<a href="${esc(n.file)}" target="_blank" rel="noopener">${esc(n.title)}</a>` : esc(n.title)}</li>`).join("");
+    $("noNotice").textContent = DATA.notices.length ? "" : L("noNotice");
+
+    $("galGrid").innerHTML = DATA.gallery.length ? DATA.gallery.map(g =>
+      `<figure><img src="${esc(g.src)}" alt="${esc(g.caption)}"><figcaption>${esc(g.caption)}</figcaption></figure>`).join("")
+      : Array.from({length:8}).map((_,i) => `<figure><div class="ph">${L("addPhoto")} ${i+1}</div></figure>`).join("");
+
+    $("achList").innerHTML = DATA.achievements.length ? DATA.achievements.map(a =>
+      `<li><div class="when">${esc(a.date)}</div><strong>${esc(a.title)}</strong><div>${esc(a.text)}</div></li>`).join("") : `<li>${L("nothing")}</li>`;
+
+    $("contactKv").innerHTML = [[L("office"), O.name], [L("address"), O.address], [L("hours"), O.hours], [L("phone"), P.phone || O.phone], [L("email"), P.email]]
+      .map(([k,v]) => `<dt>${k}</dt><dd>${val(v)}</dd>`).join("");
+
+    $("eligibleGrid").innerHTML = (DATA.eligible || []).length ? DATA.eligible.map(e =>
+      `<div class="card"><span class="tag">${esc(e.tag || "List")}</span><h3>${esc(e.title)}</h3><p class="note">${esc(e.date)}</p><p>${esc(e.text)}</p>${e.file ? `<a class="btn" href="${esc(e.file)}" target="_blank" rel="noopener">${L("download")} ↓</a>` : ""}</div>`).join("")
+      : `<div class="card"><p>${L("nothing")}</p></div>`;
+
+    $("footText").textContent = L("footText");
+    renderAds();
+    renderTicker();
+    document.querySelectorAll(".stagger").forEach(p => [...p.children].forEach((c,i) => c.style.setProperty("--i", i)));
+    applyText();
+    if (currentTab === "dashboard") countUp();
+  }
+
+  /* ---------- advertisements ---------- */
+  let adIdx = 0, adTimer = null;
+  function renderAds(){
+    const A = DATA.ads || [];
+    $("adSlides").innerHTML = A.map((a,i) => `
+      <div class="ad-slide${i===0?" on":""}" style="background:${a.bg || "linear-gradient(120deg,#0b2a4a,#f28c28)"}">
+        <span class="ad-tag">${esc(a.tag || "Announcement")}</span>
+        <h3>${esc(a.title)}</h3>
+        <p>${esc(a.text)}</p>
+        ${a.url && a.cta ? `<a class="btn" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.cta)} →</a>` : ""}
+      </div>`).join("");
+    $("adDots").innerHTML = A.map((_,i) => `<button aria-label="Ad ${i+1}" class="${i===0?"on":""}" data-k2="${i}"></button>`).join("");
+    adIdx = 0;
+    $("adDots").querySelectorAll("button").forEach(b => b.addEventListener("click", () => { showAd(+b.dataset.k2); startAds(); }));
+    startAds();
+  }
+  function showAd(k){
+    const slides = $("adSlides").querySelectorAll(".ad-slide"), dots = $("adDots").querySelectorAll("button");
+    if (!slides.length) return;
+    adIdx = k;
+    slides.forEach((s,i) => s.classList.toggle("on", i === k));
+    dots.forEach((b,i) => b.classList.toggle("on", i === k));
+  }
+  function startAds(){
+    clearInterval(adTimer);
+    const n = (DATA.ads || []).length;
+    if (n > 1) adTimer = setInterval(() => showAd((adIdx + 1) % n), 5000);
+  }
+
+  function renderTicker(){
+    const items = [
+      ...DATA.news.map(n => `${n.title}: ${n.text}`),
+      ...(DATA.ads || []).map(a => `${a.title}: ${a.text}`)
+    ];
+    if (!items.length) items.push(lang === "te" ? "స్వాగతం" : "Welcome to the ward secretariat website");
+    const row = items.map(s => `<span>${esc(s)}</span>`).join("");
+    $("tickerTrack").innerHTML = row + row;
+  }
+
+  /* ---------- dashboard count-up ---------- */
+  function countUp(){
+    document.querySelectorAll("#statGrid .num").forEach(el => {
+      const end = Number(el.dataset.to) || 0, start = performance.now();
+      const step = now => {
+        const p = Math.min(1, (now - start) / 1100);
+        el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ---------- hero particles ---------- */
+  let fxToken = 0;
+  function startHeroFx(){
+    const cv = $("fx"), box = $("heroBox");
+    if (!cv || !cv.getContext) return;
+    const token = ++fxToken, ctx = cv.getContext("2d");
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let W, H, pts = [];
+    const size = () => {
+      W = cv.width = box.offsetWidth; H = cv.height = box.offsetHeight;
+      const n = Math.min(60, Math.round(W * H / 17000));
+      pts = Array.from({length:n}, () => ({x:Math.random()*W, y:Math.random()*H, vx:(Math.random()-.5)*.5, vy:(Math.random()-.5)*.5, r:Math.random()*2+1}));
+    };
+    size();
+    const frame = () => {
+      if (token !== fxToken) return;
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = "rgba(255,217,176,.85)"; ctx.fill();
+      });
+      for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+        const a = pts[i], b = pts[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < 120) { ctx.strokeStyle = `rgba(242,140,40,${(1 - d/120) * .5})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+      if (!reduce) requestAnimationFrame(frame);
+    };
+    frame();
+    window.addEventListener("resize", size, {once:false});
+  }
+
+  /* ---------- routing: show only the chosen view ---------- */
+  let currentTab = "office";
+  function setTab(tab){
+    currentTab = tab;
+    document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === tab));
+    document.querySelectorAll(".pane").forEach(p => p.hidden = p.id !== "pane-" + tab);
+    if (tab === "dashboard") countUp();
+  }
+  document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => {
+    const r = TAB_ROUTE[b.dataset.tab];
+    if (location.hash === "#" + r) setTab(b.dataset.tab); else location.hash = r;
+  }));
+
+  function route(){
+    const key = (location.hash || "").replace("#", "");
+    const r = ROUTES[key];
+    $("landing").hidden = !!r;
+    document.querySelectorAll(".panel").forEach(p => p.hidden = !(r && p.id === r.p));
+    document.querySelectorAll("#topNav a").forEach(a => a.classList.toggle("on", a.dataset.r === key));
+    if (r) {
+      if (r.p === "p-official") setTab(r.tab || "office");
+      if (r.p === "p-home") startHeroFx();
+    }
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", () => { $("drawer").classList.remove("open"); route(); });
+
+  /* ---------- header controls ---------- */
+  $("langBtn").addEventListener("click", () => { lang = lang === "en" ? "te" : "en"; renderContent(); });
+  $("menuBtn").addEventListener("click", () => {
+    const o = $("drawer").classList.toggle("open");
+    $("menuBtn").setAttribute("aria-expanded", o);
+  });
+  $("brandLink").addEventListener("click", () => {});
+  window.addEventListener("scroll", () => {
+    const h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    $("progress").style.width = (max > 0 ? h.scrollTop / max * 100 : 0) + "%";
+  }, {passive:true});
+
+  $("contactForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const n = $("cName").value.trim(), p = $("cPhone").value.trim();
+    $("formNote").textContent = (!n || !p) ? L("formNeed") : L("formNote");
+  });
+
+  window.DATA_READY.then(() => { renderContent(); route(); });
+})();
+</script>
+</body>
+</html>

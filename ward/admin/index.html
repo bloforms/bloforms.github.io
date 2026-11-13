@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Ward Website — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--navy:#0b2a4a;--navy2:#1a4f7a;--saff:#f28c28;--green:#1e7b4f;--bg:#f3f6fa;--line:#dde4ec;--mute:#5d6b78;--red:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif;background:var(--bg);color:#1c2630;font-size:15px;line-height:1.5}
+header{background:var(--navy);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+header h1{font-size:1.1rem;margin:0}
+main{max-width:1000px;margin:auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.04)}
+h2{margin:0 0 10px;color:var(--navy);font-size:1.2rem}
+label{display:block;font-weight:600;font-size:.88rem;margin:10px 0 4px;color:#33414e}
+input,textarea,select{width:100%;font:inherit;padding:9px 10px;border:1px solid #c5ced9;border-radius:8px;background:#fff}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:700px){.row.two{grid-template-columns:1fr 1fr}}
+button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:9px 14px;font-weight:600;background:var(--navy);color:#fff}
+button:hover{background:var(--navy2)}
+button.ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+button.danger{background:var(--red)}
+button.save{background:var(--green)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabs button{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.tabs button.on{background:var(--navy);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600}
+.note{color:var(--mute);font-size:.86rem}
+.msg{padding:10px 12px;border-radius:8px;margin:10px 0;display:none}
+.msg.ok{display:block;background:#e5f4ec;color:#135a38}
+.msg.err{display:block;background:#fdecea;color:#8a1c14}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:20px;background:#eef3f8;color:var(--navy)}
+.pill.off{background:#fdecea;color:#8a1c14}
+.hidden{display:none!important}
+.preview{max-width:120px;max-height:90px;border-radius:6px;margin-top:6px;display:block}
+</style>
+</head>
+<body>
+<header>
+  <h1>Ward Website — Admin</h1>
+  <div id="whoBox" class="note" style="color:#dbe6f2"></div>
+</header>
+
+<main>
+  <!-- LOGIN -->
+  <section id="loginView" class="card hidden">
+    <h2>Sign in</h2>
+    <p class="note">Enter your email. We will send a one-time login link. Only the owner account can make changes.</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+    <div class="actions"><button id="sendLink">Send login link</button></div>
+    <div class="msg" id="loginMsg"></div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="adminView" class="hidden">
+    <div class="tabs" id="tabs"></div>
+    <div id="panel"></div>
+    <div class="msg" id="globalMsg"></div>
+  </section>
+</main>
+
+<script>
+const SB_URL = "https://zzrycdearolcnjsntxvx.supabase.co";
+const SB_KEY = "sb_publishable__rOXxZUyGKDZ8KovCo9uZg_wHZOwfDj";
+const OWNER = "manjulasivalakshmi143@gmail.com";
+const BUCKET = "site-files";
+const sb = window.supabase.createClient(SB_URL, SB_KEY);
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* which fields each section uses */
+const SECTIONS = {
+  qualification: {name:"Qualifications", help:"Degree, college and year.", title:"Degree", subtitle:"Institution", body:"Year"},
+  app:           {name:"Official Apps", help:"Each app card. Name, Telugu name, description and link.", title:"App name", subtitle:"Telugu name", body:"Description", url:"Link to app"},
+  coming_soon:   {name:"Coming Soon", help:"Items shown under 'Coming soon'.", title:"Item"},
+  news:          {name:"Latest News", help:"News items. Newest date first. They also scroll in the ticker.", title:"Headline", body:"Details", date:true},
+  notice:        {name:"Notices", help:"Circulars and notices. Upload a PDF or paste a link.", title:"Notice title", date:true, url:"Link (optional)", file:"file_url", fileLabel:"Upload PDF or file"},
+  eligible_list: {name:"Eligible Lists", help:"Lists people can check or download (eligibility, registration, schemes).", title:"List name", body:"Description / who is eligible", label:"Tag (e.g. Voter list)", date:true, url:"Link (optional)", file:"file_url", fileLabel:"Upload list file"},
+  ad:            {name:"Advertisements", help:"Rotating banners on the Home page.", title:"Headline", subtitle:"Small tag (e.g. New tool)", body:"Text", label:"Button text", url:"Button link"},
+  stat:          {name:"Dashboard Numbers", help:"The numbers on the Dashboard tab.", title:"Label", num:"Number"},
+  gallery:       {name:"Gallery", help:"Photos for the gallery.", title:"Caption", file:"image_url", fileLabel:"Upload photo"},
+  achievement:   {name:"Achievements", help:"Awards and milestones.", title:"Achievement", body:"Details", date:true, file:"image_url", fileLabel:"Upload photo (optional)"}
+};
+const TABS = [["settings","Profile & Office"], ...Object.keys(SECTIONS).map(k => [k, SECTIONS[k].name])];
+let current = "settings";
+let editing = null;   // item being edited (or "new")
+
+function msg(text, ok = true, target = "globalMsg"){
+  const m = $(target);
+  m.textContent = text; m.className = "msg " + (ok ? "ok" : "err");
+  clearTimeout(msg.t); msg.t = setTimeout(() => { m.className = "msg"; }, 4000);
+}
+
+/* ---------- login ---------- */
+async function boot(){
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { $("loginView").classList.remove("hidden"); return; }
+  const email = (session.user.email || "").toLowerCase();
+  if (email !== OWNER) {
+    $("loginView").classList.remove("hidden");
+    $("loginMsg").textContent = "This account is not allowed to edit the website.";
+    $("loginMsg").className = "msg err";
+    await sb.auth.signOut();
+    return;
+  }
+  $("whoBox").innerHTML = `${esc(email)} · <button class="ghost" id="logout">Sign out</button>`;
+  $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+  $("adminView").classList.remove("hidden");
+  buildTabs();
+  show(current);
+}
+$("sendLink").onclick = async () => {
+  const email = $("email").value.trim();
+  if (!email) return;
+  const { error } = await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: location.href.split("#")[0] } });
+  $("loginMsg").textContent = error ? error.message : "Login link sent. Open it on this device.";
+  $("loginMsg").className = "msg " + (error ? "err" : "ok");
+};
+sb.auth.onAuthStateChange((evt) => { if (evt === "SIGNED_IN") boot(); });
+
+/* ---------- tabs ---------- */
+function buildTabs(){
+  $("tabs").innerHTML = TABS.map(([k, n]) => `<button data-k="${k}" class="${k===current?"on":""}">${esc(n)}</button>`).join("");
+  $("tabs").querySelectorAll("button").forEach(b => b.onclick = () => { current = b.dataset.k; editing = null; buildTabs(); show(current); });
+}
+function show(key){
+  if (key === "settings") return renderSettings();
+  return renderList(key);
+}
+
+/* ---------- upload ---------- */
+async function uploadFile(file, folder){
+  const safe = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const path = `${folder}/${Date.now()}-${safe}`;
+  const { error } = await sb.storage.from(BUCKET).upload(path, file, { cacheControl: "3600", upsert: false });
+  if (error) throw error;
+  return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
+/* ---------- profile & office settings ---------- */
+async function renderSettings(){
+  const { data, error } = await sb.from("site_settings").select("key,value");
+  if (error) return msg(error.message, false);
+  const S = Object.fromEntries((data || []).map(r => [r.key, r.value]));
+  const P = S.person || {}, O = S.office || {}, H = S.home || {}, D = S.dashboard || {};
+  const field = (id, label, val, type = "text") => `<div><label for="${id}">${esc(label)}</label><input id="${id}" type="${type}" value="${esc(val)}"></div>`;
+  $("panel").innerHTML = `
+    <div class="card">
+      <h2>Personal details</h2>
+      <div class="row two">
+        ${field("p_name","Name",P.name)}${field("p_nameTe","Name in Telugu",P.nameTe)}
+        ${field("p_role","Designation",P.role)}${field("p_roleTe","Designation in Telugu",P.roleTe)}
+        ${field("p_service","Service / department",P.service)}${field("p_languages","Languages",P.languages)}
+        ${field("p_phone","Phone",P.phone)}${field("p_email","Email",P.email)}
+        ${field("p_dob","Date of birth (optional)",P.dob)}${field("p_blood","Blood group (optional)",P.bloodGroup)}
+      </div>
+      <label>Profile photo</label>
+      <input type="file" id="p_photo_file" accept="image/*">
+      ${P.photo ? `<img class="preview" src="${esc(P.photo)}" alt="">` : ""}
+    </div>
+    <div class="card">
+      <h2>Office details</h2>
+      <div class="row two">
+        ${field("o_name","Office name",O.name)}${field("o_hours","Office hours",O.hours)}
+        ${field("o_phone","Office phone",O.phone)}${field("o_map","Google Maps link",O.mapLink)}
+      </div>
+      <label for="o_address">Office address</label><textarea id="o_address">${esc(O.address)}</textarea>
+    </div>
+    <div class="card">
+      <h2>Home address</h2>
+      <label for="h_address">Home address</label><textarea id="h_address">${esc(H.address)}</textarea>
+      <label><input type="checkbox" id="h_show" style="width:auto" ${H.showOnSite?"checked":""}> Show home address on the website</label>
+    </div>
+    <div class="card">
+      <h2>Dashboard date</h2>
+      ${field("d_asof","'As on' date shown on the Dashboard",D.asOf)}
+    </div>
+    <div class="actions"><button class="save" id="saveSettings">Save profile & office</button></div>`;
+
+  $("saveSettings").onclick = async () => {
+    try {
+      let photo = P.photo || "";
+      const f = $("p_photo_file").files[0];
+      if (f) photo = await uploadFile(f, "profile");
+      const rows = [
+        {key:"person", value:{name:$("p_name").value, nameTe:$("p_nameTe").value, role:$("p_role").value, roleTe:$("p_roleTe").value, service:$("p_service").value, languages:$("p_languages").value, phone:$("p_phone").value, email:$("p_email").value, dob:$("p_dob").value, bloodGroup:$("p_blood").value, photo}},
+        {key:"office", value:{name:$("o_name").value, address:$("o_address").value, hours:$("o_hours").value, phone:$("o_phone").value, mapLink:$("o_map").value}},
+        {key:"home", value:{address:$("h_address").value, showOnSite:$("h_show").checked}},
+        {key:"dashboard", value:{asOf:$("d_asof").value}}
+      ].map(r => ({...r, updated_at: new Date().toISOString()}));
+      const { error } = await sb.from("site_settings").upsert(rows);
+      if (error) throw error;
+      msg("Saved. The website updates within a minute.");
+      renderSettings();
+    } catch (e) { msg(e.message || String(e), false); }
+  };
+}
+
+/* ---------- lists of items ---------- */
+async function renderList(section){
+  const def = SECTIONS[section];
+  const { data, error } = await sb.from("site_items").select("*").eq("section", section).order("sort_order", {ascending:true}).order("created_at", {ascending:false});
+  if (error) return msg(error.message, false);
+  const rows = (data || []).map(r => `
+    <tr>
+      <td>${esc(r.title)}<div class="note">${esc(r.subtitle || r.body || "").slice(0,80)}</div></td>
+      <td>${esc(r.item_date || "")}${r.num != null ? esc(r.num) : ""}</td>
+      <td>${r.active ? '<span class="pill">Live</span>' : '<span class="pill off">Hidden</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="ghost" data-edit="${r.id}">Edit</button>
+        <button class="ghost" data-toggle="${r.id}">${r.active ? "Hide" : "Show"}</button>
+        <button class="danger" data-del="${r.id}">Delete</button>
+      </td>
+    </tr>`).join("");
+  $("panel").innerHTML = `
+    <div class="card">
+      <h2>${esc(def.name)}</h2>
+      <p class="note">${esc(def.help)}</p>
+      <div class="actions"><button id="addNew">+ Add new</button></div>
+      <div id="formBox"></div>
+      <table><thead><tr><th>Item</th><th>${def.date ? "Date" : (def.num ? "Number" : "")}</th><th>Status</th><th></th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="4" class="note">Nothing added yet.</td></tr>`}</tbody></table>
+    </div>`;
+
+  $("addNew").onclick = () => formFor(section, null);
+  $("panel").querySelectorAll("[data-edit]").forEach(b => b.onclick = () => formFor(section, (data || []).find(x => x.id === b.dataset.edit)));
+  $("panel").querySelectorAll("[data-toggle]").forEach(b => b.onclick = async () => {
+    const r = data.find(x => x.id === b.dataset.toggle);
+    const { error } = await sb.from("site_items").update({active: !r.active}).eq("id", r.id);
+    if (error) return msg(error.message, false); renderList(section);
+  });
+  $("panel").querySelectorAll("[data-del]").forEach(b => b.onclick = async () => {
+    if (!confirm("Delete this item permanently?")) return;
+    const { error } = await sb.from("site_items").delete().eq("id", b.dataset.del);
+    if (error) return msg(error.message, false); msg("Deleted."); renderList(section);
+  });
+}
+
+function formFor(section, r){
+  const def = SECTIONS[section];
+  const v = k => esc(r ? (r[k] ?? "") : "");
+  const f = (id, label, val, type="text") => `<div><label for="${id}">${esc(label)}</label><input id="${id}" type="${type}" value="${esc(val ?? "")}"></div>`;
+  const ta = (id, label, val) => `<div><label for="${id}">${esc(label)}</label><textarea id="${id}">${esc(val ?? "")}</textarea></div>`;
+  const fileRow = def.file ? `<div style="margin-top:10px"><label>${esc(def.fileLabel)}</label><input type="file" id="it_file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt">
+    ${r && r[def.file] ? `<div class="note">Current: <a href="${esc(r[def.file])}" target="_blank" rel="noopener">open file</a></div>` : ""}</div>` : "";
+  $("formBox").innerHTML = `
+    <div class="card" style="background:#fbfcfe">
+      <h2>${r ? "Edit item" : "New item"}</h2>
+      <div class="row two">
+        ${def.title ? f("it_title", def.title, r?.title) : ""}
+        ${def.subtitle ? f("it_subtitle", def.subtitle, r?.subtitle) : ""}
+        ${def.label ? f("it_label", def.label, r?.label) : ""}
+        ${def.url ? f("it_url", def.url, r?.url) : ""}
+        ${def.date ? f("it_date", "Date", r?.item_date, "date") : ""}
+        ${def.num ? f("it_num", def.num, r?.num, "number") : ""}
+        ${f("it_order", "Display order (1 = first)", r?.sort_order ?? 0, "number")}
+      </div>
+      ${def.body ? ta("it_body", def.body, r?.body) : ""}
+      ${fileRow}
+      <label style="margin-top:12px"><input type="checkbox" id="it_active" style="width:auto" ${!r || r.active ? "checked" : ""}> Show on website</label>
+      <div class="actions"><button class="save" id="saveItem">Save</button><button class="ghost" id="cancelItem">Cancel</button></div>
+    </div>`;
+  $("cancelItem").onclick = () => { $("formBox").innerHTML = ""; };
+  $("saveItem").onclick = async () => {
+    try {
+      const payload = {
+        section,
+        title: def.title ? $("it_title").value.trim() : "",
+        subtitle: def.subtitle ? $("it_subtitle").value.trim() : "",
+        body: def.body ? $("it_body").value.trim() : "",
+        label: def.label ? $("it_label").value.trim() : "",
+        url: def.url ? $("it_url").value.trim() : "",
+        item_date: def.date && $("it_date").value ? $("it_date").value : null,
+        num: def.num ? (Number($("it_num").value) || 0) : null,
+        sort_order: Number($("it_order").value) || 0,
+        active: $("it_active").checked
+      };
+      if (!payload.title) throw new Error(`Please fill "${def.title || "title"}".`);
+      const file = def.file ? $("it_file").files[0] : null;
+      if (file) payload[def.file] = await uploadFile(file, section);
+      const res = r ? await sb.from("site_items").update(payload).eq("id", r.id) : await sb.from("site_items").insert(payload);
+      if (res.error) throw res.error;
+      msg("Saved. The website updates within a minute.");
+      renderList(section);
+    } catch (e) { msg(e.message || String(e), false); }
+  };
+}
+
+boot();
+</script>
+</body>
+</html>
