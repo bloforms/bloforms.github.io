@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Sivananda Pujari — Ward Secretariat, Guntakal</title>
-<meta name="description" content="Official profile, office details, ward applications and digital tools of Sivananda Pujari, Mahaboob Nagar Colony-01 Ward Secretariat, Guntakal.">
+<title>Sivananda Pujari — Data Processing Secretary, Guntakal</title>
+<meta name="description" content="Official profile, office details, ward applications and digital tools of Sivananda Pujari, Mahaboob Nagar Colony-01 Data Processing Secretary, Guntakal.">
 <style>
 :root{--navy:#0b2a4a;--navy2:#1a4f7a;--saff:#f28c28;--gold:#ffd166;--green:#1e7b4f;--bg:#f3f6fa;--card:#fff;--ink:#1c2630;--mute:#5d6b78;--line:#dde4ec;--warn:#fff4e5}
 *{box-sizing:border-box}
@@ -16,20 +16,24 @@ button{font:inherit}
 
 /* ---------- header ---------- */
 .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--saff),var(--gold),var(--green));z-index:99}
-header.top{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(100deg,#082340 0%,var(--navy) 45%,#23639a 100%);color:#fff;box-shadow:0 4px 14px rgba(8,35,64,.35);border-bottom:3px solid var(--gold)}
 .bar{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px}
-.brand{color:#fff;text-decoration:none;font-weight:700;line-height:1.25}
-.brand small{display:block;font-weight:400;font-size:.76rem;opacity:.85}
+.brand{color:#fff;text-decoration:none;font-weight:800;line-height:1.25;letter-spacing:.2px;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.brand small{display:block;font-weight:500;font-size:.76rem;color:var(--gold);opacity:1}
 .tools{display:flex;gap:8px;align-items:center}
-.pill{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:20px;padding:6px 12px;cursor:pointer;font-size:.9rem}
-.pill:hover{background:var(--navy2)}
-.top-nav{display:none;gap:2px}
-.top-nav a{color:#fff;text-decoration:none;padding:8px 10px;border-radius:6px;font-size:.95rem}
-.top-nav a:hover,.top-nav a.on{background:var(--navy2)}
+.pill{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.9rem;font-weight:600;transition:background .2s,color .2s}
+.pill:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.login-btn{background:var(--saff);border-color:var(--saff);color:#fff;text-decoration:none;display:inline-block;font-weight:700;box-shadow:0 3px 8px rgba(242,140,40,.45)}
+.login-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.top-nav{display:none;gap:6px}
+.top-nav a{color:#fff;text-decoration:none;padding:7px 14px;border-radius:999px;font-size:.92rem;font-weight:600;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);transition:background .2s,color .2s}
+.top-nav a:hover{background:rgba(255,209,102,.25);border-color:var(--gold)}
+.top-nav a.on{background:var(--gold);color:var(--navy);border-color:var(--gold);box-shadow:0 3px 8px rgba(255,209,102,.4)}
 @media(min-width:960px){.top-nav{display:flex}.menu-btn{display:none}}
-.drawer{display:none;background:var(--navy2);padding:6px 16px 12px}
+.drawer{display:none;background:linear-gradient(180deg,var(--navy2),var(--navy));padding:8px 16px 14px}
 .drawer.open{display:block}
-.drawer a{display:block;color:#fff;text-decoration:none;padding:11px 4px;border-bottom:1px solid rgba(255,255,255,.12)}
+.drawer a{display:block;color:#fff;text-decoration:none;padding:11px 14px;margin:6px 0;border-radius:10px;font-weight:600;background:rgba(255,255,255,.08);border-left:4px solid var(--saff)}
+.drawer a:hover{background:rgba(255,209,102,.22);border-left-color:var(--gold)}
 
 /* ---------- ribbon headings ---------- */
 .ribbon{position:relative;display:inline-block;max-width:100%;margin:0 0 14px;padding:10px 46px 10px 30px;color:#fff;font-size:1.4rem;letter-spacing:.3px;background:linear-gradient(90deg,var(--navy),var(--navy2) 70%,#2b6ea3);clip-path:polygon(0 0,100% 0,calc(100% - 18px) 50%,100% 100%,0 100%,18px 50%);box-shadow:0 8px 18px rgba(11,42,74,.25);animation:ribbonIn .8s cubic-bezier(.2,.7,.2,1) both}
@@ -213,7 +217,7 @@ const DATA = {
     role: "Ward Education Secretary & Ward Data Processing Secretary",
     roleTe: "వార్డ్ ఎడ్యుకేషన్ సెక్రటరీ & వార్డ్ డేటా ప్రాసెసింగ్ సెక్రటరీ",
     photo: "img/profile.jpg",  // replace with another image path or URL if you change it
-    service: "Ward Secretariat, Guntakal Municipal Corporation",
+    service: "Data Processing Secretary, Guntakal Municipal Corporation",
     phone: "",                 // e.g. "+91 xxxxx xxxxx"
     email: "",
     dob: "",
@@ -221,7 +225,7 @@ const DATA = {
     languages: "English, Telugu"
   },
   office: {
-    name: "Mahaboob Nagar Colony-01 Ward Secretariat",
+    name: "Mahaboob Nagar Colony-01 Data Processing Secretary",
     address: "Mahaboob Nagar Colony-01, near Masthanaiah Darga, Guntakal",
     hours: "10:00 AM – 5:00 PM",
     phone: "",
@@ -247,7 +251,7 @@ const DATA = {
   apps: [
     { name: "Samvidhan Article Index", te: "సంవిధాన్ ఆర్టికల్ ఇండెక్స్", desc: "Telugu–English Constitution study app: articles, amendments, cases, Prelims and Mains.", url: "https://manjulasivalakshmi143-dot.github.io/samvidhan-index/", live: true },
     { name: "BLO Forms", te: "BLO ఫారమ్స్", desc: "Voter roll register and BLO forms for electoral roll work.", url: "https://bloforms.github.io/", live: true },
-    { name: "GSWS Forms", te: "GSWS ఫారమ్స్", desc: "Ward and village secretariat application forms; filled forms download as PDF.", url: "https://bloforms.github.io/gsws", live: true },
+    { name: "GSWS Forms", te: "GSWS ఫారమ్స్", desc: "Ward and village application forms; filled forms download as PDF.", url: "https://bloforms.github.io/gsws", live: true },
     { name: "English Vocabulary", te: "ఇంగ్లీష్ వొకాబ్యులరీ", desc: "A–Z words, confused words, idioms, phrasal verbs and a daily exam.", url: "https://bloforms.github.io/english", live: true },
     { name: "Audio to Text", te: "ఆడియో టు టెక్స్ట్", desc: "Convert audio to text and save it as PDF or TXT.", url: "https://bloforms.github.io/audio", live: true }
   ],
@@ -257,8 +261,8 @@ const DATA = {
     "WhatsApp auto-reply information desk"
   ],
   gallery: [
-    { src: "img/office.jpg", caption: "Ward secretariat team at work" },
-    { src: "img/office-chair.jpg", caption: "At the secretariat office" },
+    { src: "img/office.jpg", caption: "Data processing team at work" },
+    { src: "img/office-chair.jpg", caption: "At the office" },
     { src: "img/portrait.jpg", caption: "Portrait" },
     { src: "img/team-temple.jpg", caption: "Community festival team" },
     { src: "img/railing.jpg", caption: "Portrait" },
@@ -270,14 +274,14 @@ const DATA = {
     // { date: "2026", title: "Title", text: "Short description" }
   ],
   news: [
-    { date: "2026-11-13", title: "Official website launched", text: "The ward secretariat website is online with office details, official tools and the dashboard." }
+    { date: "2026-11-13", title: "Official website launched", text: "The ward office website is online with office details, official tools and the dashboard." }
   ],
   notices: [
     // { date: "2026-11-13", title: "Circular title", file: "https://…/file.pdf" }
   ],
   ads: [
     { tag: "New tool", title: "Samvidhan Article Index", text: "Study the Constitution article by article, in Telugu and English.", cta: "Open app", url: "https://manjulasivalakshmi143-dot.github.io/samvidhan-index/", bg: "linear-gradient(120deg,#0b2a4a 0%,#1a4f7a 60%,#f28c28 130%)" },
-    { tag: "Ward services", title: "GSWS application forms", text: "Fill ward and village secretariat forms online and download them as PDF.", cta: "Open forms", url: "https://bloforms.github.io/gsws", bg: "linear-gradient(120deg,#1e7b4f 0%,#0b2a4a 80%)" },
+    { tag: "Ward services", title: "GSWS application forms", text: "Fill ward and village forms online and download them as PDF.", cta: "Open forms", url: "https://bloforms.github.io/gsws", bg: "linear-gradient(120deg,#1e7b4f 0%,#0b2a4a 80%)" },
     { tag: "Coming soon", title: "Citizen service tracker", text: "Track applications by Aadhaar or phone number. Launching soon from this office.", cta: "", url: "", bg: "linear-gradient(120deg,#f28c28 0%,#c9501c 55%,#0b2a4a 140%)" }
   ]
 };
@@ -321,6 +325,7 @@ window.DATA_READY = (async () => {
     <a class="brand" href="#" id="brandLink"><span id="brandName"></span><small id="brandSub"></small></a>
     <nav class="top-nav" id="topNav" aria-label="Main menu"></nav>
     <div class="tools">
+      <a class="pill login-btn" href="admin/">Login</a>
       <button class="pill" id="langBtn" aria-label="Switch language"></button>
       <button class="pill menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer">☰</button>
     </div>
@@ -396,7 +401,7 @@ window.DATA_READY = (async () => {
     </div>
 
     <div class="pane" id="pane-office">
-      <figure class="office-photo"><img src="img/office.jpg" alt="Ward secretariat office team"></figure>
+      <figure class="office-photo"><img src="img/office.jpg" alt="Data processing office team"></figure>
       <div class="grid g2 stagger">
         <div class="card"><h3 id="officeName"></h3><dl class="kv" id="officeKv"></dl></div>
         <div class="card"><h3 data-k="visit"></h3><p id="mapWrap"></p><p class="note" data-k="noteOffice"></p></div>
@@ -512,7 +517,7 @@ window.DATA_READY = (async () => {
       inst:"Institution", year:"Year", tbu:"To be updated", nothing:"Nothing added yet.", noNotice:"No notices published yet.",
       asOf:"As on", onHome:"Available on request", addPhoto:"Add photo", addProfile:"Add profile photo",
       formNote:"This page does not send your message. Please call the office or use the phone number above.",
-      formNeed:"Please fill in your name and phone number.", footText:"Mahaboob Nagar Colony-01 Ward Secretariat, Guntakal · Office hours 10 AM – 5 PM",
+      formNeed:"Please fill in your name and phone number.", footText:"Mahaboob Nagar Colony-01 Data Processing Secretary, Guntakal · Office hours 10 AM – 5 PM",
       heroIntro:"Dedicated to serving citizens and making ward services simpler through digital tools.",
       phNameP:"Your name", phPhoneP:"Phone number", phMsgP:"Your message", upAt:""
     },
@@ -536,7 +541,7 @@ window.DATA_READY = (async () => {
       inst:"సంస్థ", year:"సంవత్సరం", tbu:"త్వరలో నవీకరించబడుతుంది", nothing:"ఇంకా ఏమీ చేర్చలేదు.", noNotice:"ఇంకా నోటీసులు ప్రచురించలేదు.",
       asOf:"తేదీ నాటికి", onHome:"కోరినప్పుడు అందుబాటులో", addPhoto:"ఫోటో జోడించండి", addProfile:"ప్రొఫైల్ ఫోటో జోడించండి",
       formNote:"ఈ పేజీ మీ సందేశాన్ని పంపదు. దయచేసి కార్యాలయానికి కాల్ చేయండి.",
-      formNeed:"దయచేసి పేరు మరియు ఫోన్ నంబర్ నమోదు చేయండి.", footText:"మహబూబ్ నగర్ కాలనీ-01 వార్డ్ సచివాలయం, గుంతకల్ · వేళలు ఉదయం 10 – సాయంత్రం 5",
+      formNeed:"దయచేసి పేరు మరియు ఫోన్ నంబర్ నమోదు చేయండి.", footText:"మహబూబ్ నగర్ కాలనీ-01 డేటా ప్రాసెసింగ్ సెక్రటరీ, గుంతకల్ · వేళలు ఉదయం 10 – సాయంత్రం 5",
       heroIntro:"పౌరులకు సేవ చేయడానికి మరియు డిజిటల్ సాధనాలతో వార్డ్ సేవలను సులభతరం చేయడానికి అంకితం.",
       phNameP:"మీ పేరు", phPhoneP:"ఫోన్ నంబర్", phMsgP:"మీ సందేశం"
     }
@@ -703,7 +708,7 @@ window.DATA_READY = (async () => {
       ...DATA.news.map(n => `${n.title}: ${n.text}`),
       ...(DATA.ads || []).map(a => `${a.title}: ${a.text}`)
     ];
-    if (!items.length) items.push(lang === "te" ? "స్వాగతం" : "Welcome to the ward secretariat website");
+    if (!items.length) items.push(lang === "te" ? "స్వాగతం" : "Welcome to the Data Processing Secretary website");
     const row = items.map(s => `<span>${esc(s)}</span>`).join("");
     $("tickerTrack").innerHTML = row + row;
   }

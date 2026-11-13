@@ -52,15 +52,24 @@ th{color:var(--mute);font-weight:600}
   <!-- LOGIN -->
   <section id="loginView" class="card hidden">
     <h2>Sign in</h2>
-    <p class="note">Enter your email. We will send a one-time login link. Only the owner account can make changes.</p>
+    <p class="note">Only the owner account can make changes. Sign in with your email and password.</p>
     <label for="email">Email</label>
     <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
-    <div class="actions"><button id="sendLink">Send login link</button></div>
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Your password">
+    <div class="actions"><button id="signIn">Sign in</button> <button class="ghost" id="sendLink">Email me a login link instead</button></div>
     <div class="msg" id="loginMsg"></div>
   </section>
 
   <!-- ADMIN -->
   <section id="adminView" class="hidden">
+    <div class="card hidden" id="pwCard">
+      <h2>Change password</h2>
+      <label for="newPw">New password (at least 8 characters)</label>
+      <input id="newPw" type="password" autocomplete="new-password">
+      <div class="actions"><button class="save" id="savePw">Save new password</button> <button class="ghost" id="closePw">Close</button></div>
+      <div class="msg" id="pwMsg"></div>
+    </div>
     <div class="tabs" id="tabs"></div>
     <div id="panel"></div>
     <div class="msg" id="globalMsg"></div>
@@ -111,12 +120,30 @@ async function boot(){
     await sb.auth.signOut();
     return;
   }
-  $("whoBox").innerHTML = `${esc(email)} · <button class="ghost" id="logout">Sign out</button>`;
+  $("whoBox").innerHTML = `${esc(email)} · <button class="ghost" id="pwOpen">Change password</button> · <button class="ghost" id="logout">Sign out</button>`;
   $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+  $("pwOpen").onclick = () => { $("pwCard").classList.toggle("hidden"); };
+  $("closePw").onclick = () => { $("pwCard").classList.add("hidden"); };
+  $("savePw").onclick = async () => {
+    const pw = $("newPw").value;
+    if (pw.length < 8) { $("pwMsg").textContent = "Use at least 8 characters."; $("pwMsg").className = "msg err"; return; }
+    const { error } = await sb.auth.updateUser({ password: pw });
+    $("pwMsg").textContent = error ? error.message : "Password changed. Use it next time you sign in.";
+    $("pwMsg").className = "msg " + (error ? "err" : "ok");
+    if (!error) { $("newPw").value = ""; }
+  };
   $("adminView").classList.remove("hidden");
   buildTabs();
   show(current);
 }
+$("signIn").onclick = async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  if (!email || !password) { $("loginMsg").textContent = "Enter email and password."; $("loginMsg").className = "msg err"; return; }
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { $("loginMsg").textContent = "Sign-in failed: " + error.message; $("loginMsg").className = "msg err"; return; }
+  boot();
+};
 $("sendLink").onclick = async () => {
   const email = $("email").value.trim();
   if (!email) return;
