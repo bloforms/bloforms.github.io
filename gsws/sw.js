@@ -1,5 +1,5 @@
 // GSWS Forms: works without internet after the first visit; the app page is checked online first so updates arrive.
-const CACHE = "gsws-forms-v9";
+const CACHE = "gsws-forms-v10";
 const LOCAL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png"];
 const LIBS = [
   "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
