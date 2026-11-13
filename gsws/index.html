@@ -2465,11 +2465,11 @@ function findPage(src) {
   }
   // split the paper from the background (Otsu's method)
   let sum = 0; for (let i = 0; i < 256; i++) sum += i * hist[i];
-  let sB = 0, wB = 0, best = -1, th = 128;
+  let sB = 0, wB = 0, best = -1, th = 128, mBack = 0;
   for (let t = 0; t < 256; t++) {
     wB += hist[t]; if (!wB) continue; const wF = N - wB; if (!wF) break; sB += t * hist[t];
     const mB = sB / wB, mF = (sum - sB) / wF, v = wB * wF * (mB - mF) * (mB - mF);
-    if (v > best) { best = v; th = t; }
+    if (v > best) { best = v; th = t; mBack = mB; }
   }
   // the largest bright area is the page
   const lab = new Int32Array(N), stack = []; let id = 0, bestId = 0, bestSize = 0;
@@ -2483,20 +2483,82 @@ function findPage(src) {
     }
     if (size > bestSize) { bestSize = size; bestId = id; }
   }
+  // grow the page into its own shadowed parts: neighbours that are still clearly lighter than the background join it
+  const low = (th + mBack) / 2;
+  for (let i = 0; i < N; i++) if (lab[i] === bestId) stack.push(i);
+  while (stack.length) {
+    const q = stack.pop(), qx = q % w;
+    const nb = [qx > 0 ? q - 1 : -1, qx < w - 1 ? q + 1 : -1, q - w, q + w];
+    for (const n of nb) if (n >= 0 && n < N && lab[n] !== bestId && g[n] > low) { lab[n] = bestId; bestSize++; stack.push(n); }
+  }
   if (bestSize < N * 0.15) return null;
-  // its four corners
-  let tl, tr, br, bl, a = Infinity, b = -Infinity, e = -Infinity, f = Infinity;
+  // its four corners, at any angle: outline -> convex hull -> the 4 hull points that span the largest shape
+  const pts = [];
   for (let i = 0; i < N; i++) {
     if (lab[i] !== bestId) continue;
-    const x = i % w, y = (i / w) | 0, s1 = x + y, s2 = x - y;
-    if (s1 < a) { a = s1; tl = [x, y]; } if (s1 > b) { b = s1; br = [x + 1, y + 1]; }
-    if (s2 > e) { e = s2; tr = [x + 1, y]; } if (s2 < f) { f = s2; bl = [x, y + 1]; }
+    const x = i % w, y = (i / w) | 0;
+    if (x === 0 || y === 0 || x === w - 1 || y === h - 1 || lab[i - 1] !== bestId || lab[i + 1] !== bestId || lab[i - w] !== bestId || lab[i + w] !== bestId)
+      pts.push([x + 0.5, y + 0.5]);
   }
-  const quad = [tl, tr, br, bl];
+  const hull = convexHull(pts);
+  if (hull.length < 4) return null;
+  const quad = bestQuad(hull);
   let area = 0; for (let i = 0; i < 4; i++) { const p = quad[i], q = quad[(i + 1) % 4]; area += p[0] * q[1] - q[0] * p[1]; }
   area = Math.abs(area) / 2;
   if (area > N * 0.95 || bestSize / area < 0.85) return null;    // nothing to cut, or not a page shape: keep the photo
   return quad.map(([x, y]) => [x / k, y / k]);
+}
+function convexHull(P) {               // Andrew's monotone chain
+  P = P.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = [], up = [];
+  for (const p of P) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+  for (let i = P.length - 1; i >= 0; i--) { const p = P[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+function bestQuad(H) {
+  // the two hull points furthest apart are opposite corners; the furthest points on each side of that line are the other two
+  let A = 0, C = 0, best = -1;
+  for (let i = 0; i < H.length; i++) for (let j = i + 1; j < H.length; j++) {
+    const d = (H[i][0] - H[j][0]) ** 2 + (H[i][1] - H[j][1]) ** 2; if (d > best) { best = d; A = i; C = j; }
+  }
+  const a = H[A], c = H[C], side = p => (c[0] - a[0]) * (p[1] - a[1]) - (c[1] - a[1]) * (p[0] - a[0]);
+  let B = null, D = null, bmax = 0, dmin = 0;
+  for (const p of H) { const v = side(p); if (v > bmax) { bmax = v; B = p; } if (v < dmin) { dmin = v; D = p; } }
+  if (!B || !D) return [a, a, c, c];
+  let q = [a, B, c, D];
+  // go round clockwise on the screen and start at the top-left corner, so the page comes out the right way up
+  let s2 = 0; for (let i = 0; i < 4; i++) { const p = q[i], r = q[(i + 1) % 4]; s2 += p[0] * r[1] - r[0] * p[1]; }
+  if (s2 < 0) q = [q[0], q[3], q[2], q[1]];
+  let st = 0; for (let i = 1; i < 4; i++) if (q[i][0] + q[i][1] < q[st][0] + q[st][1]) st = i;
+  return [0, 1, 2, 3].map(i => q[(st + i) % 4]);
+}
+/* Even out light and shadows so the page looks flat and white, like a scan */
+function flattenLight(c) {
+  const W = c.width, H = c.height, sw = Math.max(8, Math.round(W / 14)), sh = Math.max(8, Math.round(H / 14));
+  const sm = document.createElement("canvas"); sm.width = sw; sm.height = sh;
+  const sx = sm.getContext("2d"); sx.drawImage(c, 0, 0, sw, sh);
+  const sd = sx.getImageData(0, 0, sw, sh), a = sd.data, m = new Uint8ClampedArray(a.length);
+  const R = 1;                                     // brightest nearby value = the paper's colour there (text is ignored)
+  for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) {
+    let r = 0, g = 0, b = 0;
+    for (let dy = -R; dy <= R; dy++) for (let dx = -R; dx <= R; dx++) {
+      const xx = Math.min(sw - 1, Math.max(0, x + dx)), yy = Math.min(sh - 1, Math.max(0, y + dy)), j = (yy * sw + xx) * 4;
+      if (a[j] > r) r = a[j]; if (a[j + 1] > g) g = a[j + 1]; if (a[j + 2] > b) b = a[j + 2];
+    }
+    const i = (y * sw + x) * 4; m[i] = r; m[i + 1] = g; m[i + 2] = b; m[i + 3] = 255;
+  }
+  sd.data.set(m); sx.putImageData(sd, 0, 0);
+  const bg = document.createElement("canvas"); bg.width = W; bg.height = H;
+  const bx = bg.getContext("2d"); bx.imageSmoothingQuality = "high"; bx.filter = "blur(" + Math.max(3, Math.round(W / 110)) + "px)";
+  bx.drawImage(sm, 0, 0, W, H);
+  const bd = bx.getImageData(0, 0, W, H).data, cx = c.getContext("2d"), id = cx.getImageData(0, 0, W, H), o = id.data;
+  for (let i = 0; i < o.length; i += 4) for (let k = 0; k < 3; k++) {
+    const v = o[i + k] * 250 / Math.max(40, bd[i + k]);
+    o[i + k] = v > 238 ? 255 : v;                  // near-white paper becomes clean white
+  }
+  cx.putImageData(id, 0, 0);
+  return c;
 }
 function homography(from, to) {          // the 3x3 map that sends the 4 "from" points to the 4 "to" points
   const A = [], B = [];
@@ -2547,7 +2609,7 @@ async function addAttachments(files) {
       c.width = Math.max(1, Math.round(img.naturalWidth * k)); c.height = Math.max(1, Math.round(img.naturalHeight * k));
       const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
       ctx.drawImage(img, 0, 0, c.width, c.height);
-      let crop = null; try { const q = findPage(c); if (q) crop = warpPage(c, q); } catch (e) {}
+      let crop = null; try { const q = findPage(c); if (q) crop = flattenLight(warpPage(c, q)); } catch (e) {}
       attachments.push({ name: file.name || "photo", orig: c, crop, canvas: crop || c }); added++;
       if (crop) cropped++;
     } catch (e) { toast("⚠️ Could not read that picture"); }
