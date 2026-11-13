@@ -184,6 +184,8 @@
   .att-thumb { position:relative; }
   .att-thumb img { width:100%; height:96px; object-fit:cover; border:1px solid var(--line); border-radius:8px; display:block; }
   .att-thumb .att-x { position:absolute; top:4px; right:4px; width:28px; height:28px; font-size:13px; }
+  .att-thumb .att-c { position:absolute; bottom:4px; left:4px; border:0; background:var(--accent); color:#fff; border-radius:14px;
+                      font-size:12px; padding:4px 8px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.4); }
   .att-x { border:0; background:var(--bad); color:#fff; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.4); }
   /* Attached documents in the preview */
   .pv-att { background:#fff; max-width:820px; margin:0 auto 16px; padding:14px; border-radius:10px; }
@@ -2422,11 +2424,87 @@ function pagesToPdf(pages) {
   return doc;
 }
 
+/* ---------- Auto crop: find the paper in a photo and straighten it ---------- */
+function findPage(src) {
+  const S = 360, k = S / Math.max(src.width, src.height);
+  const w = Math.max(1, Math.round(src.width * k)), h = Math.max(1, Math.round(src.height * k)), N = w * h;
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const cx = c.getContext("2d"); cx.drawImage(src, 0, 0, w, h);
+  const d = cx.getImageData(0, 0, w, h).data, g = new Uint8Array(N), hist = new Array(256).fill(0);
+  for (let i = 0; i < N; i++) { const v = (d[i * 4] * 299 + d[i * 4 + 1] * 587 + d[i * 4 + 2] * 114) / 1000 | 0; g[i] = v; hist[v]++; }
+  // split bright paper from the darker background (Otsu's method)
+  let sum = 0; for (let i = 0; i < 256; i++) sum += i * hist[i];
+  let sB = 0, wB = 0, best = -1, th = 128;
+  for (let t = 0; t < 256; t++) {
+    wB += hist[t]; if (!wB) continue; const wF = N - wB; if (!wF) break; sB += t * hist[t];
+    const mB = sB / wB, mF = (sum - sB) / wF, v = wB * wF * (mB - mF) * (mB - mF);
+    if (v > best) { best = v; th = t; }
+  }
+  // the largest bright area is the page
+  const lab = new Int32Array(N), stack = []; let id = 0, bestId = 0, bestSize = 0;
+  for (let i = 0; i < N; i++) {
+    if (lab[i] || g[i] <= th) continue;
+    id++; let size = 0; lab[i] = id; stack.push(i);
+    while (stack.length) {
+      const q = stack.pop(); size++; const qx = q % w;
+      const nb = [qx > 0 ? q - 1 : -1, qx < w - 1 ? q + 1 : -1, q - w, q + w];
+      for (const n of nb) if (n >= 0 && n < N && !lab[n] && g[n] > th) { lab[n] = id; stack.push(n); }
+    }
+    if (size > bestSize) { bestSize = size; bestId = id; }
+  }
+  if (bestSize < N * 0.15) return null;
+  // its four corners
+  let tl, tr, br, bl, a = Infinity, b = -Infinity, e = -Infinity, f = Infinity;
+  for (let i = 0; i < N; i++) {
+    if (lab[i] !== bestId) continue;
+    const x = i % w, y = (i / w) | 0, s1 = x + y, s2 = x - y;
+    if (s1 < a) { a = s1; tl = [x, y]; } if (s1 > b) { b = s1; br = [x + 1, y + 1]; }
+    if (s2 > e) { e = s2; tr = [x + 1, y]; } if (s2 < f) { f = s2; bl = [x, y + 1]; }
+  }
+  const quad = [tl, tr, br, bl];
+  let area = 0; for (let i = 0; i < 4; i++) { const p = quad[i], q = quad[(i + 1) % 4]; area += p[0] * q[1] - q[0] * p[1]; }
+  area = Math.abs(area) / 2;
+  if (area > N * 0.95 || bestSize / area < 0.85) return null;    // nothing to cut, or not a page shape: keep the photo
+  return quad.map(([x, y]) => [x / k, y / k]);
+}
+function homography(from, to) {          // the 3x3 map that sends the 4 "from" points to the 4 "to" points
+  const A = [], B = [];
+  for (let i = 0; i < 4; i++) {
+    const [x, y] = from[i], [u, v] = to[i];
+    A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); B.push(u);
+    A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); B.push(v);
+  }
+  for (let c = 0; c < 8; c++) {
+    let p = c; for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[p][c])) p = r;
+    [A[c], A[p]] = [A[p], A[c]]; [B[c], B[p]] = [B[p], B[c]];
+    for (let r = 0; r < 8; r++) if (r !== c) { const m = A[r][c] / A[c][c]; for (let j = c; j < 8; j++) A[r][j] -= m * A[c][j]; B[r] -= m * B[c]; }
+  }
+  return B.map((v, i) => v / A[i][i]);
+}
+function warpPage(src, quad) {
+  const dist = (p, q) => Math.hypot(p[0] - q[0], p[1] - q[1]);
+  let W = Math.max(dist(quad[0], quad[1]), dist(quad[3], quad[2])), H = Math.max(dist(quad[0], quad[3]), dist(quad[1], quad[2]));
+  const k = Math.min(1, ATT_SIDE / Math.max(W, H)); W = Math.max(1, Math.round(W * k)); H = Math.max(1, Math.round(H * k));
+  const m = homography([[0, 0], [W, 0], [W, H], [0, H]], quad);
+  const sd = src.getContext("2d").getImageData(0, 0, src.width, src.height).data, sw = src.width, sh = src.height;
+  const out = document.createElement("canvas"); out.width = W; out.height = H;
+  const octx = out.getContext("2d"), od = octx.createImageData(W, H), o = od.data;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const X = x + 0.5, Y = y + 0.5, z = m[6] * X + m[7] * Y + 1;
+    const sx = Math.min(sw - 1, Math.max(0, ((m[0] * X + m[1] * Y + m[2]) / z) | 0));
+    const sy = Math.min(sh - 1, Math.max(0, ((m[3] * X + m[4] * Y + m[5]) / z) | 0));
+    const si = (sy * sw + sx) * 4, oi = (y * W + x) * 4;
+    o[oi] = sd[si]; o[oi + 1] = sd[si + 1]; o[oi + 2] = sd[si + 2]; o[oi + 3] = 255;
+  }
+  octx.putImageData(od, 0, 0);
+  return out;
+}
+
 /* ---------- Attach documents: photos from the camera or gallery become pages after the form ---------- */
 let attachments = [];           // { name, canvas }, kept only while this form is open
 const ATT_MAX = 10, ATT_SIDE = 1600;
 async function addAttachments(files) {
-  let added = 0;
+  let added = 0, cropped = 0;
   for (const file of files) {
     if (attachments.length >= ATT_MAX) { toast(`⚠️ Only ${ATT_MAX} documents can be attached`); break; }
     if (!file.type.startsWith("image/")) { toast("⚠️ Only photos can be attached"); continue; }
@@ -2438,11 +2516,13 @@ async function addAttachments(files) {
       c.width = Math.max(1, Math.round(img.naturalWidth * k)); c.height = Math.max(1, Math.round(img.naturalHeight * k));
       const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
       ctx.drawImage(img, 0, 0, c.width, c.height);
-      attachments.push({ name: file.name || "photo", canvas: c }); added++;
+      let crop = null; try { const q = findPage(c); if (q) crop = warpPage(c, q); } catch (e) {}
+      attachments.push({ name: file.name || "photo", orig: c, crop, canvas: crop || c }); added++;
+      if (crop) cropped++;
     } catch (e) { toast("⚠️ Could not read that picture"); }
     finally { URL.revokeObjectURL(url); }
   }
-  if (added) toast(`📎 ${added} document(s) attached`);
+  if (added) toast(cropped ? `✂️ Page found and cropped (${cropped} of ${added})` : `📎 ${added} document(s) attached`);
   if (!$("attDlg").hidden) renderAttachDialog();
   renderAttachments();
 }
@@ -2495,7 +2575,7 @@ function renderAttachDialog() {
     row.append(y, n); box.appendChild(row);
   } else {
     box.append(el("h3", {}, "📎 Attach documents"),
-               el("p", { class: "muted" }, "Take a photo or scan, or choose one from the gallery. You can add up to " + ATT_MAX + "."));
+               el("p", { class: "muted" }, "Take a photo or scan, or choose one from the gallery. The page is found and cropped automatically. You can add up to " + ATT_MAX + "."));
     const row = el("div", { class: "row-btns" });
     const cam = el("button", { type: "button", class: "btn", id: "attCamBtn" }, "📷 Camera");
     const gal = el("button", { type: "button", class: "btn ghost", id: "attGalBtn" }, "🖼️ Gallery");
@@ -2508,6 +2588,12 @@ function renderAttachDialog() {
       const x = el("button", { type: "button", class: "att-x", "aria-label": "Remove" }, "✕");
       x.addEventListener("click", () => { attachments.splice(i, 1); renderAttachDialog(); });
       t.append(el("img", { src: a.thumb || (a.thumb = a.canvas.toDataURL("image/jpeg", 0.6)), alt: "Document " + (i + 1) }), x);
+      if (a.crop) {
+        const on = a.canvas === a.crop;
+        const cb = el("button", { type: "button", class: "att-c" }, on ? "↩️ Full photo" : "✂️ Crop");
+        cb.addEventListener("click", () => { a.canvas = on ? a.orig : a.crop; a.thumb = null; renderAttachDialog(); renderAttachments(); });
+        t.appendChild(cb);
+      }
       grid.appendChild(t);
     });
     box.appendChild(grid);
