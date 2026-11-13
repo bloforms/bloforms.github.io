@@ -165,6 +165,9 @@ footer strong{color:#fff}
 .gal figcaption{padding:10px 4px 0;font-weight:600;color:var(--navy)}
 .gal .ph{width:150px;height:150px;margin:0 auto;border-radius:50%!important;aspect-ratio:1/1!important}
 .timeline li img,.achievement-photo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--saff)}
+/* rotating home photo */
+.hero .photo img{transition:opacity .5s ease,transform .5s ease}
+.hero .photo img.fade{opacity:0;transform:scale(.92)}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -538,12 +541,31 @@ window.DATA_READY = (async () => {
   }
 
   /* ---------- content ---------- */
+  /* home photo: cycles through the profile photo and the gallery photos */
+  let heroTimer = null;
+  function startHeroRotation(name){
+    clearInterval(heroTimer);
+    const box = $("heroPhoto");
+    const srcs = [P.photo, ...DATA.gallery.map(g => g.src)].filter(Boolean);
+    if (!srcs.length) { box.innerHTML = `<span>${L("addProfile")}</span>`; return; }
+    let k = 0;
+    box.innerHTML = `<img src="${esc(srcs[0])}" alt="${esc(name)}" class="rot">`;
+    if (srcs.length < 2) return;
+    heroTimer = setInterval(() => {
+      const img = box.querySelector("img");
+      if (!img) return;
+      k = (k + 1) % srcs.length;
+      img.classList.add("fade");
+      setTimeout(() => { img.src = srcs[k]; img.classList.remove("fade"); }, 500);
+    }, 4000);
+  }
+
   function renderContent(){
     const name = lang === "te" && P.nameTe ? P.nameTe : P.name;
     const role = lang === "te" && P.roleTe ? P.roleTe : P.role;
     $("heroName").textContent = name;
     $("heroRole").textContent = role;
-    $("heroPhoto").innerHTML = P.photo ? `<img src="${esc(P.photo)}" alt="${esc(name)}">` : `<span>${L("addProfile")}</span>`;
+    startHeroRotation(name);
 
     $("personalKv").innerHTML = [
       [L("name"), name], [L("role"), role], [L("service"), P.service], [L("phone"), P.phone],
