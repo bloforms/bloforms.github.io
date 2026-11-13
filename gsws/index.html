@@ -184,6 +184,10 @@
   .att-thumb { position:relative; }
   .att-thumb img { width:100%; height:96px; object-fit:cover; border:1px solid var(--line); border-radius:8px; display:block; }
   .att-thumb .att-x { position:absolute; top:4px; right:4px; width:28px; height:28px; font-size:13px; }
+  .att-plus { height:96px; border:2px dashed var(--accent); border-radius:8px; background:var(--accent-soft); color:var(--accent);
+              font-size:34px; font-weight:700; cursor:pointer; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .att-plus small { font-size:12px; font-weight:600; }
+  .att-more { margin-top:12px; padding:12px; border-radius:12px; background:#fffbea; border:1px solid #f0d78a; font-weight:700; }
   .att-thumb .att-c { position:absolute; bottom:4px; left:4px; border:0; background:var(--accent); color:#fff; border-radius:14px;
                       font-size:12px; padding:4px 8px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.4); }
   .att-x { border:0; background:var(--bad); color:#fff; border-radius:50%; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.4); }
@@ -2523,6 +2527,7 @@ async function addAttachments(files) {
     finally { URL.revokeObjectURL(url); }
   }
   if (added) toast(cropped ? `✂️ Page found and cropped (${cropped} of ${added})` : `📎 ${added} document(s) attached`);
+  if (added) attachMode = attachments.length >= ATT_MAX ? "full" : "more";
   if (!$("attDlg").hidden) renderAttachDialog();
   renderAttachments();
 }
@@ -2541,9 +2546,9 @@ function renderAttachments() {
 }
 
 /* The question in the middle of the screen, asked when Preview is tapped */
-let attachAnswer = null, attachNext = null;
+let attachAnswer = null, attachNext = null, attachMode = "pick";
 function askAttachments(next) {
-  attachNext = next;
+  attachNext = next; attachMode = attachments.length ? "more" : "pick";
   if (attachments.length) attachAnswer = "yes";
   renderAttachDialog();
   $("attDlg").hidden = false; document.body.style.overflow = "hidden";
@@ -2574,14 +2579,19 @@ function renderAttachDialog() {
     n.addEventListener("click", () => { attachments = []; attachAnswer = "no"; continueAfterAttach(); });
     row.append(y, n); box.appendChild(row);
   } else {
-    box.append(el("h3", {}, "📎 Attach documents"),
-               el("p", { class: "muted" }, "Take a photo or scan, or choose one from the gallery. The page is found and cropped automatically. You can add up to " + ATT_MAX + "."));
-    const row = el("div", { class: "row-btns" });
-    const cam = el("button", { type: "button", class: "btn", id: "attCamBtn" }, "📷 Camera");
-    const gal = el("button", { type: "button", class: "btn ghost", id: "attGalBtn" }, "🖼️ Gallery");
-    cam.addEventListener("click", () => $("attCamera").click());
-    gal.addEventListener("click", () => $("attGallery").click());
-    row.append(cam, gal); box.appendChild(row);
+    if (attachments.length >= ATT_MAX) attachMode = "full";
+    else if (!attachments.length) attachMode = "pick";
+    box.append(el("h3", {}, "📎 Attach documents"));
+    if (attachMode === "pick") {
+      box.appendChild(el("p", { class: "muted" }, attachments.length ? "Add the next document." :
+        "Take a photo or scan, or choose one from the gallery. The page is found and cropped automatically. You can add up to " + ATT_MAX + "."));
+      const row = el("div", { class: "row-btns" });
+      const cam = el("button", { type: "button", class: "btn", id: "attCamBtn" }, "📷 Camera");
+      const gal = el("button", { type: "button", class: "btn ghost", id: "attGalBtn" }, "🖼️ Gallery");
+      cam.addEventListener("click", () => $("attCamera").click());
+      gal.addEventListener("click", () => $("attGallery").click());
+      row.append(cam, gal); box.appendChild(row);
+    }
     const grid = el("div", { class: "att-grid" });
     attachments.forEach((a, i) => {
       const t = el("div", { class: "att-thumb" });
@@ -2596,12 +2606,29 @@ function renderAttachDialog() {
       }
       grid.appendChild(t);
     });
+    if (attachments.length && attachments.length < ATT_MAX) {
+      const plus = el("button", { type: "button", class: "att-plus", id: "attPlus", "aria-label": "Add one more document" });
+      plus.append(el("span", {}, "➕"), el("small", {}, "Add more"));
+      plus.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); });
+      grid.appendChild(plus);
+    }
     box.appendChild(grid);
-    box.appendChild(el("p", { class: "muted", style: "margin:10px 0 0" }, attachments.length ? `✅ ${attachments.length} document(s) added` : "No photo added yet."));
-    const go = el("button", { type: "button", class: "btn", id: "attDone", style: "width:100%;margin-top:12px" },
-                  attachments.length ? "➡️ Continue" : "➡️ Continue without documents");
-    go.addEventListener("click", () => { if (!attachments.length) attachAnswer = "no"; continueAfterAttach(); });
-    box.appendChild(go);
+    if (attachMode === "more") {
+      const q = el("div", { class: "att-more" }, `✅ ${attachments.length} document(s) added. Do you want to add one more?`);
+      const row = el("div", { class: "row-btns" });
+      const y = el("button", { type: "button", class: "btn", id: "attMoreYes" }, "➕ Yes, add one more");
+      const n = el("button", { type: "button", class: "btn ghost", id: "attMoreNo" }, "❌ No, continue");
+      y.addEventListener("click", () => { attachMode = "pick"; renderAttachDialog(); });
+      n.addEventListener("click", continueAfterAttach);
+      row.append(y, n); q.appendChild(row); box.appendChild(q);
+    } else {
+      box.appendChild(el("p", { class: "muted", style: "margin:10px 0 0" }, attachMode === "full" ? `✅ ${ATT_MAX} documents added (maximum)` :
+                                attachments.length ? `✅ ${attachments.length} document(s) added` : "No photo added yet."));
+      const go = el("button", { type: "button", class: "btn", id: "attDone", style: "width:100%;margin-top:12px" },
+                    attachments.length ? "➡️ Continue" : "➡️ Continue without documents");
+      go.addEventListener("click", () => { if (!attachments.length) attachAnswer = "no"; continueAfterAttach(); });
+      box.appendChild(go);
+    }
   }
 }
 
