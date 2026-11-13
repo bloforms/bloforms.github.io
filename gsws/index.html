@@ -2458,8 +2458,12 @@ function findPage(src) {
   const c = document.createElement("canvas"); c.width = w; c.height = h;
   const cx = c.getContext("2d"); cx.drawImage(src, 0, 0, w, h);
   const d = cx.getImageData(0, 0, w, h).data, g = new Uint8Array(N), hist = new Array(256).fill(0);
-  for (let i = 0; i < N; i++) { const v = (d[i * 4] * 299 + d[i * 4 + 1] * 587 + d[i * 4 + 2] * 114) / 1000 | 0; g[i] = v; hist[v]++; }
-  // split bright paper from the darker background (Otsu's method)
+  // "paper-ness" of each pixel: bright and colourless. Paper stays grey-white even in shadow; a wooden or coloured table does not.
+  for (let i = 0; i < N; i++) {
+    const r = d[i * 4], gg = d[i * 4 + 1], bb = d[i * 4 + 2], mx = Math.max(r, gg, bb), mn = Math.min(r, gg, bb);
+    const v = Math.max(0, Math.min(255, Math.round(mx - 1.5 * (mx - mn)))); g[i] = v; hist[v]++;
+  }
+  // split the paper from the background (Otsu's method)
   let sum = 0; for (let i = 0; i < 256; i++) sum += i * hist[i];
   let sB = 0, wB = 0, best = -1, th = 128;
   for (let t = 0; t < 256; t++) {
