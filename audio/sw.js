@@ -1,6 +1,6 @@
 // Audio to Text: opens without internet after the first visit; the app page is checked online first so updates arrive.
 // The speech model files (huggingface.co) are stored by the speech library itself, so they are left alone here.
-const CACHE = "audio-text-v1";
+const CACHE = "audio-text-v2";
 const LOCAL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png"];
 const LIBS = ["https://cdn.jsdelivr.net/npm/@huggingface/transformers@3"];
 self.addEventListener("install", e => {

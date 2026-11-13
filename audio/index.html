@@ -91,6 +91,7 @@
     <textarea id="out" placeholder="The transcript will appear here"></textarea>
     <div class="row">
       <button id="save">Save to history</button>
+      <button class="secondary" id="paras">Make paragraphs</button>
       <button class="secondary" id="copy">Copy</button>
       <button class="secondary" id="txt">Download .txt</button>
       <button class="secondary" id="pdf">Save as PDF</button>
@@ -239,6 +240,30 @@ function findCut(pcm, start) {
   return best;
 }
 
+// Break a long transcript into short paragraphs: about four sentences each.
+function toParagraphs(text) {
+  const flat = text.replace(/\s+/g, ' ').trim();
+  if (!flat) return '';
+  const sentences = [];
+  for (const s of flat.split(/(?<=[.?!।]["')\]]?)\s+/)) {
+    if (s.length <= 600) { sentences.push(s); continue; }
+    let line = '';                               // no punctuation: cut at about 400 letters
+    for (const w of s.split(' ')) {
+      if (line && line.length + w.length > 400) { sentences.push(line); line = w; }
+      else line = line ? line + ' ' + w : w;
+    }
+    if (line) sentences.push(line);
+  }
+  const paras = [];
+  let cur = [], len = 0;
+  for (const s of sentences) {
+    cur.push(s); len += s.length;
+    if (cur.length >= 4 || len >= 500) { paras.push(cur.join(' ')); cur = []; len = 0; }
+  }
+  if (cur.length) paras.push(cur.join(' '));
+  return paras.join('\n\n');
+}
+
 $('stop').addEventListener('click', () => { cancelled = true; setStatus('Stopping after this piece…'); });
 
 $('go').addEventListener('click', async () => {
@@ -263,7 +288,7 @@ $('go').addEventListener('click', async () => {
       const result = await asr(pcm.slice(pos, cut), { language, task: 'transcribe' });
       const text = (result.text || '').trim();
       if (text) parts.push(text);
-      $('out').value = parts.join(' ');      // text appears as each piece finishes
+      $('out').value = toParagraphs(parts.join(' '));   // text appears as each piece finishes
       pos = cut;
 
       const done = pos / SR;
@@ -377,6 +402,7 @@ function printText(title, text) {
   document.title = prev;
 }
 
+$('paras').addEventListener('click', () => { $('out').value = toParagraphs($('out').value); setStatus('Text arranged into paragraphs.'); });
 $('txt').addEventListener('click', () => downloadTxt($('title').value, $('out').value));
 $('pdf').addEventListener('click', () => printText($('title').value || 'Transcript', $('out').value));
 $('copy').addEventListener('click', async () => {
