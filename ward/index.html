@@ -168,6 +168,10 @@ footer strong{color:#fff}
 /* narrower colour bands on the Home page */
 #p-home .hero,#p-home .ads,#p-home .ticker{max-width:860px;margin-left:auto;margin-right:auto}
 #p-home .ad-dots{max-width:860px;margin-left:auto;margin-right:auto}
+/* in-website app viewer */
+.viewer-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.viewer-bar .back{cursor:pointer;font:inherit;margin:0}
+#appFrame{width:100%;height:calc(100vh - 190px);min-height:480px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 8px 22px rgba(11,42,74,.12)}
 /* rotating home photo */
 .hero .photo img{transition:opacity .5s ease,transform .5s ease}
 .hero .photo img.fade{opacity:0;transform:scale(.92)}
@@ -401,6 +405,17 @@ window.DATA_READY = (async () => {
     </div>
   </div>
 
+  <!-- APP VIEWER: apps open inside the website -->
+  <div class="panel" id="p-viewer" hidden>
+    <div class="viewer-bar">
+      <button class="back" id="viewerBack" type="button">← Back to website</button>
+      <strong id="viewerTitle"></strong>
+      <a class="note" id="viewerOpen" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+    </div>
+    <iframe id="appFrame" title="App" allow="clipboard-write; fullscreen"></iframe>
+    <p class="note">If the app does not show here, use "Open in new tab".</p>
+  </div>
+
   <!-- ELIGIBLE LISTS -->
   <div class="panel" id="p-eligible" hidden>
     <a class="back" href="#" data-k="back"></a>
@@ -511,7 +526,7 @@ window.DATA_READY = (async () => {
     official:{p:"p-official", tab:"office"}, office:{p:"p-official", tab:"office"},
     apps:{p:"p-official", tab:"apps"}, dashboard:{p:"p-official", tab:"dashboard"},
     news:{p:"p-official", tab:"news"}, notices:{p:"p-official", tab:"notices"},
-    eligible:{p:"p-eligible"}, gallery:{p:"p-gallery"}, achievements:{p:"p-ach"}, contact:{p:"p-contact"}
+    app:{p:"p-viewer"}, eligible:{p:"p-eligible"}, gallery:{p:"p-gallery"}, achievements:{p:"p-ach"}, contact:{p:"p-contact"}
   };
   const MENU = [
     ["home","home","⌂"],["about","about","👤"],["qualifications","qual","🎓"],["official","official","🏛"],
@@ -592,7 +607,7 @@ window.DATA_READY = (async () => {
         <span class="tag ${a.live ? "" : "soon"}">${a.live ? L("live") : L("soon")}</span>
         <h3>${lang === "te" && a.te ? esc(a.te) : esc(a.name)}</h3>
         <p>${esc(a.desc)}</p>
-        <div class="go"><a href="${esc(a.url)}" target="_blank" rel="noopener">${L("open")} →</a></div>
+        <div class="go"><a href="#" data-app="${esc(a.url)}" data-title="${esc(a.name)}">${L("open")} →</a></div>
       </div>`).join("");
     $("soonList").innerHTML = DATA.comingSoon.map(s => `<li>${esc(s)}</li>`).join("");
 
@@ -643,7 +658,7 @@ window.DATA_READY = (async () => {
         <span class="ad-tag">${esc(a.tag || "Announcement")}</span>
         <h3>${esc(a.title)}</h3>
         <p>${esc(a.text)}</p>
-        ${a.url && a.cta ? `<a class="btn" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.cta)} →</a>` : ""}
+        ${a.url && a.cta ? `<a class="btn" href="#" data-app="${esc(a.url)}" data-title="${esc(a.title)}">${esc(a.cta)} →</a>` : ""}
       </div>`).join("");
     $("adDots").innerHTML = A.map((_,i) => `<button aria-label="Ad ${i+1}" class="${i===0?"on":""}" data-k2="${i}"></button>`).join("");
     adIdx = 0;
@@ -744,7 +759,26 @@ window.DATA_READY = (async () => {
     }
     window.scrollTo(0, 0);
   }
-  window.addEventListener("hashchange", () => { $("drawer").classList.remove("open"); route(); });
+  window.addEventListener("hashchange", () => {
+    $("drawer").classList.remove("open");
+    if ((location.hash || "").replace("#", "") !== "app") $("appFrame").src = "about:blank";
+    route();
+  });
+
+  /* ---------- apps open inside the website ---------- */
+  function openApp(url, title){
+    $("viewerTitle").textContent = title || "";
+    $("viewerOpen").href = url;
+    $("appFrame").src = url;
+    location.hash = "app";
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest("[data-app]");
+    if (!a) return;
+    e.preventDefault();
+    openApp(a.dataset.app, a.dataset.title || "");
+  });
+  $("viewerBack").addEventListener("click", () => { $("appFrame").src = "about:blank"; location.hash = ""; });
 
   /* ---------- header controls ---------- */
   $("langBtn").addEventListener("click", () => { lang = lang === "en" ? "te" : "en"; renderContent(); });
