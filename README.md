@@ -17,3 +17,9 @@ English vocabulary for exam practice: A–Z words, words often confused, one-wor
 Dictionary data: Open English WordNet (CC BY 4.0), derived from Princeton WordNet.
 
 Open the app: https://bloforms.github.io/english/
+
+# Audio to Text
+
+Turn an audio file or a microphone recording into text (English, Telugu, Hindi, Tamil) on your own device, then save it as PDF or text.
+
+Open the app: https://bloforms.github.io/audio/

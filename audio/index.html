@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audio to Text</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2563eb">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="Audio to Text">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+  :root { --bg:#f4f6fb; --card:#fff; --ink:#1d2433; --muted:#6b7280; --accent:#2563eb; --line:#e5e7eb; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, "Noto Sans Telugu", "Nirmala UI", sans-serif; background:var(--bg); color:var(--ink); }
+  header { background:var(--accent); color:#fff; padding:14px 18px; font-weight:600; font-size:18px; }
+  main { max-width:820px; margin:0 auto; padding:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:14px; }
+  label { font-size:14px; color:var(--muted); display:block; margin-bottom:6px; }
+  select, input[type=file], input[type=text] { width:100%; padding:10px; border:1px solid var(--line); border-radius:8px; font-size:15px; background:#fff; }
+  button { padding:10px 16px; border:0; border-radius:8px; background:var(--accent); color:#fff; font-size:15px; cursor:pointer; margin:4px 4px 4px 0; }
+  button.secondary { background:#e5e7eb; color:var(--ink); }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+  .row > div { flex:1 1 200px; }
+  #status { font-size:14px; color:var(--muted); margin-top:8px; min-height:20px; }
+  #mode { font-size:13px; color:var(--muted); margin-top:4px; }
+  progress { width:100%; height:10px; margin-top:8px; }
+  textarea { width:100%; min-height:260px; padding:12px; border:1px solid var(--line); border-radius:8px; font-size:16px; line-height:1.6; font-family:inherit; margin-top:8px; }
+  .history-item { border-bottom:1px solid var(--line); padding:10px 0; display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap; }
+  .history-item small { color:var(--muted); }
+  .hidden { display:none; }
+  footer { text-align:center; color:var(--muted); font-size:13px; padding:10px; }
+  #printArea { display:none; font-family:"Noto Sans Telugu","Nirmala UI",system-ui,sans-serif; }
+  @media print {
+    body > *:not(#printArea) { display:none !important; }
+    #printArea { display:block !important; padding:0; color:#000; font-size:13pt; line-height:1.7; }
+    #printArea div { white-space:pre-wrap; }
+  }
+</style>
+</head>
+<body>
+<header>Audio to Text</header>
+<main>
+
+  <div class="card hidden" id="installCard">
+    <strong>&#128242; Install app</strong>
+    <div style="margin:4px 0 8px;font-size:14px;color:var(--muted)">Use Audio to Text like a phone app. It opens without internet after installing.</div>
+    <button id="installBtn">Install</button>
+    <div id="installHelp" class="hidden" style="font-size:14px;color:var(--muted);margin-top:8px">Android (Chrome): tap the &#8942; menu, then "Add to Home screen" or "Install app".<br>iPhone (Safari): tap Share, then "Add to Home Screen".</div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label for="lang">Language spoken in the audio</label>
+        <select id="lang">
+          <option value="english">English</option>
+          <option value="telugu">Telugu</option>
+          <option value="hindi">Hindi</option>
+          <option value="tamil">Tamil</option>
+        </select>
+      </div>
+      <div>
+        <label for="model">Accuracy</label>
+        <select id="model">
+          <option value="onnx-community/whisper-tiny">Fastest (tiny, about 40 MB download)</option>
+          <option value="onnx-community/whisper-base" selected>Balanced (base, about 80 MB download)</option>
+          <option value="onnx-community/whisper-small">Best (small, about 250 MB, newer devices)</option>
+        </select>
+      </div>
+    </div>
+    <p></p>
+    <label for="file">Audio file (mp3, wav, m4a, ogg, webm)</label>
+    <input type="file" id="file" accept="audio/*">
+    <div class="row" style="margin-top:10px">
+      <button id="go" disabled>Transcribe</button>
+      <button class="secondary hidden" id="stop">Stop</button>
+      <button class="secondary" id="recBtn">● Record</button>
+    </div>
+    <progress id="bar" value="0" max="100" class="hidden"></progress>
+    <div id="status">Choose an audio file, then press Transcribe. The first run downloads the speech model.</div>
+    <div id="mode"></div>
+  </div>
+
+  <div class="card">
+    <label for="title">Title</label>
+    <input type="text" id="title" placeholder="For example: Morning news 13 Nov">
+    <label for="out" style="margin-top:12px">Transcript (you can edit it)</label>
+    <textarea id="out" placeholder="The transcript will appear here"></textarea>
+    <div class="row">
+      <button id="save">Save to history</button>
+      <button class="secondary" id="copy">Copy</button>
+      <button class="secondary" id="txt">Download .txt</button>
+      <button class="secondary" id="pdf">Save as PDF</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <label for="search">Saved transcripts (kept on this device)</label>
+    <input type="text" id="search" placeholder="Search saved text">
+    <div id="history" style="margin-top:8px"></div>
+  </div>
+
+</main>
+<footer>Designed by Sivananda Pujari</footer>
+<div id="printArea"></div>
+
+<script>
+/* installable app: offline support + install card */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(function(){});
+(function(){
+  var evt = null, card = document.getElementById('installCard');
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (!standalone) card.classList.remove('hidden');
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); evt = e; });
+  window.addEventListener('appinstalled', function(){ card.classList.add('hidden'); });
+  document.getElementById('installBtn').onclick = function(){
+    if (evt) { evt.prompt(); evt = null; }
+    else document.getElementById('installHelp').classList.remove('hidden');
+  };
+})();
+</script>
+<script type="module">
+import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
+env.allowLocalModels = false;
+
+const $ = id => document.getElementById(id);
+const KEY = 'audioTextHistory';
+const SR = 16000;          // samples per second the model expects
+const WIN = 30 * SR;       // the model reads 30 seconds at a time
+let transcriber = null, loadedModel = null, loadedDevice = null;
+let audioBlob = null, recorder = null, chunks = [];
+let cancelled = false;
+
+function setStatus(t) { $('status').textContent = t; }
+function showBar(p) { $('bar').classList.remove('hidden'); $('bar').value = p; }
+function hideBar() { $('bar').classList.add('hidden'); }
+
+function safeName(s) {
+  return (s || 'transcript').replace(/[\\/:*?"<>|]+/g, '_').slice(0, 80);
+}
+function mmss(sec) {
+  sec = Math.max(0, Math.round(sec));
+  return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+}
+
+// ---------- choosing or recording audio ----------
+$('file').addEventListener('change', e => {
+  audioBlob = e.target.files[0] || null;
+  $('go').disabled = !audioBlob;
+  if (audioBlob) {
+    setStatus('Selected: ' + audioBlob.name);
+    if (!$('title').value) $('title').value = audioBlob.name;
+  }
+});
+
+$('recBtn').addEventListener('click', async () => {
+  if (recorder && recorder.state === 'recording') { recorder.stop(); return; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    chunks = [];
+    recorder = new MediaRecorder(stream);
+    recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    recorder.onstop = () => {
+      audioBlob = new Blob(chunks, { type: recorder.mimeType || 'audio/webm' });
+      stream.getTracks().forEach(t => t.stop());
+      $('recBtn').textContent = '● Record';
+      $('go').disabled = false;
+      setStatus('Recording ready (' + Math.round(audioBlob.size / 1024) + ' KB). Press Transcribe.');
+    };
+    recorder.start();
+    $('recBtn').textContent = '■ Stop';
+    setStatus('Recording… press Stop when you are done.');
+  } catch (err) {
+    setStatus('Microphone not available: ' + err.message);
+  }
+});
+
+// ---------- transcription ----------
+async function toPcm16k(blob) {
+  const ctx = new AudioContext({ sampleRate: SR });
+  const buf = await ctx.decodeAudioData(await blob.arrayBuffer());
+  await ctx.close();
+  return buf.getChannelData(0); // mono, 16 kHz
+}
+
+// Use the graphics chip (WebGPU) when the browser has it: much faster than the processor alone.
+async function pickDevice() {
+  if (!navigator.gpu) return 'wasm';
+  try { return (await navigator.gpu.requestAdapter()) ? 'webgpu' : 'wasm'; }
+  catch { return 'wasm'; }
+}
+
+async function loadPipeline(modelId, device) {
+  return pipeline('automatic-speech-recognition', modelId, {
+    device,
+    dtype: device === 'webgpu'
+      ? { encoder_model: 'fp32', decoder_model_merged: 'q4' }
+      : 'q8',
+    progress_callback: p => { if (p.status === 'progress') showBar(p.progress || 0); }
+  });
+}
+
+async function getTranscriber(modelId) {
+  if (transcriber && loadedModel === modelId) return transcriber;
+  setStatus('Loading the speech model (the first time downloads it)…');
+  showBar(0);
+  let device = await pickDevice();
+  try {
+    transcriber = await loadPipeline(modelId, device);
+  } catch (err) {
+    if (device !== 'webgpu') throw err;
+    device = 'wasm';                       // graphics mode failed: fall back
+    transcriber = await loadPipeline(modelId, device);
+  }
+  loadedModel = modelId;
+  loadedDevice = device;
+  $('mode').textContent = device === 'webgpu'
+    ? 'Fast mode: using the graphics chip.'
+    : 'Standard mode: this browser has no graphics acceleration, so it will be slower. Chrome on a laptop or a recent Android phone gives fast mode.';
+  hideBar();
+  return transcriber;
+}
+
+// Find the quietest moment in the last 5 seconds of a 30-second window,
+// so a piece ends in a pause and not in the middle of a word.
+function findCut(pcm, start) {
+  const end = start + WIN;
+  if (end >= pcm.length) return pcm.length;
+  const step = SR / 10, span = SR / 5;
+  let best = end, bestEnergy = Infinity;
+  for (let i = end - 5 * SR; i + span <= end; i += step) {
+    let e = 0;
+    for (let j = i; j < i + span; j += 4) e += pcm[j] * pcm[j];
+    if (e < bestEnergy) { bestEnergy = e; best = i + span / 2; }
+  }
+  return best;
+}
+
+$('stop').addEventListener('click', () => { cancelled = true; setStatus('Stopping after this piece…'); });
+
+$('go').addEventListener('click', async () => {
+  if (!audioBlob) return;
+  $('go').disabled = true;
+  cancelled = false;
+  try {
+    const asr = await getTranscriber($('model').value);
+    setStatus('Reading the audio…');
+    const pcm = await toPcm16k(audioBlob);
+    const total = pcm.length / SR;
+    const language = $('lang').value;
+    const parts = [];
+    let pos = 0;
+    const t0 = performance.now();
+    $('stop').classList.remove('hidden');
+    $('out').value = '';
+    showBar(0);
+
+    while (pos < pcm.length && !cancelled) {
+      const cut = findCut(pcm, pos);
+      const result = await asr(pcm.slice(pos, cut), { language, task: 'transcribe' });
+      const text = (result.text || '').trim();
+      if (text) parts.push(text);
+      $('out').value = parts.join(' ');      // text appears as each piece finishes
+      pos = cut;
+
+      const done = pos / SR;
+      const elapsed = (performance.now() - t0) / 1000;
+      const left = elapsed / done * (total - done);
+      showBar(done / total * 100);
+      setStatus('Transcribed ' + mmss(done) + ' of ' + mmss(total) + ' · about ' + mmss(left) + ' left');
+      await new Promise(r => setTimeout(r, 0)); // let the screen update
+    }
+
+    setStatus(cancelled
+      ? 'Stopped. The text so far is kept below.'
+      : 'Done in ' + mmss((performance.now() - t0) / 1000) + '. Check the text, then save or export it.');
+  } catch (err) {
+    setStatus('Something went wrong: ' + err.message);
+  } finally {
+    $('go').disabled = false;
+    $('stop').classList.add('hidden');
+    hideBar();
+  }
+});
+
+// ---------- history (stored in this browser) ----------
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; }
+}
+function saveHistory(list) {
+  localStorage.setItem(KEY, JSON.stringify(list));
+}
+
+$('save').addEventListener('click', () => {
+  const text = $('out').value.trim();
+  if (!text) return setStatus('There is no text to save yet.');
+  const list = loadHistory();
+  list.unshift({ id: Date.now(), title: $('title').value || 'Untitled', text, date: new Date().toISOString() });
+  try {
+    saveHistory(list);
+    setStatus('Saved to history.');
+  } catch {
+    setStatus('Could not save: browser storage is full. Delete some old items.');
+  }
+  renderHistory();
+});
+
+function mkBtn(label, fn, cls) {
+  const b = document.createElement('button');
+  b.textContent = label;
+  if (cls) b.className = cls;
+  b.addEventListener('click', fn);
+  return b;
+}
+
+function renderHistory() {
+  const q = $('search').value.toLowerCase();
+  const box = $('history');
+  box.innerHTML = '';
+  const items = loadHistory().filter(i => (i.title + ' ' + i.text).toLowerCase().includes(q));
+  if (!items.length) { box.textContent = 'No saved transcripts yet.'; return; }
+  items.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'history-item';
+    const info = document.createElement('div');
+    const t = document.createElement('strong');
+    t.textContent = item.title;
+    const d = document.createElement('small');
+    d.textContent = ' · ' + new Date(item.date).toLocaleString();
+    info.append(t, d);
+    const btns = document.createElement('div');
+    btns.append(
+      mkBtn('Open', () => {
+        $('out').value = item.text;
+        $('title').value = item.title;
+        window.scrollTo(0, 0);
+      }),
+      mkBtn('PDF', () => printText(item.title, item.text), 'secondary'),
+      mkBtn('TXT', () => downloadTxt(item.title, item.text), 'secondary'),
+      mkBtn('Delete', () => {
+        if (!confirm('Delete this transcript?')) return;
+        saveHistory(loadHistory().filter(x => x.id !== item.id));
+        renderHistory();
+      }, 'secondary')
+    );
+    row.append(info, btns);
+    box.append(row);
+  });
+}
+$('search').addEventListener('input', renderHistory);
+
+// ---------- export ----------
+function downloadTxt(title, text) {
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = safeName(title) + '.txt';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+// Opens the print dialog; choose "Save as PDF" as the destination.
+function printText(title, text) {
+  const area = $('printArea');
+  area.innerHTML = '';
+  const h = document.createElement('h2');
+  h.textContent = title;
+  const body = document.createElement('div');
+  body.textContent = text;
+  area.append(h, body);
+  const prev = document.title;
+  document.title = safeName(title);
+  window.print();
+  document.title = prev;
+}
+
+$('txt').addEventListener('click', () => downloadTxt($('title').value, $('out').value));
+$('pdf').addEventListener('click', () => printText($('title').value || 'Transcript', $('out').value));
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('out').value); setStatus('Copied.'); }
+  catch { setStatus('Copy failed. Select the text and copy it manually.'); }
+});
+
+renderHistory();
+</script>
+</body>
+</html>
