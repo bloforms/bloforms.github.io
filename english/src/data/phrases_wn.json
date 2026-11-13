@@ -1,0 +1,3362 @@
+[
+{
+"phrase": "A bit",
+"meaning_en": "To a small degree; somewhat.",
+"sentence": "It's a bit warm."
+},
+{
+"phrase": "A cappella",
+"meaning_en": "Without musical accompaniment.",
+"sentence": "They performed a cappella."
+},
+{
+"phrase": "A fortiori",
+"meaning_en": "With greater reason; for a still stronger, more certain reason.",
+"sentence": "If you are wrong then, a fortiori, so am I."
+},
+{
+"phrase": "A good deal",
+"meaning_en": "To a very great degree or extent.",
+"sentence": ""
+},
+{
+"phrase": "A great deal",
+"meaning_en": "To a very great degree or extent.",
+"sentence": "This would help a great deal."
+},
+{
+"phrase": "A hundred times",
+"meaning_en": "By a factor of one hundred.",
+"sentence": ""
+},
+{
+"phrase": "A la carte",
+"meaning_en": "By ordering items listed individually on a menu.",
+"sentence": "We ate a la carte."
+},
+{
+"phrase": "A la mode",
+"meaning_en": "With ice cream on top or on the side.",
+"sentence": "We served the apple pie a la mode."
+},
+{
+"phrase": "A little",
+"meaning_en": "To a small degree; somewhat.",
+"sentence": "Felt a little better."
+},
+{
+"phrase": "A lot",
+"meaning_en": "To a very great degree or extent.",
+"sentence": "I feel a lot better."
+},
+{
+"phrase": "A million times",
+"meaning_en": "By a factor of a million.",
+"sentence": ""
+},
+{
+"phrase": "A posteriori",
+"meaning_en": "Derived from observed facts.",
+"sentence": "The conclusion was reached a posteriori, based on the data collected during the experiment."
+},
+{
+"phrase": "A priori",
+"meaning_en": "Derived by logic, without observed facts.",
+"sentence": "There is no a priori reason to believe that the new policy will fail without further investigation."
+},
+{
+"phrase": "A trifle",
+"meaning_en": "To a small degree; somewhat.",
+"sentence": "A trifle smaller."
+},
+{
+"phrase": "Above all",
+"meaning_en": "Above and beyond all other consideration.",
+"sentence": "Above all, you must be independent."
+},
+{
+"phrase": "Across the board",
+"meaning_en": "Including all.",
+"sentence": "We got a pay raise across the board."
+},
+{
+"phrase": "Across the country",
+"meaning_en": "Extending throughout an entire nation.",
+"sentence": ""
+},
+{
+"phrase": "Across the nation",
+"meaning_en": "Extending throughout an entire nation.",
+"sentence": ""
+},
+{
+"phrase": "Ad hoc",
+"meaning_en": "For one specific case.",
+"sentence": "They were appointed ad hoc."
+},
+{
+"phrase": "Ad infinitum",
+"meaning_en": "To infinity; without or seemingly without limit.",
+"sentence": "Talked on and on ad infinitum."
+},
+{
+"phrase": "Ad interim",
+"meaning_en": "For an intervening time; temporarily.",
+"sentence": "Elected to serve ad interim."
+},
+{
+"phrase": "Ad lib",
+"meaning_en": "Without advance preparation.",
+"sentence": "He spoke ad lib."
+},
+{
+"phrase": "Ad nauseam",
+"meaning_en": "To a sickening extent.",
+"sentence": "He played the song ad nauseam."
+},
+{
+"phrase": "Ad val",
+"meaning_en": "In proportion to the estimated value of the goods taxed.",
+"sentence": "The goods were taxed ad valorem."
+},
+{
+"phrase": "Ad valorem",
+"meaning_en": "In proportion to the estimated value of the goods taxed.",
+"sentence": "The goods were taxed ad valorem."
+},
+{
+"phrase": "After a fashion",
+"meaning_en": "To some extent; not very well.",
+"sentence": "He speaks French after a fashion."
+},
+{
+"phrase": "After all",
+"meaning_en": "Emphasizes something to be considered.",
+"sentence": "After all, she is your boss, so invite her."
+},
+{
+"phrase": "After hours",
+"meaning_en": "Not during regular hours.",
+"sentence": "He often worked after hours."
+},
+{
+"phrase": "Again and again",
+"meaning_en": "Repeated many times.",
+"sentence": ""
+},
+{
+"phrase": "Against the clock",
+"meaning_en": "As fast as possible; before a deadline.",
+"sentence": "It was a race against the clock."
+},
+{
+"phrase": "Against the wind",
+"meaning_en": "In the direction opposite to the direction the wind is blowing.",
+"sentence": ""
+},
+{
+"phrase": "Against time",
+"meaning_en": "As fast as possible; before a deadline.",
+"sentence": ""
+},
+{
+"phrase": "Ahead of the game",
+"meaning_en": "In an advantageous position.",
+"sentence": "She's ahead of the game."
+},
+{
+"phrase": "Ahead of time",
+"meaning_en": "Before the usual time or the time expected.",
+"sentence": "The house was completed ahead of time."
+},
+{
+"phrase": "All along",
+"meaning_en": "All the time or over a period of time.",
+"sentence": "She had known all along."
+},
+{
+"phrase": "All at once",
+"meaning_en": "All at the same time.",
+"sentence": "Let's say ‘Yes!’ all at once."
+},
+{
+"phrase": "All day long",
+"meaning_en": "During the entire day.",
+"sentence": ""
+},
+{
+"phrase": "All in all",
+"meaning_en": "With everything considered (and neglecting details)",
+"sentence": "All in all, it's not so bad."
+},
+{
+"phrase": "All of a sudden",
+"meaning_en": "Suddenly.",
+"sentence": ""
+},
+{
+"phrase": "All over",
+"meaning_en": "Over the entire area.",
+"sentence": "The wallpaper was covered all over with flowers."
+},
+{
+"phrase": "All right",
+"meaning_en": "An expression of agreement normally occurring at the beginning of a sentence.",
+"sentence": ""
+},
+{
+"phrase": "All the same",
+"meaning_en": "Despite anything to the contrary (usually preceding a concession)",
+"sentence": "Granted that it is dangerous, all the same I still want to go."
+},
+{
+"phrase": "All the time",
+"meaning_en": "Without respite.",
+"sentence": ""
+},
+{
+"phrase": "All the way",
+"meaning_en": "To the goal.",
+"sentence": "She climbed the mountain all the way."
+},
+{
+"phrase": "All together",
+"meaning_en": "All at the same time.",
+"sentence": ""
+},
+{
+"phrase": "All told",
+"meaning_en": "With everything included or counted.",
+"sentence": ""
+},
+{
+"phrase": "All too",
+"meaning_en": "To a high degree.",
+"sentence": "She is all too ready to accept the job."
+},
+{
+"phrase": "Also known as",
+"meaning_en": "As known or named at another time or place.",
+"sentence": ""
+},
+{
+"phrase": "And how",
+"meaning_en": "An expression of emphatic agreement.",
+"sentence": "She is incredibly talented at playing the piano, and how!"
+},
+{
+"phrase": "And so",
+"meaning_en": "Subsequently or soon afterward (often used as sentence connectors)",
+"sentence": "And so home and to bed."
+},
+{
+"phrase": "And so forth",
+"meaning_en": "Continuing in the same way.",
+"sentence": "We discussed the budget, the timeline, the staffing requirements, and so forth during the meeting."
+},
+{
+"phrase": "And so on",
+"meaning_en": "Continuing in the same way.",
+"sentence": ""
+},
+{
+"phrase": "And then some",
+"meaning_en": "And considerably more in addition.",
+"sentence": "It cost me a week's salary and then some."
+},
+{
+"phrase": "Any longer",
+"meaning_en": "At the present or from now on; usually used with a negative.",
+"sentence": ""
+},
+{
+"phrase": "Around the clock",
+"meaning_en": "Endlessly.",
+"sentence": "She worked around the clock."
+},
+{
+"phrase": "As a group",
+"meaning_en": "All together.",
+"sentence": ""
+},
+{
+"phrase": "As a matter of fact",
+"meaning_en": "In reality or actuality.",
+"sentence": "As a matter of fact, he is several inches taller than his father."
+},
+{
+"phrase": "As far as possible",
+"meaning_en": "To a feasible extent.",
+"sentence": ""
+},
+{
+"phrase": "As follows",
+"meaning_en": "What is listed next.",
+"sentence": "Her complaints went as follows."
+},
+{
+"phrase": "As if by magic",
+"meaning_en": "In a magical manner.",
+"sentence": ""
+},
+{
+"phrase": "As it is",
+"meaning_en": "In the actual state of affairs and often contrary to expectations.",
+"sentence": "He might have been killed; as it is, he was severely injured."
+},
+{
+"phrase": "As it were",
+"meaning_en": "As if it were really so.",
+"sentence": "She lives here, as it were."
+},
+{
+"phrase": "As luck would have it",
+"meaning_en": "By good fortune.",
+"sentence": ""
+},
+{
+"phrase": "As much as possible",
+"meaning_en": "To a feasible extent.",
+"sentence": "She helped him as much as possible."
+},
+{
+"phrase": "As needed",
+"meaning_en": "According to need (physicians use PRN in writing prescriptions)",
+"sentence": "Add water as needed."
+},
+{
+"phrase": "As required",
+"meaning_en": "According to need (physicians use PRN in writing prescriptions)",
+"sentence": ""
+},
+{
+"phrase": "As the crow flies",
+"meaning_en": "By the shortest and most direct route.",
+"sentence": "It's 10 miles as the crow flies."
+},
+{
+"phrase": "As usual",
+"meaning_en": "In the usual manner.",
+"sentence": "As usual, she arrived late."
+},
+{
+"phrase": "As we say",
+"meaning_en": "In a manner of speaking.",
+"sentence": "The feeling is, as we say, quite dead."
+},
+{
+"phrase": "As well",
+"meaning_en": "In addition.",
+"sentence": ""
+},
+{
+"phrase": "As yet",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": ""
+},
+{
+"phrase": "At a loss",
+"meaning_en": "Below cost.",
+"sentence": "Sold the car at a loss."
+},
+{
+"phrase": "At a low price",
+"meaning_en": "For a relatively small amount of money.",
+"sentence": ""
+},
+{
+"phrase": "At a lower place",
+"meaning_en": "In or to a place that is lower.",
+"sentence": ""
+},
+{
+"phrase": "At a time",
+"meaning_en": "Simultaneously.",
+"sentence": "He took three cookies at a time."
+},
+{
+"phrase": "At all",
+"meaning_en": "In the slightest degree or in any respect.",
+"sentence": "Are you at all interested? No, not at all."
+},
+{
+"phrase": "At all costs",
+"meaning_en": "Regardless of the cost involved.",
+"sentence": ""
+},
+{
+"phrase": "At an equal rate",
+"meaning_en": "Used in legal language.",
+"sentence": ""
+},
+{
+"phrase": "At any cost",
+"meaning_en": "Regardless of the cost involved.",
+"sentence": ""
+},
+{
+"phrase": "At any expense",
+"meaning_en": "Regardless of the cost involved.",
+"sentence": ""
+},
+{
+"phrase": "At any rate",
+"meaning_en": "Used to indicate that a statement explains or supports a previous statement.",
+"sentence": "But at any rate he got a knighthood for it."
+},
+{
+"phrase": "At arm's length",
+"meaning_en": "At some distance.",
+"sentence": "Keep someone at arm's length."
+},
+{
+"phrase": "At best",
+"meaning_en": "Under the best of conditions.",
+"sentence": "At best we'll lose only the money."
+},
+{
+"phrase": "At bottom",
+"meaning_en": "In reality.",
+"sentence": ""
+},
+{
+"phrase": "At close range",
+"meaning_en": "Very close.",
+"sentence": "Even firing at close range he missed."
+},
+{
+"phrase": "At first",
+"meaning_en": "At the beginning.",
+"sentence": "At first he didn't notice anything strange."
+},
+{
+"phrase": "At first blush",
+"meaning_en": "As a first impression.",
+"sentence": "At first blush the offer seemed attractive."
+},
+{
+"phrase": "At first glance",
+"meaning_en": "On first seeing (someone or something); immediately.",
+"sentence": ""
+},
+{
+"phrase": "At first hand",
+"meaning_en": "From the original source; directly.",
+"sentence": ""
+},
+{
+"phrase": "At first sight",
+"meaning_en": "On first seeing (someone or something); immediately.",
+"sentence": "It was love at first sight."
+},
+{
+"phrase": "At heart",
+"meaning_en": "In reality.",
+"sentence": "She is very kind at heart."
+},
+{
+"phrase": "At home",
+"meaning_en": "On the home team's field.",
+"sentence": "They played at home last night."
+},
+{
+"phrase": "At large",
+"meaning_en": "In a general fashion.",
+"sentence": "He talked at large about his plans."
+},
+{
+"phrase": "At last",
+"meaning_en": "As the end result of a succession or process.",
+"sentence": ""
+},
+{
+"phrase": "At least",
+"meaning_en": "If nothing else (‘leastwise’ is informal and ‘leastways’ is colloquial)",
+"sentence": "At least he survived."
+},
+{
+"phrase": "At leisure",
+"meaning_en": "In an unhurried way or at one's convenience.",
+"sentence": ""
+},
+{
+"phrase": "At length",
+"meaning_en": "In a lengthy or prolix manner.",
+"sentence": "She talked at length about the problem."
+},
+{
+"phrase": "At long last",
+"meaning_en": "As the end result of a succession or process.",
+"sentence": "At long last the winter was over."
+},
+{
+"phrase": "At most",
+"meaning_en": "Not more than.",
+"sentence": "Spend at most $20 on the lunch."
+},
+{
+"phrase": "At once",
+"meaning_en": "Without delay or hesitation; with no time intervening.",
+"sentence": ""
+},
+{
+"phrase": "At one time",
+"meaning_en": "Simultaneously.",
+"sentence": ""
+},
+{
+"phrase": "At present",
+"meaning_en": "At the present moment.",
+"sentence": "He is busy at present writing a new novel."
+},
+{
+"phrase": "At random",
+"meaning_en": "In a random manner.",
+"sentence": "Bullets were fired into the crowd at random."
+},
+{
+"phrase": "At stake",
+"meaning_en": "In question or at issue.",
+"sentence": "There is more at stake than your modesty."
+},
+{
+"phrase": "At the best",
+"meaning_en": "Under the best of conditions.",
+"sentence": ""
+},
+{
+"phrase": "At the least",
+"meaning_en": "Not less than.",
+"sentence": ""
+},
+{
+"phrase": "At the most",
+"meaning_en": "Not more than.",
+"sentence": ""
+},
+{
+"phrase": "At the same time",
+"meaning_en": "At the same instant.",
+"sentence": ""
+},
+{
+"phrase": "At the worst",
+"meaning_en": "Under the worst of conditions.",
+"sentence": ""
+},
+{
+"phrase": "At times",
+"meaning_en": "Sporadically and infrequently.",
+"sentence": ""
+},
+{
+"phrase": "At will",
+"meaning_en": "As one chooses or pleases.",
+"sentence": "He can roam the neighborhood at will."
+},
+{
+"phrase": "At worst",
+"meaning_en": "Under the worst of conditions.",
+"sentence": "At worst we'll go to jail."
+},
+{
+"phrase": "Back and forth",
+"meaning_en": "Moving from one place to another and back again.",
+"sentence": "He traveled back and forth between Los Angeles and New York."
+},
+{
+"phrase": "Backward and forward",
+"meaning_en": "Moving from one place to another and back again.",
+"sentence": ""
+},
+{
+"phrase": "Before long",
+"meaning_en": "In the near future.",
+"sentence": "We should have news before long."
+},
+{
+"phrase": "Below the belt",
+"meaning_en": "In an unfair manner.",
+"sentence": "Their accusations hit below the belt."
+},
+{
+"phrase": "Best of all",
+"meaning_en": "Especially fortunate.",
+"sentence": "Best of all, we don't have any homework!"
+},
+{
+"phrase": "Between decks",
+"meaning_en": "In the space between decks, on a ship.",
+"sentence": "We're showing damage between decks."
+},
+{
+"phrase": "Beyond a doubt",
+"meaning_en": "In a manner or to a degree that could not be doubted.",
+"sentence": ""
+},
+{
+"phrase": "Beyond a shadow of a doubt",
+"meaning_en": "In a manner or to a degree that could not be doubted.",
+"sentence": "His guilt was established beyond a shadow of a doubt."
+},
+{
+"phrase": "Beyond control",
+"meaning_en": "Out of control.",
+"sentence": ""
+},
+{
+"phrase": "Beyond doubt",
+"meaning_en": "In a manner or to a degree that could not be doubted.",
+"sentence": ""
+},
+{
+"phrase": "Beyond measure",
+"meaning_en": "In excess or without limit.",
+"sentence": "Amazed beyond measure."
+},
+{
+"phrase": "Bit by bit",
+"meaning_en": "A little bit at a time.",
+"sentence": ""
+},
+{
+"phrase": "Body and soul",
+"meaning_en": "With complete faith.",
+"sentence": ""
+},
+{
+"phrase": "Broadly speaking",
+"meaning_en": "Without regard to specific details or exceptions.",
+"sentence": ""
+},
+{
+"phrase": "By a long shot",
+"meaning_en": "By a great deal.",
+"sentence": "He is the best by a long shot."
+},
+{
+"phrase": "By all means",
+"meaning_en": "Definitely or certainly.",
+"sentence": "Visit us by all means."
+},
+{
+"phrase": "By all odds",
+"meaning_en": "Without question and beyond doubt.",
+"sentence": "By all odds they should win."
+},
+{
+"phrase": "By and by",
+"meaning_en": "At some eventual time in the future.",
+"sentence": "By and by he'll understand."
+},
+{
+"phrase": "By and large",
+"meaning_en": "Usually; as a rule.",
+"sentence": "By and large it doesn't rain much here."
+},
+{
+"phrase": "By artificial means",
+"meaning_en": "Not according to nature; not by natural means.",
+"sentence": ""
+},
+{
+"phrase": "By chance",
+"meaning_en": "Through chance.",
+"sentence": ""
+},
+{
+"phrase": "By choice",
+"meaning_en": "With intention; in an intentional manner.",
+"sentence": "I did this by choice."
+},
+{
+"phrase": "By design",
+"meaning_en": "With intention; in an intentional manner.",
+"sentence": ""
+},
+{
+"phrase": "By experimentation",
+"meaning_en": "In an experimental fashion.",
+"sentence": ""
+},
+{
+"phrase": "By far",
+"meaning_en": "By a considerable margin.",
+"sentence": "She was by far the smartest student."
+},
+{
+"phrase": "By fits and starts",
+"meaning_en": "Intermittently.",
+"sentence": "He worked on his book by fits and starts."
+},
+{
+"phrase": "By hand",
+"meaning_en": "Without the use of a machine.",
+"sentence": "This dress is sewn by hand."
+},
+{
+"phrase": "By heart",
+"meaning_en": "By committing to memory.",
+"sentence": "She knew the poem by heart."
+},
+{
+"phrase": "By hook or by crook",
+"meaning_en": "In any way necessary; by any possible means.",
+"sentence": "I'll pass this course by hook or by crook."
+},
+{
+"phrase": "By inches",
+"meaning_en": "By a short distance.",
+"sentence": "They moved it by inches."
+},
+{
+"phrase": "By luck",
+"meaning_en": "By accident.",
+"sentence": ""
+},
+{
+"phrase": "By machine",
+"meaning_en": "With the use of a machine.",
+"sentence": "The shirt is sewn by machine."
+},
+{
+"phrase": "By memory",
+"meaning_en": "By committing to memory.",
+"sentence": ""
+},
+{
+"phrase": "By nature",
+"meaning_en": "Through inherent nature.",
+"sentence": ""
+},
+{
+"phrase": "By no means",
+"meaning_en": "Definitely not.",
+"sentence": "The prize is by no means certain."
+},
+{
+"phrase": "By right of office",
+"meaning_en": "By virtue of position.",
+"sentence": ""
+},
+{
+"phrase": "By rights",
+"meaning_en": "With reason or justice.",
+"sentence": "By rights, the property belongs to her family."
+},
+{
+"phrase": "By small degrees",
+"meaning_en": "By a short distance.",
+"sentence": ""
+},
+{
+"phrase": "By the bye",
+"meaning_en": "Introducing a different topic.",
+"sentence": ""
+},
+{
+"phrase": "By the day",
+"meaning_en": "One every day.",
+"sentence": ""
+},
+{
+"phrase": "By the piece",
+"meaning_en": "One piece at a time.",
+"sentence": "She sold the plates by the piece."
+},
+{
+"phrase": "By the way",
+"meaning_en": "Introducing a different topic.",
+"sentence": ""
+},
+{
+"phrase": "By trial and error",
+"meaning_en": "In an empirical manner.",
+"sentence": ""
+},
+{
+"phrase": "By word of mouth",
+"meaning_en": "Orally.",
+"sentence": ""
+},
+{
+"phrase": "Cash on delivery",
+"meaning_en": "Collecting the charges upon delivery.",
+"sentence": ""
+},
+{
+"phrase": "Ceteris paribus",
+"meaning_en": "All other things being equal.",
+"sentence": "The price of gold should remain stable, ceteris paribus, despite the changes in the stock market."
+},
+{
+"phrase": "Cheek by jowl",
+"meaning_en": "In close proximity.",
+"sentence": "The houses were jumbled together cheek by jowl."
+},
+{
+"phrase": "Close to",
+"meaning_en": "(of quantities) imprecise but fairly close to correct.",
+"sentence": ""
+},
+{
+"phrase": "Close to the wind",
+"meaning_en": "Nearly opposite to the direction from which wind is coming.",
+"sentence": "Sailing close to the wind."
+},
+{
+"phrase": "Close up",
+"meaning_en": "Very close.",
+"sentence": "Without my reading glasses I can hardly see things close up."
+},
+{
+"phrase": "Come hell or high water",
+"meaning_en": "In spite of all obstacles.",
+"sentence": "We'll go to Tibet come hell or high water."
+},
+{
+"phrase": "Con brio",
+"meaning_en": "(music) with vigor.",
+"sentence": "Allegro con brio."
+},
+{
+"phrase": "Cum laude",
+"meaning_en": "With distinction.",
+"sentence": "He graduated cum laude."
+},
+{
+"phrase": "Day after day",
+"meaning_en": "For an indefinite number of successive days.",
+"sentence": "He practiced his scales day after day until he mastered the piece."
+},
+{
+"phrase": "Day by day",
+"meaning_en": "Gradually and progressively.",
+"sentence": "His health weakened day by day."
+},
+{
+"phrase": "Day in and day out",
+"meaning_en": "Without respite.",
+"sentence": "He plays chess day in and day out."
+},
+{
+"phrase": "Day in day out",
+"meaning_en": "For an indefinite number of successive days.",
+"sentence": ""
+},
+{
+"phrase": "De facto",
+"meaning_en": "In reality or fact.",
+"sentence": "The result was, de facto, a one-party system."
+},
+{
+"phrase": "De novo",
+"meaning_en": "From the beginning.",
+"sentence": "The appellate court decided to hear the appeal de novo, allowing for a complete reevaluation of the case."
+},
+{
+"phrase": "Dead ahead",
+"meaning_en": "Exactly ahead or in front.",
+"sentence": "The laboratory is dead ahead."
+},
+{
+"phrase": "Deep down",
+"meaning_en": "In reality.",
+"sentence": ""
+},
+{
+"phrase": "Displaying incompetence",
+"meaning_en": "In an incompetent manner.",
+"sentence": ""
+},
+{
+"phrase": "Double quick",
+"meaning_en": "At a faster speed.",
+"sentence": ""
+},
+{
+"phrase": "Double time",
+"meaning_en": "At a faster speed.",
+"sentence": ""
+},
+{
+"phrase": "Down the stairs",
+"meaning_en": "On a floor below.",
+"sentence": ""
+},
+{
+"phrase": "Each week",
+"meaning_en": "Without missing a week.",
+"sentence": ""
+},
+{
+"phrase": "Each year",
+"meaning_en": "Without missing a year.",
+"sentence": ""
+},
+{
+"phrase": "Early on",
+"meaning_en": "During an early stage.",
+"sentence": "Early on in her career."
+},
+{
+"phrase": "En bloc",
+"meaning_en": "All together.",
+"sentence": ""
+},
+{
+"phrase": "En clair",
+"meaning_en": "In ordinary language.",
+"sentence": "The diplomat sent the urgent message en clair to ensure it was understood immediately by everyone."
+},
+{
+"phrase": "En famille",
+"meaning_en": "In a casual way at home.",
+"sentence": "We'll have dinner en famille."
+},
+{
+"phrase": "En masse",
+"meaning_en": "All together.",
+"sentence": "The students turned out en masse."
+},
+{
+"phrase": "En route",
+"meaning_en": "On a route to some place.",
+"sentence": ""
+},
+{
+"phrase": "End on",
+"meaning_en": "With the end forward or toward the observer.",
+"sentence": ""
+},
+{
+"phrase": "Et al",
+"meaning_en": "And others (‘et al.’ is used as an abbreviation of ‘et alii’ (masculine plural) or ‘et aliae’ (feminine plural) or ‘et alia’ (neuter plural) when referring to a number of people)",
+"sentence": "The data reported by Smith et al."
+},
+{
+"phrase": "Et alia",
+"meaning_en": "And others (‘et al.’ is used as an abbreviation of ‘et alii’ (masculine plural) or ‘et aliae’ (feminine plural) or ‘et alia’ (neuter plural) when referring to a number of people)",
+"sentence": ""
+},
+{
+"phrase": "Et alibi",
+"meaning_en": "And elsewhere (used when referring to other occurrences in a text)",
+"sentence": ""
+},
+{
+"phrase": "Even a little",
+"meaning_en": "To any extent at all.",
+"sentence": ""
+},
+{
+"phrase": "Even as",
+"meaning_en": "At the same time as.",
+"sentence": "Even as he lay dying they argued over his estate."
+},
+{
+"phrase": "Even so",
+"meaning_en": "Despite anything to the contrary (usually preceding a concession)",
+"sentence": ""
+},
+{
+"phrase": "Ever so",
+"meaning_en": "(intensifier for adjectives) very.",
+"sentence": "She was ever so friendly."
+},
+{
+"phrase": "Every bit",
+"meaning_en": "To the same degree (often followed by ‘as’)",
+"sentence": "He is every bit as mean as she is."
+},
+{
+"phrase": "Every inch",
+"meaning_en": "In every way; completely.",
+"sentence": "He was every inch a statesman."
+},
+{
+"phrase": "Every night",
+"meaning_en": "At the end of each day.",
+"sentence": ""
+},
+{
+"phrase": "Every now and then",
+"meaning_en": "Occasionally.",
+"sentence": ""
+},
+{
+"phrase": "Every quarter",
+"meaning_en": "In three month intervals.",
+"sentence": ""
+},
+{
+"phrase": "Every so often",
+"meaning_en": "Occasionally.",
+"sentence": "Every so often she visits her father."
+},
+{
+"phrase": "Every week",
+"meaning_en": "Without missing a week.",
+"sentence": ""
+},
+{
+"phrase": "Every which way",
+"meaning_en": "In a random manner.",
+"sentence": ""
+},
+{
+"phrase": "Every year",
+"meaning_en": "Without missing a year.",
+"sentence": ""
+},
+{
+"phrase": "Ex cathedra",
+"meaning_en": "With the full authority of the office.",
+"sentence": "The pope must speak ex cathedra for an encyclical to be infallible."
+},
+{
+"phrase": "Ex officio",
+"meaning_en": "By virtue of position.",
+"sentence": "The president sat on the committee ex officio."
+},
+{
+"phrase": "Ex vivo",
+"meaning_en": "In an artificial environment outside the living organism.",
+"sentence": ""
+},
+{
+"phrase": "Face to face",
+"meaning_en": "Involving close contact; confronting each other.",
+"sentence": "They spoke face to face."
+},
+{
+"phrase": "Far and away",
+"meaning_en": "By a considerable margin.",
+"sentence": "It was far and away the best meal he had ever eaten."
+},
+{
+"phrase": "Far and near",
+"meaning_en": "Over great areas or distances; everywhere.",
+"sentence": "People came from far and near."
+},
+{
+"phrase": "Far and wide",
+"meaning_en": "Over great areas or distances; everywhere.",
+"sentence": "He traveled far and wide."
+},
+{
+"phrase": "First and last",
+"meaning_en": "Taking everything together.",
+"sentence": "She was first and last a scientist."
+},
+{
+"phrase": "First class",
+"meaning_en": "By first class conveyance; with first class accommodations.",
+"sentence": "We always travel first class."
+},
+{
+"phrase": "First of all",
+"meaning_en": "Before anything else.",
+"sentence": ""
+},
+{
+"phrase": "First off",
+"meaning_en": "Before anything else.",
+"sentence": ""
+},
+{
+"phrase": "Flat out",
+"meaning_en": "In a blunt direct manner.",
+"sentence": ""
+},
+{
+"phrase": "For a bargain price",
+"meaning_en": "For a relatively small amount of money.",
+"sentence": ""
+},
+{
+"phrase": "For a song",
+"meaning_en": "For a relatively small amount of money.",
+"sentence": "We bought the house for a song."
+},
+{
+"phrase": "For a while",
+"meaning_en": "For a brief period.",
+"sentence": "The baby was quiet for a while."
+},
+{
+"phrase": "For all intents and purposes",
+"meaning_en": "In every practical sense.",
+"sentence": ""
+},
+{
+"phrase": "For all practical purposes",
+"meaning_en": "In every practical sense.",
+"sentence": "The rest are for all practical purposes useless."
+},
+{
+"phrase": "For all the world",
+"meaning_en": "Under any circumstances.",
+"sentence": ""
+},
+{
+"phrase": "For any price",
+"meaning_en": "Under any circumstances.",
+"sentence": ""
+},
+{
+"phrase": "For anything",
+"meaning_en": "Under any circumstances.",
+"sentence": ""
+},
+{
+"phrase": "For certain",
+"meaning_en": "Definitely or positively (‘sure’ is sometimes used informally for ‘surely’)",
+"sentence": "They are coming, for certain."
+},
+{
+"phrase": "For dear life",
+"meaning_en": "As though your life was at stake.",
+"sentence": "He was running for dear life."
+},
+{
+"phrase": "For each one",
+"meaning_en": "To or from every one of two or more (considered individually)",
+"sentence": ""
+},
+{
+"phrase": "For example",
+"meaning_en": "As an example.",
+"sentence": "Take ribbon snakes, for example."
+},
+{
+"phrase": "For free",
+"meaning_en": "Without charge.",
+"sentence": ""
+},
+{
+"phrase": "For fun",
+"meaning_en": "Not intended seriously; meant as a joke.",
+"sentence": "Let's pretend we don't like Mary, just for fun."
+},
+{
+"phrase": "For good",
+"meaning_en": "For a long time without essential change.",
+"sentence": ""
+},
+{
+"phrase": "For good measure",
+"meaning_en": "In addition (as to close a deal)",
+"sentence": "The car salesman threw in the radio, for good measure."
+},
+{
+"phrase": "For instance",
+"meaning_en": "As an example.",
+"sentence": ""
+},
+{
+"phrase": "For keeps",
+"meaning_en": "For the winner to keep all.",
+"sentence": "They played for keeps."
+},
+{
+"phrase": "For love or money",
+"meaning_en": "Under any circumstances.",
+"sentence": "She wouldn't give up her pets for love or money."
+},
+{
+"phrase": "For one",
+"meaning_en": "As a particular one of several possibilities.",
+"sentence": "I for one feel very grateful."
+},
+{
+"phrase": "For short",
+"meaning_en": "As an abbreviation.",
+"sentence": "Call me Bob for short."
+},
+{
+"phrase": "For sure",
+"meaning_en": "Definitely or positively (‘sure’ is sometimes used informally for ‘surely’)",
+"sentence": "It's going to be a good day for sure."
+},
+{
+"phrase": "For that matter",
+"meaning_en": "As far as that is concerned.",
+"sentence": "For that matter I don't care either."
+},
+{
+"phrase": "For the asking",
+"meaning_en": "On the occasion of a request.",
+"sentence": "Advice was free for the asking."
+},
+{
+"phrase": "For the moment",
+"meaning_en": "Temporarily.",
+"sentence": ""
+},
+{
+"phrase": "For the most part",
+"meaning_en": "In large part; mainly or chiefly.",
+"sentence": ""
+},
+{
+"phrase": "For the time being",
+"meaning_en": "Temporarily.",
+"sentence": "We'll stop for the time being."
+},
+{
+"phrase": "Forever and a day",
+"meaning_en": "For a very long or seemingly endless time.",
+"sentence": "We had to wait forever and a day."
+},
+{
+"phrase": "Four times",
+"meaning_en": "By a factor of four.",
+"sentence": ""
+},
+{
+"phrase": "Free of charge",
+"meaning_en": "Without charge.",
+"sentence": ""
+},
+{
+"phrase": "From each one",
+"meaning_en": "To or from every one of two or more (considered individually)",
+"sentence": ""
+},
+{
+"phrase": "From head to toe",
+"meaning_en": "At all points from head to foot.",
+"sentence": ""
+},
+{
+"phrase": "From nowhere",
+"meaning_en": "Without warning.",
+"sentence": ""
+},
+{
+"phrase": "From pillar to post",
+"meaning_en": "From one place or situation to another.",
+"sentence": "We were driven from pillar to post."
+},
+{
+"phrase": "From scratch",
+"meaning_en": "From the beginning, especially without relying on resources or other advantages.",
+"sentence": "He baked the torte from scratch."
+},
+{
+"phrase": "From start to finish",
+"meaning_en": "Thoroughly.",
+"sentence": "He read the entire book from start to finish in one sitting."
+},
+{
+"phrase": "From the heart",
+"meaning_en": "Very sincerely.",
+"sentence": "He spoke from the heart."
+},
+{
+"phrase": "From time to time",
+"meaning_en": "Sporadically and infrequently.",
+"sentence": ""
+},
+{
+"phrase": "From way back",
+"meaning_en": "Since long ago.",
+"sentence": "She knows him from way back."
+},
+{
+"phrase": "Give or take",
+"meaning_en": "Plus or minus a small amount.",
+"sentence": "It is a mile away, give or take a few hundred yards."
+},
+{
+"phrase": "Hand and foot",
+"meaning_en": "In all ways possible.",
+"sentence": "They served him hand and foot."
+},
+{
+"phrase": "Hand and glove",
+"meaning_en": "In close cooperation.",
+"sentence": ""
+},
+{
+"phrase": "Hand in glove",
+"meaning_en": "In close cooperation.",
+"sentence": "They work hand in glove."
+},
+{
+"phrase": "Hand in hand",
+"meaning_en": "Together.",
+"sentence": "Hand in hand with hope went fear."
+},
+{
+"phrase": "Hand over fist",
+"meaning_en": "At a tremendous rate.",
+"sentence": "Made money hand over fist."
+},
+{
+"phrase": "Hand to hand",
+"meaning_en": "At close quarters.",
+"sentence": "Fought hand to hand."
+},
+{
+"phrase": "Hand to mouth",
+"meaning_en": "With barely enough money for immediate needs.",
+"sentence": "They lived from hand to mouth."
+},
+{
+"phrase": "Hands down",
+"meaning_en": "With no difficulty.",
+"sentence": ""
+},
+{
+"phrase": "Head and shoulders above",
+"meaning_en": "Outstandingly superior to.",
+"sentence": "In intelligence he was head and shoulders above the others in his class."
+},
+{
+"phrase": "Head over heels",
+"meaning_en": "In disorderly haste.",
+"sentence": "We ran head over heels toward the shelter."
+},
+{
+"phrase": "Heart and soul",
+"meaning_en": "With complete faith.",
+"sentence": "She was with him heart and soul."
+},
+{
+"phrase": "Heels over head",
+"meaning_en": "In disorderly haste.",
+"sentence": ""
+},
+{
+"phrase": "Here and there",
+"meaning_en": "In or to various places; first this place and then that; location pronoun.",
+"sentence": "He worked here and there but never for long in one town."
+},
+{
+"phrase": "High and low",
+"meaning_en": "Everywhere.",
+"sentence": "Searched high and low."
+},
+{
+"phrase": "High up",
+"meaning_en": "At a great altitude.",
+"sentence": ""
+},
+{
+"phrase": "Higher up",
+"meaning_en": "In or to a place that is higher.",
+"sentence": ""
+},
+{
+"phrase": "Id est",
+"meaning_en": "A figure of speech used as a way to provide further information, or to be more specific or exact about something.",
+"sentence": ""
+},
+{
+"phrase": "If not",
+"meaning_en": "Perhaps; indicating possibility of being more remarkable (greater or better or sooner) than.",
+"sentence": "Will yield 10% if not more."
+},
+{
+"phrase": "In a beastly manner",
+"meaning_en": "In the manner of a beast.",
+"sentence": ""
+},
+{
+"phrase": "In a broad way",
+"meaning_en": "In a general fashion.",
+"sentence": ""
+},
+{
+"phrase": "In a flash",
+"meaning_en": "Without any delay.",
+"sentence": ""
+},
+{
+"phrase": "In a heartfelt way",
+"meaning_en": "In a sincere and heartfelt manner.",
+"sentence": ""
+},
+{
+"phrase": "In a higher place",
+"meaning_en": "In or to a place that is higher.",
+"sentence": ""
+},
+{
+"phrase": "In a nutshell",
+"meaning_en": "Summed up briefly.",
+"sentence": "Gave the facts in a nutshell."
+},
+{
+"phrase": "In a pig's eye",
+"meaning_en": "Absolutely not; never.",
+"sentence": "He says he'll have the project finished by tomorrow, but in a pig's eye he will."
+},
+{
+"phrase": "In a similar way",
+"meaning_en": "With something of the same kind.",
+"sentence": ""
+},
+{
+"phrase": "In a way",
+"meaning_en": "From some points of view.",
+"sentence": "She was right in a way."
+},
+{
+"phrase": "In absentia",
+"meaning_en": "While absent; although absent.",
+"sentence": "He was sentenced in absentia."
+},
+{
+"phrase": "In addition",
+"meaning_en": "Denoting additional information.",
+"sentence": ""
+},
+{
+"phrase": "In advance",
+"meaning_en": "Ahead of time; in anticipation.",
+"sentence": "When you pay ahead (or in advance) you receive a discount."
+},
+{
+"phrase": "In all",
+"meaning_en": "With everything included or counted.",
+"sentence": ""
+},
+{
+"phrase": "In all likelihood",
+"meaning_en": "With considerable certainty; without much doubt.",
+"sentence": "In all likelihood we are headed for war."
+},
+{
+"phrase": "In all probability",
+"meaning_en": "With considerable certainty; without much doubt.",
+"sentence": ""
+},
+{
+"phrase": "In an elaborate way",
+"meaning_en": "With elaboration.",
+"sentence": ""
+},
+{
+"phrase": "In and of itself",
+"meaning_en": "With respect to its inherent nature.",
+"sentence": ""
+},
+{
+"phrase": "In any case",
+"meaning_en": "Used to indicate that a statement explains or supports a previous statement.",
+"sentence": "I don't know how it started; in any case, there was a brief scuffle."
+},
+{
+"phrase": "In any event",
+"meaning_en": "Used to indicate that a statement explains or supports a previous statement.",
+"sentence": "In any event, the government faced a serious protest."
+},
+{
+"phrase": "In apposition",
+"meaning_en": "In an appositive manner.",
+"sentence": ""
+},
+{
+"phrase": "In arrears",
+"meaning_en": "In debt.",
+"sentence": "In arrears with their utility bills."
+},
+{
+"phrase": "In both ears",
+"meaning_en": "In a binaural manner.",
+"sentence": ""
+},
+{
+"phrase": "In brief",
+"meaning_en": "In a concise manner; in a few words.",
+"sentence": ""
+},
+{
+"phrase": "In camera",
+"meaning_en": "Kept private or confined to those intimately concerned.",
+"sentence": ""
+},
+{
+"phrase": "In case",
+"meaning_en": "If there happens to be need.",
+"sentence": "In case of trouble call 911."
+},
+{
+"phrase": "In circles",
+"meaning_en": "Without making progress.",
+"sentence": "The candidates talked in circles."
+},
+{
+"phrase": "In cold blood",
+"meaning_en": "Emotionlessly and heartlessly; with deliberate cruelty or callousness.",
+"sentence": ""
+},
+{
+"phrase": "In common",
+"meaning_en": "Of joint or shared interest.",
+"sentence": "We have several things in common."
+},
+{
+"phrase": "In common with",
+"meaning_en": "In the same way as; like.",
+"sentence": "In common with families in general, one parent families have been getting smaller."
+},
+{
+"phrase": "In concert",
+"meaning_en": "With a common plan.",
+"sentence": "Act in concert."
+},
+{
+"phrase": "In conclusion",
+"meaning_en": "The item at the end.",
+"sentence": ""
+},
+{
+"phrase": "In darkness",
+"meaning_en": "Without light.",
+"sentence": ""
+},
+{
+"phrase": "In detail",
+"meaning_en": "Thoroughly (including all important particulars)",
+"sentence": "He studied the snake in detail."
+},
+{
+"phrase": "In due course",
+"meaning_en": "At the appropriate time.",
+"sentence": "We'll get to this question in due course."
+},
+{
+"phrase": "In due season",
+"meaning_en": "At the appropriate time.",
+"sentence": ""
+},
+{
+"phrase": "In due time",
+"meaning_en": "At the appropriate time.",
+"sentence": ""
+},
+{
+"phrase": "In earnest",
+"meaning_en": "In a serious manner.",
+"sentence": "She started studying snakes in earnest."
+},
+{
+"phrase": "In effect",
+"meaning_en": "In actuality or reality or fact.",
+"sentence": "In effect, they had no choice."
+},
+{
+"phrase": "In essence",
+"meaning_en": "With regard to fundamentals although not concerning details.",
+"sentence": ""
+},
+{
+"phrase": "In everyone's thoughts",
+"meaning_en": "On everybody's mind.",
+"sentence": ""
+},
+{
+"phrase": "In extremis",
+"meaning_en": "At the point of death.",
+"sentence": "The doctors worked tirelessly to save the patient who was in extremis."
+},
+{
+"phrase": "In fact",
+"meaning_en": "In reality or actuality.",
+"sentence": "In fact, it was a wonder anyone survived."
+},
+{
+"phrase": "In fiscal matters",
+"meaning_en": "In financial matters.",
+"sentence": ""
+},
+{
+"phrase": "In flight",
+"meaning_en": "Flying through the air.",
+"sentence": "We saw the ducks in flight."
+},
+{
+"phrase": "In front",
+"meaning_en": "At or in the front.",
+"sentence": "We couldn't see over the heads of the people in front."
+},
+{
+"phrase": "In full",
+"meaning_en": "Referring to a quantity.",
+"sentence": "The amount was paid in full."
+},
+{
+"phrase": "In full action",
+"meaning_en": "Proceeding with full vigor.",
+"sentence": ""
+},
+{
+"phrase": "In full swing",
+"meaning_en": "Proceeding with full vigor.",
+"sentence": "The party was in full swing."
+},
+{
+"phrase": "In fun",
+"meaning_en": "Not intended seriously; meant as a joke.",
+"sentence": "Some of the girls did go to extremes, but it was all in fun."
+},
+{
+"phrase": "In general",
+"meaning_en": "Without distinction of one from others.",
+"sentence": "He is interested in snakes in general."
+},
+{
+"phrase": "In good spirits",
+"meaning_en": "Without losing equilibrium.",
+"sentence": ""
+},
+{
+"phrase": "In good time",
+"meaning_en": "At the appropriate time.",
+"sentence": ""
+},
+{
+"phrase": "In great confusion",
+"meaning_en": "In disorderly haste.",
+"sentence": ""
+},
+{
+"phrase": "In hand",
+"meaning_en": "Under control.",
+"sentence": "The riots were in hand."
+},
+{
+"phrase": "In haste",
+"meaning_en": "In a hurried or hasty manner.",
+"sentence": "Sold in haste and at a sacrifice."
+},
+{
+"phrase": "In her own right",
+"meaning_en": "By title vested in yourself or by virtue of qualifications that you have achieved.",
+"sentence": "She's a rich woman in her own right rather than by inheritance."
+},
+{
+"phrase": "In hiding",
+"meaning_en": "Quietly in concealment.",
+"sentence": ""
+},
+{
+"phrase": "In his own right",
+"meaning_en": "By title vested in yourself or by virtue of qualifications that you have achieved.",
+"sentence": "A peer in his own right."
+},
+{
+"phrase": "In its own right",
+"meaning_en": "By title vested in yourself or by virtue of qualifications that you have achieved.",
+"sentence": "A fine opera in its own right."
+},
+{
+"phrase": "In kind",
+"meaning_en": "With something of the same kind.",
+"sentence": "She pays him back in kind."
+},
+{
+"phrase": "In large quantities",
+"meaning_en": "On a large scale without careful discrimination.",
+"sentence": ""
+},
+{
+"phrase": "In line",
+"meaning_en": "One behind another in a line or queue.",
+"sentence": "They waited in line for the tickets."
+},
+{
+"phrase": "In loco parentis",
+"meaning_en": "In place of the parents.",
+"sentence": "We had to punish this child in loco parentis."
+},
+{
+"phrase": "In low spirits",
+"meaning_en": "In a dejected manner.",
+"sentence": ""
+},
+{
+"phrase": "In name",
+"meaning_en": "By title or repute though not in fact.",
+"sentence": "He's a doctor in name only."
+},
+{
+"phrase": "In name only",
+"meaning_en": "By title or repute though not in fact.",
+"sentence": "He's a doctor in name only."
+},
+{
+"phrase": "In no time",
+"meaning_en": "In a relatively short time.",
+"sentence": "She finished the assignment in no time."
+},
+{
+"phrase": "In on",
+"meaning_en": "Participating in or knowledgeable out.",
+"sentence": "Was in on the scheme."
+},
+{
+"phrase": "In one case",
+"meaning_en": "On one occasion.",
+"sentence": ""
+},
+{
+"phrase": "In one ear",
+"meaning_en": "In a monaural manner.",
+"sentence": ""
+},
+{
+"phrase": "In one's own right",
+"meaning_en": "By title vested in yourself or by virtue of qualifications that you have achieved.",
+"sentence": ""
+},
+{
+"phrase": "In other words",
+"meaning_en": "Otherwise stated.",
+"sentence": "In other words, we are broke."
+},
+{
+"phrase": "In part",
+"meaning_en": "To some extent; in some degree; not wholly.",
+"sentence": ""
+},
+{
+"phrase": "In particular",
+"meaning_en": "Specifically or especially distinguished from others.",
+"sentence": "Recommended one book in particular."
+},
+{
+"phrase": "In passing",
+"meaning_en": "Incidentally; in the course of doing something else.",
+"sentence": "He made this remark in passing."
+},
+{
+"phrase": "In perpetuity",
+"meaning_en": "For life.",
+"sentence": "Desire happiness in perpetuity."
+},
+{
+"phrase": "In person",
+"meaning_en": "In the flesh; without involving anyone else.",
+"sentence": "He appeared in person."
+},
+{
+"phrase": "In place",
+"meaning_en": "In the original or natural place or site.",
+"sentence": "The archeologists left the pottery in place."
+},
+{
+"phrase": "In point of fact",
+"meaning_en": "In reality or actuality.",
+"sentence": ""
+},
+{
+"phrase": "In principle",
+"meaning_en": "With regard to fundamentals although not concerning details.",
+"sentence": "In principle, we agree."
+},
+{
+"phrase": "In private",
+"meaning_en": "Kept private or confined to those intimately concerned.",
+"sentence": "He was questioned in private."
+},
+{
+"phrase": "In public",
+"meaning_en": "In a manner accessible to or observable by the public; openly.",
+"sentence": ""
+},
+{
+"phrase": "In reality",
+"meaning_en": "Used to imply that one would expect the fact to be the opposite of that stated; surprisingly.",
+"sentence": "They thought they made the rules but in reality they were only puppets."
+},
+{
+"phrase": "In return",
+"meaning_en": "(often followed by ‘for’) in exchange or in reciprocation.",
+"sentence": "Gave up our seats on the plane and in return received several hundred dollars and seats on the next plane out."
+},
+{
+"phrase": "In secret",
+"meaning_en": "In secrecy; not openly.",
+"sentence": "They arranged to meet in secret."
+},
+{
+"phrase": "In short",
+"meaning_en": "In a concise manner; in a few words.",
+"sentence": ""
+},
+{
+"phrase": "In short order",
+"meaning_en": "With speed.",
+"sentence": "John got ready in short order."
+},
+{
+"phrase": "In situ",
+"meaning_en": "In position.",
+"sentence": "The archaeologists carefully studied the ancient artifacts in situ to preserve their historical context."
+},
+{
+"phrase": "In so far",
+"meaning_en": "To the degree or extent that.",
+"sentence": ""
+},
+{
+"phrase": "In so far as",
+"meaning_en": "To the degree or extent that.",
+"sentence": ""
+},
+{
+"phrase": "In someone's way",
+"meaning_en": "Forming a hindrance, impediment, or obstruction.",
+"sentence": ""
+},
+{
+"phrase": "In spades",
+"meaning_en": "Without question and beyond doubt.",
+"sentence": "She told him off in spades."
+},
+{
+"phrase": "In spite of appearance",
+"meaning_en": "In reality.",
+"sentence": ""
+},
+{
+"phrase": "In stages",
+"meaning_en": "A little bit at a time.",
+"sentence": ""
+},
+{
+"phrase": "In stride",
+"meaning_en": "Without losing equilibrium.",
+"sentence": "She took all his criticism in stride."
+},
+{
+"phrase": "In tandem",
+"meaning_en": "One behind the other.",
+"sentence": "Riding horses down the path in tandem."
+},
+{
+"phrase": "In that",
+"meaning_en": "(formal) in or into that thing or place.",
+"sentence": ""
+},
+{
+"phrase": "In the adjacent apartment",
+"meaning_en": "At or in or to the adjacent residence.",
+"sentence": ""
+},
+{
+"phrase": "In the adjacent house",
+"meaning_en": "At or in or to the adjacent residence.",
+"sentence": ""
+},
+{
+"phrase": "In the air",
+"meaning_en": "On everybody's mind.",
+"sentence": "Christmas was in the air."
+},
+{
+"phrase": "In the bargain",
+"meaning_en": "In addition; over and above what is expected.",
+"sentence": "He lost his wife in the bargain."
+},
+{
+"phrase": "In the beginning",
+"meaning_en": "With reference to the origin or beginning.",
+"sentence": ""
+},
+{
+"phrase": "In the end",
+"meaning_en": "Eventually or after a lengthy period of time.",
+"sentence": "She will succeed in the end."
+},
+{
+"phrase": "In the first place",
+"meaning_en": "Before now.",
+"sentence": "Why didn't you tell me in the first place?"
+},
+{
+"phrase": "In the lead",
+"meaning_en": "Leading or ahead in a competition.",
+"sentence": "Our candidate is in the lead in the polls."
+},
+{
+"phrase": "In the least",
+"meaning_en": "To any extent at all.",
+"sentence": "Are you in the least interested?"
+},
+{
+"phrase": "In the lurch",
+"meaning_en": "In a difficult or vulnerable position.",
+"sentence": "He resigned and left me in the lurch."
+},
+{
+"phrase": "In the main",
+"meaning_en": "For the most part.",
+"sentence": ""
+},
+{
+"phrase": "In the meantime",
+"meaning_en": "During the intervening time.",
+"sentence": "In the meantime the police were notified."
+},
+{
+"phrase": "In the midst",
+"meaning_en": "The middle or central part or point.",
+"sentence": "In the midst of the forest."
+},
+{
+"phrase": "In the nick of time",
+"meaning_en": "At the last possible moment.",
+"sentence": "She was saved in the nick of time."
+},
+{
+"phrase": "In the same breath",
+"meaning_en": "Almost simultaneously.",
+"sentence": "She praised and criticized him in the same breath."
+},
+{
+"phrase": "In the south",
+"meaning_en": "In a southern direction.",
+"sentence": ""
+},
+{
+"phrase": "In the way",
+"meaning_en": "Forming a hindrance, impediment, or obstruction.",
+"sentence": ""
+},
+{
+"phrase": "In theory",
+"meaning_en": "With regard to fundamentals although not concerning details.",
+"sentence": ""
+},
+{
+"phrase": "In this",
+"meaning_en": "(formal) in or into that thing or place.",
+"sentence": ""
+},
+{
+"phrase": "In time",
+"meaning_en": "Within an indefinite time or at an unspecified future time.",
+"sentence": "In time they came to accept the harsh reality."
+},
+{
+"phrase": "In toto",
+"meaning_en": "In entirety.",
+"sentence": "They bought the business in toto."
+},
+{
+"phrase": "In truth",
+"meaning_en": "In fact (used as intensifiers or sentence modifiers)",
+"sentence": "In truth, moral decay hastened the decline of the Roman Empire."
+},
+{
+"phrase": "In turn",
+"meaning_en": "In proper order or sequence.",
+"sentence": "Talked to each child in turn."
+},
+{
+"phrase": "In two ways",
+"meaning_en": "In a twofold manner.",
+"sentence": ""
+},
+{
+"phrase": "In utero",
+"meaning_en": "In the uterus.",
+"sentence": "The child was infected in utero from the mother."
+},
+{
+"phrase": "In vacuo",
+"meaning_en": "In isolation and without reference to anything else.",
+"sentence": "Without considering any real-world applications, it was analyzed in vacuo."
+},
+{
+"phrase": "In vain",
+"meaning_en": "To no avail.",
+"sentence": "He looked for her in vain."
+},
+{
+"phrase": "In vitro",
+"meaning_en": "In an artificial environment outside the living organism.",
+"sentence": "An egg fertilized in vitro."
+},
+{
+"phrase": "In vivo",
+"meaning_en": "In the living organism.",
+"sentence": "Studies conducted in vivo."
+},
+{
+"phrase": "In writing",
+"meaning_en": "As written or printed.",
+"sentence": ""
+},
+{
+"phrase": "Inside out",
+"meaning_en": "With the inside facing outward.",
+"sentence": "She turned the shirt inside out."
+},
+{
+"phrase": "Inter alia",
+"meaning_en": "Among other things.",
+"sentence": "The committee recommended, inter alia, that he be promoted."
+},
+{
+"phrase": "Into the bargain",
+"meaning_en": "In addition; over and above what is expected.",
+"sentence": ""
+},
+{
+"phrase": "Into the wind",
+"meaning_en": "In the direction opposite to the direction the wind is blowing.",
+"sentence": ""
+},
+{
+"phrase": "Ipso facto",
+"meaning_en": "By the fact itself.",
+"sentence": "Ipso facto, her innocence was established."
+},
+{
+"phrase": "Just about",
+"meaning_en": "(of quantities) imprecise but fairly close to correct.",
+"sentence": "In just about a minute."
+},
+{
+"phrase": "Just as",
+"meaning_en": "At the same time as.",
+"sentence": "The building collapsed just as he arrived."
+},
+{
+"phrase": "Just in case",
+"meaning_en": "If there happens to be need.",
+"sentence": "I have money, just in case."
+},
+{
+"phrase": "Just in time",
+"meaning_en": "At the last possible moment.",
+"sentence": ""
+},
+{
+"phrase": "Just now",
+"meaning_en": "Only a moment ago.",
+"sentence": "The sun just now came out."
+},
+{
+"phrase": "Just right",
+"meaning_en": "In every detail.",
+"sentence": ""
+},
+{
+"phrase": "Just so",
+"meaning_en": "In a careful manner.",
+"sentence": "You must treat this plant just so."
+},
+{
+"phrase": "Just then",
+"meaning_en": "At a particular time in the past.",
+"sentence": "Just then the bugle sounded."
+},
+{
+"phrase": "Kind of",
+"meaning_en": "To some (great or small) extent.",
+"sentence": "He is kind of shy."
+},
+{
+"phrase": "Lang syne",
+"meaning_en": "Of the distant or comparatively distant past.",
+"sentence": "‘lang syne’ is Scottish."
+},
+{
+"phrase": "Last but not least",
+"meaning_en": "In addition to all the foregoing.",
+"sentence": ""
+},
+{
+"phrase": "Last not least",
+"meaning_en": "In addition to all the foregoing.",
+"sentence": "Last not least, he plays the saxophone."
+},
+{
+"phrase": "Later on",
+"meaning_en": "Happening at a time subsequent to a reference time.",
+"sentence": ""
+},
+{
+"phrase": "Least of all",
+"meaning_en": "Especially not.",
+"sentence": "Nobody, least of all Joe, agreed with me."
+},
+{
+"phrase": "Let alone",
+"meaning_en": "Much less.",
+"sentence": "She can't boil potatoes, let alone cook a meal."
+},
+{
+"phrase": "Lickety cut",
+"meaning_en": "At full speed.",
+"sentence": ""
+},
+{
+"phrase": "Lickety split",
+"meaning_en": "At full speed.",
+"sentence": ""
+},
+{
+"phrase": "Like a shot",
+"meaning_en": "Without delay or hesitation; with no time intervening.",
+"sentence": ""
+},
+{
+"phrase": "Like an expert",
+"meaning_en": "In an expert manner.",
+"sentence": ""
+},
+{
+"phrase": "Like blue murder",
+"meaning_en": "At top speed.",
+"sentence": "He was off down the road like blue murder."
+},
+{
+"phrase": "Like clockwork",
+"meaning_en": "With regularity and precision.",
+"sentence": "The rocket launch went off like clockwork."
+},
+{
+"phrase": "Like crazy",
+"meaning_en": "(informal) with great speed or effort or intensity; used for emphasis.",
+"sentence": "Drove like crazy."
+},
+{
+"phrase": "Like fun",
+"meaning_en": "Used ironically to indicate the opposite of what is stated.",
+"sentence": ""
+},
+{
+"phrase": "Like hell",
+"meaning_en": "(informal) with great speed or effort or intensity; used for emphasis.",
+"sentence": "Worked like hell to get the job done."
+},
+{
+"phrase": "Like kings",
+"meaning_en": "In a royal manner.",
+"sentence": ""
+},
+{
+"phrase": "Like mad",
+"meaning_en": "(informal) with great speed or effort or intensity; used for emphasis.",
+"sentence": ""
+},
+{
+"phrase": "Like royalty",
+"meaning_en": "In a royal manner.",
+"sentence": ""
+},
+{
+"phrase": "Like sin",
+"meaning_en": "(informal) with great speed or effort or intensity; used for emphasis.",
+"sentence": "Ran like sin for the storm cellar."
+},
+{
+"phrase": "Like the devil",
+"meaning_en": "(informal) with great speed or effort or intensity; used for emphasis.",
+"sentence": "Fought like the devil."
+},
+{
+"phrase": "Like thunder",
+"meaning_en": "(informal) with great speed or effort or intensity; used for emphasis.",
+"sentence": "Work like thunder."
+},
+{
+"phrase": "Little by little",
+"meaning_en": "A little bit at a time.",
+"sentence": ""
+},
+{
+"phrase": "Long ago",
+"meaning_en": "Of the distant or comparatively distant past.",
+"sentence": "We met once long ago."
+},
+{
+"phrase": "Long since",
+"meaning_en": "Of the distant or comparatively distant past.",
+"sentence": "He has long since given up mountain climbing."
+},
+{
+"phrase": "Magna cum laude",
+"meaning_en": "With high honor.",
+"sentence": "He graduated magna cum laude."
+},
+{
+"phrase": "Month by month",
+"meaning_en": "For an indefinite number of months.",
+"sentence": "Month by month, the betrayal gnawed at his heart."
+},
+{
+"phrase": "More and more",
+"meaning_en": "Advancing in amount or intensity.",
+"sentence": ""
+},
+{
+"phrase": "More often than not",
+"meaning_en": "Usually; as a rule.",
+"sentence": ""
+},
+{
+"phrase": "More or less",
+"meaning_en": "(of quantities) imprecise but fairly close to correct.",
+"sentence": "Holds 3 gallons, more or less."
+},
+{
+"phrase": "Most especially",
+"meaning_en": "Above and beyond all other consideration.",
+"sentence": ""
+},
+{
+"phrase": "Most importantly",
+"meaning_en": "Above and beyond all other consideration.",
+"sentence": ""
+},
+{
+"phrase": "Much as",
+"meaning_en": "In a similar way.",
+"sentence": ""
+},
+{
+"phrase": "Mutatis mutandis",
+"meaning_en": "With the necessary changes having been carried out.",
+"sentence": "The arguments in the proof can be followed mutatis mutandis."
+},
+{
+"phrase": "Neck and neck",
+"meaning_en": "Even or close in a race or competition or comparison.",
+"sentence": "The horses ran neck and neck."
+},
+{
+"phrase": "Nem con",
+"meaning_en": "Of one mind; without dissent.",
+"sentence": ""
+},
+{
+"phrase": "Never again",
+"meaning_en": "At no time hereafter.",
+"sentence": ""
+},
+{
+"phrase": "Next door",
+"meaning_en": "At or in or to the adjacent residence.",
+"sentence": "The criminal had been living next door all this time."
+},
+{
+"phrase": "Nine times",
+"meaning_en": "By a factor of nine.",
+"sentence": ""
+},
+{
+"phrase": "Nip and tuck",
+"meaning_en": "Even or close in a race or competition or comparison.",
+"sentence": "He won nip and tuck."
+},
+{
+"phrase": "No doubt",
+"meaning_en": "Admittedly.",
+"sentence": ""
+},
+{
+"phrase": "No end",
+"meaning_en": "On and on for a long time.",
+"sentence": "The child cried no end."
+},
+{
+"phrase": "No longer",
+"meaning_en": "Not now.",
+"sentence": ""
+},
+{
+"phrase": "No matter",
+"meaning_en": "In spite of everything; without regard to drawbacks.",
+"sentence": ""
+},
+{
+"phrase": "No matter what happens",
+"meaning_en": "In spite of all obstacles.",
+"sentence": ""
+},
+{
+"phrase": "No more",
+"meaning_en": "Not now.",
+"sentence": "She is no more."
+},
+{
+"phrase": "Not by a blame sight",
+"meaning_en": "Definitely not.",
+"sentence": ""
+},
+{
+"phrase": "Not by a long sight",
+"meaning_en": "Definitely not.",
+"sentence": "And that isn't all, not by a long sight."
+},
+{
+"phrase": "Not to mention",
+"meaning_en": "Much less.",
+"sentence": ""
+},
+{
+"phrase": "Now and again",
+"meaning_en": "Sporadically and infrequently.",
+"sentence": "Now and again she would take her favorite book from the shelf and read to us."
+},
+{
+"phrase": "Now and then",
+"meaning_en": "Sporadically and infrequently.",
+"sentence": "As we drove along, the beautiful scenery now and then attracted his attention."
+},
+{
+"phrase": "Now now",
+"meaning_en": "Interjection of rebuke.",
+"sentence": ""
+},
+{
+"phrase": "Of a sudden",
+"meaning_en": "Quickly and without warning.",
+"sentence": ""
+},
+{
+"phrase": "Of all time",
+"meaning_en": "At any time.",
+"sentence": "The best con man of all time."
+},
+{
+"phrase": "Of course",
+"meaning_en": "As might be expected.",
+"sentence": ""
+},
+{
+"phrase": "Of late",
+"meaning_en": "In the recent past.",
+"sentence": "Feeling better of late."
+},
+{
+"phrase": "Of necessity",
+"meaning_en": "In such a manner as could not be otherwise.",
+"sentence": ""
+},
+{
+"phrase": "Off and on",
+"meaning_en": "Not regularly.",
+"sentence": "They phone each other off and on."
+},
+{
+"phrase": "Off the beaten path",
+"meaning_en": "Not along the usual route.",
+"sentence": "In order to experience something different, you need to go off the beaten path."
+},
+{
+"phrase": "Off the beaten track",
+"meaning_en": "Not along the usual route.",
+"sentence": ""
+},
+{
+"phrase": "Off the cuff",
+"meaning_en": "Without preparation.",
+"sentence": "The presidential candidate made a remark off the cuff."
+},
+{
+"phrase": "Off the record",
+"meaning_en": "Not for quotation.",
+"sentence": "He spoke to the reporter off the record."
+},
+{
+"phrase": "On a higher floor",
+"meaning_en": "On a floor above.",
+"sentence": ""
+},
+{
+"phrase": "On a lower floor",
+"meaning_en": "On a floor below.",
+"sentence": ""
+},
+{
+"phrase": "On a regular basis",
+"meaning_en": "In a regular manner.",
+"sentence": ""
+},
+{
+"phrase": "On air",
+"meaning_en": "Very happily.",
+"sentence": "We were floating on air at the news."
+},
+{
+"phrase": "On all fours",
+"meaning_en": "On hands and knees.",
+"sentence": "He got down on all fours to play with his grandson."
+},
+{
+"phrase": "On an individual basis",
+"meaning_en": "Apart from others.",
+"sentence": ""
+},
+{
+"phrase": "On an irregular basis",
+"meaning_en": "In an inconstant manner, not according to fixed rate or schedule.",
+"sentence": ""
+},
+{
+"phrase": "On and off",
+"meaning_en": "Not regularly.",
+"sentence": ""
+},
+{
+"phrase": "On approval",
+"meaning_en": "For examination (with an option to buy)",
+"sentence": "They took the VCR on approval."
+},
+{
+"phrase": "On average",
+"meaning_en": "Typically.",
+"sentence": "On average he watches three movies a week."
+},
+{
+"phrase": "On board",
+"meaning_en": "On a ship, train, plane or other vehicle.",
+"sentence": ""
+},
+{
+"phrase": "On camera",
+"meaning_en": "Within range of a movie or television camera.",
+"sentence": "The senator didn't realize that he was speaking on camera."
+},
+{
+"phrase": "On earth",
+"meaning_en": "Used with question words to convey surprise.",
+"sentence": "What on earth are you doing?"
+},
+{
+"phrase": "On faith",
+"meaning_en": "With trust and confidence.",
+"sentence": "We accepted him on faith."
+},
+{
+"phrase": "On it",
+"meaning_en": "On that.",
+"sentence": ""
+},
+{
+"phrase": "On occasion",
+"meaning_en": "Sporadically and infrequently.",
+"sentence": "They visit New York on occasion."
+},
+{
+"phrase": "On one hand",
+"meaning_en": "From one point of view.",
+"sentence": ""
+},
+{
+"phrase": "On one's coattails",
+"meaning_en": "Immediately following or undeservedly benefiting from.",
+"sentence": ""
+},
+{
+"phrase": "On paper",
+"meaning_en": "As written or printed.",
+"sentence": "This is exactly what the composer had set down on paper."
+},
+{
+"phrase": "On purpose",
+"meaning_en": "With intention; in an intentional manner.",
+"sentence": ""
+},
+{
+"phrase": "On request",
+"meaning_en": "On the occasion of a request.",
+"sentence": ""
+},
+{
+"phrase": "On that",
+"meaning_en": "On that.",
+"sentence": ""
+},
+{
+"phrase": "On the average",
+"meaning_en": "Typically.",
+"sentence": ""
+},
+{
+"phrase": "On the button",
+"meaning_en": "Just as it should be.",
+"sentence": ""
+},
+{
+"phrase": "On the coattails",
+"meaning_en": "Immediately following or undeservedly benefiting from.",
+"sentence": "The CEO resigned on the coattails of the scandal."
+},
+{
+"phrase": "On the contrary",
+"meaning_en": "Contrary to expectations.",
+"sentence": "He didn't stay home; on the contrary, he went out with his friends."
+},
+{
+"phrase": "On the dot",
+"meaning_en": "Just as it should be.",
+"sentence": ""
+},
+{
+"phrase": "On the face of it",
+"meaning_en": "From appearances alone.",
+"sentence": "On the face of it the problem seems minor."
+},
+{
+"phrase": "On the fly",
+"meaning_en": "While in motion.",
+"sentence": "He caught the punt on the fly."
+},
+{
+"phrase": "On the nose",
+"meaning_en": "Just as it should be.",
+"sentence": ""
+},
+{
+"phrase": "On the one hand",
+"meaning_en": "From one point of view.",
+"sentence": "On the one hand, she is a gifted chemist."
+},
+{
+"phrase": "On the other hand",
+"meaning_en": "(contrastive) from another point of view.",
+"sentence": "On the other hand, she is too ambitious for her own good."
+},
+{
+"phrase": "On the side",
+"meaning_en": "Without official approval.",
+"sentence": "He had made some money on the side."
+},
+{
+"phrase": "On the sly",
+"meaning_en": "In a furtive manner.",
+"sentence": ""
+},
+{
+"phrase": "On the spot",
+"meaning_en": "Without delay or immediately.",
+"sentence": "We hired her on the spot."
+},
+{
+"phrase": "On the spur of the moment",
+"meaning_en": "Quickly and without warning.",
+"sentence": "He decided to go to Chicago on the spur of the moment."
+},
+{
+"phrase": "On the way",
+"meaning_en": "On a route to some place.",
+"sentence": "Help is on the way."
+},
+{
+"phrase": "On the whole",
+"meaning_en": "With everything considered (and neglecting details)",
+"sentence": ""
+},
+{
+"phrase": "On the wing",
+"meaning_en": "Flying through the air.",
+"sentence": ""
+},
+{
+"phrase": "On time",
+"meaning_en": "At the expected or proper time.",
+"sentence": "She always arrives on time."
+},
+{
+"phrase": "Once again",
+"meaning_en": "Anew.",
+"sentence": ""
+},
+{
+"phrase": "Once and for all",
+"meaning_en": "In a conclusive way.",
+"sentence": ""
+},
+{
+"phrase": "Once in a while",
+"meaning_en": "Sporadically and infrequently.",
+"sentence": ""
+},
+{
+"phrase": "Once more",
+"meaning_en": "Anew.",
+"sentence": ""
+},
+{
+"phrase": "One after another",
+"meaning_en": "Following one another in quick succession.",
+"sentence": "The participants presented their findings one after another."
+},
+{
+"phrase": "One after the other",
+"meaning_en": "Following one another in quick succession.",
+"sentence": ""
+},
+{
+"phrase": "One at a time",
+"meaning_en": "In succession.",
+"sentence": ""
+},
+{
+"phrase": "One by one",
+"meaning_en": "In succession.",
+"sentence": "The prisoners came out one by one."
+},
+{
+"phrase": "One time",
+"meaning_en": "On one occasion.",
+"sentence": ""
+},
+{
+"phrase": "Only too",
+"meaning_en": "To a high degree.",
+"sentence": ""
+},
+{
+"phrase": "Or else",
+"meaning_en": "In place of, or as an alternative to.",
+"sentence": ""
+},
+{
+"phrase": "Or so",
+"meaning_en": "(of quantities) imprecise but fairly close to correct.",
+"sentence": "20 or so people were at the party."
+},
+{
+"phrase": "Out and away",
+"meaning_en": "By a considerable margin.",
+"sentence": ""
+},
+{
+"phrase": "Out front",
+"meaning_en": "Leading or ahead in a competition.",
+"sentence": "Way out front in the race."
+},
+{
+"phrase": "Out loud",
+"meaning_en": "Using the voice; not silently.",
+"sentence": "He laughed out loud."
+},
+{
+"phrase": "Out of",
+"meaning_en": "Motivated by.",
+"sentence": "Idleness is the trait of being idle out of a reluctance to work."
+},
+{
+"phrase": "Out of doors",
+"meaning_en": "Outside a building.",
+"sentence": ""
+},
+{
+"phrase": "Out of hand",
+"meaning_en": "Out of control.",
+"sentence": "The riots got out of hand."
+},
+{
+"phrase": "Out of nothing",
+"meaning_en": "Without warning.",
+"sentence": ""
+},
+{
+"phrase": "Out of place",
+"meaning_en": "In a setting where one is or feels inappropriate or incongruous.",
+"sentence": "He felt out of place in the lingerie shop."
+},
+{
+"phrase": "Out of sight",
+"meaning_en": "No longer visible.",
+"sentence": "The ship disappeared behind the horizon and passed out of sight."
+},
+{
+"phrase": "Out of the blue",
+"meaning_en": "In a way that was not expected.",
+"sentence": "Her brother showed up at the wedding out of the blue."
+},
+{
+"phrase": "Out of the way",
+"meaning_en": "Extraordinary; unusual.",
+"sentence": "Such erratic behavior was out of the way for him."
+},
+{
+"phrase": "Out of thin air",
+"meaning_en": "Without warning.",
+"sentence": "Your cousin arrived out of thin air."
+},
+{
+"phrase": "Out of view",
+"meaning_en": "No longer visible.",
+"sentence": ""
+},
+{
+"phrase": "Out of wedlock",
+"meaning_en": "Of biological parents not married to each other.",
+"sentence": ""
+},
+{
+"phrase": "Outside marriage",
+"meaning_en": "Of unwed parents.",
+"sentence": ""
+},
+{
+"phrase": "Over again",
+"meaning_en": "Anew.",
+"sentence": ""
+},
+{
+"phrase": "Over and over",
+"meaning_en": "Repeated many times.",
+"sentence": "The unknown word turned up over and over again in the text."
+},
+{
+"phrase": "Over and over again",
+"meaning_en": "Repeated many times.",
+"sentence": "The unknown word turned up over and over again in the text."
+},
+{
+"phrase": "Over here",
+"meaning_en": "In a specified area or place.",
+"sentence": ""
+},
+{
+"phrase": "Par excellence",
+"meaning_en": "To a degree of excellence.",
+"sentence": "He is the honest politician par excellence."
+},
+{
+"phrase": "Pari passu",
+"meaning_en": "Used in legal language.",
+"sentence": "The new shares will rank pari passu in all respects with the existing ordinary shares."
+},
+{
+"phrase": "Per annum",
+"meaning_en": "By the year; every year (usually with reference to a sum of money paid or received)",
+"sentence": "He earned $100,000 per annum."
+},
+{
+"phrase": "Per capita",
+"meaning_en": "Per person; for each person; of each person.",
+"sentence": "We are spending $5,000 per capita annually for education in this district."
+},
+{
+"phrase": "Per diem",
+"meaning_en": "One every day.",
+"sentence": "We'll save 100 man-hours per diem."
+},
+{
+"phrase": "Per se",
+"meaning_en": "With respect to its inherent nature.",
+"sentence": "This statement is interesting per se."
+},
+{
+"phrase": "Per year",
+"meaning_en": "By the year; every year (usually with reference to a sum of money paid or received)",
+"sentence": ""
+},
+{
+"phrase": "Pretty much",
+"meaning_en": "To some degree.",
+"sentence": "We were pretty much lost when we met the forest ranger."
+},
+{
+"phrase": "Prima facie",
+"meaning_en": "At first sight.",
+"sentence": "The prosecutor presented prima facie evidence to justify bringing the case to trial."
+},
+{
+"phrase": "Pro forma",
+"meaning_en": "In a set manner without serious attention; as a formality.",
+"sentence": "They answered my letter pro forma."
+},
+{
+"phrase": "Pro rata",
+"meaning_en": "In a way that agrees in amount, magnitude or degree.",
+"sentence": "The shareholders were paid dividends on a pro rata basis."
+},
+{
+"phrase": "Pro tem",
+"meaning_en": "For the time being; temporarily.",
+"sentence": "Accepting pro tem that hypothesis consistent with the facts."
+},
+{
+"phrase": "Properly speaking",
+"meaning_en": "In actual fact.",
+"sentence": "Properly speaking, they are not husband and wife."
+},
+{
+"phrase": "Put differently",
+"meaning_en": "Otherwise stated.",
+"sentence": ""
+},
+{
+"phrase": "Quite a",
+"meaning_en": "Of an unusually noticeable or exceptional or remarkable kind (not used with a negative)",
+"sentence": "She's quite a girl."
+},
+{
+"phrase": "Quite an",
+"meaning_en": "Of an unusually noticeable or exceptional or remarkable kind (not used with a negative)",
+"sentence": "We've had quite an afternoon."
+},
+{
+"phrase": "Right along",
+"meaning_en": "All the time or over a period of time.",
+"sentence": ""
+},
+{
+"phrase": "Right away",
+"meaning_en": "Without delay or hesitation; with no time intervening.",
+"sentence": ""
+},
+{
+"phrase": "Right on",
+"meaning_en": "An interjection expressing agreement; Yes, you are indeed correct.",
+"sentence": ""
+},
+{
+"phrase": "Right smart",
+"meaning_en": "To a great degree or by a great distance; very much (‘right smart’ is regional in the United States)",
+"sentence": "The other side of the hill is right smart steeper than the side we are on."
+},
+{
+"phrase": "Round the clock",
+"meaning_en": "Endlessly.",
+"sentence": "She worked around the clock."
+},
+{
+"phrase": "Scot free",
+"meaning_en": "Free from harm or penalty.",
+"sentence": ""
+},
+{
+"phrase": "Second class",
+"meaning_en": "By second class conveyance.",
+"sentence": "We traveled second class."
+},
+{
+"phrase": "Second hand",
+"meaning_en": "From a source of previously owned goods.",
+"sentence": "I prefer to buy second hand."
+},
+{
+"phrase": "Since a long time ago",
+"meaning_en": "Since long ago.",
+"sentence": ""
+},
+{
+"phrase": "Sincerely yours",
+"meaning_en": "Written formula for ending a letter.",
+"sentence": ""
+},
+{
+"phrase": "Sine die",
+"meaning_en": "Without a date fixed (as of an adjournment)",
+"sentence": "The court adjourned the hearing sine die, meaning no date was set for it to resume."
+},
+{
+"phrase": "Six times",
+"meaning_en": "By a factor of six.",
+"sentence": ""
+},
+{
+"phrase": "So far",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": "So far he hasn't called."
+},
+{
+"phrase": "So to speak",
+"meaning_en": "As if it were really so.",
+"sentence": ""
+},
+{
+"phrase": "Soon enough",
+"meaning_en": "Without being tardy.",
+"sentence": ""
+},
+{
+"phrase": "Sort of",
+"meaning_en": "To some (great or small) extent.",
+"sentence": ""
+},
+{
+"phrase": "Sotto voce",
+"meaning_en": "In an undertone.",
+"sentence": "He uttered a curse sotto voce."
+},
+{
+"phrase": "Step by step",
+"meaning_en": "In a gradual manner.",
+"sentence": ""
+},
+{
+"phrase": "Straight off",
+"meaning_en": "Without delay or hesitation; with no time intervening.",
+"sentence": ""
+},
+{
+"phrase": "Strictly speaking",
+"meaning_en": "In actual fact.",
+"sentence": ""
+},
+{
+"phrase": "Sub rosa",
+"meaning_en": "In secret or covertly.",
+"sentence": "Held a meeting sub rosa to avoid general criticism."
+},
+{
+"phrase": "Summa cum laude",
+"meaning_en": "With highest honor.",
+"sentence": "He graduated summa cum laude."
+},
+{
+"phrase": "Sure as shooting",
+"meaning_en": "Definitely or positively (‘sure’ is sometimes used informally for ‘surely’)",
+"sentence": "He'll win sure as shooting."
+},
+{
+"phrase": "Sure enough",
+"meaning_en": "As supposed or expected.",
+"sentence": "Sure enough, he asked her for money again."
+},
+{
+"phrase": "Tete a tete",
+"meaning_en": "Without the intrusion of a third person; in intimate privacy.",
+"sentence": ""
+},
+{
+"phrase": "That is to say",
+"meaning_en": "As follows.",
+"sentence": ""
+},
+{
+"phrase": "The least bit",
+"meaning_en": "In the slightest degree or in any respect.",
+"sentence": ""
+},
+{
+"phrase": "The other way around",
+"meaning_en": "With the order reversed.",
+"sentence": ""
+},
+{
+"phrase": "The whole way",
+"meaning_en": "To the goal.",
+"sentence": ""
+},
+{
+"phrase": "Then again",
+"meaning_en": "(contrastive) from another point of view.",
+"sentence": "Then again, she might not go."
+},
+{
+"phrase": "This evening",
+"meaning_en": "During the night of the present day.",
+"sentence": ""
+},
+{
+"phrase": "This night",
+"meaning_en": "During the night of the present day.",
+"sentence": ""
+},
+{
+"phrase": "Thousand times",
+"meaning_en": "By three orders of magnitude.",
+"sentence": ""
+},
+{
+"phrase": "Three times",
+"meaning_en": "By a factor of three.",
+"sentence": ""
+},
+{
+"phrase": "Through an experiment",
+"meaning_en": "In an experimental fashion.",
+"sentence": ""
+},
+{
+"phrase": "Through and through",
+"meaning_en": "Throughout the entire extent.",
+"sentence": "Knew him through and through."
+},
+{
+"phrase": "Through empirical observation",
+"meaning_en": "In an empirical manner.",
+"sentence": ""
+},
+{
+"phrase": "Thus far",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": ""
+},
+{
+"phrase": "Til now",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": ""
+},
+{
+"phrase": "Till now",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": ""
+},
+{
+"phrase": "Time and again",
+"meaning_en": "Repeated many times.",
+"sentence": ""
+},
+{
+"phrase": "Time and time again",
+"meaning_en": "Repeated many times.",
+"sentence": ""
+},
+{
+"phrase": "To a fault",
+"meaning_en": "To a degree exceeding normal or proper limits.",
+"sentence": ""
+},
+{
+"phrase": "To a great extent",
+"meaning_en": "To a considerable degree.",
+"sentence": ""
+},
+{
+"phrase": "To a greater extent",
+"meaning_en": "Used to form the comparative of some adjectives and adverbs, indicates that the adjective or adverb is more of something.",
+"sentence": ""
+},
+{
+"phrase": "To a higher place",
+"meaning_en": "In or to a place that is higher.",
+"sentence": ""
+},
+{
+"phrase": "To a lesser extent",
+"meaning_en": "Used to form the comparative of some adjectives and adverbs, indicates that the adjective or adverb is less of something.",
+"sentence": ""
+},
+{
+"phrase": "To a lower place",
+"meaning_en": "In or to a place that is lower.",
+"sentence": ""
+},
+{
+"phrase": "To a man",
+"meaning_en": "Without exception.",
+"sentence": "Voted for unionization to a man."
+},
+{
+"phrase": "To advantage",
+"meaning_en": "In a manner that uses the most flattering or best aspects of.",
+"sentence": "The dress brought out her figure to advantage."
+},
+{
+"phrase": "To all intents and purposes",
+"meaning_en": "In every practical sense.",
+"sentence": "To all intents and purposes the case is closed."
+},
+{
+"phrase": "To and fro",
+"meaning_en": "Moving from one place to another and back again.",
+"sentence": "The treetops whipped to and fro in a frightening manner."
+},
+{
+"phrase": "To be precise",
+"meaning_en": "In actual fact.",
+"sentence": ""
+},
+{
+"phrase": "To be sure",
+"meaning_en": "Admittedly.",
+"sentence": "To be sure, he is no Einstein."
+},
+{
+"phrase": "To begin with",
+"meaning_en": "Before now.",
+"sentence": ""
+},
+{
+"phrase": "To boot",
+"meaning_en": "In addition, by way of addition; furthermore.",
+"sentence": ""
+},
+{
+"phrase": "To both ears",
+"meaning_en": "In a binaural manner.",
+"sentence": ""
+},
+{
+"phrase": "To date",
+"meaning_en": "Prior to the present time.",
+"sentence": "No suspect has been found to date."
+},
+{
+"phrase": "To each one",
+"meaning_en": "To or from every one of two or more (considered individually)",
+"sentence": ""
+},
+{
+"phrase": "To it",
+"meaning_en": "To that.",
+"sentence": ""
+},
+{
+"phrase": "To no degree",
+"meaning_en": "In no manner.",
+"sentence": ""
+},
+{
+"phrase": "To one ear",
+"meaning_en": "In a monaural manner.",
+"sentence": ""
+},
+{
+"phrase": "To order",
+"meaning_en": "To specification.",
+"sentence": "He had the shoes made to order."
+},
+{
+"phrase": "To perfection",
+"meaning_en": "In every detail.",
+"sentence": ""
+},
+{
+"phrase": "To that",
+"meaning_en": "To that.",
+"sentence": ""
+},
+{
+"phrase": "To that degree",
+"meaning_en": "To the degree or extent that.",
+"sentence": ""
+},
+{
+"phrase": "To that effect",
+"meaning_en": "With that general meaning.",
+"sentence": "She said something to that effect."
+},
+{
+"phrase": "To that extent",
+"meaning_en": "To the degree or extent that.",
+"sentence": ""
+},
+{
+"phrase": "To the contrary",
+"meaning_en": "Contrary to expectations.",
+"sentence": ""
+},
+{
+"phrase": "To the full",
+"meaning_en": "To the greatest degree or extent; completely or entirely; (‘full’ in this sense is used as a combining form)",
+"sentence": ""
+},
+{
+"phrase": "To the highest degree",
+"meaning_en": "Used to form the superlative, greatest in size or degree.",
+"sentence": ""
+},
+{
+"phrase": "To the hilt",
+"meaning_en": "In full.",
+"sentence": "You are in this to the hilt."
+},
+{
+"phrase": "To the letter",
+"meaning_en": "In every detail.",
+"sentence": ""
+},
+{
+"phrase": "To the limit",
+"meaning_en": "In full.",
+"sentence": ""
+},
+{
+"phrase": "To the lowest degree",
+"meaning_en": "Used to form the superlative, smallest in size or degree.",
+"sentence": ""
+},
+{
+"phrase": "To the south",
+"meaning_en": "In a southern direction.",
+"sentence": ""
+},
+{
+"phrase": "To wit",
+"meaning_en": "As follows.",
+"sentence": ""
+},
+{
+"phrase": "Together with",
+"meaning_en": "In conjunction with; combined.",
+"sentence": ""
+},
+{
+"phrase": "Too much",
+"meaning_en": "More than necessary.",
+"sentence": "She eats too much."
+},
+{
+"phrase": "Too soon",
+"meaning_en": "Before the usual time or the time expected.",
+"sentence": ""
+},
+{
+"phrase": "Tooth and nail",
+"meaning_en": "With force and ferocity.",
+"sentence": "She fought tooth and nail."
+},
+{
+"phrase": "Tout ensemble",
+"meaning_en": "With everything considered (and neglecting details)",
+"sentence": ""
+},
+{
+"phrase": "Two times",
+"meaning_en": "By a factor of two.",
+"sentence": ""
+},
+{
+"phrase": "Ultra vires",
+"meaning_en": "Beyond the scope or in excess of legal power or authority.",
+"sentence": "The company's decision to invest in an unrelated industry was deemed ultra vires by the board of directors."
+},
+{
+"phrase": "Under arms",
+"meaning_en": "Armed and prepared for fighting.",
+"sentence": "The athlete applied the ointment under arms to prevent chafing during the race."
+},
+{
+"phrase": "Under the circumstances",
+"meaning_en": "Because of prevailing conditions.",
+"sentence": "Under the circumstances I cannot buy the house."
+},
+{
+"phrase": "Under way",
+"meaning_en": "In motion; set in motion.",
+"sentence": "The ship got under way."
+},
+{
+"phrase": "Until now",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": ""
+},
+{
+"phrase": "Up and down",
+"meaning_en": "Moving backward and forward along a given course.",
+"sentence": "He walked up and down the locker room."
+},
+{
+"phrase": "Up here",
+"meaning_en": "In a specified area or place.",
+"sentence": "You shouldn't be up here."
+},
+{
+"phrase": "Up the stairs",
+"meaning_en": "On a floor above.",
+"sentence": ""
+},
+{
+"phrase": "Up to now",
+"meaning_en": "Used in negative statement to describe a situation that has existed up to this point or up to the present time.",
+"sentence": ""
+},
+{
+"phrase": "Upside down",
+"meaning_en": "In an inverted manner.",
+"sentence": "The box was lying on the floor upside down."
+},
+{
+"phrase": "Very fast",
+"meaning_en": "In a relatively short time.",
+"sentence": ""
+},
+{
+"phrase": "Very loudly",
+"meaning_en": "A direction in music; to be played very loudly.",
+"sentence": ""
+},
+{
+"phrase": "Very much like",
+"meaning_en": "In a similar way.",
+"sentence": "She looks very much like her mother did at that age."
+},
+{
+"phrase": "Very softly",
+"meaning_en": "A direction in music; to be played very softly.",
+"sentence": ""
+},
+{
+"phrase": "Very well",
+"meaning_en": "Quite well.",
+"sentence": ""
+},
+{
+"phrase": "Vice versa",
+"meaning_en": "With the order reversed.",
+"sentence": "She hates him and vice versa."
+},
+{
+"phrase": "Viva voce",
+"meaning_en": "Orally.",
+"sentence": "I heard it viva voce."
+},
+{
+"phrase": "Week after week",
+"meaning_en": "For an indefinite number of successive weeks.",
+"sentence": "She practiced her piano scales week after week until she mastered the piece."
+},
+{
+"phrase": "Week by week",
+"meaning_en": "Weekly.",
+"sentence": "Week by week, the betrayal gnawed at his heart."
+},
+{
+"phrase": "What is more",
+"meaning_en": "Denoting additional information.",
+"sentence": "What is more, there's no sign of a change."
+},
+{
+"phrase": "Whatever may come",
+"meaning_en": "In spite of all obstacles.",
+"sentence": ""
+},
+{
+"phrase": "When first seen",
+"meaning_en": "As a first impression.",
+"sentence": ""
+},
+{
+"phrase": "When the time comes",
+"meaning_en": "At the appropriate time.",
+"sentence": ""
+},
+{
+"phrase": "With kid gloves",
+"meaning_en": "As if with kid gloves; with caution or prudence or tact.",
+"sentence": "They handled the incident with kid gloves."
+},
+{
+"phrase": "Without doubt",
+"meaning_en": "Admittedly.",
+"sentence": ""
+},
+{
+"phrase": "Word for word",
+"meaning_en": "Using exactly the same words.",
+"sentence": ""
+},
+{
+"phrase": "You bet",
+"meaning_en": "An expression of emphatic agreement.",
+"sentence": ""
+},
+{
+"phrase": "You said it",
+"meaning_en": "An expression of emphatic agreement.",
+"sentence": ""
+}
+]

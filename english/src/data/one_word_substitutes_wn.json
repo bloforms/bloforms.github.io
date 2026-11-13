@@ -1,0 +1,3237 @@
+[
+{
+"phrase": "A person who has achieved distinction and honor in some field",
+"substitute": "Great",
+"sentence": "He is one of the greats of American music."
+},
+{
+"phrase": "A person who participates in or is skilled at some game",
+"substitute": "Player",
+"sentence": ""
+},
+{
+"phrase": "A person who joins with others in some activity or endeavor",
+"substitute": "Associate",
+"sentence": "He had to consult his associate before continuing."
+},
+{
+"phrase": "A person who works at a specific occupation",
+"substitute": "Worker",
+"sentence": "He is a good worker."
+},
+{
+"phrase": "A person who requires medical care",
+"substitute": "Patient",
+"sentence": "The number of emergency patients has grown rapidly."
+},
+{
+"phrase": "A person with a strong desire for something",
+"substitute": "Longer",
+"sentence": "A longer for money."
+},
+{
+"phrase": "Someone who pays for goods or services",
+"substitute": "Customer",
+"sentence": ""
+},
+{
+"phrase": "Someone who lives at a particular place for a prolonged period or who was born there",
+"substitute": "Resident",
+"sentence": ""
+},
+{
+"phrase": "Someone who has committed a crime or has been legally convicted of a crime",
+"substitute": "Criminal",
+"sentence": ""
+},
+{
+"phrase": "A person whose creative work shows sensitivity and imagination",
+"substitute": "Artist",
+"sentence": ""
+},
+{
+"phrase": "A person who rules or guides or inspires others",
+"substitute": "Leader",
+"sentence": ""
+},
+{
+"phrase": "A person who keeps watch over something or someone",
+"substitute": "Guard",
+"sentence": ""
+},
+{
+"phrase": "A person who pleads for a cause or propounds an idea",
+"substitute": "Advocate",
+"sentence": ""
+},
+{
+"phrase": "A person who belongs to an early stage of civilization",
+"substitute": "Primitive",
+"sentence": ""
+},
+{
+"phrase": "A person who uses the mind creatively",
+"substitute": "Intellectual",
+"sentence": ""
+},
+{
+"phrase": "A person who is in charge",
+"substitute": "Chief",
+"sentence": ""
+},
+{
+"phrase": "Someone who serves as an intermediary between the living and the dead",
+"substitute": "Sensitive",
+"sentence": ""
+},
+{
+"phrase": "A person who takes a position in the political center",
+"substitute": "Moderate",
+"sentence": ""
+},
+{
+"phrase": "A person with special knowledge or ability who performs skillfully",
+"substitute": "Expert",
+"sentence": ""
+},
+{
+"phrase": "Someone who imports or exports without paying duties",
+"substitute": "Runner",
+"sentence": ""
+},
+{
+"phrase": "A person who has received a degree from a school (high school or college or university)",
+"substitute": "Graduate",
+"sentence": ""
+},
+{
+"phrase": "The branch of philosophy that analyzes inference",
+"substitute": "Logic",
+"sentence": ""
+},
+{
+"phrase": "A person who is head of an administrative department of government",
+"substitute": "Secretary",
+"sentence": ""
+},
+{
+"phrase": "The branch of physics that studies celestial bodies and the universe as a whole",
+"substitute": "Astronomy",
+"sentence": ""
+},
+{
+"phrase": "A person who rules or commands",
+"substitute": "Ruler",
+"sentence": ""
+},
+{
+"phrase": "Someone who guards prisoners",
+"substitute": "Screw",
+"sentence": ""
+},
+{
+"phrase": "Someone who is licensed to operate an aircraft in flight",
+"substitute": "Pilot",
+"sentence": ""
+},
+{
+"phrase": "Someone who is a member of the faculty at a college or university",
+"substitute": "Professor",
+"sentence": ""
+},
+{
+"phrase": "Someone whose style is out of fashion",
+"substitute": "Fossil",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies heredity and variation in organisms",
+"substitute": "Genetics",
+"sentence": ""
+},
+{
+"phrase": "A person who sings",
+"substitute": "Singer",
+"sentence": ""
+},
+{
+"phrase": "Someone who is under suspicion",
+"substitute": "Suspect",
+"sentence": ""
+},
+{
+"phrase": "A person who accepts the leadership of another",
+"substitute": "Follower",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of language",
+"substitute": "Linguistics",
+"sentence": ""
+},
+{
+"phrase": "A person who loves someone or is loved by someone",
+"substitute": "Lover",
+"sentence": ""
+},
+{
+"phrase": "The branch of morphology that deals with the structure of animals",
+"substitute": "Anatomy",
+"sentence": ""
+},
+{
+"phrase": "A person who relies on another person for support (especially financial support)",
+"substitute": "Dependent",
+"sentence": ""
+},
+{
+"phrase": "Someone who controls resources and expenditures",
+"substitute": "Director",
+"sentence": ""
+},
+{
+"phrase": "Someone who sees an event and reports what happened",
+"substitute": "Witness",
+"sentence": ""
+},
+{
+"phrase": "A person who lives (or is located) near another",
+"substitute": "Neighbor",
+"sentence": ""
+},
+{
+"phrase": "A person who backs a politician or a team etc.",
+"substitute": "Supporter",
+"sentence": "All their supporters came out for the game."
+},
+{
+"phrase": "Someone who fights with their fists for sport",
+"substitute": "Boxer",
+"sentence": ""
+},
+{
+"phrase": "Someone who takes part in an activity",
+"substitute": "Participant",
+"sentence": ""
+},
+{
+"phrase": "Someone who believes and helps to spread the doctrine of another",
+"substitute": "Adherent",
+"sentence": ""
+},
+{
+"phrase": "A person who seeks the advice of a lawyer",
+"substitute": "Client",
+"sentence": ""
+},
+{
+"phrase": "A person who uses goods or services",
+"substitute": "Consumer",
+"sentence": ""
+},
+{
+"phrase": "Someone who purchases and maintains an inventory of goods to be sold",
+"substitute": "Dealer",
+"sentence": ""
+},
+{
+"phrase": "A person who operates a farm",
+"substitute": "Farmer",
+"sentence": ""
+},
+{
+"phrase": "A person who is owned by someone",
+"substitute": "Slave",
+"sentence": ""
+},
+{
+"phrase": "Someone whose employment involves carrying something",
+"substitute": "Carrier",
+"sentence": "The bonds were transmitted by carrier."
+},
+{
+"phrase": "One who is the object of choice; who is given preference",
+"substitute": "Chosen",
+"sentence": "She was Mama's chosen."
+},
+{
+"phrase": "A person who is reluctant to accept changes and new ideas",
+"substitute": "Conservative",
+"sentence": ""
+},
+{
+"phrase": "A person who changes location",
+"substitute": "Traveler",
+"sentence": ""
+},
+{
+"phrase": "A person who is not very bright",
+"substitute": "Stupid",
+"sentence": ""
+},
+{
+"phrase": "A person who is professionally engaged in the analysis and interpretation of works of art",
+"substitute": "Critic",
+"sentence": ""
+},
+{
+"phrase": "A person who suffers misfortune",
+"substitute": "Unfortunate",
+"sentence": ""
+},
+{
+"phrase": "A person who is markedly small",
+"substitute": "Dwarf",
+"sentence": ""
+},
+{
+"phrase": "A person who lacks knowledge of evil",
+"substitute": "Innocent",
+"sentence": ""
+},
+{
+"phrase": "A person who makes things",
+"substitute": "Maker",
+"sentence": ""
+},
+{
+"phrase": "The branch of linguistics that deals with syntax and morphology (and sometimes also deals with semantics)",
+"substitute": "Grammar",
+"sentence": ""
+},
+{
+"phrase": "A person who participates in competitions",
+"substitute": "Contestant",
+"sentence": ""
+},
+{
+"phrase": "A person who becomes aware (of things or events) through the senses",
+"substitute": "Observer",
+"sentence": ""
+},
+{
+"phrase": "Someone who commits capital in order to gain financial returns",
+"substitute": "Investor",
+"sentence": ""
+},
+{
+"phrase": "Someone who promotes or exchanges goods or services for money",
+"substitute": "Seller",
+"sentence": ""
+},
+{
+"phrase": "Someone who takes the place of another person",
+"substitute": "Alternate",
+"sentence": ""
+},
+{
+"phrase": "One who does not side with any party in a war or dispute",
+"substitute": "Neutral",
+"sentence": ""
+},
+{
+"phrase": "A person who enjoys reading",
+"substitute": "Reader",
+"sentence": ""
+},
+{
+"phrase": "Someone who travels for pleasure",
+"substitute": "Tourist",
+"sentence": ""
+},
+{
+"phrase": "Someone who hunts game",
+"substitute": "Hunter",
+"sentence": ""
+},
+{
+"phrase": "A person who uses scientific knowledge to solve practical problems",
+"substitute": "Engineer",
+"sentence": ""
+},
+{
+"phrase": "The branch of physics concerned with the motion of bodies in a frame of reference",
+"substitute": "Mechanics",
+"sentence": ""
+},
+{
+"phrase": "A person who has never had sex",
+"substitute": "Virgin",
+"sentence": ""
+},
+{
+"phrase": "A person who receives something",
+"substitute": "Recipient",
+"sentence": ""
+},
+{
+"phrase": "Someone who plays the game of golf",
+"substitute": "Golfer",
+"sentence": ""
+},
+{
+"phrase": "Someone who supervises (an examination)",
+"substitute": "Monitor",
+"sentence": ""
+},
+{
+"phrase": "A person who transgresses moral or civil law",
+"substitute": "Offender",
+"sentence": ""
+},
+{
+"phrase": "A person whose occupation is to serve at table (as in a restaurant)",
+"substitute": "Waiter",
+"sentence": ""
+},
+{
+"phrase": "A person who is frightened and in need of help",
+"substitute": "Desperate",
+"sentence": "They prey on the hopes of the desperate."
+},
+{
+"phrase": "A person who plays the piano",
+"substitute": "Pianist",
+"sentence": ""
+},
+{
+"phrase": "A woman who has recently been married",
+"substitute": "Bride",
+"sentence": ""
+},
+{
+"phrase": "Someone who is incapacitated by a chronic illness or injury",
+"substitute": "Invalid",
+"sentence": ""
+},
+{
+"phrase": "A person who brings an action in a court of law",
+"substitute": "Plaintiff",
+"sentence": ""
+},
+{
+"phrase": "A man who has never been married",
+"substitute": "Bachelor",
+"sentence": ""
+},
+{
+"phrase": "Someone who supports or champions something",
+"substitute": "Sponsor",
+"sentence": ""
+},
+{
+"phrase": "Someone who works at something specified",
+"substitute": "Smith",
+"sentence": ""
+},
+{
+"phrase": "Someone who pursues a study or sport as a pastime",
+"substitute": "Amateur",
+"sentence": ""
+},
+{
+"phrase": "A person who requests or seeks something such as assistance or employment or admission",
+"substitute": "Applicant",
+"sentence": ""
+},
+{
+"phrase": "A person who buys",
+"substitute": "Buyer",
+"sentence": ""
+},
+{
+"phrase": "Someone who causes the death of a person or animal",
+"substitute": "Killer",
+"sentence": ""
+},
+{
+"phrase": "Someone who is not competent to take effective action",
+"substitute": "Incompetent",
+"sentence": ""
+},
+{
+"phrase": "A person who travels by foot",
+"substitute": "Pedestrian",
+"sentence": ""
+},
+{
+"phrase": "A woman whose husband is dead especially one who has not remarried",
+"substitute": "Widow",
+"sentence": ""
+},
+{
+"phrase": "Someone who acts as assistant",
+"substitute": "Auxiliary",
+"sentence": ""
+},
+{
+"phrase": "Someone who manufactures something",
+"substitute": "Producer",
+"sentence": ""
+},
+{
+"phrase": "A man who is the lover of a man or woman",
+"substitute": "Boyfriend",
+"sentence": "If I'd known he was her boyfriend, I wouldn't have asked."
+},
+{
+"phrase": "A person whose occupation is making and altering garments",
+"substitute": "Tailor",
+"sentence": ""
+},
+{
+"phrase": "One who stays for only a short time",
+"substitute": "Transient",
+"sentence": ""
+},
+{
+"phrase": "Someone who has won first place in a competition",
+"substitute": "Champion",
+"sentence": ""
+},
+{
+"phrase": "Someone who works underwater",
+"substitute": "Diver",
+"sentence": ""
+},
+{
+"phrase": "A person who is stranded (as on an island)",
+"substitute": "Maroon",
+"sentence": "When the tide came in I was a maroon out there."
+},
+{
+"phrase": "A person who carries a message",
+"substitute": "Messenger",
+"sentence": ""
+},
+{
+"phrase": "A person who wears or carries or displays something as a body covering or accessory",
+"substitute": "Wearer",
+"sentence": "The wearer of the crown."
+},
+{
+"phrase": "Someone who is reckless or irresponsible (especially in driving vehicles)",
+"substitute": "Cowboy",
+"sentence": ""
+},
+{
+"phrase": "A person with an unusual or odd personality",
+"substitute": "Eccentric",
+"sentence": ""
+},
+{
+"phrase": "Someone who helps to open up a new line of research or technology or art",
+"substitute": "Pioneer",
+"sentence": ""
+},
+{
+"phrase": "Someone who takes more time than necessary; someone who lags behind",
+"substitute": "Trailer",
+"sentence": ""
+},
+{
+"phrase": "A person who inhabits a particular place",
+"substitute": "Dweller",
+"sentence": ""
+},
+{
+"phrase": "Someone who has exceptional intellectual ability and originality",
+"substitute": "Genius",
+"sentence": "Mozart was a child genius."
+},
+{
+"phrase": "A person who is being chased",
+"substitute": "Pursued",
+"sentence": "The film jumped back and forth from the pursuer to the pursued."
+},
+{
+"phrase": "A person who follows next in order",
+"substitute": "Successor",
+"sentence": "He was President Lincoln's successor."
+},
+{
+"phrase": "One who lives through affliction",
+"substitute": "Survivor",
+"sentence": "The survivors of the fire were taken to a hospital."
+},
+{
+"phrase": "Someone who is no longer alive",
+"substitute": "Deceased",
+"sentence": ""
+},
+{
+"phrase": "A person who is voluntarily absent from home or country",
+"substitute": "Exile",
+"sentence": ""
+},
+{
+"phrase": "Someone who flees from an uncongenial situation",
+"substitute": "Fugitive",
+"sentence": "Fugitives from the sweatshops."
+},
+{
+"phrase": "The branch of acoustics concerned with speech processes including its production and perception and acoustic analysis",
+"substitute": "Phonetics",
+"sentence": ""
+},
+{
+"phrase": "Someone who is not a clergyman or a professional person",
+"substitute": "Secular",
+"sentence": ""
+},
+{
+"phrase": "Someone who creates plans to be used in making something (such as buildings)",
+"substitute": "Architect",
+"sentence": ""
+},
+{
+"phrase": "Someone who markets merchandise",
+"substitute": "Distributor",
+"sentence": ""
+},
+{
+"phrase": "A person who does not talk",
+"substitute": "Dummy",
+"sentence": ""
+},
+{
+"phrase": "A person who is older than you are",
+"substitute": "Elder",
+"sentence": ""
+},
+{
+"phrase": "A person who wagers money on the outcome of games or sporting events",
+"substitute": "Gambler",
+"sentence": ""
+},
+{
+"phrase": "A physician who specializes in psychiatry",
+"substitute": "Shrink",
+"sentence": ""
+},
+{
+"phrase": "Someone who pays taxes",
+"substitute": "Taxpayer",
+"sentence": ""
+},
+{
+"phrase": "A person who owes a creditor; someone who has the obligation of paying a debt",
+"substitute": "Debtor",
+"sentence": ""
+},
+{
+"phrase": "A person who cares for persons or property",
+"substitute": "Guardian",
+"sentence": ""
+},
+{
+"phrase": "A person who jumps",
+"substitute": "Jumper",
+"sentence": "As the jumper neared the ground he lost control."
+},
+{
+"phrase": "The branch of biology that deals with the structure of animals and plants",
+"substitute": "Morphology",
+"sentence": ""
+},
+{
+"phrase": "The killing of animals (as for food)",
+"substitute": "Slaughter",
+"sentence": ""
+},
+{
+"phrase": "Someone who assists in a plot",
+"substitute": "Confederate",
+"sentence": ""
+},
+{
+"phrase": "Someone who consumes food for nourishment",
+"substitute": "Eater",
+"sentence": ""
+},
+{
+"phrase": "A man whose occupation is catching fish",
+"substitute": "Fisherman",
+"sentence": ""
+},
+{
+"phrase": "Someone who enters by force in order to conquer",
+"substitute": "Invader",
+"sentence": ""
+},
+{
+"phrase": "A person who sins (without repenting)",
+"substitute": "Sinner",
+"sentence": ""
+},
+{
+"phrase": "Someone who skis",
+"substitute": "Skier",
+"sentence": ""
+},
+{
+"phrase": "A person who is gullible and easy to take advantage of",
+"substitute": "Sucker",
+"sentence": ""
+},
+{
+"phrase": "The branch of anthropology that studies prehistoric people and their cultures",
+"substitute": "Archeology",
+"sentence": ""
+},
+{
+"phrase": "Someone who receives something on the promise to return it or its equivalent",
+"substitute": "Borrower",
+"sentence": ""
+},
+{
+"phrase": "A person who grows or makes or invents things",
+"substitute": "Creator",
+"sentence": ""
+},
+{
+"phrase": "Someone who administers a test to determine your qualifications",
+"substitute": "Examiner",
+"sentence": ""
+},
+{
+"phrase": "A person whose occupation is teaching",
+"substitute": "Instructor",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes or enacts laws",
+"substitute": "Legislator",
+"sentence": ""
+},
+{
+"phrase": "The branch of physics that studies the physical properties of light",
+"substitute": "Optics",
+"sentence": ""
+},
+{
+"phrase": "Someone who uses another person's words or ideas as if they were their own",
+"substitute": "Pirate",
+"sentence": ""
+},
+{
+"phrase": "A man who serves in the armed forces; a member of a military force",
+"substitute": "Serviceman",
+"sentence": ""
+},
+{
+"phrase": "Someone who offers opposition",
+"substitute": "Antagonist",
+"sentence": ""
+},
+{
+"phrase": "Someone who practices self denial as a spiritual discipline",
+"substitute": "Ascetic",
+"sentence": ""
+},
+{
+"phrase": "Someone who fights (or is fighting)",
+"substitute": "Belligerent",
+"sentence": ""
+},
+{
+"phrase": "Someone who cuts or carves stone",
+"substitute": "Cutter",
+"sentence": ""
+},
+{
+"phrase": "A person who tries to please or amuse",
+"substitute": "Entertainer",
+"sentence": ""
+},
+{
+"phrase": "Someone who attacks in search of booty",
+"substitute": "Predator",
+"sentence": ""
+},
+{
+"phrase": "The study of language meaning",
+"substitute": "Semantics",
+"sentence": ""
+},
+{
+"phrase": "Someone who betrays their country by committing treason",
+"substitute": "Traitor",
+"sentence": ""
+},
+{
+"phrase": "A person who gives private instruction (as in singing, acting, etc.)",
+"substitute": "Tutor",
+"sentence": ""
+},
+{
+"phrase": "The study of the physical properties of sound",
+"substitute": "Acoustics",
+"sentence": ""
+},
+{
+"phrase": "A person who is expert in the use of a bow and arrow",
+"substitute": "Archer",
+"sentence": ""
+},
+{
+"phrase": "Someone who communicates by means of letters",
+"substitute": "Correspondent",
+"sentence": ""
+},
+{
+"phrase": "Someone who travels into little known regions (especially for some scientific purpose)",
+"substitute": "Explorer",
+"sentence": ""
+},
+{
+"phrase": "Someone who serves (or waits to be called to serve) on a jury",
+"substitute": "Juror",
+"sentence": ""
+},
+{
+"phrase": "One whose prevailing mental imagery takes the form of inner feelings of action",
+"substitute": "Motile",
+"sentence": ""
+},
+{
+"phrase": "Someone who drives (or travels in) an automobile",
+"substitute": "Motorist",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of the nervous system",
+"substitute": "Neuroscience",
+"sentence": ""
+},
+{
+"phrase": "Someone who writes plays",
+"substitute": "Playwright",
+"sentence": ""
+},
+{
+"phrase": "Someone who plies a trade",
+"substitute": "Plier",
+"sentence": ""
+},
+{
+"phrase": "One who precedes you in time (as in holding a position or office)",
+"substitute": "Predecessor",
+"sentence": ""
+},
+{
+"phrase": "A person who pays more attention to formal rules and book learning than they merit",
+"substitute": "Scholastic",
+"sentence": ""
+},
+{
+"phrase": "Someone who transmits a message",
+"substitute": "Sender",
+"sentence": ""
+},
+{
+"phrase": "A person who is regarded as underhanded and furtive and contemptible",
+"substitute": "Sneak",
+"sentence": ""
+},
+{
+"phrase": "Someone who is seemingly indifferent to emotions",
+"substitute": "Stoic",
+"sentence": ""
+},
+{
+"phrase": "A specialist in the branch of biology dealing with animals",
+"substitute": "Zoologist",
+"sentence": ""
+},
+{
+"phrase": "Someone who has insufficient assets to cover their debts",
+"substitute": "Bankrupt",
+"sentence": ""
+},
+{
+"phrase": "Someone who escorts and protects a prominent person",
+"substitute": "Bodyguard",
+"sentence": ""
+},
+{
+"phrase": "Someone whose work is driving carts",
+"substitute": "Carter",
+"sentence": ""
+},
+{
+"phrase": "A person who is almost identical to another",
+"substitute": "Clone",
+"sentence": ""
+},
+{
+"phrase": "Someone who gives advice about problems",
+"substitute": "Counselor",
+"sentence": ""
+},
+{
+"phrase": "A man who is a stupid incompetent fool",
+"substitute": "Cuckoo",
+"sentence": ""
+},
+{
+"phrase": "Someone who cuts or beautifies hair",
+"substitute": "Hairdresser",
+"sentence": ""
+},
+{
+"phrase": "Someone who mediates between speakers of different languages",
+"substitute": "Interpreter",
+"sentence": ""
+},
+{
+"phrase": "Someone who is the first to think of or make something",
+"substitute": "Inventor",
+"sentence": ""
+},
+{
+"phrase": "One who suffers for the sake of principle",
+"substitute": "Martyr",
+"sentence": ""
+},
+{
+"phrase": "One who loves and defends his or her country",
+"substitute": "Nationalist",
+"sentence": ""
+},
+{
+"phrase": "A person who delivers a speech or oration",
+"substitute": "Orator",
+"sentence": ""
+},
+{
+"phrase": "Someone who journeys in foreign lands",
+"substitute": "Pilgrim",
+"sentence": ""
+},
+{
+"phrase": "Someone who adheres to strict religious principles; someone opposed to sensual pleasures",
+"substitute": "Puritan",
+"sentence": ""
+},
+{
+"phrase": "A person who wields power and influence",
+"substitute": "Shaker",
+"sentence": "A shaker of traditional beliefs."
+},
+{
+"phrase": "Someone who makes things out of wood",
+"substitute": "Woodworker",
+"sentence": ""
+},
+{
+"phrase": "Someone who is dazzlingly skilled in any field",
+"substitute": "Adept",
+"sentence": ""
+},
+{
+"phrase": "A person who enjoys taking risks",
+"substitute": "Adventurer",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes an offer",
+"substitute": "Bidder",
+"sentence": ""
+},
+{
+"phrase": "A person who is confined; especially a prisoner of war",
+"substitute": "Captive",
+"sentence": ""
+},
+{
+"phrase": "One who sets written material into type",
+"substitute": "Compositor",
+"sentence": ""
+},
+{
+"phrase": "A person with pulmonary tuberculosis",
+"substitute": "Consumptive",
+"sentence": ""
+},
+{
+"phrase": "Someone who maintains and audits business accounts",
+"substitute": "Controller",
+"sentence": ""
+},
+{
+"phrase": "A person who rides a bicycle",
+"substitute": "Cyclist",
+"sentence": ""
+},
+{
+"phrase": "A man who is much concerned with his dress and appearance",
+"substitute": "Dandy",
+"sentence": ""
+},
+{
+"phrase": "A person who dissents from some established policy",
+"substitute": "Dissident",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies the formation and early development of living organisms",
+"substitute": "Embryology",
+"sentence": ""
+},
+{
+"phrase": "A person who holds assets in trust for a beneficiary",
+"substitute": "Fiduciary",
+"sentence": "It is illegal for a fiduciary to misappropriate money for personal gain."
+},
+{
+"phrase": "A person who goes before or announces the coming of another",
+"substitute": "Forerunner",
+"sentence": ""
+},
+{
+"phrase": "Someone who drives a herd",
+"substitute": "Herder",
+"sentence": ""
+},
+{
+"phrase": "Someone who attempts to convert others to a particular doctrine or program",
+"substitute": "Missionary",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine concerned with the eye and its diseases",
+"substitute": "Ophthalmology",
+"sentence": ""
+},
+{
+"phrase": "A person who does not acknowledge your god",
+"substitute": "Pagan",
+"sentence": ""
+},
+{
+"phrase": "Someone who travels about selling their wares (as on the streets or at carnivals)",
+"substitute": "Peddler",
+"sentence": ""
+},
+{
+"phrase": "A person who is deemed to be despicable or contemptible",
+"substitute": "Skunk",
+"sentence": ""
+},
+{
+"phrase": "Someone who is small and insignificant",
+"substitute": "Squirt",
+"sentence": ""
+},
+{
+"phrase": "Someone who manages property or other affairs for someone else",
+"substitute": "Steward",
+"sentence": ""
+},
+{
+"phrase": "Someone who expresses strong approval",
+"substitute": "Subscriber",
+"sentence": ""
+},
+{
+"phrase": "A person who has religious faith",
+"substitute": "Worshipper",
+"sentence": ""
+},
+{
+"phrase": "Someone who proclaims a message publicly",
+"substitute": "Announcer",
+"sentence": ""
+},
+{
+"phrase": "Someone who listens attentively",
+"substitute": "Auditor",
+"sentence": ""
+},
+{
+"phrase": "A person who behaves in a tyrannical manner",
+"substitute": "Authoritarian",
+"sentence": ""
+},
+{
+"phrase": "Someone who acts or responds in a mechanical or apathetic way",
+"substitute": "Automaton",
+"sentence": "Only an automaton wouldn't have noticed."
+},
+{
+"phrase": "Someone who bakes commercially",
+"substitute": "Baker",
+"sentence": ""
+},
+{
+"phrase": "A man who has recently been married",
+"substitute": "Bridegroom",
+"sentence": ""
+},
+{
+"phrase": "Someone who censures or condemns",
+"substitute": "Censor",
+"sentence": ""
+},
+{
+"phrase": "Someone who is victorious by force of arms",
+"substitute": "Conqueror",
+"sentence": ""
+},
+{
+"phrase": "A person who shows fear or timidity",
+"substitute": "Coward",
+"sentence": ""
+},
+{
+"phrase": "A person who ousts or supplants someone else",
+"substitute": "Ejector",
+"sentence": ""
+},
+{
+"phrase": "Someone who organizes a business venture and assumes the risk for it",
+"substitute": "Entrepreneur",
+"sentence": ""
+},
+{
+"phrase": "Someone who plays golf poorly",
+"substitute": "Hacker",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies the microscopic structure of animal or plant tissues",
+"substitute": "Histology",
+"sentence": ""
+},
+{
+"phrase": "The killing of a human being by another human being",
+"substitute": "Homicide",
+"sentence": ""
+},
+{
+"phrase": "A person who enjoys telling or playing jokes",
+"substitute": "Joker",
+"sentence": ""
+},
+{
+"phrase": "Someone who unlawfully seizes and detains a victim (usually for ransom)",
+"substitute": "Kidnapper",
+"sentence": ""
+},
+{
+"phrase": "A person who is feeling grief (as grieving over someone who has died)",
+"substitute": "Mourner",
+"sentence": ""
+},
+{
+"phrase": "Someone who refuses to conform to established standards of conduct",
+"substitute": "Nonconformist",
+"sentence": ""
+},
+{
+"phrase": "Someone who does not live in a particular place",
+"substitute": "Nonresident",
+"sentence": "Described by an admiring nonresident as a green and pleasant land."
+},
+{
+"phrase": "A political system governed by a few people",
+"substitute": "Oligarchy",
+"sentence": "One of his cardinal convictions was that Britain was not run as a democracy but as an oligarchy."
+},
+{
+"phrase": "A person without moral scruples",
+"substitute": "Reprobate",
+"sentence": ""
+},
+{
+"phrase": "A man who serves as a sailor",
+"substitute": "Seaman",
+"sentence": ""
+},
+{
+"phrase": "Someone who can use sign language to communicate",
+"substitute": "Signer",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes conjectures without knowing the facts",
+"substitute": "Speculator",
+"sentence": ""
+},
+{
+"phrase": "A person who is loyal to their allegiance (especially in times of revolt)",
+"substitute": "Stalwart",
+"sentence": ""
+},
+{
+"phrase": "A person who is regarded as treacherous or sneaky",
+"substitute": "Weasel",
+"sentence": ""
+},
+{
+"phrase": "Someone who does not believe in the existence of a god",
+"substitute": "Atheist",
+"sentence": ""
+},
+{
+"phrase": "A person who travels through the water by swimming",
+"substitute": "Bather",
+"sentence": ""
+},
+{
+"phrase": "Someone who records the transactions of a business",
+"substitute": "Bookkeeper",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes candies and other sweets",
+"substitute": "Confectioner",
+"sentence": ""
+},
+{
+"phrase": "A person who is recovering from illness",
+"substitute": "Convalescent",
+"sentence": ""
+},
+{
+"phrase": "Someone who plays a drum",
+"substitute": "Drummer",
+"sentence": ""
+},
+{
+"phrase": "The branch of mechanics concerned with the forces that cause motions of bodies",
+"substitute": "Dynamics",
+"sentence": ""
+},
+{
+"phrase": "A man who is engaged to be married",
+"substitute": "Fiance",
+"sentence": ""
+},
+{
+"phrase": "Someone who comes upon something after searching",
+"substitute": "Finder",
+"sentence": ""
+},
+{
+"phrase": "Someone who grows and deals in flowers",
+"substitute": "Florist",
+"sentence": "The florist made up an attractive bouquet."
+},
+{
+"phrase": "Someone who controls access to something",
+"substitute": "Gatekeeper",
+"sentence": "There are too many gatekeepers between the field officers and the chief."
+},
+{
+"phrase": "Someone who rejects the established culture; advocates extreme liberalism in politics and lifestyle",
+"substitute": "Hippie",
+"sentence": ""
+},
+{
+"phrase": "A man who fights on foot with small arms",
+"substitute": "Infantryman",
+"sentence": ""
+},
+{
+"phrase": "A person who can read and write",
+"substitute": "Literate",
+"sentence": ""
+},
+{
+"phrase": "A person who fells trees",
+"substitute": "Logger",
+"sentence": ""
+},
+{
+"phrase": "The branch of philosophy that analyzes the principles and procedures of inquiry in a particular discipline",
+"substitute": "Methodology",
+"sentence": ""
+},
+{
+"phrase": "Someone who works in a mill (especially a grain mill)",
+"substitute": "Miller",
+"sentence": ""
+},
+{
+"phrase": "A person who knows only one language",
+"substitute": "Monolingual",
+"sentence": ""
+},
+{
+"phrase": "Someone who is excluded from or is not a member of a group",
+"substitute": "Outsider",
+"sentence": ""
+},
+{
+"phrase": "A person who makes deceitful pretenses",
+"substitute": "Pseudo",
+"sentence": ""
+},
+{
+"phrase": "Someone who scans verse to determine the number and prosodic value of the syllables",
+"substitute": "Scanner",
+"sentence": ""
+},
+{
+"phrase": "Someone who visits stores in search of articles to buy",
+"substitute": "Shopper",
+"sentence": ""
+},
+{
+"phrase": "A man who is a respected leader in national or international affairs",
+"substitute": "Statesman",
+"sentence": ""
+},
+{
+"phrase": "A man who courts a woman",
+"substitute": "Suitor",
+"sentence": ""
+},
+{
+"phrase": "Someone who gossips indiscreetly",
+"substitute": "Telltale",
+"sentence": ""
+},
+{
+"phrase": "Someone who who drinks to the health of someone or the success of some venture",
+"substitute": "Toaster",
+"sentence": ""
+},
+{
+"phrase": "The branch of pharmacology that deals with the nature and effects and treatments of poisons",
+"substitute": "Toxicology",
+"sentence": ""
+},
+{
+"phrase": "Someone who imputes guilt or blame",
+"substitute": "Accuser",
+"sentence": ""
+},
+{
+"phrase": "A person who adds numbers",
+"substitute": "Adder",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of open spaces (as fear of being caught alone in some public place)",
+"substitute": "Agoraphobia",
+"sentence": ""
+},
+{
+"phrase": "A person who argues to defend or justify some policy or institution",
+"substitute": "Apologist",
+"sentence": "An apologist for capital punishment."
+},
+{
+"phrase": "Someone who attacks",
+"substitute": "Assailant",
+"sentence": ""
+},
+{
+"phrase": "A person who helps people or institutions (especially with financial help)",
+"substitute": "Benefactor",
+"sentence": ""
+},
+{
+"phrase": "A person who has suffered the death of someone they loved",
+"substitute": "Bereaved",
+"sentence": "The bereaved do not always need to be taken care of."
+},
+{
+"phrase": "Someone who brews beer or ale from malt and hops and water",
+"substitute": "Brewer",
+"sentence": ""
+},
+{
+"phrase": "Someone who fights bulls",
+"substitute": "Bullfighter",
+"sentence": ""
+},
+{
+"phrase": "A person who eats human flesh",
+"substitute": "Cannibal",
+"sentence": ""
+},
+{
+"phrase": "A person who captures and holds people or animals",
+"substitute": "Captor",
+"sentence": ""
+},
+{
+"phrase": "A person who is pursuing and trying to overtake or capture",
+"substitute": "Chaser",
+"sentence": ""
+},
+{
+"phrase": "Someone who earn wages in return for their labor",
+"substitute": "Earner",
+"sentence": ""
+},
+{
+"phrase": "The branch of anthropology that provides scientific description of individual human societies",
+"substitute": "Ethnography",
+"sentence": ""
+},
+{
+"phrase": "A person who exercises control over workers",
+"substitute": "Foreman",
+"sentence": "If you want to leave early you have to ask the foreman."
+},
+{
+"phrase": "A person who foretells your personal future",
+"substitute": "Fortuneteller",
+"sentence": ""
+},
+{
+"phrase": "Someone who devotes themself completely",
+"substitute": "Giver",
+"sentence": "There are no greater givers than those who give themselves."
+},
+{
+"phrase": "A person who holds religious beliefs in conflict with the dogma of the Roman Catholic Church",
+"substitute": "Heretic",
+"sentence": ""
+},
+{
+"phrase": "Someone who performs dangerous stunts to attract attention to themself",
+"substitute": "Hotdog",
+"sentence": ""
+},
+{
+"phrase": "Someone who sells hardware",
+"substitute": "Ironmonger",
+"sentence": "In England they call a hardwareman an ‘ironmonger’."
+},
+{
+"phrase": "A man who is not a clergyman or a professional person",
+"substitute": "Layman",
+"sentence": ""
+},
+{
+"phrase": "Someone who lends money or gives credit in business matters",
+"substitute": "Lender",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of bodies of fresh water for their biological and physical and geological properties",
+"substitute": "Limnology",
+"sentence": ""
+},
+{
+"phrase": "Someone who has entered a religious order but has not taken final vows",
+"substitute": "Novice",
+"sentence": ""
+},
+{
+"phrase": "A woman who is the custodian of children",
+"substitute": "Nursemaid",
+"sentence": ""
+},
+{
+"phrase": "Someone who tries to bring peace",
+"substitute": "Pacifier",
+"sentence": ""
+},
+{
+"phrase": "Someone who plays the bagpipe",
+"substitute": "Piper",
+"sentence": ""
+},
+{
+"phrase": "A person who makes plans",
+"substitute": "Planner",
+"sentence": ""
+},
+{
+"phrase": "A man who is effeminate in their manner and fussy in the way they dress",
+"substitute": "Ponce",
+"sentence": ""
+},
+{
+"phrase": "Someone who emphasizes observable facts and excludes metaphysical speculation about origins or ultimate causes",
+"substitute": "Positivist",
+"sentence": ""
+},
+{
+"phrase": "Someone who assists a performer by providing the next words of a forgotten speech",
+"substitute": "Prompter",
+"sentence": ""
+},
+{
+"phrase": "A person who returns after a lengthy absence",
+"substitute": "Revenant",
+"sentence": ""
+},
+{
+"phrase": "Someone who communicates vocally in a very loud voice",
+"substitute": "Screamer",
+"sentence": ""
+},
+{
+"phrase": "A woman who makes or mends dresses",
+"substitute": "Seamstress",
+"sentence": ""
+},
+{
+"phrase": "A woman who is considered to be dangerously seductive",
+"substitute": "Siren",
+"sentence": ""
+},
+{
+"phrase": "A person who prepares or deals in animal skins",
+"substitute": "Skinner",
+"sentence": ""
+},
+{
+"phrase": "Someone who leads or initiates an activity (attack or campaign etc.)",
+"substitute": "Spearhead",
+"sentence": ""
+},
+{
+"phrase": "A person with great powers and abilities",
+"substitute": "Superman",
+"sentence": ""
+},
+{
+"phrase": "A person who makes a will",
+"substitute": "Testator",
+"sentence": ""
+},
+{
+"phrase": "A person who twists silk or rayon filaments into a thread or yarn",
+"substitute": "Thrower",
+"sentence": ""
+},
+{
+"phrase": "Someone who communicates by waving",
+"substitute": "Waver",
+"sentence": ""
+},
+{
+"phrase": "One whose behavior departs substantially from the norm of a group",
+"substitute": "Aberrant",
+"sentence": ""
+},
+{
+"phrase": "A person with a record of successes",
+"substitute": "Achiever",
+"sentence": "His son would never be the achiever that his father was."
+},
+{
+"phrase": "A person who is present and participates in a meeting",
+"substitute": "Attendee",
+"sentence": "He was a regular attender at department meetings."
+},
+{
+"phrase": "Someone who provides financial support for some venture",
+"substitute": "Backer",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of documents and handwriting etc. especially to determine authorship or authenticity",
+"substitute": "Bibliotics",
+"sentence": ""
+},
+{
+"phrase": "A person who speaks two languages fluently",
+"substitute": "Bilingual",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes or sells illegal liquor",
+"substitute": "Bootlegger",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes mistakes because of incompetence",
+"substitute": "Bungler",
+"sentence": ""
+},
+{
+"phrase": "One who accompanies and supervises a young woman or gatherings of young people",
+"substitute": "Chaperon",
+"sentence": ""
+},
+{
+"phrase": "Someone who applauds",
+"substitute": "Clapper",
+"sentence": ""
+},
+{
+"phrase": "A person who belongs to the political left",
+"substitute": "Collectivist",
+"sentence": ""
+},
+{
+"phrase": "A person who holds no title",
+"substitute": "Commoner",
+"sentence": ""
+},
+{
+"phrase": "A woman who cohabits with an important man",
+"substitute": "Concubine",
+"sentence": ""
+},
+{
+"phrase": "Someone who tricks or coerces men into service as sailors or soldiers",
+"substitute": "Crimper",
+"sentence": ""
+},
+{
+"phrase": "A man whose wife committed adultery",
+"substitute": "Cuckold",
+"sentence": ""
+},
+{
+"phrase": "Someone who perpetrates wrongdoing",
+"substitute": "Culprit",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies the structure and function of cells",
+"substitute": "Cytology",
+"sentence": ""
+},
+{
+"phrase": "Someone who leads you to believe something that is not true",
+"substitute": "Deceiver",
+"sentence": ""
+},
+{
+"phrase": "A person who abandons their duty (as on a military post)",
+"substitute": "Defector",
+"sentence": ""
+},
+{
+"phrase": "A person without a home, job, or property",
+"substitute": "Derelict",
+"sentence": ""
+},
+{
+"phrase": "The branch of zoology that studies insects",
+"substitute": "Entomology",
+"sentence": ""
+},
+{
+"phrase": "Someone who plays the flute",
+"substitute": "Flautist",
+"sentence": ""
+},
+{
+"phrase": "Someone who travels by air",
+"substitute": "Flier",
+"sentence": ""
+},
+{
+"phrase": "The study of the effects of economic geography on the powers of the state",
+"substitute": "Geopolitics",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine that deals with the diseases and hygiene of women",
+"substitute": "Gynecology",
+"sentence": ""
+},
+{
+"phrase": "Someone who tries to embarrass you with gibes and questions and objections",
+"substitute": "Heckler",
+"sentence": ""
+},
+{
+"phrase": "A man who steers a ship",
+"substitute": "Helmsman",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine that deals with diseases of the blood and blood-forming organs",
+"substitute": "Hematology",
+"sentence": ""
+},
+{
+"phrase": "A person who travels by getting free rides from passing vehicles",
+"substitute": "Hitchhiker",
+"sentence": ""
+},
+{
+"phrase": "A person who hugs",
+"substitute": "Hugger",
+"sentence": ""
+},
+{
+"phrase": "A person who pursues independent thought or action",
+"substitute": "Individualist",
+"sentence": ""
+},
+{
+"phrase": "Someone who cannot sleep",
+"substitute": "Insomniac",
+"sentence": ""
+},
+{
+"phrase": "Someone who deliberately foments trouble",
+"substitute": "Instigator",
+"sentence": "She was the instigator of their quarrel."
+},
+{
+"phrase": "A person who likes to join groups",
+"substitute": "Joiner",
+"sentence": ""
+},
+{
+"phrase": "A person who is uninterested in intellectual pursuits",
+"substitute": "Lowbrow",
+"sentence": ""
+},
+{
+"phrase": "A person who mails something",
+"substitute": "Mailer",
+"sentence": ""
+},
+{
+"phrase": "A woman who wears clothes to display fashions",
+"substitute": "Mannequin",
+"sentence": "She was too fat to be a mannequin."
+},
+{
+"phrase": "Someone who rubs or kneads parts of the body to stimulate circulation and promote relaxation",
+"substitute": "Massager",
+"sentence": ""
+},
+{
+"phrase": "Someone who creates new things",
+"substitute": "Mastermind",
+"sentence": ""
+},
+{
+"phrase": "Someone who believes in the existence of realities beyond human comprehension",
+"substitute": "Mystic",
+"sentence": ""
+},
+{
+"phrase": "A person who is not easily classified and not very interesting",
+"substitute": "Nondescript",
+"sentence": ""
+},
+{
+"phrase": "The study of the supposed occult influence of numbers on human affairs",
+"substitute": "Numerology",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine concerned with the study and treatment of tumors",
+"substitute": "Oncology",
+"sentence": ""
+},
+{
+"phrase": "Someone who looks on",
+"substitute": "Onlooker",
+"sentence": ""
+},
+{
+"phrase": "A person who directs and manages an organization",
+"substitute": "Overseer",
+"sentence": ""
+},
+{
+"phrase": "A person who pays money for something",
+"substitute": "Payer",
+"sentence": ""
+},
+{
+"phrase": "A person who walks from place to place",
+"substitute": "Peripatetic",
+"sentence": ""
+},
+{
+"phrase": "Someone who hunts or fishes illegally on the property of another",
+"substitute": "Poacher",
+"sentence": ""
+},
+{
+"phrase": "A person who speaks more than one language",
+"substitute": "Polyglot",
+"sentence": ""
+},
+{
+"phrase": "A person who owns something",
+"substitute": "Possessor",
+"sentence": ""
+},
+{
+"phrase": "Someone who explores an area for mineral deposits",
+"substitute": "Prospector",
+"sentence": ""
+},
+{
+"phrase": "Someone who commits crimes for profit (especially one who obtains money by fraud or extortion)",
+"substitute": "Racketeer",
+"sentence": ""
+},
+{
+"phrase": "Someone who takes the place of another (as when things get dangerous or difficult)",
+"substitute": "Reliever",
+"sentence": ""
+},
+{
+"phrase": "Someone who rigs ships",
+"substitute": "Rigger",
+"sentence": ""
+},
+{
+"phrase": "Someone who rows a boat",
+"substitute": "Rower",
+"sentence": ""
+},
+{
+"phrase": "Someone who has sold out",
+"substitute": "Sellout",
+"sentence": ""
+},
+{
+"phrase": "A person who makes or repairs shoes",
+"substitute": "Shoemaker",
+"sentence": ""
+},
+{
+"phrase": "A person who drinks alcohol to excess habitually",
+"substitute": "Souse",
+"sentence": ""
+},
+{
+"phrase": "Someone who spins (who twists fibers into threads)",
+"substitute": "Spinner",
+"sentence": ""
+},
+{
+"phrase": "A person who rejects (someone or something) with contempt",
+"substitute": "Spurner",
+"sentence": "She was known as a spurner of all suitors."
+},
+{
+"phrase": "Someone who builds or maintains very tall structures",
+"substitute": "Steeplejack",
+"sentence": ""
+},
+{
+"phrase": "Someone who insists on something",
+"substitute": "Stickler",
+"sentence": "A stickler for promptness."
+},
+{
+"phrase": "A person who walks rapidly with long steps",
+"substitute": "Strider",
+"sentence": "He was such a strider that she couldn't keep up without running."
+},
+{
+"phrase": "Someone who imposes hard or continuous work",
+"substitute": "Taskmaster",
+"sentence": ""
+},
+{
+"phrase": "A person who enjoys fixing and experimenting with machines and their parts",
+"substitute": "Tinker",
+"sentence": ""
+},
+{
+"phrase": "A person who leaves a tip",
+"substitute": "Tipper",
+"sentence": ""
+},
+{
+"phrase": "Someone who inflicts severe physical pain (usually for punishment or coercion)",
+"substitute": "Torturer",
+"sentence": ""
+},
+{
+"phrase": "One who is absent from school without permission",
+"substitute": "Truant",
+"sentence": ""
+},
+{
+"phrase": "Someone who puts to good use",
+"substitute": "Utilizer",
+"sentence": "Not all organisms are utilizers of oxygen."
+},
+{
+"phrase": "Someone who makes a solemn promise to do something or behave in a certain way",
+"substitute": "Vower",
+"sentence": "Young vowers of eternal love."
+},
+{
+"phrase": "A person who works in a prison and is in charge of prisoners",
+"substitute": "Warder",
+"sentence": ""
+},
+{
+"phrase": "A person who is loathsome or disgusting",
+"substitute": "Abomination",
+"sentence": ""
+},
+{
+"phrase": "A person who refrains from drinking intoxicating beverages",
+"substitute": "Abstinent",
+"sentence": ""
+},
+{
+"phrase": "A person who is employed to collect payments (as for rent or taxes)",
+"substitute": "Accumulator",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of great heights",
+"substitute": "Acrophobia",
+"sentence": ""
+},
+{
+"phrase": "One who investigates insurance claims or claims for damages and recommends an effective settlement",
+"substitute": "Adjuster",
+"sentence": ""
+},
+{
+"phrase": "Someone who receives advice",
+"substitute": "Advisee",
+"sentence": ""
+},
+{
+"phrase": "Someone who claims to speak the truth",
+"substitute": "Affirmer",
+"sentence": "Affirmers of traditional doctrine."
+},
+{
+"phrase": "Someone who is doubtful or noncommittal about something",
+"substitute": "Agnostic",
+"sentence": ""
+},
+{
+"phrase": "The study of plant nutrition and growth especially as a way to increase crop yield",
+"substitute": "Agrobiology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of pain",
+"substitute": "Algophobia",
+"sentence": ""
+},
+{
+"phrase": "A person who reduces the intensity (e.g., of fears) and calms and pacifies",
+"substitute": "Allayer",
+"sentence": "An allayer of fears."
+},
+{
+"phrase": "Someone who tries to bring peace by acceding to demands",
+"substitute": "Appeaser",
+"sentence": "An appeaser is one who feeds a crocodile — hoping it will eat him last."
+},
+{
+"phrase": "A person who is fully aware of something and understands it",
+"substitute": "Appreciator",
+"sentence": "He is not an appreciator of our dilemma."
+},
+{
+"phrase": "A person who brings order and organization to an enterprise",
+"substitute": "Arranger",
+"sentence": ""
+},
+{
+"phrase": "Someone who pronounces words",
+"substitute": "Articulator",
+"sentence": ""
+},
+{
+"phrase": "One whose mental imagery is auditory rather than visual or motor",
+"substitute": "Audile",
+"sentence": ""
+},
+{
+"phrase": "A political system governed by a single individual",
+"substitute": "Autocracy",
+"sentence": ""
+},
+{
+"phrase": "A person who has taught themself",
+"substitute": "Autodidact",
+"sentence": ""
+},
+{
+"phrase": "Someone who takes vengeance",
+"substitute": "Avenger",
+"sentence": ""
+},
+{
+"phrase": "Someone who operates an aircraft",
+"substitute": "Aviator",
+"sentence": ""
+},
+{
+"phrase": "Someone who admits or acknowledges openly and boldly",
+"substitute": "Avower",
+"sentence": ""
+},
+{
+"phrase": "A man who lives on the frontier",
+"substitute": "Backwoodsman",
+"sentence": ""
+},
+{
+"phrase": "Someone who burns down a barn",
+"substitute": "Barnburner",
+"sentence": ""
+},
+{
+"phrase": "Someone who bets",
+"substitute": "Bettor",
+"sentence": ""
+},
+{
+"phrase": "Someone who loves (and usually collects) books",
+"substitute": "Bibliophile",
+"sentence": ""
+},
+{
+"phrase": "Someone who bites",
+"substitute": "Biter",
+"sentence": ""
+},
+{
+"phrase": "A person who keeps and updates a blog",
+"substitute": "Blogger",
+"sentence": ""
+},
+{
+"phrase": "A man who drives or rides in a boat",
+"substitute": "Boatman",
+"sentence": ""
+},
+{
+"phrase": "Someone who does special exercises to develop a brawny musculature",
+"substitute": "Bodybuilder",
+"sentence": ""
+},
+{
+"phrase": "Someone who engages a person or company for performances",
+"substitute": "Booker",
+"sentence": ""
+},
+{
+"phrase": "Someone who is morally reprehensible",
+"substitute": "Bounder",
+"sentence": ""
+},
+{
+"phrase": "A person with dark (brown) hair",
+"substitute": "Brunet",
+"sentence": ""
+},
+{
+"phrase": "Someone who chews (especially someone who chews tobacco)",
+"substitute": "Chewer",
+"sentence": ""
+},
+{
+"phrase": "Someone who kills by strangling",
+"substitute": "Choker",
+"sentence": ""
+},
+{
+"phrase": "Someone who creates new dances",
+"substitute": "Choreographer",
+"sentence": ""
+},
+{
+"phrase": "Someone who performs magic tricks to amuse an audience",
+"substitute": "Conjurer",
+"sentence": ""
+},
+{
+"phrase": "Someone who is drafted into military service",
+"substitute": "Conscript",
+"sentence": ""
+},
+{
+"phrase": "Someone who copies the words or behavior of another",
+"substitute": "Copycat",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes copies illegally",
+"substitute": "Counterfeiter",
+"sentence": ""
+},
+{
+"phrase": "A person who weeps",
+"substitute": "Crier",
+"sentence": ""
+},
+{
+"phrase": "Someone who collects and pays bets at a gaming table",
+"substitute": "Croupier",
+"sentence": ""
+},
+{
+"phrase": "The branch of physics that studies the phenomena that occur at very low temperatures",
+"substitute": "Cryogenics",
+"sentence": ""
+},
+{
+"phrase": "Someone who murders by cutting the victim's throat",
+"substitute": "Cutthroat",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies the cellular aspects of heredity (especially the chromosomes)",
+"substitute": "Cytogenetics",
+"sentence": ""
+},
+{
+"phrase": "A person who rescues you from harm or danger",
+"substitute": "Deliverer",
+"sentence": ""
+},
+{
+"phrase": "The branch of sociology that studies the characteristics of human populations",
+"substitute": "Demography",
+"sentence": ""
+},
+{
+"phrase": "The study of linguistic change",
+"substitute": "Diachrony",
+"sentence": "The synchrony and diachrony of language."
+},
+{
+"phrase": "Someone who claims to discover hidden knowledge with the aid of supernatural powers",
+"substitute": "Diviner",
+"sentence": ""
+},
+{
+"phrase": "A man who guards an entrance",
+"substitute": "Doorman",
+"sentence": ""
+},
+{
+"phrase": "Someone who quits school before graduation",
+"substitute": "Dropout",
+"sentence": ""
+},
+{
+"phrase": "One who works hard at boring tasks",
+"substitute": "Drudge",
+"sentence": ""
+},
+{
+"phrase": "One who brings about a result or event; one who accomplishes a purpose",
+"substitute": "Effector",
+"sentence": ""
+},
+{
+"phrase": "Someone who frees others from bondage",
+"substitute": "Emancipator",
+"sentence": "Lincoln is known as the Great Emancipator."
+},
+{
+"phrase": "Someone who ornaments with needlework",
+"substitute": "Embroiderer",
+"sentence": ""
+},
+{
+"phrase": "Someone who leaves one country to settle in another",
+"substitute": "Emigre",
+"sentence": ""
+},
+{
+"phrase": "Someone who asks a question",
+"substitute": "Enquirer",
+"sentence": ""
+},
+{
+"phrase": "One who professes great sensitivity to the beauty of art and nature",
+"substitute": "Esthete",
+"sentence": ""
+},
+{
+"phrase": "A person who explains",
+"substitute": "Expositor",
+"sentence": ""
+},
+{
+"phrase": "A woman who is engaged to be married",
+"substitute": "Fiancee",
+"sentence": ""
+},
+{
+"phrase": "Someone whose occupation is catching fish",
+"substitute": "Fisher",
+"sentence": ""
+},
+{
+"phrase": "Someone who fits a garment to a particular person",
+"substitute": "Fitter",
+"sentence": ""
+},
+{
+"phrase": "Someone who hunts for food and provisions",
+"substitute": "Forager",
+"sentence": "In Japan a fungus forager can earn a good living."
+},
+{
+"phrase": "A person who gains weight",
+"substitute": "Gainer",
+"sentence": ""
+},
+{
+"phrase": "A person who sponsors someone (the godchild) at baptism",
+"substitute": "Godparent",
+"sentence": ""
+},
+{
+"phrase": "A person who is devoted to eating and drinking to excess",
+"substitute": "Gourmand",
+"sentence": ""
+},
+{
+"phrase": "A person with temporary permission to work in another country",
+"substitute": "Guestworker",
+"sentence": "A Moroccan guestworker in Canada was accused of aiding terrorists."
+},
+{
+"phrase": "Someone who drinks heavily (especially alcoholic beverages)",
+"substitute": "Guzzler",
+"sentence": "He's a beer guzzler every night."
+},
+{
+"phrase": "One who trains or exhibits animals",
+"substitute": "Handler",
+"sentence": ""
+},
+{
+"phrase": "The study of musical sound",
+"substitute": "Harmonics",
+"sentence": ""
+},
+{
+"phrase": "Someone who plays the harp",
+"substitute": "Harper",
+"sentence": ""
+},
+{
+"phrase": "Someone who conducts surveys of public opinion",
+"substitute": "Headcounter",
+"sentence": "A headcounter counts heads."
+},
+{
+"phrase": "The branch of physiology that studies the circulation of the blood and the forces involved",
+"substitute": "Hemodynamics",
+"sentence": ""
+},
+{
+"phrase": "The branch of zoology concerned with reptiles and amphibians",
+"substitute": "Herpetology",
+"sentence": ""
+},
+{
+"phrase": "A person who accumulates things and hides them away for future use",
+"substitute": "Hoarder",
+"sentence": ""
+},
+{
+"phrase": "Someone who owns a home",
+"substitute": "Homeowner",
+"sentence": ""
+},
+{
+"phrase": "A person who is very small but who is not otherwise deformed or abnormal",
+"substitute": "Homunculus",
+"sentence": ""
+},
+{
+"phrase": "A person who hopes",
+"substitute": "Hoper",
+"sentence": "Only an avid hoper could expect the team to win now."
+},
+{
+"phrase": "Someone who makes or repairs watches",
+"substitute": "Horologist",
+"sentence": ""
+},
+{
+"phrase": "Someone who acts, speaks or writes in an amusing way",
+"substitute": "Humorist",
+"sentence": ""
+},
+{
+"phrase": "A person who worships idols",
+"substitute": "Idolater",
+"sentence": ""
+},
+{
+"phrase": "Someone who (fraudulently) assumes the appearance of another",
+"substitute": "Imitator",
+"sentence": ""
+},
+{
+"phrase": "Someone who runs a steady slow pace (usually for exercise)",
+"substitute": "Jogger",
+"sentence": ""
+},
+{
+"phrase": "A person who lives and works on land",
+"substitute": "Landlubber",
+"sentence": ""
+},
+{
+"phrase": "Someone who violates the law",
+"substitute": "Lawbreaker",
+"sentence": ""
+},
+{
+"phrase": "A person who avoids the company or assistance of others",
+"substitute": "Loner",
+"sentence": ""
+},
+{
+"phrase": "A person who writes the words for songs",
+"substitute": "Lyricist",
+"sentence": ""
+},
+{
+"phrase": "A man who delivers the mail",
+"substitute": "Mailman",
+"sentence": ""
+},
+{
+"phrase": "Someone who arranges (or tries to arrange) marriages for others",
+"substitute": "Matchmaker",
+"sentence": ""
+},
+{
+"phrase": "Someone who exhibits great independence in thought and action",
+"substitute": "Maverick",
+"sentence": ""
+},
+{
+"phrase": "One who is being mentored",
+"substitute": "Mentee",
+"sentence": "A student mentor may support up to seven mentees."
+},
+{
+"phrase": "The study of poetic meter and the art of versification",
+"substitute": "Metrics",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of measurement",
+"substitute": "Metrology",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes and sells hats",
+"substitute": "Milliner",
+"sentence": ""
+},
+{
+"phrase": "Someone who dislikes people in general",
+"substitute": "Misanthrope",
+"sentence": ""
+},
+{
+"phrase": "One whose business is the management of funerals",
+"substitute": "Mortician",
+"sentence": ""
+},
+{
+"phrase": "Someone who talks incessantly",
+"substitute": "Motormouth",
+"sentence": "I wish that motormouth would shut up."
+},
+{
+"phrase": "Someone who is openly rebellious and refuses to obey authorities (especially seamen or soldiers)",
+"substitute": "Mutineer",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of dirt or contamination",
+"substitute": "Mysophobia",
+"sentence": ""
+},
+{
+"phrase": "A person who gives a name or names",
+"substitute": "Namer",
+"sentence": "The owner is usually the namer of a boat."
+},
+{
+"phrase": "A person with the same name as another",
+"substitute": "Namesake",
+"sentence": ""
+},
+{
+"phrase": "Someone who tells a story",
+"substitute": "Narrator",
+"sentence": ""
+},
+{
+"phrase": "A person who wants or needs something",
+"substitute": "Needer",
+"sentence": "An owner of many things and needer of none."
+},
+{
+"phrase": "Someone who broadcasts the news",
+"substitute": "Newscaster",
+"sentence": ""
+},
+{
+"phrase": "Someone whose age is in the nineties",
+"substitute": "Nonagenarian",
+"sentence": ""
+},
+{
+"phrase": "A person who is not a member",
+"substitute": "Nonmember",
+"sentence": ""
+},
+{
+"phrase": "A person who practices nudity for reasons of health or religion",
+"substitute": "Nudist",
+"sentence": ""
+},
+{
+"phrase": "A person who treats something carefully",
+"substitute": "Nurser",
+"sentence": "A great nurser of pennies."
+},
+{
+"phrase": "The study of the supernatural",
+"substitute": "Occultism",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of smells or of the sense of smell.",
+"substitute": "Olfactology",
+"sentence": "Suitably equipped, man and rodent traded sniff for sniff in what must have been one of the most exciting contests in the history of olfactology."
+},
+{
+"phrase": "The branch of lexicology that studies the forms and origins of proper names",
+"substitute": "Onomastics",
+"sentence": ""
+},
+{
+"phrase": "A person who places expediency above principle",
+"substitute": "Opportunist",
+"sentence": ""
+},
+{
+"phrase": "The branch of zoology that studies birds",
+"substitute": "Ornithology",
+"sentence": ""
+},
+{
+"phrase": "The branch of anatomy that studies the bones of the vertebrate skeleton",
+"substitute": "Osteology",
+"sentence": ""
+},
+{
+"phrase": "Someone who sells men's clothes",
+"substitute": "Outfitter",
+"sentence": ""
+},
+{
+"phrase": "A person who has general authority over others",
+"substitute": "Overlord",
+"sentence": ""
+},
+{
+"phrase": "The study of fossil plants",
+"substitute": "Paleobotany",
+"sentence": ""
+},
+{
+"phrase": "The study of ancient forms of writing (and the deciphering of them)",
+"substitute": "Paleography",
+"sentence": ""
+},
+{
+"phrase": "A person who is rejected (from society or home)",
+"substitute": "Pariah",
+"sentence": ""
+},
+{
+"phrase": "A person who is very poor",
+"substitute": "Pauper",
+"sentence": ""
+},
+{
+"phrase": "A specialist in the care of babies",
+"substitute": "Pediatrician",
+"sentence": ""
+},
+{
+"phrase": "Someone who attends the theater",
+"substitute": "Playgoer",
+"sentence": ""
+},
+{
+"phrase": "Someone who risks losses for the possibility of considerable gains",
+"substitute": "Plunger",
+"sentence": ""
+},
+{
+"phrase": "Someone who exercises power by virtue of wealth",
+"substitute": "Plutocrat",
+"sentence": ""
+},
+{
+"phrase": "The branch of botany that studies and cultivates fruits",
+"substitute": "Pomology",
+"sentence": ""
+},
+{
+"phrase": "Someone who advocates the rights of the common people over those of the elite",
+"substitute": "Populist",
+"sentence": ""
+},
+{
+"phrase": "A person who habitually pretends to be something they are not",
+"substitute": "Poseur",
+"sentence": ""
+},
+{
+"phrase": "Someone who is an active supporter and advocate",
+"substitute": "Promoter",
+"sentence": ""
+},
+{
+"phrase": "The study of origins and first things",
+"substitute": "Protology",
+"sentence": "To Christians, protology refers to God's fundamental purpose for humanity."
+},
+{
+"phrase": "Someone whose business is to supply a particular service or commodity",
+"substitute": "Provider",
+"sentence": ""
+},
+{
+"phrase": "Someone who propels a boat with a pole",
+"substitute": "Punter",
+"sentence": ""
+},
+{
+"phrase": "Someone who drives racing cars at high speeds",
+"substitute": "Racer",
+"sentence": ""
+},
+{
+"phrase": "Someone who performs rap music",
+"substitute": "Rapper",
+"sentence": ""
+},
+{
+"phrase": "One who lives in solitude",
+"substitute": "Recluse",
+"sentence": ""
+},
+{
+"phrase": "Someone who supplies members or employees",
+"substitute": "Recruiter",
+"sentence": ""
+},
+{
+"phrase": "Someone who has red hair",
+"substitute": "Redhead",
+"sentence": ""
+},
+{
+"phrase": "Someone who rebels and becomes an outlaw",
+"substitute": "Renegade",
+"sentence": ""
+},
+{
+"phrase": "A person who rests",
+"substitute": "Rester",
+"sentence": ""
+},
+{
+"phrase": "The branch of physics that studies the deformation and flow of matter",
+"substitute": "Rheology",
+"sentence": ""
+},
+{
+"phrase": "A person who rings church bells (as for summoning the congregation)",
+"substitute": "Ringer",
+"sentence": ""
+},
+{
+"phrase": "A person who rises (especially from bed)",
+"substitute": "Riser",
+"sentence": "He's usually a late riser."
+},
+{
+"phrase": "The study of religious or magical rites and ceremonies",
+"substitute": "Ritualism",
+"sentence": ""
+},
+{
+"phrase": "Someone who indulges in excessive sentimentality",
+"substitute": "Romanticist",
+"sentence": ""
+},
+{
+"phrase": "A person who stares inquisitively",
+"substitute": "Rubbernecker",
+"sentence": ""
+},
+{
+"phrase": "Someone who has been admitted to membership in a scholarly field",
+"substitute": "Savant",
+"sentence": ""
+},
+{
+"phrase": "Someone who saves something from danger or violence",
+"substitute": "Saver",
+"sentence": ""
+},
+{
+"phrase": "Someone who buys something and resells it at a price far above the initial cost",
+"substitute": "Scalper",
+"sentence": "He got theater tickets through a scalper."
+},
+{
+"phrase": "Someone who mooches or cadges (tries to get something free)",
+"substitute": "Scrounger",
+"sentence": ""
+},
+{
+"phrase": "Someone who performs the duties of an attendant for someone else",
+"substitute": "Servitor",
+"sentence": ""
+},
+{
+"phrase": "Someone whose age is in the sixties",
+"substitute": "Sexagenarian",
+"sentence": ""
+},
+{
+"phrase": "Someone who owns a ship or a share in a ship",
+"substitute": "Shipowner",
+"sentence": ""
+},
+{
+"phrase": "Someone who ships goods",
+"substitute": "Shipper",
+"sentence": ""
+},
+{
+"phrase": "Someone who lends money at excessive rates of interest",
+"substitute": "Shylock",
+"sentence": ""
+},
+{
+"phrase": "Someone who habitually doubts accepted beliefs",
+"substitute": "Skeptic",
+"sentence": ""
+},
+{
+"phrase": "A person who slips or slides because of loss of traction",
+"substitute": "Skidder",
+"sentence": ""
+},
+{
+"phrase": "A person who closes things violently",
+"substitute": "Slammer",
+"sentence": "She's a dramatic slammer of doors."
+},
+{
+"phrase": "Someone who moves slowly",
+"substitute": "Slowcoach",
+"sentence": "In England they call a slowpoke a ‘slowcoach’."
+},
+{
+"phrase": "Someone whose reasoning is subtle and often specious",
+"substitute": "Sophist",
+"sentence": ""
+},
+{
+"phrase": "Someone who settles lawfully on government land with the intent to acquire title to it",
+"substitute": "Squatter",
+"sentence": ""
+},
+{
+"phrase": "A woman who is a respected leader in national or international affairs",
+"substitute": "Stateswoman",
+"sentence": ""
+},
+{
+"phrase": "The branch of mechanics concerned with forces in equilibrium",
+"substitute": "Statics",
+"sentence": ""
+},
+{
+"phrase": "Someone who walks at a leisurely pace",
+"substitute": "Stroller",
+"sentence": ""
+},
+{
+"phrase": "A man who performs feats of strength at a fair or circus",
+"substitute": "Strongman",
+"sentence": ""
+},
+{
+"phrase": "Someone who yields to the will of another person or force",
+"substitute": "Submitter",
+"sentence": ""
+},
+{
+"phrase": "Someone who pays (or otherwise incites) you to commit a wrongful act",
+"substitute": "Suborner",
+"sentence": ""
+},
+{
+"phrase": "Someone who upholds or maintains",
+"substitute": "Sustainer",
+"sentence": "They are sustainers of the idea of democracy."
+},
+{
+"phrase": "A person who commiserates with someone who has had misfortune",
+"substitute": "Sympathiser",
+"sentence": ""
+},
+{
+"phrase": "Someone who assigns labels to the grammatical constituents of textual matter",
+"substitute": "Tagger",
+"sentence": ""
+},
+{
+"phrase": "Someone who samples food or drink for its quality",
+"substitute": "Taster",
+"sentence": ""
+},
+{
+"phrase": "A person who serves a specified term",
+"substitute": "Termer",
+"sentence": "There are not many fourth termers in the Senate."
+},
+{
+"phrase": "Someone who sets traps for animals (usually to obtain their furs)",
+"substitute": "Trapper",
+"sentence": ""
+},
+{
+"phrase": "Someone who moves or passes across",
+"substitute": "Traverser",
+"sentence": "The traversers slowly ascended the mountain."
+},
+{
+"phrase": "Someone who intrudes on the privacy or property of another without permission",
+"substitute": "Trespasser",
+"sentence": ""
+},
+{
+"phrase": "Someone who intertwines (e.g. threads) or forms something by twisting or interlacing",
+"substitute": "Twiner",
+"sentence": ""
+},
+{
+"phrase": "A person who destroys or ruins or lays waste to",
+"substitute": "Uprooter",
+"sentence": ""
+},
+{
+"phrase": "One who wrongfully or illegally seizes and holds the place of another",
+"substitute": "Usurper",
+"sentence": ""
+},
+{
+"phrase": "Someone who willfully destroys or defaces property",
+"substitute": "Vandal",
+"sentence": ""
+},
+{
+"phrase": "Someone who sells wine",
+"substitute": "Vintner",
+"sentence": ""
+},
+{
+"phrase": "Someone who rouses others from sleep",
+"substitute": "Waker",
+"sentence": ""
+},
+{
+"phrase": "A person who advocates war or warlike policies",
+"substitute": "Warmonger",
+"sentence": ""
+},
+{
+"phrase": "A person who is physically weak and ineffectual",
+"substitute": "Weakling",
+"sentence": ""
+},
+{
+"phrase": "A man whose wife is dead especially one who has not remarried",
+"substitute": "Widower",
+"sentence": ""
+},
+{
+"phrase": "One who can't stay still (especially a child)",
+"substitute": "Wiggler",
+"sentence": "The toddler was a real wiggler on plane trips."
+},
+{
+"phrase": "A person who refrains from granting",
+"substitute": "Withholder",
+"sentence": "A withholder of payments."
+},
+{
+"phrase": "Someone who admires too much to recognize faults",
+"substitute": "Worshiper",
+"sentence": ""
+},
+{
+"phrase": "Someone who demolishes or dismantles buildings as a job",
+"substitute": "Wrecker",
+"sentence": ""
+},
+{
+"phrase": "Someone who makes or repairs something (usually used in combination)",
+"substitute": "Wright",
+"sentence": ""
+},
+{
+"phrase": "A person who is not very intelligent or interested in culture",
+"substitute": "Yahoo",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of small insects and mites and worms",
+"substitute": "Acarophobia",
+"sentence": ""
+},
+{
+"phrase": "A specialist in the etiology of diseases",
+"substitute": "Aetiologist",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of cats",
+"substitute": "Ailurophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of botany that studies algae",
+"substitute": "Algology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of men",
+"substitute": "Androphobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of theology that is concerned with the defense of Christian doctrines",
+"substitute": "Apologetics",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of drowning",
+"substitute": "Aquaphobia",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of spiders",
+"substitute": "Arachnophobia",
+"sentence": ""
+},
+{
+"phrase": "A specialist in treating damaged trees",
+"substitute": "Arborist",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of thunder and lightning",
+"substitute": "Astraphobia",
+"sentence": ""
+},
+{
+"phrase": "The study of values and value judgments",
+"substitute": "Axiology",
+"sentence": ""
+},
+{
+"phrase": "The branch of ethics that studies moral values in the biomedical sciences",
+"substitute": "Bioethics",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology concerned with the relations between organisms and their environment",
+"substitute": "Bionomics",
+"sentence": ""
+},
+{
+"phrase": "The study of the operation of factors causing degeneration in the type of offspring produced",
+"substitute": "Cacogenics",
+"sentence": ""
+},
+{
+"phrase": "A specialist in care for the feet",
+"substitute": "Chiropodist",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine concerned with the feet",
+"substitute": "Chiropody",
+"sentence": ""
+},
+{
+"phrase": "The branch of astrophysics that studies the origin and evolution and structure of the universe",
+"substitute": "Cosmogeny",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of the skulls of various human races",
+"substitute": "Craniology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of freezing",
+"substitute": "Cryophobia",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of dogs",
+"substitute": "Cynophobia",
+"sentence": ""
+},
+{
+"phrase": "The study of wooden plants",
+"substitute": "Dendrology",
+"sentence": ""
+},
+{
+"phrase": "A doctor who specializes in the physiology and pathology of the skin",
+"substitute": "Dermatologist",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of food preparation and intake",
+"substitute": "Dietetics",
+"sentence": ""
+},
+{
+"phrase": "A specialist in wine making",
+"substitute": "Enologist",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of insects",
+"substitute": "Entomophobia",
+"sentence": ""
+},
+{
+"phrase": "The study of ancient inscriptions",
+"substitute": "Epigraphy",
+"sentence": ""
+},
+{
+"phrase": "The branch of zoology that studies the behavior of animals in their natural habitats",
+"substitute": "Ethology",
+"sentence": ""
+},
+{
+"phrase": "The study of methods of improving human well-being and efficient functioning by improving environmental conditions",
+"substitute": "Euthenics",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine concerned with the fetus in the uterus",
+"substitute": "Fetology",
+"sentence": ""
+},
+{
+"phrase": "A specialist in paleontology",
+"substitute": "Fossilist",
+"sentence": ""
+},
+{
+"phrase": "The study of a society by analyzing its garbage",
+"substitute": "Garbology",
+"sentence": ""
+},
+{
+"phrase": "A specialist in gerontology",
+"substitute": "Geriatrician",
+"sentence": ""
+},
+{
+"phrase": "A specialist in inferring character from handwriting",
+"substitute": "Graphologist",
+"sentence": ""
+},
+{
+"phrase": "The study of handwriting (especially as an indicator of the writer's character or disposition)",
+"substitute": "Graphology",
+"sentence": ""
+},
+{
+"phrase": "A specialist in gynecology",
+"substitute": "Gynaecologist",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of women",
+"substitute": "Gynophobia",
+"sentence": ""
+},
+{
+"phrase": "A doctor who specializes in diseases of the blood and blood-forming organs",
+"substitute": "Haematologist",
+"sentence": ""
+},
+{
+"phrase": "The branch of theology that deals with principles of exegesis",
+"substitute": "Hermeneutics",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of falling asleep",
+"substitute": "Hypnophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of zoology that studies fishes",
+"substitute": "Ichthyology",
+"sentence": ""
+},
+{
+"phrase": "The branch of mechanics concerned with motion without reference to force or mass",
+"substitute": "Kinematics",
+"sentence": ""
+},
+{
+"phrase": "The branch of physiology that studies the mechanics and anatomy in relation to human movement",
+"substitute": "Kinesiology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of snakes",
+"substitute": "Lepidophobia",
+"sentence": ""
+},
+{
+"phrase": "A specialist in the study of freshwater ponds and lakes",
+"substitute": "Limnologist",
+"sentence": ""
+},
+{
+"phrase": "The branch of geology that studies rocks: their origin and formation and mineral composition and classification",
+"substitute": "Lithology",
+"sentence": ""
+},
+{
+"phrase": "The branch of zoology that studies the structure and behavior of mollusks",
+"substitute": "Malacology",
+"sentence": ""
+},
+{
+"phrase": "The murder of a husband by his wife",
+"substitute": "Mariticide",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of mice",
+"substitute": "Musophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of botany that studies fungi and fungus-caused diseases",
+"substitute": "Mycology",
+"sentence": ""
+},
+{
+"phrase": "The branch of physiology that studies muscles",
+"substitute": "Myology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of novelty",
+"substitute": "Neophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of meteorology that studies clouds and cloud formation",
+"substitute": "Nephology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of night or darkness",
+"substitute": "Nyctophobia",
+"sentence": ""
+},
+{
+"phrase": "A specialist in correcting deformities of the skeletal system (especially in children)",
+"substitute": "Orthopaedist",
+"sentence": ""
+},
+{
+"phrase": "A physician who specializes in the ear and its diseases",
+"substitute": "Otologist",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine concerned with the ear",
+"substitute": "Otology",
+"sentence": ""
+},
+{
+"phrase": "The branch of medicine concerned with the treatment of infants and children",
+"substitute": "Paediatrics",
+"sentence": ""
+},
+{
+"phrase": "The branch of ecology that studies ancient ecology",
+"substitute": "Palaeoecology",
+"sentence": ""
+},
+{
+"phrase": "The study of (especially prehistoric) antiquities",
+"substitute": "Palaeology",
+"sentence": ""
+},
+{
+"phrase": "The study of fossil animals",
+"substitute": "Palaeozoology",
+"sentence": ""
+},
+{
+"phrase": "A doctor who specializes in medical diagnosis",
+"substitute": "Pathologist",
+"sentence": ""
+},
+{
+"phrase": "The branch of criminology concerned with prison management and prisoner rehabilitation",
+"substitute": "Penology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of developing a phobia",
+"substitute": "Phobophobia",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of sounds including your own voice",
+"substitute": "Phonophobia",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of light",
+"substitute": "Photophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies plants",
+"substitute": "Phytology",
+"sentence": ""
+},
+{
+"phrase": "The branch of mechanics that deals with the mechanical properties of gases",
+"substitute": "Pneumatics",
+"sentence": ""
+},
+{
+"phrase": "The study of language use",
+"substitute": "Pragmatics",
+"sentence": ""
+},
+{
+"phrase": "The study of humans prior to the invention of writing",
+"substitute": "Protohistory",
+"sentence": ""
+},
+{
+"phrase": "The study of spatial distances between individuals in different cultures and situations",
+"substitute": "Proxemics",
+"sentence": ""
+},
+{
+"phrase": "The branch of sociology that studies election trends (as by opinion polls)",
+"substitute": "Psephology",
+"sentence": ""
+},
+{
+"phrase": "The branch of botany that studies ferns",
+"substitute": "Pteridology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of fire",
+"substitute": "Pyrophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of biology that studies the effects of radiation on living organisms",
+"substitute": "Radiobiology",
+"sentence": ""
+},
+{
+"phrase": "A physician who specializes in surgery",
+"substitute": "Sawbones",
+"sentence": ""
+},
+{
+"phrase": "The branch of astronomy that deals with the moon",
+"substitute": "Selenology",
+"sentence": ""
+},
+{
+"phrase": "A specialist in the study of meaning",
+"substitute": "Semanticist",
+"sentence": ""
+},
+{
+"phrase": "The branch of semantics that studies the cognitive aspects of meaning",
+"substitute": "Semasiology",
+"sentence": ""
+},
+{
+"phrase": "The scientific study of caves",
+"substitute": "Spelaeology",
+"sentence": ""
+},
+{
+"phrase": "Government by the military and an army",
+"substitute": "Stratocracy",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of being buried alive",
+"substitute": "Taphephobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of science that studies death (especially its social and psychological aspects)",
+"substitute": "Thanatology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of death",
+"substitute": "Thanatophobia",
+"sentence": ""
+},
+{
+"phrase": "The study of the origins and genealogy of the gods",
+"substitute": "Theogony",
+"sentence": ""
+},
+{
+"phrase": "The branch of geology that studies volcanoes",
+"substitute": "Vulcanology",
+"sentence": ""
+},
+{
+"phrase": "A morbid fear of animals",
+"substitute": "Zoophobia",
+"sentence": ""
+},
+{
+"phrase": "The branch of chemistry concerned with fermentation (as in making wine or brewing or distilling)",
+"substitute": "Zymology",
+"sentence": ""
+}
+]

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1f3a5f">
+<title>Learn English</title>
+<style>
+:root{
+  --navy:#1f3a5f; --navy2:#2c5282; --ink:#1d2433; --muted:#5b6475; --line:#e3e7ee;
+  --bg:#f5f7fb; --card:#fff; --accent:#d97706; --ok:#15803d; --okbg:#e7f6ec; --bad:#b91c1c; --badbg:#fdecec;
+  --hdr:96px; --side:250px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu","Noto Sans",sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+button{font:inherit;cursor:pointer}
+/* ---------- fixed header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--navy);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.bar{display:flex;align-items:center;gap:10px;height:54px;padding:0 12px}
+.menu-btn{background:none;border:0;color:#fff;font-size:24px;width:40px;height:40px;border-radius:8px}
+.menu-btn:active{background:rgba(255,255,255,.15)}
+.title{font-size:21px;font-weight:700;letter-spacing:.3px;flex:1}
+.title small{font-weight:400;font-size:12px;opacity:.75;margin-left:6px}
+.meanbar{background:#fff7e6;color:#5a3a00;height:42px;padding:0 14px;display:flex;align-items:center;gap:8px;font-size:14.5px;border-bottom:1px solid #f1d9a8;overflow:hidden;white-space:nowrap}
+.meanbar b{color:#7c2d12}
+.meanbar span.txt{overflow:hidden;text-overflow:ellipsis}
+/* ---------- side menu ---------- */
+nav{position:fixed;top:var(--hdr);bottom:0;left:0;width:var(--side);background:#fff;border-right:1px solid var(--line);overflow-y:auto;z-index:25;transition:transform .2s}
+nav .grp{padding:10px 14px 4px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+nav a{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;color:var(--ink);text-decoration:none;border-left:4px solid transparent;font-size:15px}
+nav a .n{font-size:12px;color:var(--muted);background:var(--bg);border-radius:10px;padding:1px 8px}
+nav a.on{background:#eef3fb;border-left-color:var(--navy2);font-weight:600}
+nav .credit{padding:16px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:10px}
+.shade{display:none;position:fixed;inset:var(--hdr) 0 0 0;background:rgba(0,0,0,.35);z-index:24}
+main{margin-top:var(--hdr);margin-left:var(--side);padding:16px 18px 60px;max-width:980px}
+@media (max-width:760px){
+  nav{transform:translateX(-100%)}
+  body.open nav{transform:none}
+  body.open .shade{display:block}
+  main{margin-left:0;padding:12px 12px 60px}
+}
+@media (min-width:761px){.menu-btn{display:none}}
+/* ---------- common ---------- */
+h1{font-size:22px;margin:4px 0 12px;color:var(--navy)}
+h2{font-size:17px;margin:18px 0 8px;color:var(--navy)}
+.muted{color:var(--muted);font-size:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--navy2);color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:600;text-decoration:none;display:inline-block}
+.btn.ghost{background:#fff;color:var(--navy2);border:1px solid #c9d5e8}
+.btn.small{padding:6px 10px;font-size:14px}
+.btn:disabled{opacity:.5}
+.tools{position:sticky;top:var(--hdr);background:var(--bg);padding:8px 0;z-index:5}
+input[type=search]{width:100%;padding:10px 12px;border:1px solid #cfd6e2;border-radius:8px;font-size:16px;background:#fff}
+.letters{display:flex;gap:4px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:thin}
+.letters button{min-width:32px;height:32px;border:1px solid #cfd6e2;background:#fff;border-radius:6px;font-size:14px;font-weight:600;color:var(--navy2);flex:0 0 auto}
+.letters button.on{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.toggle{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;cursor:pointer}
+.card:hover{border-color:#c4d0e3}
+.card .hd{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card .w{font-size:18px;font-weight:700;color:var(--navy)}
+.card .pos{font-size:13px;color:var(--muted);font-style:italic}
+.card .te{color:#7c2d12;font-size:15px}
+.card .say{margin-left:auto;background:none;border:0;font-size:18px;padding:0 4px}
+.card .body{margin-top:6px}
+.card .m{margin:2px 0}
+.card .eg{margin-top:6px;font-size:15px;color:#2f3a4d;border-left:3px solid #f0c27b;padding-left:9px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;align-items:center}
+.chips .lbl{font-size:12px;font-weight:700;color:var(--muted);margin-right:2px}
+.chip{font-size:13px;border-radius:12px;padding:1px 9px;background:#e9f5ee;color:#166534}
+.chip.ant{background:#fdeeee;color:#9f1239}
+.chip.ex{background:#eef3fb;color:#1e3a8a}
+.hide .card .body{display:none}
+.hide .card.open .body{display:block}
+.hide .card .hint{display:block}
+.card .hint{display:none;font-size:12.5px;color:var(--muted);margin-top:4px}
+.hide .card.open .hint{display:none}
+.more{display:block;margin:14px auto}
+/* ---------- home / exam ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px}
+.tile .t{font-weight:700;color:var(--navy)}
+.tile .s{font-size:13.5px;color:var(--muted);margin:3px 0 8px}
+.tile .s.done{color:var(--ok);font-weight:600}
+.big{background:linear-gradient(135deg,#1f3a5f,#2c5282);color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.big .n{font-size:28px;font-weight:800}
+.wotd{background:#fff;border:1px solid #f1d9a8;border-radius:10px;padding:12px 14px;margin:10px 0}
+/* ---------- quiz ---------- */
+.qbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+.qmeta{display:flex;justify-content:space-between;font-size:13.5px;color:var(--muted);margin-bottom:6px}
+.progress{height:6px;background:#e6ebf2;border-radius:4px;overflow:hidden;margin-bottom:12px}
+.progress i{display:block;height:100%;background:var(--accent)}
+.qtext{font-size:18px;margin:6px 0 14px}
+.qtext b{color:var(--navy)}
+.opt{display:flex;gap:10px;width:100%;text-align:left;background:#fff;border:1.5px solid #d3dbe7;border-radius:10px;padding:11px 12px;margin:8px 0;font-size:16px;color:var(--ink)}
+.opt .k{font-weight:700;color:var(--navy2);min-width:18px}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.explain{margin-top:10px;padding:10px 12px;border-radius:8px;background:#f3f6fb;font-size:15px}
+.explain .res{font-weight:700}
+.explain .res.ok{color:var(--ok)} .explain .res.bad{color:var(--bad)}
+.score{font-size:40px;font-weight:800;color:var(--navy)}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden}
+td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:14.5px}
+th{background:#eef3fb;color:var(--navy)}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+    <div class="title">Learn English <small id="dateLbl"></small></div>
+  </div>
+  <div class="meanbar" id="meanbar"><span class="txt">Tap any word to see its meaning here.</span></div>
+</header>
+<nav id="nav"></nav>
+<div class="shade" id="shade"></div>
+<main id="main"></main>
+
+<script id="engine">
+/* ================= DATA + EXAM ENGINE (no DOM) ================= */
+const DATA = /*__DATA__*/null;
+const SECTIONS = [
+  {id:'az',       name:'A–Z Words',            key:'word'},
+  {id:'confused', name:'Words Often Confused', key:'pair'},
+  {id:'subs',     name:'One Word Substitutes', key:'substitute'},
+  {id:'idioms',   name:'Idioms',               key:'idiom'},
+  {id:'phrases',  name:'Phrases',              key:'phrase'},
+  {id:'phrasal',  name:'Phrasal Verbs',        key:'verb'},
+  {id:'roots',    name:'Root List',            key:'root'}
+];
+const PER_SECTION = 20;
+const SEC = Object.fromEntries(SECTIONS.map(s=>[s.id,s]));
+
+function hashStr(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){let a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296}}
+function shuffle(arr,r){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pick(arr,r){return arr[Math.floor(r()*arr.length)]}
+function dayIndex(d){d=d||new Date();return Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5)}
+function dayLabel(day){const d=new Date(day*864e5);return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})}
+function itemKey(sec,it){return String(it[SEC[sec].key])}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function stem(w){w=w.toLowerCase().replace(/[^a-z]/g,'');return w.length>5?w.slice(0,5):w}
+
+/* words related to an A–Z entry (so distractors never accidentally mean the same) */
+function azSet(it){return new Set([it.word,...it.synonyms,...it.antonyms].map(stem))}
+function related(a,b){const A=azSet(a);for(const x of azSet(b))if(A.has(x))return true;return false}
+
+/* choose k distinct strings from candidates, not equal (case-insensitive) to anything in avoid */
+function distinct(cands,avoid,k,r){
+  const seen=new Set([...avoid].map(x=>x.toLowerCase()));const out=[];
+  for(const c of shuffle(cands,r)){const l=c.toLowerCase();if(!seen.has(l)){seen.add(l);out.push(c)}if(out.length>=k)break}
+  return out;
+}
+function build(q,correct,wrongs,r,item,type,explainHtml){
+  const options=shuffle([correct,...wrongs],r);
+  return {q,options,answer:options.indexOf(correct),item,type,explain:explainHtml};
+}
+function blankOut(sentence,word){
+  const re=new RegExp("(^|[^A-Za-z'])("+word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+")([A-Za-z]*)(?=[^A-Za-z']|$)","i");
+  const m=sentence.match(re);if(!m)return null;
+  return sentence.slice(0,m.index)+m[1]+'_____'+m[3]+sentence.slice(m.index+m[0].length);
+}
+function rootStems(root){return root.split('(')[0].split(/[,\/]/).map(s=>s.trim().toLowerCase()).filter(Boolean)}
+
+function makeQuestion(sec,item,r){
+  const pool=DATA[sec];
+  const others=pool.filter(x=>x!==item);
+  if(sec==='az'){
+    const ok=others.filter(o=>!related(item,o));
+    const ex=`<b>${esc(item.word)}</b> (${esc(item.pos)}) — ${esc(item.meaning_en)} <span class="te">${esc(item.meaning_te||'')}</span><br><i>${esc(item.sentence)}</i>`;
+    let types=['meaning','syn','ant','blank'];
+    let t=pick(types,r);
+    if(t==='blank'){
+      const s=blankOut(item.sentence,item.word);
+      if(s){const w=distinct(ok.map(o=>o.word),[item.word],3,r);
+        if(w.length===3)return build(`Fill in the blank:<br><b>${esc(s)}</b>`,item.word,w,r,item,t,ex);}
+      t='meaning';
+    }
+    if(t==='syn'||t==='ant'){
+      const list=t==='syn'?item.synonyms:item.antonyms;
+      const own=t==='syn'?item.antonyms:item.synonyms;   // the opposite list makes safe distractors
+      if(list.length){
+        const correct=pick(list,r);
+        const avoid=[item.word,...item.synonyms,...item.antonyms];
+        let w=distinct(own,avoid.filter(x=>own.indexOf(x)<0),Math.min(2,own.length),r);
+        const fill=[];ok.forEach(o=>fill.push(...o.synonyms,...o.antonyms));
+        w=w.concat(distinct(fill,avoid.concat(w),3-w.length,r));
+        if(w.length===3)return build(`Choose the <u>${t==='syn'?'synonym':'antonym'}</u> of <b>${esc(item.word.toUpperCase())}</b>`,correct,w,r,item,t,ex);
+      }
+      t='meaning';
+    }
+    const w=distinct(ok.map(o=>o.meaning_en),[item.meaning_en],3,r);
+    return build(`What does <b>${esc(item.word.toUpperCase())}</b> mean?`,item.meaning_en,w,r,item,'meaning',ex);
+  }
+  if(sec==='confused'){
+    const words=item.pair.split('/').map(s=>s.trim());
+    const ex=`<b>${esc(item.pair)}</b> — ${esc(item.meaning_en)}<br><i>${esc(item.sentence)}</i>`;
+    const present=words.filter(w=>blankOut(item.sentence,w));
+    if(present.length && r()<0.8){
+      const w=pick(present,r);const s=blankOut(item.sentence,w);
+      const opts=words.map(x=>x.toLowerCase());
+      const correct=w.toLowerCase();
+      return build(`Choose the correct word:<br><b>${esc(s)}</b>`,correct,opts.filter(x=>x!==correct),r,item,'blank',ex);
+    }
+    const wr=distinct(others.map(o=>o.meaning_en),[item.meaning_en],3,r);
+    return build(`Which explanation is correct for <b>${esc(item.pair)}</b>?`,item.meaning_en,wr,r,item,'meaning',ex);
+  }
+  if(sec==='subs'){
+    const ex=`<b>${esc(item.substitute)}</b> — ${esc(item.phrase)}`+(item.sentence?`<br><i>${esc(item.sentence)}</i>`:'');
+    if(r()<0.65){
+      const suf=item.substitute.toLowerCase().slice(-3);
+      const near=others.filter(o=>o.substitute.toLowerCase().slice(-3)===suf).map(o=>o.substitute);
+      let w=distinct(near,[item.substitute],2,r);
+      w=w.concat(distinct(others.map(o=>o.substitute),[item.substitute,...w],3-w.length,r));
+      return build(`One word for:<br><b>${esc(item.phrase)}</b>`,item.substitute,w,r,item,'forward',ex);
+    }
+    const w=distinct(others.map(o=>o.phrase),[item.phrase],3,r);
+    return build(`<b>${esc(item.substitute.toUpperCase())}</b> means:`,item.phrase,w,r,item,'reverse',ex);
+  }
+  if(sec==='idioms'||sec==='phrases'||sec==='phrasal'){
+    const k=SEC[sec].key;const label={idioms:'idiom',phrases:'phrase',phrasal:'phrasal verb'}[sec];
+    const ex=`<b>${esc(item[k])}</b> — ${esc(item.meaning_en)}`+(item.sentence?`<br><i>${esc(item.sentence)}</i>`:'');
+    if(r()<0.65){
+      const w=distinct(others.map(o=>o.meaning_en),[item.meaning_en],3,r);
+      return build(`Meaning of the ${label}:<br><b>${esc(item[k])}</b>`,item.meaning_en,w,r,item,'forward',ex);
+    }
+    const w=distinct(others.map(o=>o[k]),[item[k]],3,r);
+    return build(`Which ${label} means:<br><b>"${esc(item.meaning_en)}"</b>`,item[k],w,r,item,'reverse',ex);
+  }
+  if(sec==='roots'){
+    const stems=rootStems(item.root);
+    const ex=`<b>${esc(item.root)}</b> — ${esc(item.meaning)}<br>Examples: ${esc(item.examples.join(', '))}`;
+    if(r()<0.5){
+      const correct=pick(item.examples,r);
+      const cands=[];others.forEach(o=>cands.push(...o.examples));
+      const clean=cands.filter(c=>!stems.some(s=>c.toLowerCase().includes(s)));
+      const w=distinct(clean,item.examples,3,r);
+      if(w.length===3)return build(`Which word comes from the root <b>${esc(stems.join(' / ').toUpperCase())}</b>?`,correct,w,r,item,'example',ex);
+    }
+    const words=new Set(item.meaning.toLowerCase().split(/[^a-z]+/).filter(x=>x.length>3));
+    const cands=others.filter(o=>!o.meaning.toLowerCase().split(/[^a-z]+/).some(x=>words.has(x))).map(o=>o.meaning);
+    const w=distinct(cands,[item.meaning],3,r);
+    return build(`The root <b>${esc(stems.join(' / ').toUpperCase())}</b> means:`,item.meaning,w,r,item,'meaning',ex);
+  }
+}
+
+/* Daily exam: each day takes the next 20 items of a fixed shuffled order, so questions do not repeat until the whole list is covered */
+function dailyItems(sec,day,n){
+  const pool=DATA[sec];n=Math.min(n||PER_SECTION,pool.length);
+  const order=shuffle(pool.map((_,i)=>i),rng(hashStr('order-'+sec)));
+  const start=(day*n)%pool.length;const out=[];
+  for(let i=0;i<n;i++)out.push(pool[order[(start+i)%pool.length]]);
+  return out;
+}
+function dailyQuiz(sec,day){
+  const r=rng(hashStr(sec+'#'+day));
+  return dailyItems(sec,day).map(it=>makeQuestion(sec,it,r));
+}
+function practiceQuiz(sec,n,items){
+  const r=rng((Math.random()*4294967296)>>>0);
+  const src=items&&items.length?items:DATA[sec];
+  return shuffle(src,r).slice(0,Math.min(n,src.length)).map(it=>makeQuestion(sec,it,r));
+}
+</script>
+
+<script>
+/* ================= STORAGE (safe) ================= */
+const store={
+  get(k,d){try{const v=localStorage.getItem('le_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('le_'+k,JSON.stringify(v))}catch(e){}}
+};
+const TODAY=dayIndex();
+document.getElementById('dateLbl').textContent=dayLabel(TODAY);
+
+/* ================= HEADER MEANING BAR ================= */
+const meanbar=document.getElementById('meanbar');
+function showMeaning(sec,it){
+  let t='',m='';
+  if(sec==='az'){t=it.word;m=it.meaning_en+(it.meaning_te?'  ('+it.meaning_te+')':'')}
+  else if(sec==='confused'){t=it.pair;m=it.meaning_en}
+  else if(sec==='subs'){t=it.substitute;m=it.phrase}
+  else if(sec==='roots'){t=it.root;m=it.meaning+' — '+it.examples.join(', ')}
+  else {t=it[SEC[sec].key];m=it.meaning_en}
+  meanbar.innerHTML=`<span class="txt"><b>${esc(t)}</b> — ${esc(m)}</span>`;
+  meanbar.title=t+' — '+m;
+}
+function speak(text){
+  try{const u=new SpeechSynthesisUtterance(text);u.lang='en-IN';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}
+}
+
+/* ================= MENU ================= */
+const nav=document.getElementById('nav');
+function renderNav(){
+  const cur=location.hash.slice(1)||'home';
+  let h=`<div class="grp">Today</div>
+  <a href="#home" class="${cur==='home'?'on':''}">Home</a>
+  <a href="#exam" class="${cur.startsWith('exam')||cur.startsWith('quiz-d')?'on':''}">Today's Exam <span class="n">${SECTIONS.length*PER_SECTION} Q</span></a>
+  <div class="grp">Read &amp; Practise</div>`;
+  for(const s of SECTIONS){
+    h+=`<a href="#sec-${s.id}" class="${cur==='sec-'+s.id?'on':''}">${s.name}<span class="n">${DATA[s.id].length}</span></a>`;
+  }
+  h+=`<div class="grp">My Work</div>
+  <a href="#mistakes" class="${cur==='mistakes'?'on':''}">Revise Mistakes <span class="n">${mistakeCount()}</span></a>
+  <a href="#progress" class="${cur==='progress'?'on':''}">My Progress</a>
+  <div class="credit">Designed by Sivananda Pujari<br><br>Dictionary data: Open English WordNet (CC BY 4.0), derived from Princeton WordNet.</div>`;
+  nav.innerHTML=h;
+}
+document.getElementById('menuBtn').onclick=()=>document.body.classList.toggle('open');
+document.getElementById('shade').onclick=()=>document.body.classList.remove('open');
+nav.addEventListener('click',e=>{if(e.target.closest('a'))document.body.classList.remove('open')});
+
+/* ================= MISTAKES ================= */
+function getMistakes(){return store.get('mistakes',{})}
+function mistakeCount(){const m=getMistakes();return Object.values(m).reduce((a,o)=>a+Object.keys(o).length,0)}
+function markResult(sec,item,correct){
+  const m=getMistakes();m[sec]=m[sec]||{};const k=itemKey(sec,item);
+  if(correct){if(m[sec][k]){m[sec][k]--;if(m[sec][k]<=0)delete m[sec][k]}}
+  else m[sec][k]=(m[sec][k]||0)+1;
+  store.set('mistakes',m);
+}
+
+/* ================= CARD RENDERING ================= */
+function chips(label,arr,cls){if(!arr||!arr.length)return'';return `<div class="chips"><span class="lbl">${label}</span>${arr.map(x=>`<span class="chip ${cls}">${esc(x)}</span>`).join('')}</div>`}
+function boldWord(sentence,word){
+  const s=esc(sentence);const re=new RegExp("(^|[^A-Za-z'])("+esc(word).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+"[A-Za-z]*)","i");
+  return s.replace(re,'$1<b>$2</b>');
+}
+function cardHtml(sec,it,i){
+  const say=t=>`<button class="say" data-say="${esc(t)}" title="Listen">&#128264;</button>`;
+  if(sec==='az')return `<div class="card" data-i="${i}"><div class="hd"><span class="w">${esc(it.word)}</span><span class="pos">${esc(it.pos)}</span>${say(it.word)}</div><div class="hint">Tap to see the meaning</div>
+    <div class="body"><div class="m">${esc(it.meaning_en)}</div><div class="te">${esc(it.meaning_te||'')}</div>${chips('Syn',it.synonyms,'')}${chips('Ant',it.antonyms,'ant')}<div class="eg">${boldWord(it.sentence,it.word)}</div></div></div>`;
+  if(sec==='confused')return `<div class="card" data-i="${i}"><div class="hd"><span class="w">${esc(it.pair)}</span></div><div class="hint">Tap to see the difference</div>
+    <div class="body"><div class="m">${esc(it.meaning_en)}</div><div class="eg">${esc(it.sentence)}</div></div></div>`;
+  if(sec==='subs')return `<div class="card" data-i="${i}"><div class="hd"><span class="m">${esc(it.phrase)}</span></div><div class="hint">Tap to see the one word</div>
+    <div class="body"><div class="w">${esc(it.substitute)} ${say(it.substitute)}</div>${it.sentence?`<div class="eg">${boldWord(it.sentence,it.substitute)}</div>`:''}</div></div>`;
+  if(sec==='roots')return `<div class="card" data-i="${i}"><div class="hd"><span class="w">${esc(it.root)}</span></div><div class="hint">Tap to see the meaning</div>
+    <div class="body"><div class="m">Meaning: ${esc(it.meaning)}</div>${chips('Words',it.examples,'ex')}</div></div>`;
+  const k=SEC[sec].key;
+  return `<div class="card" data-i="${i}"><div class="hd"><span class="w">${esc(it[k])}</span>${say(it[k])}</div><div class="hint">Tap to see the meaning</div>
+    <div class="body"><div class="m">${esc(it.meaning_en)}</div>${it.sentence?`<div class="eg">${esc(it.sentence)}</div>`:''}</div></div>`;
+}
+function searchText(sec,it){return Object.values(it).flat().join(' ').toLowerCase()}
+
+/* ================= VIEWS ================= */
+const main=document.getElementById('main');
+let quiz=null;
+
+function viewHome(){
+  const res=SECTIONS.map(s=>store.get(`d_${TODAY}_${s.id}`,null));
+  const done=res.filter(x=>x&&x.done).length;
+  const score=res.reduce((a,x)=>a+(x&&x.done?x.score:0),0);
+  const total=Object.values(DATA).reduce((a,v)=>a+v.length,0);
+  const w=DATA.az[hashStr('wotd'+TODAY)%DATA.az.length];
+  let h=`<h1>Welcome</h1>
+  <div class="big"><div>Today's exam</div><div class="n">${done} / ${SECTIONS.length} sections done</div><div>Score so far: ${score} / ${done*PER_SECTION}</div>
+  <div style="margin-top:10px"><a class="btn ghost small" href="#exam">Open today's exam</a></div></div>
+  <div class="wotd"><div class="muted">Word of the day</div><div class="card" style="margin:6px 0 0;cursor:default"><div class="hd"><span class="w">${esc(w.word)}</span><span class="pos">${esc(w.pos)}</span><button class="say" data-say="${esc(w.word)}">&#128264;</button></div>
+  <div class="m">${esc(w.meaning_en)}</div><div class="te">${esc(w.meaning_te||'')}</div>${chips('Syn',w.synonyms,'')}${chips('Ant',w.antonyms,'ant')}<div class="eg">${boldWord(w.sentence,w.word)}</div></div></div>
+  <h2>Sections (${total} entries)</h2><div class="tiles">`;
+  for(const s of SECTIONS)h+=`<div class="tile"><div class="t">${s.name}</div><div class="s">${DATA[s.id].length} entries</div><div class="row"><a class="btn small" href="#sec-${s.id}">Read</a><a class="btn ghost small" href="#quiz-p-${s.id}">Quick test</a></div></div>`;
+  main.innerHTML=h+'</div>';
+}
+
+function viewExam(){
+  let h=`<h1>Today's Exam</h1><p class="muted">${dayLabel(TODAY)} · ${PER_SECTION} questions from each section. New questions every day.</p><div class="tiles">`;
+  let tot=0,doneQ=0;
+  for(const s of SECTIONS){
+    const st=store.get(`d_${TODAY}_${s.id}`,null);const n=Math.min(PER_SECTION,DATA[s.id].length);
+    let status='Not started',btn='Start',cls='';
+    if(st&&st.done){status=`Done: ${st.score} / ${n}`;btn='Review';cls='done';tot+=st.score;doneQ+=n}
+    else if(st&&st.answers&&st.answers.length){status=`In progress: ${st.answers.length} / ${n}`;btn='Continue'}
+    h+=`<div class="tile"><div class="t">${s.name}</div><div class="s ${cls}">${status}</div><a class="btn small" href="#quiz-d-${s.id}">${btn}</a></div>`;
+  }
+  h+=`</div><h2>Today's total: ${tot} / ${doneQ}</h2>`;
+  main.innerHTML=h;
+}
+
+function viewSection(sec){
+  const s=SEC[sec];const pool=DATA[sec];
+  const st={q:'',letter:'',shown:60,hide:store.get('hide_'+sec,false)};
+  main.innerHTML=`<h1>${s.name}</h1>
+  <div class="tools"><input type="search" id="q" placeholder="Search ${pool.length} entries…">
+  ${sec==='az'?'<div class="letters" id="letters"></div>':''}
+  <div class="row" style="margin-top:8px;justify-content:space-between"><label class="toggle"><input type="checkbox" id="hide"> Hide meanings (self-test)</label>
+  <a class="btn small" href="#quiz-p-${sec}">Quick test (10)</a></div></div>
+  <div id="list"></div>`;
+  const list=document.getElementById('list');
+  if(sec==='az'){
+    const L=document.getElementById('letters');
+    const letters=['All',...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
+    L.innerHTML=letters.map(c=>`<button data-l="${c}" class="${c==='All'?'on':''}">${c}</button>`).join('');
+    L.onclick=e=>{const b=e.target.closest('button');if(!b)return;st.letter=b.dataset.l==='All'?'':b.dataset.l.toLowerCase();st.shown=60;
+      L.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));draw()};
+  }
+  const hideBox=document.getElementById('hide');hideBox.checked=st.hide;
+  hideBox.onchange=()=>{st.hide=hideBox.checked;store.set('hide_'+sec,st.hide);draw()};
+  document.getElementById('q').oninput=e=>{st.q=e.target.value.trim().toLowerCase();st.shown=60;draw()};
+  function draw(){
+    const items=[];pool.forEach((it,i)=>{
+      if(st.letter&&!it.word.toLowerCase().startsWith(st.letter))return;
+      if(st.q&&!searchText(sec,it).includes(st.q))return;items.push([it,i])});
+    list.className=st.hide?'hide':'';
+    if(!items.length){list.innerHTML='<div class="empty">No entries found.</div>';return}
+    list.innerHTML=items.slice(0,st.shown).map(([it,i])=>cardHtml(sec,it,i)).join('')+
+      (items.length>st.shown?`<button class="btn ghost more" id="more">Show more (${items.length-st.shown} left)</button>`:'')+
+      `<p class="muted" style="text-align:center">${items.length} of ${pool.length} shown by filter</p>`;
+    const m=document.getElementById('more');if(m)m.onclick=()=>{st.shown+=60;draw()};
+  }
+  list.onclick=e=>{
+    const sb=e.target.closest('.say');if(sb){e.stopPropagation();speak(sb.dataset.say);return}
+    const c=e.target.closest('.card');if(!c)return;
+    c.classList.toggle('open');showMeaning(sec,pool[+c.dataset.i]);
+  };
+  draw();
+}
+
+function startQuiz(mode,sec){
+  if(mode==='d'){
+    const st=store.get(`d_${TODAY}_${sec}`,{answers:[]});
+    quiz={mode,sec,qs:dailyQuiz(sec,TODAY),answers:st.answers||[],done:!!st.done};
+    quiz.idx=quiz.done?quiz.qs.length:quiz.answers.length;
+  }else if(mode==='m'){
+    const keys=Object.keys(getMistakes()[sec]||{});
+    const items=DATA[sec].filter(it=>keys.includes(itemKey(sec,it)));
+    quiz={mode,sec,qs:practiceQuiz(sec,20,items),answers:[],idx:0};
+  }else{
+    quiz={mode,sec,qs:practiceQuiz(sec,10),answers:[],idx:0};
+  }
+  drawQuiz();
+}
+function saveDaily(){
+  if(quiz.mode!=='d')return;
+  const score=quiz.answers.filter((a,i)=>a===quiz.qs[i].answer).length;
+  const done=quiz.answers.length>=quiz.qs.length;
+  store.set(`d_${TODAY}_${quiz.sec}`,{answers:quiz.answers,done,score});
+  if(done){const h=store.get('history',{});h[TODAY]=h[TODAY]||{};h[TODAY][quiz.sec]=score;store.set('history',h)}
+}
+function drawQuiz(){
+  const {qs,idx,sec,mode}=quiz;const s=SEC[sec];
+  const title=mode==='d'?`Today's Exam · ${s.name}`:mode==='m'?`Mistakes · ${s.name}`:`Quick test · ${s.name}`;
+  if(!qs.length){main.innerHTML=`<h1>${title}</h1><div class="empty">Nothing to test here yet.</div>`;return}
+  if(idx>=qs.length)return drawResult(title);
+  const q=qs[idx];const answered=quiz.answers[idx]!=null;
+  let h=`<h1>${title}</h1><div class="qbox"><div class="qmeta"><span>Question ${idx+1} of ${qs.length}</span><span>Score: ${quiz.answers.filter((a,i)=>a===qs[i].answer).length}</span></div>
+  <div class="progress"><i style="width:${(idx/qs.length)*100}%"></i></div>
+  <div class="qtext">${q.q}</div><div id="opts">`;
+  q.options.forEach((o,i)=>{
+    let cls='';if(answered){if(i===q.answer)cls='ok';else if(i===quiz.answers[idx])cls='bad'}
+    h+=`<button class="opt ${cls}" data-i="${i}" ${answered?'disabled':''}><span class="k">${'ABCD'[i]}</span><span>${esc(o)}</span></button>`;
+  });
+  h+='</div>';
+  if(answered){
+    const ok=quiz.answers[idx]===q.answer;
+    h+=`<div class="explain"><div class="res ${ok?'ok':'bad'}">${ok?'Correct!':'Wrong. Correct answer: '+esc(q.options[q.answer])}</div>${q.explain}</div>
+    <div class="row" style="margin-top:12px"><button class="btn" id="next">${idx+1<qs.length?'Next question':'See result'}</button></div>`;
+  }
+  main.innerHTML=h+'</div>';
+  if(!answered)document.getElementById('opts').onclick=e=>{
+    const b=e.target.closest('.opt');if(!b)return;const i=+b.dataset.i;
+    quiz.answers[idx]=i;markResult(sec,q.item,i===q.answer);showMeaning(sec,q.item);saveDaily();renderNav();drawQuiz();
+  };
+  else document.getElementById('next').onclick=()=>{quiz.idx++;saveDaily();drawQuiz();window.scrollTo(0,0)};
+}
+function drawResult(title){
+  const {qs,answers,sec,mode}=quiz;
+  const score=answers.filter((a,i)=>a===qs[i].answer).length;
+  const wrong=qs.map((q,i)=>[q,answers[i]]).filter(([q,a])=>a!==q.answer);
+  let h=`<h1>${title}</h1><div class="qbox"><div class="muted">Your score</div><div class="score">${score} / ${qs.length}</div>
+  <div class="muted">${score===qs.length?'Excellent! Full marks.':score>=qs.length*.7?'Good work. Revise the wrong ones below.':'Keep practising. Revise the wrong ones below.'}</div>
+  <div class="row" style="margin-top:12px">${mode==='d'?'<a class="btn" href="#exam">Back to today\'s exam</a>':''}<a class="btn ghost" href="#quiz-p-${sec}" id="again">Quick test again</a><a class="btn ghost" href="#sec-${sec}">Read this section</a></div></div>`;
+  if(wrong.length){h+=`<h2>Review (${wrong.length} wrong)</h2>`;
+    wrong.forEach(([q,a])=>{h+=`<div class="card" style="cursor:default"><div class="m">${q.q}</div><div class="muted" style="margin-top:4px">Your answer: ${a==null?'—':esc(q.options[a])}</div><div class="explain"><div class="res ok">Correct: ${esc(q.options[q.answer])}</div>${q.explain}</div></div>`})}
+  main.innerHTML=h;
+  const again=document.getElementById('again');again.onclick=e=>{e.preventDefault();if(location.hash==='#quiz-p-'+sec)startQuiz('p',sec);else location.hash='#quiz-p-'+sec};
+}
+
+function viewMistakes(){
+  const m=getMistakes();let h='<h1>Revise Mistakes</h1><p class="muted">Words you answered wrongly. Each correct answer later removes one mark.</p>';let any=false;
+  for(const s of SECTIONS){
+    const keys=Object.keys(m[s.id]||{});if(!keys.length)continue;any=true;
+    const items=DATA[s.id].map((it,i)=>[it,i]).filter(([it])=>keys.includes(itemKey(s.id,it)));
+    h+=`<h2>${s.name} (${items.length})</h2><div class="row"><a class="btn small" href="#quiz-m-${s.id}">Test these</a></div><div data-sec="${s.id}">${items.map(([it,i])=>cardHtml(s.id,it,i)).join('')}</div>`;
+  }
+  main.innerHTML=any?h:h+'<div class="empty">No mistakes saved yet. Take today\'s exam!</div>';
+  main.onclick=e=>{const sb=e.target.closest('.say');if(sb){speak(sb.dataset.say);return}
+    const c=e.target.closest('.card');const g=e.target.closest('[data-sec]');if(c&&g)showMeaning(g.dataset.sec,DATA[g.dataset.sec][+c.dataset.i])};
+}
+
+function viewProgress(){
+  const hist=store.get('history',{});const days=Object.keys(hist).map(Number).sort((a,b)=>b-a);
+  let streak=0,d=hist[TODAY]?TODAY:TODAY-1;while(hist[d]){streak++;d--}
+  let h=`<h1>My Progress</h1><div class="big"><div>Day streak</div><div class="n">${streak} day${streak===1?'':'s'}</div><div>Exam days so far: ${days.length}</div></div>`;
+  if(!days.length){main.innerHTML=h+'<div class="empty">Finish a section of today\'s exam to see your progress here.</div>';return}
+  h+='<table><tr><th>Date</th>'+SECTIONS.map(s=>`<th>${s.name.split(' ')[0]}</th>`).join('')+'<th>Total</th></tr>';
+  for(const d of days.slice(0,60)){
+    const r=hist[d];let t=0;
+    h+=`<tr><td>${dayLabel(d)}</td>`+SECTIONS.map(s=>{if(r[s.id]==null)return'<td>—</td>';t+=r[s.id];return`<td>${r[s.id]}</td>`}).join('')+`<td><b>${t}</b></td></tr>`;
+  }
+  main.innerHTML=h+'</table>';
+}
+
+/* ================= ROUTER ================= */
+function route(){
+  const h=location.hash.slice(1)||'home';main.onclick=null;
+  renderNav();window.scrollTo(0,0);
+  if(h==='home')viewHome();
+  else if(h==='exam')viewExam();
+  else if(h.startsWith('sec-')&&SEC[h.slice(4)])viewSection(h.slice(4));
+  else if(h.startsWith('quiz-')){const [,mode,sec]=h.split('-');if(SEC[sec])startQuiz(mode,sec);else viewHome()}
+  else if(h==='mistakes')viewMistakes();
+  else if(h==='progress')viewProgress();
+  else viewHome();
+}
+main.addEventListener('click',e=>{const sb=e.target.closest('.say');if(sb&&!main.onclick)speak(sb.dataset.say)});
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>
