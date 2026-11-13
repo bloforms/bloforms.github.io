@@ -9,3 +9,11 @@ Open the app: https://bloforms.github.io
 Fill ward / village secretariat application forms (income, caste, rice card, birth, marriage and more), preview them on the official form, and download as PDF or Excel.
 
 Open the app: https://bloforms.github.io/gsws/
+
+# Learn English
+
+English vocabulary for exam practice: A–Z words, words often confused, one-word substitutes, idioms, phrases, phrasal verbs and roots, with a daily exam of 20 questions per section.
+
+Dictionary data: Open English WordNet (CC BY 4.0), derived from Princeton WordNet.
+
+Open the app: https://bloforms.github.io/english/
