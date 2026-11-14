@@ -282,6 +282,7 @@
   <div class="pv-foot"><div class="inner">
     <button class="btn" type="button" id="pvDownload">⬇️ Download PDF</button>
     <button class="btn wa" type="button" id="pvShare">Send on WhatsApp</button>
+    <button class="btn ghost" type="button" id="pvScan">📷 Add scan</button>
     <button class="btn ghost" type="button" id="pvBack">✏️ Edit form</button>
   </div></div>
 </div>
@@ -3081,6 +3082,7 @@ $("pvBack").addEventListener("click", closePreview);
 $("pvDownload").addEventListener("click", downloadFromPreview);
 $("pvShare").innerHTML = `<span class="wa-ic">${WA_SVG}</span><span>Send on WhatsApp</span>`;
 $("pvShare").addEventListener("click", sharePdfFromPreview);
+$("pvScan").addEventListener("click", () => $("attCamera").click());   // scan more documents from the preview too; nothing is locked
 $("dlCancel").addEventListener("click", closeDlSheet);
 $("homeBtn").addEventListener("click", showHome);
 $("menuSearch").addEventListener("input", renderMenu);
