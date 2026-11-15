@@ -192,19 +192,55 @@ function renderChapter(id){
  crumb(T(c.g.en, c.g.te)+' › '+T(c.en, c.te));
  S.read[id] = S.read[id] || todayStr(); save();
  const nq = BANK.filter(q => q[0] === id).length;
- let h = '<div class="card"><span class="tag">'+esc(T(c.g.en,c.g.te))+'</span><h1>'+esc(c.en)+'</h1><div class="te-title">'+esc(c.te)+'</div></div>';
+ const x = EXTRA[id] || {};
+ const sec = (key, icon, en, te, body) => body ? '<div class="card" id="s-'+key+'"><h2>'+icon+' '+T(en,te)+'</h2>'+body+'</div>' : '';
+ let h = '<div class="card"><span class="tag">'+esc(T(c.g.en,c.g.te))+'</span><h1>'+esc(c.en)+'</h1><div class="te-title">'+esc(c.te)+'</div>';
+ const jumps = [['brief','📘 '+T('NIOS brief','NIOS సారాంశం')],['revise','🔗 '+T('Revision','పునశ్చరణ')],['map','🗺️ '+T('Map','పటం')],['figs','🖼️ '+T('Pictures','చిత్రాలు')],['mind','🧩 '+T('Mind map','మైండ్ మ్యాప్')],['table','📊 '+T('Table','పట్టిక')],['analysis','🧠 '+T('Analysis','విశ్లేషణ')],['qa','✍️ '+T('Mains Q&A','మెయిన్స్')]];
+ h += '<div class="jumps">'+jumps.filter(j => j[0] !== 'figs' || (x.figs && x.figs.length)).map(j => '<button class="chip sm" data-jump="s-'+j[0]+'">'+j[1]+'</button>').join('')+'</div></div>';
  h += '<div class="card"><h2>'+T('Introduction','పరిచయం')+'</h2><p>'+esc(d.intro)+'</p></div>';
  h += '<div class="card"><h2>'+T('Key points','ముఖ్యాంశాలు')+'</h2><ul>'+d.points.map(p => '<li>'+esc(p)+'</li>').join('')+'</ul></div>';
+ if(x.brief) h += sec('brief','📘','From the NIOS book','NIOS పుస్తకం నుండి','<span class="tag">'+esc(x.lesson)+'</span><p>'+esc(x.brief)+'</p>');
+ if(x.revise) h += sec('revise','🔗','Quick revision: how the ideas connect','త్వరిత పునశ్చరణ: అంశాల అనుసంధానం','<ol class="rev">'+x.revise.map(r => '<li>'+arrows(r)+'</li>').join('')+'</ol>');
+ if(x.places) h += sec('map','🗺️','Map: places in this chapter','పటం: ఈ అధ్యాయంలోని ప్రదేశాలు', mapSVG(x.places));
+ if(x.figs && x.figs.length) h += sec('figs','🖼️','Pictures and maps from the NIOS book','NIOS పుస్తకంలోని చిత్రాలు, పటాలు','<div class="gal">'+x.figs.map(f => '<figure data-zoom="img/'+f+'.jpg" data-cap="'+esc(FIG_CAP[f]||f)+'"><img loading="lazy" src="img/'+f+'.jpg" alt="'+esc(FIG_CAP[f]||f)+'"><figcaption>'+esc(FIG_CAP[f]||f)+'</figcaption></figure>').join('')+'</div><p class="muted small">'+T('Source: NIOS Senior Secondary History (311). Tap a picture to enlarge.','మూలం: NIOS సీనియర్ సెకండరీ చరిత్ర (311). పెద్దదిగా చూడటానికి నొక్కండి.')+'</p>');
+ if(x.mind) h += sec('mind','🧩','Mind map','మైండ్ మ్యాప్', mindHTML(x.mind));
+ if(x.table) h += sec('table','📊',x.table[0],x.table[0], '<table class="kt"><tr>'+x.table[1].map(t => '<th>'+esc(t)+'</th>').join('')+'</tr>'+x.table[2].map(r => '<tr>'+r.map((v,i) => '<td>'+(i?esc(v):'<b>'+esc(v)+'</b>')+'</td>').join('')+'</tr>').join('')+'</table>');
  h += '<div class="card"><h2>'+T('Cause → Effect','కారణం → ఫలితం')+'</h2><p class="chain">'+esc(d.chain)+'</p></div>';
  h += '<div class="card"><h2>'+T('Memory hook','జ్ఞాపక సూత్రం')+'</h2><p class="hook">'+esc(d.hook)+'</p></div>';
  h += '<div class="card"><h2>'+T('Persons and places','వ్యక్తులు, ప్రదేశాలు')+'</h2><p><b>'+T('Persons','వ్యక్తులు')+':</b> '+esc(d.persons)+'</p><p><b>'+T('Places','ప్రదేశాలు')+':</b> '+esc(d.places)+'</p></div>';
- h += '<div class="card"><h2>'+T('Mains question','మెయిన్స్ ప్రశ్న')+'</h2><p><b>'+esc(d.mq)+'</b></p><p class="muted">'+T('Answer outline','జవాబు రూపురేఖ')+':</p><ol>'+d.ma.map(p => '<li>'+esc(p)+'</li>').join('')+'</ol>';
- h += '<button class="btn alt" data-mains="'+id+'">'+T('Write this answer','ఈ జవాబు రాయండి')+' →</button></div>';
+ if(x.analysis) h += sec('analysis','🧠','Critical analysis for Mains','మెయిన్స్ కోసం విమర్శనాత్మక విశ్లేషణ','<ul>'+x.analysis.map(a => '<li>'+esc(a)+'</li>').join('')+'</ul>');
+ let qa = '<p><b>'+esc(d.mq)+'</b></p><p class="muted">'+T('Answer outline','జవాబు రూపురేఖ')+':</p><ol>'+d.ma.map(p => '<li>'+esc(p)+'</li>').join('')+'</ol>';
+ (x.qa||[]).forEach((q,i) => { qa += '<div class="qa"><p class="qa-q"><span class="badge">'+q[1]+' '+T('words','పదాలు')+'</span> '+esc(q[0])+'</p><details><summary>'+T('Show model answer','నమూనా జవాబు చూపించు')+'</summary>'+q[2].split('\n\n').map(p => '<p>'+esc(p)+'</p>').join('')+'<p class="muted small">'+wc(q[2])+' '+T('words','పదాలు')+'</p></details><button class="btn alt sm" data-mainsq="'+id+':'+i+'">✍️ '+T('Practise writing this','ఇది రాయండి')+'</button></div>'; });
+ h += sec('qa','✍️','Mains questions with model answers','మెయిన్స్ ప్రశ్నలు, నమూనా జవాబులు', qa);
  if(nq) h += '<div class="card"><button class="btn wide" data-cquiz="'+id+'">📝 '+T('Practise this chapter','ఈ అధ్యాయం సాధన')+' ('+nq+' '+T('questions','ప్రశ్నలు')+')</button></div>';
  const prev = CHAPTERS[idx-1], next = CHAPTERS[idx+1];
  h += '<div class="btns"><button class="btn alt" '+(prev?'data-go="ch:'+prev.id+'"':'disabled')+'>← '+T('Back','వెనుకకు')+'</button>';
  h += '<button class="btn" '+(next?'data-go="ch:'+next.id+'"':'disabled')+'>'+T('Next','తదుపరి')+' →</button></div>';
  view(h);
+}
+
+
+/* ============ CHAPTER HELPERS: revision arrows, map, mind map ============ */
+const wc = t => (String(t).trim().match(/\S+/g) || []).length;
+function arrows(t){ return esc(t).split('→').map(s => s.trim()).join(' <span class="arr">→</span> '); }
+function proj(lon, lat){ return [MAP_CX[0]*lon + MAP_CX[1]*lat + MAP_CX[2], MAP_CY[0]*lon + MAP_CY[1]*lat + MAP_CY[2]]; }
+function mapSVG(places){
+ const pts = places.map(p => proj(p[1], p[2]));
+ let x0 = Math.min(...pts.map(p => p[0])), x1 = Math.max(...pts.map(p => p[0])), y0 = Math.min(...pts.map(p => p[1])), y1 = Math.max(...pts.map(p => p[1]));
+ const pad = 26, minW = 175;
+ let w = Math.max(x1 - x0 + 2*pad, minW), hgt = Math.max(y1 - y0 + 2*pad, minW*1.0);
+ const cx = (x0 + x1)/2, cy = (y0 + y1)/2;
+ w = Math.max(w, hgt*0.9); hgt = Math.max(hgt, w*0.8);
+ const vb = [cx - w/2, cy - hgt/2, w, hgt].map(v => v.toFixed(1)).join(' ');
+ const k = w/240, r = (3.6*k).toFixed(2), fs = (9*k).toFixed(2), sw = (0.7*k).toFixed(2);
+ let svg = '<svg class="map" viewBox="'+vb+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="map"><rect x="-500" y="-500" width="2000" height="2000" fill="#eef4f7"/><path d="'+MAP_D+'" fill="none" stroke="#7d8f96" stroke-width="'+sw+'" stroke-linejoin="round"/>';
+ pts.forEach((p,i) => { svg += '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+r+'" fill="#c0392b" stroke="#fff" stroke-width="'+(0.8*k).toFixed(2)+'"/><text x="'+(p[0]+3.5*k).toFixed(1)+'" y="'+(p[1]+2.6*k).toFixed(1)+'" font-size="'+fs+'" font-weight="700" fill="#1d2b2f" paint-order="stroke" stroke="#fff" stroke-width="'+(1.6*k).toFixed(2)+'">'+(i+1)+'</text>'; });
+ svg += '</svg>';
+ const legend = '<ol class="legend">'+places.map(p => '<li>'+esc(p[0])+'</li>').join('')+'</ol>';
+ return svg + legend + '<p class="muted small">'+T('Map base traced from the NIOS book’s physical map of India; positions are approximate. Zoomed to the chapter’s places.','NIOS పుస్తకంలోని భారత పటం ఆధారంగా; స్థానాలు సుమారుగా.')+'</p>';
+}
+function mindHTML(m){
+ return '<div class="mind"><div class="mind-c">'+esc(m[0])+'</div><div class="mind-b">'+m[1].map((b,i) => '<div class="mb c'+(i%6)+'"><b>'+esc(b[0])+'</b><div>'+b[1].map(l => '<span>'+esc(l)+'</span>').join('')+'</div></div>').join('')+'</div></div>';
 }
 
 /* ============ QUIZ ENGINE ============ */
@@ -293,26 +329,25 @@ function startMock(){ Z = Object.assign(makeQuiz(shuffle(BANK.map((_,i) => i)).s
 function mockHistory(){ const m = S.mocks || []; return m.length ? '<div class="card"><h2>'+T('Past mock tests','గత మాక్ టెస్టులు')+'</h2><ul>'+m.map(x => '<li>'+x.date+': '+x.score+' / '+x.total+'</li>').join('')+'</ul></div>' : ''; }
 
 /* ============ MAINS ============ */
+const MAINS_Q = []; CHAPTERS.forEach(c => ((EXTRA[c.id]||{}).qa||[]).forEach((q,i) => MAINS_Q.push({key:c.id+':'+i, id:c.id, q:q[0], w:q[1], a:q[2]})));
 const MAINS_IDS = CHAPTERS.map(c => c.id);
+function currentMQ(){ return MAINS_Q.find(m => m.key === S.mainsQ) || MAINS_Q[dayNum() % MAINS_Q.length]; }
 function renderMains(){
  crumb(T('Mains answer practice','మెయిన్స్ జవాబు సాధన'));
- const target = S.target || 150;
- const id = S.mainsCh || MAINS_IDS[dayNum() % MAINS_IDS.length];
- const d = CONTENT[id];
- let h = '<div class="card"><h1>'+T('Mains answer writing','మెయిన్స్ జవాబు రాత')+'</h1><p class="muted">'+(S.mainsCh ? T('Chosen question','ఎంచుకున్న ప్రశ్న') : T("Today's question — it changes every day",'నేటి ప్రశ్న — రోజూ మారుతుంది'))+'</p>';
- h += '<span class="tag">'+esc(chName(id))+'</span><h2 class="q">'+esc(d.mq)+'</h2>';
- h += '<div class="btns" style="justify-content:flex-start"><button class="btn'+(target===150?'':' alt')+'" data-target="150">150 '+T('words','పదాలు')+'</button><button class="btn'+(target===250?'':' alt')+'" data-target="250">250 '+T('words','పదాలు')+'</button>';
- h += '<select id="mpick" class="pick"><option value="">'+T('Pick another question…','మరో ప్రశ్న ఎంచుకోండి…')+'</option>'+CHAPTERS.map(c => '<option value="'+c.id+'"'+(c.id===S.mainsCh?' selected':'')+'>'+esc(T(c.en,c.te))+'</option>').join('')+'</select></div></div>';
- const split = target === 150 ? ['20–25','30–35','30–35','30–35','20'] : ['30–40','45–50','45–50','45–50','30–35'];
- h += '<div class="card"><h2>'+T('Answer outline','జవాబు రూపురేఖ')+' ('+target+' '+T('words','పదాలు')+')</h2><ol>'+d.ma.map((p,i) => '<li>'+esc(p)+' <span class="muted">· '+(split[i]||'25')+' '+T('words','పదాలు')+'</span></li>').join('')+'</ol>';
- h += '<p class="muted">'+T('Tip: use the chapter’s Cause → Effect chain for your body points, and give one fact, date or name in each point.','చిట్కా: ప్రతి అంశంలో ఒక తేదీ లేదా పేరు ఇవ్వండి.')+'</p></div>';
- h += '<div class="card"><h2>'+T('Write here','ఇక్కడ రాయండి')+'</h2><textarea id="ans" placeholder="'+T('Write your answer…','మీ జవాబు రాయండి…')+'">'+esc((S.drafts||{})[id+':'+target] || '')+'</textarea><p id="wc" class="muted"></p>';
- h += '<div class="btns"><button class="btn alt" data-go="ch:'+id+'">'+T('Read the chapter','అధ్యాయం చదవండి')+'</button>'+(S.mainsCh?'<button class="btn alt" data-mainsreset="1">'+T("Back to today's question",'నేటి ప్రశ్నకు')+'</button>':'')+'</div></div>';
+ const m = currentMQ(), target = m.w;
+ let h = '<div class="card"><h1>'+T('Mains answer writing','మెయిన్స్ జవాబు రాత')+'</h1><p class="muted">'+(S.mainsQ ? T('Chosen question','ఎంచుకున్న ప్రశ్న') : T("Today's question — it changes every day",'నేటి ప్రశ్న — రోజూ మారుతుంది'))+' · '+MAINS_Q.length+' '+T('questions with model answers','నమూనా జవాబులతో ప్రశ్నలు')+'</p>';
+ h += '<span class="tag">'+esc(chName(m.id))+'</span> <span class="badge">'+target+' '+T('words','పదాలు')+'</span><h2 class="q">'+esc(m.q)+'</h2>';
+ h += '<select id="mpick" class="pick"><option value="">'+T('Pick another question…','మరో ప్రశ్న ఎంచుకోండి…')+'</option>'+MAINS_Q.map(x => '<option value="'+x.key+'"'+(x.key===S.mainsQ?' selected':'')+'>'+esc(chName(x.id)+' — '+x.q.slice(0,70))+' ('+x.w+')</option>').join('')+'</select></div>';
+ const split = target === 150 ? ['Introduction: 20–25','Point 1: 30–35','Point 2: 30–35','Point 3: 30–35','Conclusion: 20'] : ['Introduction: 30–40','Point 1: 45–50','Point 2: 45–50','Point 3: 45–50','Point 4 or example: 35–40','Conclusion: 25–30'];
+ h += '<div class="card"><h2>'+T('Answer shape','జవాబు నిర్మాణం')+' ('+target+' '+T('words','పదాలు')+')</h2><ul>'+split.map(p => '<li>'+p+' '+T('words','పదాలు')+'</li>').join('')+'</ul><p class="muted">'+T('Tip: give one date, name or example in every point, and end with a balanced conclusion.','చిట్కా: ప్రతి అంశంలో ఒక తేదీ, పేరు లేదా ఉదాహరణ ఇవ్వండి.')+'</p></div>';
+ h += '<div class="card"><h2>'+T('Write here','ఇక్కడ రాయండి')+'</h2><textarea id="ans" placeholder="'+T('Write your answer first, then compare with the model answer…','ముందు మీ జవాబు రాయండి, తర్వాత నమూనా జవాబుతో పోల్చండి…')+'">'+esc((S.drafts||{})[m.key] || '')+'</textarea><p id="wc" class="muted"></p>';
+ h += '<details class="model"><summary>'+T('Show model answer','నమూనా జవాబు చూపించు')+' ('+wc(m.a)+' '+T('words','పదాలు')+')</summary>'+m.a.split('\n\n').map(p => '<p>'+esc(p)+'</p>').join('')+'</details>';
+ h += '<div class="btns"><button class="btn alt" data-go="ch:'+m.id+'">'+T('Read the chapter','అధ్యాయం చదవండి')+'</button>'+(S.mainsQ?'<button class="btn alt" data-mainsreset="1">'+T("Today's question",'నేటి ప్రశ్న')+'</button>':'')+'<button class="btn" data-mainsrand="1">'+T('Random question','యాదృచ్ఛిక ప్రశ్న')+'</button></div></div>';
  view(h); countWords();
 }
 function countWords(){
  const ta = $('#ans'); if(!ta) return;
- const n = (ta.value.trim().match(/\S+/g) || []).length, target = S.target || 150;
+ const n = wc(ta.value), target = currentMQ().w;
  $('#wc').textContent = n+' / '+target+' '+T('words','పదాలు')+(n > target+20 ? ' — '+T('too long','ఎక్కువైంది') : n >= target-20 ? ' ✓' : '');
 }
 
@@ -413,7 +448,7 @@ function renderSearch(){
  crumb(T('Search','వెతుకు')+': '+q);
  if(q.length < 2) return view('<div class="card"><p class="muted">'+T('Type at least 2 letters.','కనీసం 2 అక్షరాలు టైప్ చేయండి.')+'</p></div>');
  const hits = [];
- CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
+ CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const x = EXTRA[c.id] || {}; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook, x.brief||'', (x.revise||[]).join(' '), (x.analysis||[]).join(' '), (x.places||[]).map(p => p[0]).join(' ')].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
  DYN_AP.concat(DYN_IN).forEach(d => { const k = d.kings.find(k => k.join(' ').toLowerCase().includes(q)); if(k || d.name.toLowerCase().includes(q)) hits.push('<button data-go="kings"><b>👑 '+esc(T(d.name,d.te))+'</b><br><span class="muted">'+esc(k ? k[0]+' — '+k[1]+' '+k[2] : d.years)+'</span></button>'); });
  view('<div class="card"><h1>'+hits.length+' '+T('results','ఫలితాలు')+'</h1><div class="list">'+hits.join('')+'</div></div>');
 }
@@ -443,18 +478,23 @@ document.addEventListener('click', e => {
  const cq = t.closest('[data-cquiz]'); if(cq){ startChapterQuiz(cq.dataset.cquiz); return; }
  if(t.closest('[data-startmock]')){ startMock(); return; }
  const tg = t.closest('[data-target]'); if(tg){ S.target = Number(tg.dataset.target); save(); renderMains(); return; }
- const mn = t.closest('[data-mains]'); if(mn){ S.mainsCh = mn.dataset.mains; go('mains'); return; }
- if(t.closest('[data-mainsreset]')){ S.mainsCh = null; save(); renderMains(); return; }
+ const mq = t.closest('[data-mainsq]'); if(mq){ S.mainsQ = mq.dataset.mainsq; go('mains'); return; }
+ if(t.closest('[data-mainsreset]')){ S.mainsQ = null; save(); renderMains(); return; }
+ if(t.closest('[data-mainsrand]')){ S.mainsQ = MAINS_Q[Math.floor(Math.random()*MAINS_Q.length)].key; save(); renderMains(); window.scrollTo(0,0); return; }
+ const jp = t.closest('[data-jump]'); if(jp){ const el = document.getElementById(jp.dataset.jump); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+ const zm = t.closest('[data-zoom]'); if(zm){ openZoom(zm.dataset.zoom, zm.dataset.cap); return; }
+ if(t.closest('#zoom')){ $('#zoom').remove(); return; }
  const kt = t.closest('[data-ktab]'); if(kt){ S.ktab = kt.dataset.ktab; save(); renderKings(); return; }
  const pk = t.closest('[data-pick]'); if(pk){ pick(Number(pk.dataset.pick)); return; }
  if(t.closest('[data-replay]')){ G = null; renderOrder(); return; }
  if(t.closest('[data-reset]')){ if(confirm(T('Delete all progress on this phone?','ఈ ఫోన్‌లో మొత్తం ప్రగతి తొలగించాలా?'))){ S = {seen:[],wrong:{},days:{},read:{},orders:{},lang:LANG}; save(); go('home'); } return; }
 });
 document.addEventListener('input', e => {
- if(e.target.id === 'ans'){ const id = S.mainsCh || MAINS_IDS[dayNum() % MAINS_IDS.length]; S.drafts = S.drafts || {}; S.drafts[id+':'+(S.target||150)] = e.target.value; save(); countWords(); }
+ if(e.target.id === 'ans'){ S.drafts = S.drafts || {}; S.drafts[currentMQ().key] = e.target.value; save(); countWords(); }
  if(e.target.id === 'q'){ S.q = e.target.value; save(); if(S.q.trim().length >= 2){ R = 'search'; S.route = R; renderSearch(); } }
 });
-document.addEventListener('change', e => { if(e.target.id === 'mpick' && e.target.value){ S.mainsCh = e.target.value; save(); renderMains(); } });
+document.addEventListener('change', e => { if(e.target.id === 'mpick' && e.target.value){ S.mainsQ = e.target.value; save(); renderMains(); } });
+function openZoom(src, cap){ const d = document.createElement('div'); d.id = 'zoom'; d.innerHTML = '<img src="'+src+'" alt=""><p>'+cap+'</p><span>✕</span>'; document.body.appendChild(d); }
 document.addEventListener('keydown', e => { if(e.target.id === 'q' && e.key === 'Enter'){ e.target.blur(); go('search'); } });
 $('#burger').onclick = () => document.body.classList.toggle('menu-open');
 $('#scrim').onclick = () => document.body.classList.remove('menu-open');

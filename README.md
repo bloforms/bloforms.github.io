@@ -26,6 +26,8 @@ Open the app: https://bloforms.github.io/audio/
 
 # Itihasam – Indian & AP History
 
-Indian and Andhra Pradesh history for APPSC Group 1 and Group 2: 61 chapters, kings and kingdoms in order with order games, 30 daily Prelims questions, mock tests and Mains answer practice.
+Indian and Andhra Pradesh history for APPSC Group 1 and Group 2: 61 chapters with NIOS-based briefs, connected revision points, mind maps, tables, location maps and the NIOS book's figures; kings and kingdoms in order with order games; 30 daily Prelims questions, mock tests; and 122 Mains questions with 150/250-word model answers.
+
+Figures and maps: NIOS Senior Secondary History (311).
 
 Open the app: https://bloforms.github.io/history/
