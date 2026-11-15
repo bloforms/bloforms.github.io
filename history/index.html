@@ -123,6 +123,17 @@ ol.legend{columns:2;column-gap:20px;font-size:.9rem;margin-top:8px}
 .qa-q{font-weight:600}
 .qa details,details.model{background:#f7f5ee;border-radius:10px;padding:8px 12px;margin:8px 0}
 .qa summary,details.model summary{cursor:pointer;color:var(--accent);font-weight:600}
+h3{font-size:1rem;margin:14px 0 6px;color:var(--ink)}
+.tline{border-left:3px solid var(--accent2);padding-left:14px}
+.tline div{margin-bottom:8px;line-height:1.4}
+.ty{display:inline-block;min-width:118px;color:#8a6d0b;font-weight:600;font-size:.88rem}
+.ff{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+@media (max-width:620px){.ff{grid-template-columns:1fr}}
+.fr,.fo{border-radius:10px;padding:4px 12px}
+.fr{background:#e7f2ee}.fo{background:#f8e5e5}
+.life{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.lf{background:#f7f5ee;border-radius:10px;padding:10px 12px}
+.lf p{margin:4px 0 0;font-size:.93rem}
 .scrim{display:none}
 @media (max-width:820px){
  aside{position:fixed;left:0;top:0;z-index:20;transform:translateX(-105%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.2)}
@@ -1669,6 +1680,628 @@ const MAP_D="M56.1,449.0 L58.8,448.2 L60.7,448.5 L61.1,449.6 L61.4,449.8 L62.2,4
 const MAP_CX=[12.3145, 1.23419, -794.0647],MAP_CY=[0.54837, -13.18026, 733.73297];
 const FIG_CAP={"map_2.1": "Map 2.1: The Great Northern Mountains", "map_2.2": "Map 2.2: Peninsular India", "fig_2.1": "Fig 2.1: Chopping Tools & Hand Axes of Lower Paleolithic Age", "fig_2.2": "Fig 2.2: Chopping Tools & Hand Axes of Lower Paleolithic Age", "fig_2.3": "Fig 2.3: Chopping Tools & Hand Axes of Lower Paleolithic Age", "map_2.3": "Map 2.3: Paleolithic Sites", "fig_2.4": "Fig 2.4: Tools of the Mesolithic Age", "fig_2.5": "Fig 2.5: Neolithic Age tools", "fig_2.6": "Fig 2.6: Neolithic Bone tools from Burzahom", "map_2.4": "Map 2.4: Neolithic Sites", "fig_2.7": "Fig 2.7: Prehistoric Art", "fig_3.1": "Fig 3.1: Great Bath of Mohenjodaro", "fig_3.2": "Fig 3.2: The dockyard of Lothal", "fig_3.3": "Fig 3.3: Dancing Girl Mohenjodro", "fig_3.4": "Fig 3.4–3.5: Stone sculpture of bearded man; terracotta human and animal figures", "fig_3.6": "Fig 3.6: A Terracota cart from Kalibangan", "fig_3.7": "Fig 3.7: Seal of Pashupati", "fig_3.8": "Fig 3.8–3.9: Symbolic pipal tree; Mother Goddess (Mohenjodaro)", "fig_3.10": "Fig 3.10: Humbed bull seals from Mohenjodero", "map_4.1": "Map 4.1: Ancient Civilization of Eurasia", "map_4.2": "Map 4.2: Later Vedic Zone", "map_5.1": "Map 5.1: The Mahajanapadas", "fig_5.1": "Fig 5.1: Rummindei Edict", "map_5.2": "Map 5.2: The Empire of Ashoka", "fig_5.2": "Fig 5.2: Ashoka’s Pillar edict", "map_5.3": "Map 5.3: Maurya Empire", "fig_5.3": "Fig 5.3: Sarnath Pillar", "fig_5.4": "Fig 5.4–5.5: Cave in the Barabar hills; Didarganj Yakshi", "map_6.1": "Map 6.1: Central Asian Contacts", "map_6.2": "Map 6.2: Satavahana & Kushana Empires", "fig_6.1": "Fig 6.1: Sanchi Stupa", "fig_6.2": "Fig 6.2: Gandhara Art - Bodhisattva", "fig_6.3": "Fig 6.3: Megalithic Graves", "map_6.3": "Map 6.3: India: Tamilnadu and Northern Culture", "map_7.1": "Map 7.1: Gupta Period", "map_7.2": "Map 7.2: Deccan & South India", "fig_7.1": "Fig 7.1: Deogarh Nar-Narayan", "fig_7.2": "Fig 7.2: Rath Mandir - Mahabalipuram", "map_8.1": "Map 8.1: Political Map of India (750–1000 AD)", "map_8.2": "Map 8.2: Political Map of India (1000 to 1200 AD)", "map_8.3": "Map 8.3: Map of South East Asia", "fig_8.1": "Fig 8.1: Nataraja", "map_10.2": "Map 10.2: Empire of Sher Shah", "map_10.3": "Map 10.3: Extent of Mughal Empire under Akbar", "fig_12.1": "Fig 12.1: Royal Court", "fig_13.1": "Fig 13.1: Coins", "fig_14.1": "Fig 14.1: Ajmer Durgah", "fig_14.2": "Fig 14.2: Guru Nanak", "fig_14.3": "Fig 14.3: Mughal Painting", "fig_14.4": "Fig 14.4: Rajput Painting", "fig_14.5": "Fig 14.5: Qutab Minar & Alai Darwaja", "fig_14.7": "Fig 14.7: Jama Masjid Delhi", "fig_14.8": "Fig 14.8: Safdarjung Tomb", "map_16.1": "Map 16.1: INDIA IN 1783", "map_16.2": "Map 16.2: INDIA DURING 1797-1805", "map_16.3": "Map 16.3: INDIA IN 1857", "fig_17.1": "Fig 17.1: Bengal Famine 1943", "fig_18.1": "Fig 18.1: Raja Ram Mohan Roy", "fig_18.2": "Fig 18.2: Ishwarchandra", "fig_19.1": "Fig 19.1–19.2: Bahadur Shah Zafar; Rani of Jhansi", "fig_19.3": "Fig 19.3–19.4: Tantia Tope; Nana Saheb", "map_21.1": "Map 21.1: Indian National Movement: major events sites"};
 
+/* Timeline & connections per chapter.
+   TL(id,{rulers:[[years,name,note]], around:[[who,where,when]], friends:[[who,how]], foes:[[who,what]], events:[[when,event]], writings:[[work,author,about]], extra:[fact]}) */
+const TLD = {};
+function TL(id,o){TLD[id]=o;}
+
+TL('prehistory',{
+rulers:[['c. 5,00,000–1,00,000 BC','Lower Palaeolithic people','Hand axes, cleavers (Acheulian)'],['c. 1,00,000–40,000 BC','Middle Palaeolithic','Flake tools'],['c. 40,000–10,000 BC','Upper Palaeolithic','Blades, burins; Bhimbetka art begins'],['c. 10,000–8000 BC','Mesolithic','Microliths, herding'],['c. 7000–2500 BC','Neolithic','Farming villages (Mehrgarh from c. 7000 BC)']],
+around:[['Natufian and early farmers','West Asia','c. 10,000–8000 BC'],['Çatalhöyük town','Anatolia','c. 7000 BC'],['Early Egypt and Mesopotamia villages','Nile, Tigris–Euphrates','c. 6000–4000 BC']],
+friends:[['Not applicable','No written records; groups known only from remains']],
+foes:[['Not applicable','—']],
+events:[['c. 7 lakh years ago','Earliest tools in India (NIOS)'],['c. 10,000 BC','End of Ice Age; Mesolithic begins'],['c. 7000 BC','Farming at Mehrgarh'],['7000–6000 BC','Farming in Kashmir and Rajasthan (pollen evidence)'],['c. 2700 BC','Burzahom pit dwellings phase']],
+writings:[['No writing','—','Evidence comes from tools, bones, pollen and rock art'],['Modern study','Robert Bruce Foote and others','Began with Foote’s 1863 find at Pallavaram']],
+extra:['Robert Bruce Foote found the first Palaeolithic tool in India at Pallavaram near Madras in 1863; he is called the father of Indian prehistory.','Hunsgi (Karnataka) and Isampur are important Lower Palaeolithic sites.','Bhimbetka was discovered by V.S. Wakankar (1957) and is a UNESCO site (2003).','Koldihwa (Belan valley) has early evidence of rice.','Utnur and Sanganakallu (Karnataka) are Neolithic ash-mound sites close to Andhra.']});
+
+TL('chalco',{
+rulers:[['2600–1900 BC','Banas culture','Ahar, Gilund'],['2100–2000 BC','Kayatha culture','Chambal'],['1700–1400 BC','Malwa culture','Navdatoli'],['1400–700 BC','Jorwe culture','Inamgaon, Chandoli, Daimabad'],['1200–300 BC','Megalithic cultures','South India, iron']],
+around:[['Harappan civilization','North-west','2600–1900 BC (contemporary with Banas)'],['Vedic people','Punjab, Ganga plains','1500–600 BC (contemporary with Jorwe)'],['Ochre Coloured Pottery culture','Ganga–Yamuna doab','c. 2000–1500 BC']],
+friends:[['Harappans (trade links)','Banas sites show contact with Harappan towns']],
+foes:[['Not known','No records of wars']],
+events:[['c. 2600 BC','Banas culture begins'],['c. 1700 BC','Malwa culture spreads'],['c. 1400 BC','Jorwe culture in Maharashtra'],['c. 1200 BC','Megalithic iron users in the south'],['c. 700 BC','Jorwe culture ends']],
+writings:[['No writing','—','Known from excavations by H.D. Sankalia (Navdatoli, Inamgaon) and others']],
+extra:['Copper Hoard culture: copper tools found in hoards in the Ganga–Yamuna doab.','Painted Grey Ware (1000–600 BC) is linked with Later Vedic sites like Hastinapur.','Black-and-Red Ware is typical of Megalithic burials.','Inamgaon shows a chief’s house and a planned granary, suggesting social ranking.']});
+
+TL('indus',{
+rulers:[['3500–2600 BC','Early Harappan phase','Mud-brick towns'],['2600–1900 BC','Mature Harappan phase','Planned cities, trade'],['1900–1400 BC','Late Harappan phase','Decline, rural shift']],
+around:[['Sumerian city-states (Ur, Uruk)','Mesopotamia','c. 2900–2000 BC'],['Old Kingdom Egypt (pyramids)','Egypt','c. 2700–2200 BC'],['Akkadian empire (Sargon)','Mesopotamia','c. 2334–2154 BC'],['Chalcolithic Banas culture','Rajasthan','2600–1900 BC']],
+friends:[['Mesopotamian traders','Harappan seals and beads found at Ur, Susa'],['Dilmun (Bahrain) and Magan (Oman)','Intermediate trade stations']],
+foes:[['None recorded','No evidence of large wars; few weapons found']],
+events:[['1826','Charles Masson notices Harappa ruins'],['1853–56','Cunningham collects seals'],['1921','Harappa excavated (D.R. Sahni)'],['1922','Mohenjodaro excavated (R.D. Banerji)'],['1924','John Marshall announces the civilization'],['c. 1900 BC','Decline begins'],['2021','Dholavira becomes UNESCO site']],
+writings:[['Harappan script (about 400 signs)','—','Undeciphered; written right to left'],['Mesopotamian texts','Sargon’s records','Mention ships from Meluhha']],
+extra:['Largest Harappan site in India: Rakhigarhi (Haryana); Dholavira and Mohenjodaro are among the largest overall.','Surkotada (Gujarat) has horse-like bones; Lothal had a bead factory.','Banawali yielded a clay plough model; Kalibangan has the earliest ploughed field.','Rice husk found at Lothal and Rangpur.','Harappans did not know iron; they used copper, bronze, gold and silver.']});
+
+TL('vedic',{
+rulers:[['c. 1500–1000 BC','Rigvedic tribes (Bharatas, Purus, Yadus)','Tribal chiefs (rajan)'],['c. 1400 BC','King Sudas of the Bharatas','Battle of Ten Kings'],['c. 1000–600 BC','Kurus, Panchalas','Later Vedic kingdoms'],['c. 900–700 BC','Videha (Janaka)','Philosophical debates']],
+around:[['Late Harappan villages','North-west','1900–1400 BC'],['Chalcolithic Malwa and Jorwe','Central India, Deccan','1700–700 BC'],['Mitanni kingdom (Vedic gods named in Boghazkoi tablet, 1380 BC)','West Asia','c. 1500–1300 BC'],['Megalithic south','Deccan, south','from 1200 BC']],
+friends:[['Allied tribes of the Ten Kings','Purus, Yadus, Turvasas, Anus, Druhyus allied against Sudas']],
+foes:[['Sudas vs ten tribes','Battle of Ten Kings (Dasarajna) on the Parushni (Ravi)'],['Aryans vs Dasas/Dasyus','Conflicts mentioned in the Rigveda']],
+events:[['c. 1500 BC','Aryans in Sapta Sindhu'],['c. 1400 BC','Battle of Ten Kings'],['c. 1000 BC','Use of iron; move into Ganga doab'],['c. 800 BC','Painted Grey Ware settlements (Hastinapur)'],['c. 600 BC','Upanishads; rise of Mahajanapadas']],
+writings:[['Rigveda','Many rishis','1,028 hymns, 10 mandalas'],['Samaveda','—','Melodies for chanting'],['Yajurveda','—','Sacrificial formulas'],['Atharvaveda','—','Charms, medicine'],['Brahmanas (Aitareya, Shatapatha)','—','Rituals; Aitareya first mentions Andhras'],['Upanishads (Chandogya, Brihadaranyaka, Mundaka)','—','Philosophy']],
+extra:['Boghazkoi inscription (1380 BC, Turkey) names Indra, Varuna, Mitra and Nasatyas.','Gayatri mantra (Rigveda, Book 3) is addressed to Savitri.','Purusha Sukta (Rigveda 10th mandala) first mentions four varnas.','Women poets of the Rigveda: Ghosha, Lopamudra, Apala, Vishvavara.','Six Vedangas: Shiksha, Kalpa, Vyakarana, Nirukta, Chhanda, Jyotisha.']});
+
+TL('sixth',{
+rulers:[['544–492 BC','Bimbisara (Haryanka)','Magadha; marriage alliances'],['492–460 BC','Ajatashatru','Defeated Kosala and Vajjis'],['460–444 BC','Udayin','Fort at Pataliputra'],['c. 413–345 BC','Shishunaga dynasty','Annexed Avanti'],['c. 345–321 BC','Nanda dynasty (Mahapadma Nanda, Dhana Nanda)','Huge army and treasury']],
+around:[['Prasenajit','Kosala','6th century BC'],['Chanda Pradyota','Avanti (Ujjain)','6th century BC'],['Udayana','Vatsa (Kaushambi)','6th century BC'],['Vajji confederacy (Lichchhavis)','Vaishali','6th century BC'],['Achaemenid Persia (Cyrus, Darius)','North-west (Gandhara)','c. 530–330 BC'],['Alexander’s invasion','North-west','327–325 BC']],
+friends:[['Bimbisara–Kosala','Married Kosala Devi; got Kashi'],['Bimbisara–Lichchhavis','Married Chellana'],['Bimbisara–Madra','Married Khema']],
+foes:[['Ajatashatru vs Prasenajit (Kosala)','War over Kashi'],['Ajatashatru vs Vajjis','16-year war; used mahashilakantaka and rathamusala'],['Magadha vs Avanti','Conquered by Shishunagas'],['Porus vs Alexander','Battle of Hydaspes, 326 BC']],
+events:[['599 BC','Birth of Mahavira (NIOS)'],['566 BC','Birth of the Buddha (NIOS)'],['c. 528 BC','Buddha’s enlightenment and first sermon'],['c. 486 BC','Buddha’s death; first council at Rajagriha'],['c. 386 BC','Second council at Vaishali'],['326 BC','Alexander at the Hydaspes']],
+writings:[['Tripitakas (Vinaya, Sutta, Abhidhamma)','Buddhist','Teachings and rules'],['Jatakas','Buddhist','550 birth stories'],['Anguttara Nikaya','Buddhist','Lists 16 Mahajanapadas'],['Angas (Agamas)','Jain','Mahavira’s teachings; compiled at Vallabhi council later'],['Ashtadhyayi','Panini','Sanskrit grammar']],
+extra:['Jain councils: Pataliputra (c. 300 BC, Sthulabhadra) and Vallabhi (AD 512, Devardhi Kshamasramana).','Jainism split into Digambaras and Shvetambaras.','Buddhism split into Mahayana and Hinayana at the 4th council (Kanishka).','Asmaka (capital Potana/Podana, Godavari valley) is the only Mahajanapada in the south, near present Telangana–Maharashtra.','Ajivika founder Makkhali Gosala was a contemporary of the Buddha and Mahavira.']});
+
+TL('maurya',{
+rulers:[['321–297 BC','Chandragupta Maurya','Founder; Jain in later life (Shravanabelagola)'],['297–269 BC','Bindusara','Amitraghata; south expansion'],['269–232 BC','Ashoka','Kalinga war c. 261 BC'],['232–187 BC','Later Mauryas (Dasharatha, Samprati … Brihadratha)','Decline']],
+around:[['Seleucus Nicator','Seleucid empire (West Asia)','312–281 BC'],['Antiochus II','Seleucid','Named in Ashoka’s Rock Edict XIII'],['Ptolemy II','Egypt','Named in Rock Edict XIII'],['Cholas, Pandyas, Satiyaputras, Keralaputras','South India','Outside the empire; neighbours in edicts'],['Devanampiya Tissa','Sri Lanka','Received Mahinda']],
+friends:[['Kautilya (Chanakya)','Minister and guide of Chandragupta'],['Seleucus (after 305 BC)','Treaty; gave Arachosia, Gedrosia, Paropamisadae; marriage alliance; sent Megasthenes'],['Sri Lanka','Ashoka sent Mahinda and Sanghamitra']],
+foes:[['Dhana Nanda','Overthrown by Chandragupta'],['Seleucus (before 305 BC)','War, then treaty'],['Kalinga','Conquered by Ashoka c. 261 BC'],['Pushyamitra Shunga','Killed Brihadratha c. 187 BC']],
+events:[['321 BC','Chandragupta founds the empire'],['305 BC','Treaty with Seleucus'],['c. 298 BC','Chandragupta goes to Shravanabelagola (Jain tradition)'],['c. 261 BC','Kalinga war'],['c. 250 BC','Third Buddhist council at Pataliputra (Moggaliputta Tissa)'],['c. 187 BC','End of the dynasty']],
+writings:[['Arthashastra','Kautilya','Statecraft'],['Indica','Megasthenes','Greek account (fragments)'],['Mudrarakshasa','Vishakhadatta (Gupta period)','Play on Chandragupta’s rise'],['Ashokan edicts','Ashoka','14 Major Rock Edicts, 7 Pillar Edicts, minor edicts'],['Kathavatthu','Moggaliputta Tissa','Text of the third council']],
+extra:['Rock Edict XIII describes the Kalinga war; Kalinga edicts at Dhauli and Jaugada.','Ashoka is called “Devanampiya Piyadassi”; his name “Ashoka” appears in the Maski and Gujarra edicts (Maski is in Karnataka near Raichur).','Junagadh inscription of Rudradaman says Chandragupta’s governor Pushyagupta built the Sudarshana lake.','Mauryan polished pillars were made of Chunar sandstone.','Andhra links: edicts at Erragudi and Rajula Mandagiri (Kurnool); Amaravati has a fragment of Ashokan pillar inscription.']});
+
+TL('postmaurya',{
+rulers:[['c. 187–75 BC','Shungas (Pushyamitra, Agnimitra)','Magadha, Vidisha'],['c. 75–30 BC','Kanvas (Vasudeva)','Last of Magadhan line'],['c. 180–10 BC','Indo-Greeks (Demetrius, Menander)','North-west'],['c. 1st c. BC–4th c. AD','Shakas (Western Kshatrapas: Nahapana, Rudradaman)','Gujarat, Malwa'],['c. AD 20–50','Parthians (Gondophernes)','Takht-i-Bahi'],['c. AD 30–375','Kushanas (Kujula, Vima, Kanishka, Huvishka, Vasudeva)','Central Asia to Mathura'],['1st c. BC','Kharavela (Chedi)','Kalinga']],
+around:[['Satavahanas','Deccan','c. 1st c. BC–3rd c. AD'],['Cheras, Cholas, Pandyas','South India','Sangam age'],['Roman empire (Augustus)','Mediterranean','27 BC onwards'],['Han China','China','206 BC–AD 220']],
+friends:[['Romans','Trade partners; gold for spices'],['Han China','Silk Route trade via Kushanas']],
+foes:[['Gautamiputra Satakarni vs Nahapana','Shaka defeat'],['Rudradaman vs Satavahanas','Rudradaman claims victory over Satakarni twice'],['Kharavela vs Magadha','Claims raid on Magadha'],['Pushyamitra vs Indo-Greeks','Wars on the Sindhu (Malavikagnimitram)']],
+events:[['c. 187 BC','Shunga dynasty'],['c. 155–130 BC','Menander’s rule'],['58 BC','Vikrama era begins'],['AD 45','Hippalus and the monsoon route (NIOS)'],['AD 78','Saka era (Kanishka)'],['AD 150','Junagadh inscription of Rudradaman']],
+writings:[['Milindapanho','Buddhist','Dialogue of Menander and Nagasena'],['Buddhacharita','Ashvaghosha (Kanishka’s court)','Life of the Buddha'],['Charaka Samhita','Charaka (Kanishka’s physician, by tradition)','Medicine'],['Mahabhashya','Patanjali (Shunga period)','Grammar'],['Periplus of the Erythraean Sea','Anonymous Greek','Ports and trade'],['Sangam texts (Tolkappiyam, Ettuthogai, Pattuppattu)','Tamil poets','Society and kings'],['Manusmriti','Manu','Law book, compiled c. 200 BC–AD 200']],
+extra:['Heliodorus pillar at Besnagar (Vidisha): Indo-Greek envoy became a Bhagavata (Vaishnava).','Kanishka’s capitals: Purushapura (Peshawar) and Mathura; his court had Ashvaghosha, Vasumitra, Nagarjuna (by tradition), Charaka.','Nasik, Karle and Bhaja caves are western Deccan Buddhist rock-cut sites of this period.','Arikamedu (near Pondicherry) was an Indo-Roman trading station.','Thiruvalluvar’s Tirukkural is often placed at the end of the Sangam age.']});
+
+TL('gupta',{
+rulers:[['319–334','Chandragupta I','Maharajadhiraja; Gupta era 319–20'],['335–375','Samudragupta','Prayag prashasti'],['c. 375','Ramagupta (disputed)','Known from coins and Devichandraguptam'],['375–414','Chandragupta II','Vikramaditya'],['415–455','Kumaragupta I','Nalanda'],['455–467','Skandagupta','Repelled Huns'],['till c. 550','Later Guptas (Budhagupta, Vishnugupta)','Decline']],
+around:[['Vakatakas (Rudrasena II, Prabhavati Gupta)','Deccan','c. 250–500'],['Pallavas (Vishnugopa of Kanchi)','South','Defeated by Samudragupta'],['Western Kshatrapas','Gujarat, Malwa','Ended by Chandragupta II'],['Hunas (Toramana, Mihirakula)','North-west','Late 5th–6th c.'],['Kadambas, Ikshvakus, Vishnukundins','Deccan and Andhra','4th–6th c.'],['Sassanian Persia, Byzantium','West','Contemporaries']],
+friends:[['Lichchhavis','Marriage of Chandragupta I and Kumaradevi'],['Vakatakas','Prabhavati Gupta married Rudrasena II'],['Kadambas, Nagas','Marriage alliances of Chandragupta II'],['Meghavarna of Sri Lanka','Embassy to Samudragupta for a monastery at Bodh Gaya']],
+foes:[['Shakas (Western Kshatrapas)','Defeated by Chandragupta II'],['Hunas','Fought by Skandagupta; later Yashodharman defeated Mihirakula'],['12 southern kings (incl. Vishnugopa of Kanchi, Hastivarman of Vengi)','Defeated and released by Samudragupta']],
+events:[['319–320','Gupta era begins'],['c. 350','Samudragupta’s southern campaign (Dakshinapatha)'],['c. 400','Shakas defeated'],['404–411','Fa-Hien in India (NIOS)'],['499','Aryabhatiya written'],['510','Eran sati inscription (NIOS)'],['c. 550','End of imperial Guptas']],
+writings:[['Abhijnanashakuntalam, Meghaduta, Raghuvamsha','Kalidasa','Poetry and drama'],['Mrichchhakatika','Shudraka','Play'],['Mudrarakshasa, Devichandraguptam','Vishakhadatta','Plays'],['Kamasutra','Vatsyayana','Treatise'],['Amarakosha','Amarasimha','Sanskrit dictionary'],['Panchatantra','Vishnusharma','Fables'],['Aryabhatiya','Aryabhata','Mathematics, astronomy'],['Prayag prashasti','Harisena','Praise of Samudragupta'],['Puranas, Narada and Brihaspati smritis','Various','Religion, law']],
+extra:['Samudragupta’s southern policy: grahana-moksha-anugraha (capture, release, reinstatement). Hastivarman of Vengi (Salankayana) was among the kings defeated — an Andhra link.','Navaratnas (nine gems) of Vikramaditya’s court by tradition: Kalidasa, Amarasimha, Varahamihira, Dhanvantari and others.','Gupta officials: kumaramatya; provinces bhukti under uparika; districts vishaya.','Udayagiri caves near Vidisha have the Varaha image (Chandragupta II).','Bhitari pillar inscription records Skandagupta’s war with the Hunas.']});
+
+TL('postgupta',{
+rulers:[['c. 580–606','Prabhakaravardhana','Pushyabhuti, Thanesar'],['606–647','Harshavardhana','Kanauj'],['610–642','Pulakesin II','Badami Chalukya'],['600–630','Mahendravarman I','Pallava, Kanchi'],['630–668','Narasimhavarman I (Mamalla)','Pallava; killed Pulakesin II'],['c. 590–625','Shashanka','Gauda (Bengal)'],['c. 550–770','Maitrakas','Valabhi']],
+around:[['Maukharis (Grahavarman)','Kanauj','6th–7th c.'],['Later Guptas','Magadha','6th–7th c.'],['Kamarupa (Bhaskaravarman)','Assam','7th c.'],['Eastern Chalukyas (Kubja Vishnuvardhana)','Vengi, Andhra','from 624'],['Tang China (Taizong)','China','618–907; received Harsha’s embassy']],
+friends:[['Harsha–Bhaskaravarman of Kamarupa','Alliance against Shashanka'],['Harsha–Tang China','Embassies exchanged (641)'],['Pulakesin II–Persia (Khusrau II)','Embassy, by tradition shown at Ajanta']],
+foes:[['Harsha vs Shashanka','Shashanka killed Harsha’s brother Rajyavardhana'],['Harsha vs Pulakesin II','Defeated on the Narmada, c. 630'],['Chalukyas vs Pallavas','Pulakesin II killed c. 642; Badami taken (Vatapikonda)'],['Pulakesin II vs Vishnukundins','Conquered Vengi']],
+events:[['606','Harsha’s accession; Harsha era'],['624','Eastern Chalukyas founded at Vengi'],['c. 630','Pulakesin II defeats Harsha'],['630–645','Hsuan Tsang in India'],['634','Aihole inscription'],['c. 642','Pulakesin II killed; Badami captured'],['647','Death of Harsha']],
+writings:[['Harshacharita, Kadambari','Banabhatta','Biography, romance'],['Ratnavali, Priyadarshika, Nagananda','Harsha','Plays'],['Si-Yu-Ki','Hsuan Tsang','Travel account'],['Aihole prashasti','Ravikirti','Pulakesin II'],['Mattavilasa Prahasana','Mahendravarman I','Satire'],['Tevaram, Nalayira Divya Prabandham (begun)','Nayanars, Alvars','Tamil devotion']],
+extra:['Harsha held the Kanauj assembly (in honour of Hsuan Tsang) and the Prayag assembly every five years.','Madhuban and Banskhera copper plates are Harsha’s inscriptions.','Pulakesin II defeated the Vishnukundins and gave Vengi to his brother — origin of Eastern Chalukyas.','Pallava art: Mamallapuram rathas (Narasimhavarman I); Shore Temple and Kailasanatha (Rajasimha, 8th c.).','Nalanda flourished under Harsha; Hsuan Tsang studied under Shilabhadra.']});
+
+TL('earlymed',{
+rulers:[['c. 750–1161','Palas (Gopala, Dharmapala, Devapala, Mahipala I)','Bengal, Bihar'],['c. 730–1036','Gurjara-Pratiharas (Nagabhata I & II, Mihira Bhoja, Mahendrapala)','Kanauj'],['753–982','Rashtrakutas (Dantidurga, Krishna I, Dhruva, Govinda III, Amoghavarsha I, Krishna III)','Manyakheta'],['c. 850–1279','Imperial Cholas (Vijayalaya, Parantaka I, Rajaraja I 985–1014, Rajendra I 1014–44, Kulottunga I 1070–1120)','Thanjavur'],['973–1189','Western Chalukyas of Kalyani (Tailapa II, Vikramaditya VI)','Deccan'],['c. 1000–1200','Rajputs (Chauhans, Paramaras, Chandelas, Solankis, Gahadavalas)','North and west']],
+around:[['Eastern Chalukyas','Vengi (Andhra)','624–1070'],['Kakatiyas (feudatories)','Telangana','from c. 1000'],['Arabs (Sind), Ghaznavids','North-west','712; 977–1186'],['Shailendras, Srivijaya','South-East Asia','8th–11th c.'],['Abbasid Caliphate','West Asia','750–1258']],
+friends:[['Cholas–Eastern Chalukyas','Marriage alliances (Rajaraja Narendra, Kulottunga I)'],['Rashtrakutas–Arabs','Friendly trade relations'],['Palas–Shailendras','Shailendra king Balaputradeva built a monastery at Nalanda (Devapala’s grant)']],
+foes:[['Palas vs Pratiharas vs Rashtrakutas','Tripartite struggle for Kanauj'],['Cholas vs Western Chalukyas','Long wars over Vengi and the Raichur doab'],['Rajendra I vs Srivijaya','Naval expedition (1025)'],['Rajputs vs Ghaznavids and Ghorids','Mahmud’s raids; Tarain 1191–92']],
+events:[['712','Arabs conquer Sind'],['c. 750','Gopala elected king of Bengal'],['c. 800','Kailasa temple at Ellora'],['985','Rajaraja I becomes Chola king'],['1010','Brihadeeswara temple completed'],['1025','Somnath raid; Chola expedition to Srivijaya'],['1070','Kulottunga I unites Chola and Vengi'],['1191–92','Battles of Tarain']],
+writings:[['Rajatarangini','Kalhana (1148)','History of Kashmir'],['Gita Govinda','Jayadeva','Krishna devotion'],['Kavirajamarga','Amoghavarsha I','Kannada poetics'],['Vikramankadevacharita','Bilhana','Life of Vikramaditya VI'],['Kitab-ul-Hind','Al-Biruni','India in 11th c.'],['Prithviraj Raso','Chand Bardai','Prithviraj Chauhan'],['Andhra Mahabharatam (begun)','Nannaya','Telugu'],['Periyapuranam','Sekkizhar','Nayanar lives'],['Kamba Ramayanam','Kamban','Tamil Ramayana']],
+extra:['Mihira Bhoja (Pratihara) was praised by the Arab Sulaiman (NIOS).','Nalanda, Vikramashila and Odantapuri flourished under the Palas.','Chola local bodies: ur, sabha, nagaram; Uttaramerur inscriptions of Parantaka I (919, 921).','Rajendra I took the title Gangaikondachola after his Ganga campaign.','Khajuraho (Chandelas, c. 950–1050), Konark (13th c.), Lingaraja (11th c.) show Nagara style.']});
+
+TL('c13',{
+rulers:[['1206–1210','Qutbuddin Aibak','Mamluk founder'],['1210–1236','Iltutmish','Consolidator'],['1236–1240','Raziya','Only woman Sultan'],['1246–1266','Nasiruddin Mahmud','Balban as naib'],['1266–1287','Balban','Theory of kingship'],['1290–1296','Jalaluddin Khalji','Khalji revolution'],['1296–1316','Alauddin Khalji','Market reforms, Deccan campaigns'],['1320–1325','Ghiyasuddin Tughlaq','Founder of Tughlaqs'],['1325–1351','Muhammad bin Tughlaq','Experiments'],['1351–1388','Firuz Shah Tughlaq','Canals, welfare']],
+around:[['Mongols (Chengiz Khan, Chagatai Khanate)','Central Asia','From 1221 invasions'],['Kakatiyas (Ganapatideva, Rudramadevi, Prataparudra II)','Telangana','till 1323'],['Yadavas of Devagiri (Ramachandra)','Maharashtra','till 1317'],['Hoysalas (Ballala III)','Karnataka','till 1343'],['Pandyas (Maravarman Kulasekhara)','Madurai','13th–14th c.'],['Rajputs (Hammir Dev, Ratan Singh)','Rajasthan','13th–14th c.']],
+friends:[['Caliph of Baghdad','Investiture to Iltutmish (1229)'],['Chahalgani','Iltutmish’s forty nobles (later rivals)'],['Malik Kafur','Alauddin’s general'],['Ramachandra of Devagiri','Became Alauddin’s ally after defeat']],
+foes:[['Mongols','Repeated invasions (1299 Qutlugh Khwaja at Delhi)'],['Hammir Dev (Ranthambore)','Defeated 1301'],['Ratan Singh (Chittor)','Defeated 1303'],['Prataparudra II (Warangal)','Paid tribute 1310; defeated 1323'],['Ballala III, Pandyas','Southern campaigns 1311']],
+events:[['1206','Sultanate founded'],['1221','Chengiz Khan at the Indus'],['1229','Caliph’s investiture'],['1290','Khalji revolution'],['1303–1311','Chittor, Malwa, Deccan conquests'],['1309–10','Malik Kafur at Warangal'],['1323','Warangal conquered'],['1327','Capital moved to Daulatabad'],['1336, 1347','Vijayanagara and Bahmani founded']],
+writings:[['Tabaqat-i-Nasiri','Minhaj-us-Siraj','Early Sultanate'],['Tarikh-i-Firuz Shahi, Fatawa-i-Jahandari','Ziauddin Barani','History, political theory'],['Khazain-ul-Futuh, Tughlaqnama, Ashiqa','Amir Khusrau','Alauddin’s conquests, poetry'],['Rihla','Ibn Battuta','Travels under Muhammad bin Tughlaq'],['Futuhat-i-Firuz Shahi','Firuz Shah','Autobiographical'],['Tarikh-i-Mubarak Shahi','Yahya Sirhindi','Later history']],
+extra:['Balban introduced sijda and paibos and reorganised the army department (diwan-i-arz); Alauddin introduced dagh (branding of horses) and huliya (descriptive roll of soldiers).','Iltutmish completed Qutb Minar; Firuz Shah repaired it.','Muhammad bin Tughlaq created diwan-i-amir-i-kohi (agriculture department).','Firuz Shah made jizya a separate tax, built canals and towns (Hisar, Firozabad, Jaunpur).','Alai Darwaza (1311) is the first building with a true arch and dome in India.']});
+
+TL('c14',{
+rulers:[['1414–1451','Sayyids (Khizr Khan …)','Delhi'],['1451–1489','Bahlol Lodi','Afghan rule'],['1489–1517','Sikandar Lodi','Agra founded 1504'],['1517–1526','Ibrahim Lodi','Panipat'],['1347–1358','Alauddin Hasan Bahman Shah','Bahmani founder'],['1397–1422','Firuz Shah Bahmani','Wars with Vijayanagara'],['1463–1481','Mahmud Gawan (minister)','Bahmani reforms'],['1420–1470','Zainul Abidin','Kashmir'],['1458–1511','Mahmud Begarha','Gujarat'],['1433–1468','Rana Kumbha','Mewar']],
+around:[['Vijayanagara (Sangama, Saluva, Tuluva)','South','1336–1565'],['Gajapatis (Kapilendra, Purushottama, Prataparudra)','Odisha','1434–1541'],['Reddis, Velamas','Andhra','14th–15th c.'],['Timurids','Central Asia','1370–1507'],['Portuguese','West coast','from 1498']],
+friends:[['Gujarat–Ottomans/Mamluks of Egypt','Joint fleet against Portuguese (Chaul 1508)'],['Daulat Khan Lodi','Invited Babur'],['Vijayanagara–Portuguese','Horse trade']],
+foes:[['Timur vs Delhi','Sack of Delhi 1398'],['Bahmanis vs Vijayanagara','Raichur doab wars'],['Gujarat vs Portuguese','Battle of Diu 1509'],['Mewar vs Malwa and Gujarat','Rana Kumbha’s victories; Vijay Stambha'],['Gajapatis vs Bahmanis and Vijayanagara','Coastal Andhra contested']],
+events:[['1398','Timur sacks Delhi'],['1407','Gujarat independent'],['1429','Bahmani capital moved to Bidar'],['1481','Mahmud Gawan executed'],['1498','Vasco da Gama'],['1504','Agra founded'],['1510','Portuguese take Goa'],['1526','First Battle of Panipat']],
+writings:[['Rajatarangini (continued)','Jonaraja, Srivara','Kashmir history'],['Burhan-i-Maasir','Ali Tabataba','Bahmani history'],['Tarikh-i-Firishta','Firishta','Deccan history'],['Mahabharata in Persian (Razmnama later)','—','Translations began under Zainul Abidin'],['Sangita Raja','Rana Kumbha','Music treatise']],
+extra:['Five Deccan Sultanates: Imad Shahi (Berar), Nizam Shahi (Ahmadnagar), Adil Shahi (Bijapur), Qutb Shahi (Golconda), Barid Shahi (Bidar).','Gol Gumbaz (Bijapur, Muhammad Adil Shah) has a whispering gallery.','Sharqi architecture: Atala Masjid, Jaunpur.','Mahmud Gawan built a madrasa at Bidar (1472).','Gajapati Kapilendra extended Odisha rule into coastal Andhra up to the Krishna.']});
+
+TL('mughal',{
+rulers:[['1526–1530','Babur','Founder'],['1530–1540, 1555–56','Humayun','Lost to Sher Shah'],['1540–1545','Sher Shah Suri','Sur empire'],['1556–1605','Akbar','Expansion, mansabdari'],['1605–1627','Jahangir','Nur Jahan'],['1628–1658','Shah Jahan','Architecture'],['1658–1707','Aurangzeb','Largest extent'],['1707–1857','Later Mughals (Bahadur Shah I … Bahadur Shah Zafar)','Decline']],
+around:[['Safavids (Shah Abbas I)','Persia','1501–1736; Qandahar rivalry'],['Uzbeks (Abdullah Khan)','Central Asia','16th c.'],['Ottoman empire','Turkey','Contemporary'],['Deccan Sultanates (Bijapur, Golconda, Ahmadnagar)','Deccan','till 1687'],['Vijayanagara (Aravidu)','South','till c. 1646'],['Ahoms','Assam','1228–1826'],['Marathas (Shivaji)','Deccan','from 1650s'],['Portuguese, Dutch, English','Coasts','16th–17th c.']],
+friends:[['Rajputs (Amber: Bharmal, Man Singh)','Marriage alliances from 1562'],['Bairam Khan','Regent of Akbar'],['Shah Tahmasp (Persia)','Helped Humayun regain throne'],['Mirza Raja Jai Singh','Commanded against Shivaji']],
+foes:[['Ibrahim Lodi','Panipat 1526'],['Rana Sanga','Khanwa 1527'],['Sher Shah','Chausa 1539, Kannauj 1540'],['Hemu','Panipat 1556'],['Rana Pratap','Haldighati 1576'],['Chand Bibi, Malik Ambar','Ahmadnagar resistance'],['Ahoms (Lachit Borphukan)','Saraighat 1671'],['Shivaji, Sambhaji','Maratha wars']],
+events:[['1526','Panipat I'],['1556','Panipat II'],['1562','Rajput alliance; slavery of war captives banned'],['1564','Jizya abolished'],['1575','Ibadat Khana'],['1576','Haldighati'],['1582','Din-i-Ilahi'],['1632–43','Taj Mahal built'],['1679','Jizya reimposed'],['1687','Golconda annexed'],['1707','Death of Aurangzeb']],
+writings:[['Baburnama (Tuzuk-i-Baburi)','Babur','Turki memoirs'],['Humayun-nama','Gulbadan Begum','Humayun’s life'],['Akbarnama, Ain-i-Akbari','Abul Fazl','Akbar’s reign and administration'],['Muntakhab-ut-Tawarikh','Badauni','Critical history'],['Tuzuk-i-Jahangiri','Jahangir','Memoirs'],['Padshahnama','Abdul Hamid Lahori','Shah Jahan'],['Majma-ul-Bahrain, Sirr-i-Akbar','Dara Shikoh','Hindu–Islamic thought; Upanishads in Persian'],['Fatawa-i-Alamgiri','Ulema (Aurangzeb)','Islamic law'],['Ramcharitmanas','Tulsidas (Akbar’s time)','Ramayana in Awadhi']],
+extra:['Akbar’s revenue: Todar Mal’s zabt (dahsala, 1580); Mughal provinces called subas.','Navratnas of Akbar (tradition): Birbal, Todar Mal, Tansen, Abul Fazl, Faizi, Man Singh, Abdur Rahim Khan-i-Khanan and others.','Mahabharata translated into Persian as Razmnama under Akbar.','Shah Jahan shifted capital to Shahjahanabad (Delhi), 1648.','War of succession (1657–58): Aurangzeb defeated Dara at Dharmat and Samugarh.']});
+
+TL('maratha',{
+rulers:[['1674–1680','Shivaji','Chhatrapati'],['1680–1689','Sambhaji','Executed'],['1689–1700','Rajaram','Jinji'],['1700–1707','Tarabai (regent)','Resistance'],['1707–1749','Shahu','Peshwas rise'],['1713–1720','Peshwa Balaji Vishwanath',''],['1720–1740','Peshwa Baji Rao I','Northern expansion'],['1740–1761','Peshwa Balaji Baji Rao (Nana Saheb)','Panipat III'],['1761–1772','Peshwa Madhav Rao I','Recovery'],['1795–1818','Peshwa Baji Rao II','Treaty of Bassein; end']],
+around:[['Mughals (Aurangzeb, later Mughals)','Delhi','to 1857'],['Nizam (Asaf Jahis)','Hyderabad','from 1724'],['Mysore (Haidar Ali, Tipu)','South','1761–1799'],['Durranis (Ahmad Shah Abdali)','Afghanistan','1747–1772'],['English East India Company','Coasts, then inland','18th c.'],['Sikh misls; Ranjit Singh','Punjab','1799–1839']],
+friends:[['Mughals (1719)','Sayyid brothers granted chauth/sardeshmukhi rights'],['Mahadaji Sindhia–Shah Alam II','Protector of the emperor (1771)'],['Marathas–Nizam (1795 aside)','Shifting alliances']],
+foes:[['Afzal Khan (Bijapur)','Killed by Shivaji 1659'],['Shaista Khan','Attacked 1663'],['Aurangzeb','Deccan wars 1681–1707'],['Nizam-ul-Mulk','Palkhed 1728 (Baji Rao won)'],['Ahmad Shah Abdali','Panipat III, 1761'],['English','Three Anglo-Maratha wars']],
+events:[['1659','Afzal Khan episode'],['1665','Treaty of Purandar'],['1674','Coronation at Raigad'],['1689','Sambhaji executed'],['1699','Khalsa founded (Sikhs)'],['1737','Baji Rao’s raid on Delhi'],['1761','Panipat III'],['1782','Treaty of Salbai'],['1802','Treaty of Bassein'],['1818','End of Peshwa rule']],
+writings:[['Sabhasad Bakhar','Krishnaji Anant Sabhasad','Shivaji’s life'],['Adi Granth (1604)','Guru Arjan','Sikh scripture'],['Dasam Granth','Guru Gobind Singh (attributed)','Sikh compositions'],['Dnyaneshwari, Abhangas','Dnyaneshwar, Tukaram','Marathi Bhakti background']],
+extra:['Shivaji’s Ashtapradhan: Peshwa, Amatya, Sachiv, Mantri, Senapati, Sumant, Nyayadhish, Panditrao.','Saranjami system: land grants to Maratha chiefs.','Guru Gobind Singh declared the Granth Sahib the eternal Guru (1708).','Banda Bahadur abolished zamindari in parts of Punjab; executed 1716.','Ranjit Singh took Lahore in 1799; Treaty of Amritsar 1809 fixed the Sutlej boundary.']});
+
+TL('bhakti',{
+rulers:[['7th–9th c.','Pallavas, Pandyas','Patrons of Alvars and Nayanars'],['1017–1137','Ramanuja (philosopher)','Under Cholas and Hoysalas (Vishnuvardhana)'],['12th c.','Basavanna','Minister of Kalachuri Bijjala'],['1206–1526','Delhi Sultans','Sufi orders spread'],['1469–1539','Guru Nanak','Lodi and Mughal times'],['1556–1605','Akbar','Tolerant; Ibadat Khana'],['1509–1529','Krishnadevaraya','Patron of Vaishnava saints']],
+around:[['Vijayanagara','South','Annamacharya, Purandara Dasa'],['Gajapatis','Odisha','Chaitanya at Puri'],['Ahoms','Assam','Shankaradeva'],['Mughals','North','Tulsidas, Surdas, Mira']],
+friends:[['Nizamuddin Auliya–Amir Khusrau','Master and disciple'],['Ramananda–Kabir, Ravidas','Teacher and disciples (tradition)'],['Chaitanya–Prataparudra Gajapati','Royal devotee']],
+foes:[['Orthodox priests','Opposed anti-caste teachings'],['Bijjala’s court','Conflict leading to Basavanna’s departure'],['Jahangir–Guru Arjan','Guru Arjan executed 1606']],
+events:[['c. 7th–9th c.','Alvars and Nayanars'],['1206 (c.)','Muinuddin Chishti at Ajmer'],['c. 1270–1350','Namdev'],['1440–1518','Kabir (NIOS)'],['1486–1534','Chaitanya'],['1499','Guru Nanak’s enlightenment (tradition)'],['1574–76','Ramcharitmanas composed'],['1604','Adi Granth compiled']],
+writings:[['Nalayira Divya Prabandham','Alvars','Vaishnava hymns'],['Tevaram, Tiruvasagam','Nayanars, Manikkavasagar','Shaiva hymns'],['Vachanas','Basavanna, Akka Mahadevi','Kannada sayings'],['Bijak','Kabir','Dohas'],['Ramcharitmanas','Tulsidas','Awadhi Ramayana'],['Sursagar','Surdas','Krishna'],['Dnyaneshwari','Dnyaneshwar','Marathi Gita commentary'],['Fawaid-ul-Fuad','Amir Hasan Sijzi','Nizamuddin’s conversations'],['Annamayya sankirtanas','Annamacharya','Telugu songs']],
+extra:['Sufi terms: khanqah (hospice), pir/shaikh (master), murid (disciple), silsila (order), sama (music), urs (death anniversary).','Salim Chishti of Fatehpur Sikri blessed Akbar with a son (Jahangir).','Sheikh Ahmad Sirhindi (Naqshbandi) opposed Akbar’s liberal policies.','Vallabhacharya founded Pushtimarg; Surdas belonged to it.','Lal Ded (Lalleshwari) of Kashmir and Nund Rishi (Sheikh Nuruddin) bridged Shaiva and Sufi traditions.']});
+
+TL('c18',{
+rulers:[['1707–1712','Bahadur Shah I','Compromise'],['1712–1713','Jahandar Shah','Weak'],['1713–1719','Farrukhsiyar','Sayyid brothers; 1717 farman'],['1719–1748','Muhammad Shah (Rangeela)','Nadir Shah’s invasion'],['1759–1806','Shah Alam II','Buxar; Diwani grant'],['1724–1748','Nizam-ul-Mulk','Hyderabad'],['1722–1739','Saadat Khan','Awadh'],['1717–1727','Murshid Quli Khan','Bengal'],['1729–1758','Martanda Varma','Travancore'],['1761–1782','Haidar Ali','Mysore']],
+around:[['Marathas (Peshwas)','Deccan, north','Dominant power'],['Afghans (Nadir Shah, Ahmad Shah Abdali)','North-west','1739, 1748–67'],['Rohillas','Rohilkhand','Controlled Delhi 1761–71 (NIOS)'],['English, French','Coasts','Carnatic wars 1746–63']],
+friends:[['Sayyid brothers–Marathas','1719 alliance'],['Nizam–French (Bussy)','French help to Salabat Jung'],['Awadh–Mughal emperor','Nawab as wazir']],
+foes:[['Nadir Shah vs Mughals','Karnal 1739'],['Abdali vs Marathas','Panipat 1761'],['Siraj-ud-Daulah vs English','Plassey 1757'],['Martanda Varma vs Dutch','Colachel 1741']],
+events:[['1707','Death of Aurangzeb'],['1717','Farrukhsiyar’s farman to English'],['1719','Sayyid brothers depose Farrukhsiyar'],['1724','Hyderabad founded'],['1739','Nadir Shah sacks Delhi'],['1741','Battle of Colachel'],['1757','Plassey'],['1761','Panipat III'],['1770','Bengal famine']],
+writings:[['Siyar-ul-Mutakhkherin','Ghulam Husain Tabatabai','18th c. history'],['Urdu poetry','Mir Taqi Mir, Sauda','Delhi'],['Heer Ranjha','Waris Shah (1766)','Punjabi epic']],
+extra:['Battle of Colachel (1741): Martanda Varma defeated the Dutch — first defeat of a European power by an Indian state.','Sawai Jai Singh II built observatories at Delhi, Jaipur, Ujjain, Varanasi and Mathura.','Peacock Throne and Koh-i-noor taken by Nadir Shah (1739).','Murshid Quli Khan introduced revenue farming (ijaradari) in Bengal.','Historians call 18th-century regional states “successor states”; debate on decline vs regional prosperity.']});
+
+TL('europeans',{
+rulers:[['1498','Vasco da Gama reaches Calicut','Zamorin ruled Calicut'],['1509–1515','Afonso de Albuquerque','Portuguese governor; Goa 1510'],['1600','English East India Company chartered','Elizabeth I'],['1602','Dutch VOC formed',''],['1664','French Company (Colbert)',''],['1742–1754','Dupleix','French governor, Pondicherry'],['1756–1763','Seven Years’ War','Europe and India']],
+around:[['Mughal emperors (Akbar to Aurangzeb)','North India','Granted trade rights'],['Zamorin of Calicut','Malabar','Opposed Portuguese'],['Qutb Shahis','Golconda','Golden Farman 1632'],['Vijayanagara','South','Traded horses with Portuguese'],['Nawabs of Carnatic (Arcot)','South-east','Disputed succession']],
+friends:[['Portuguese–Vijayanagara','Horse trade'],['English–Mughals (Jahangir)','Trade permission 1612–15 (Thomas Roe)'],['French–Chanda Sahib, Muzaffar Jung','Carnatic and Hyderabad claimants'],['English–Muhammad Ali, Nasir Jung','Rival claimants']],
+foes:[['Portuguese vs Zamorin and Arabs','Naval wars'],['Dutch vs Portuguese','Spice trade'],['English vs French','Carnatic wars 1746–63'],['Dutch vs Travancore','Colachel 1741']],
+events:[['1498','Vasco da Gama at Calicut'],['1510','Goa captured'],['1605','Dutch factory at Masulipatnam'],['1611','English factory at Masulipatnam'],['1612','Swally; Surat factory (1613)'],['1639','Madras (Fort St George)'],['1668','Bombay to the Company'],['1690','Calcutta founded (Job Charnock)'],['1746–1763','Three Carnatic wars'],['1760','Wandiwash']],
+writings:[['Os Lusíadas','Luís de Camões','Portuguese epic on Vasco da Gama'],['Journal of Sir Thomas Roe','Thomas Roe','Jahangir’s court'],['Travels','Tavernier, Bernier','Mughal India, Golconda']],
+extra:['Cartaz system: Portuguese sea passes for Asian ships.','Battle of Swally (1612): English defeat the Portuguese off Surat.','Battle of Bedara (1759): English defeat the Dutch in Bengal.','Fort St George (Madras, 1639) was the first English fortified settlement.','Andhra links: Masulipatnam (Dutch 1605, English 1611, French 1669) and Pulicat were major east-coast centres.']});
+
+TL('britraj',{
+rulers:[['1756–1757','Siraj-ud-Daulah','Nawab of Bengal'],['1757–1760, 1763–65','Mir Jafar','Puppet nawab'],['1760–1763','Mir Qasim','Rebelled'],['1757–1760, 1765–67','Robert Clive','Governor of Bengal'],['1761–1782','Haidar Ali','Mysore'],['1782–1799','Tipu Sultan','Mysore'],['1799–1839','Ranjit Singh','Punjab']],
+around:[['Shah Alam II','Mughal emperor','1759–1806'],['Shuja-ud-Daulah','Awadh','1754–1775'],['Peshwas and Maratha chiefs','Deccan, north','to 1818'],['Nizam Ali Khan','Hyderabad','1762–1803']],
+friends:[['Mir Jafar, Jagat Seth, Rai Durlabh','Conspired with Clive'],['Nizam','Joined English against Tipu (1790, 1799)'],['Marathas','Joined against Tipu (1790)']],
+foes:[['Siraj-ud-Daulah','Plassey 1757'],['Mir Qasim, Shuja-ud-Daulah, Shah Alam II','Buxar 1764'],['Haidar Ali, Tipu','Anglo-Mysore wars'],['Marathas','Anglo-Maratha wars'],['Sikhs','Anglo-Sikh wars']],
+events:[['1756','Black Hole episode (disputed)'],['1757','Plassey'],['1764','Buxar'],['1765','Treaty of Allahabad, Diwani'],['1767–69','First Anglo-Mysore war (Treaty of Madras)'],['1780–84','Second (Treaty of Mangalore)'],['1790–92','Third (Treaty of Seringapatam)'],['1799','Fourth; Tipu killed'],['1775–1818','Anglo-Maratha wars (Salbai 1782, Bassein 1802)'],['1845–49','Anglo-Sikh wars; Punjab annexed']],
+writings:[['Seir Mutaqherin','Ghulam Husain','Bengal politics'],['Fathul Mujahidin','Tipu Sultan (commissioned)','Military manual']],
+extra:['Tipu planted a “Tree of Liberty” and joined the Jacobin Club (tradition); used rockets against the British.','Dual government in Bengal (1765–72): Company had diwani, nawab had nizamat.','Treaty of Lahore (1846) and Bhairowal (1846) after first Anglo-Sikh war.','Koh-i-noor taken from Punjab after 1849.']});
+
+TL('consol',{
+rulers:[['1772–1785','Warren Hastings','First Governor-General of Bengal'],['1786–1793','Cornwallis','Permanent Settlement'],['1798–1805','Wellesley','Subsidiary Alliance'],['1813–1823','Lord Hastings','Marathas crushed'],['1828–1835','William Bentinck','First GG of India'],['1848–1856','Dalhousie','Lapse'],['1856–1862','Canning','1857; first Viceroy']],
+around:[['Ranjit Singh','Punjab','to 1839'],['Peshwa Baji Rao II','Pune','to 1818'],['Nizam (Sikandar Jah)','Hyderabad','Subsidiary ally'],['Mughal emperor (Akbar II, Bahadur Shah Zafar)','Delhi','Nominal']],
+friends:[['Subsidiary allies','Hyderabad 1798, Mysore 1799, Awadh 1801, Peshwa 1802'],['Princely states loyal in 1857','Hyderabad, Gwalior, Patiala']],
+foes:[['States annexed','Satara 1848, Jhansi 1853, Nagpur 1854, Awadh 1856'],['Pindaris','Crushed 1817–18']],
+events:[['1773','Regulating Act'],['1784','Pitt’s India Act'],['1793','Permanent Settlement; Charter Act'],['1813','Charter Act ends trade monopoly'],['1829','Sati abolished'],['1833','Charter Act; GG of India'],['1835','English education (Macaulay)'],['1853','Railways, telegraph; open civil service exam'],['1856','Awadh annexed']],
+writings:[['Minute on Indian Education','Macaulay (1835)','English education'],['History of British India','James Mill (1817)','Utilitarian view'],['Wood’s Despatch','Charles Wood (1854)','Education policy']],
+extra:['Indian Penal Code drafted by Macaulay (1860).','Thugee suppressed by William Sleeman under Bentinck.','Dalhousie: first railway (1853), telegraph, postal reform, PWD.','Fort William College (1800) trained civil servants.']});
+
+TL('econ',{
+rulers:[['1765','Diwani of Bengal','Company becomes revenue collector'],['1772','Warren Hastings','Revenue farming'],['1793','Cornwallis','Permanent Settlement'],['1820','Thomas Munro (Madras governor)','Ryotwari'],['1822, 1833','Holt Mackenzie, William Bentinck','Mahalwari'],['1853','Dalhousie','Railways']],
+around:[['British Industrial Revolution','Britain','c. 1760–1840'],['American Civil War (cotton boom in India)','USA','1861–65'],['Great Depression','World','1929–33']],
+friends:[['Indian merchants and bankers (some)','Partners in early Company trade'],['Zamindars','Beneficiaries of Permanent Settlement']],
+foes:[['Indian artisans','Ruined by machine goods'],['Peasants','Burdened by revenue and debt']],
+events:[['1770','Bengal famine'],['1793','Permanent Settlement'],['1813','Free trade begins'],['1853','First railway'],['1854','First cotton mill (Bombay)'],['1855','First jute mill (Rishra)'],['1876–78','Great famine'],['1907','Tata Iron and Steel'],['1943','Bengal famine']],
+writings:[['Poverty and Un-British Rule in India','Dadabhai Naoroji','Drain theory'],['Economic History of India','R.C. Dutt','Colonial economy'],['Essays on Indian Economics','M.G. Ranade','Economic nationalism']],
+extra:['Famine Commissions: Strachey (1880), Lyall (1896), MacDonnell (1900).','Indigo revolt (1859–60) led to the Indigo Commission.','Home charges included interest, pensions and India Office costs.','Andhra link: Guntur famine (1832–33) led to the Godavari and Krishna anicuts.']});
+
+TL('reform',{
+rulers:[['1814–1833','Raja Ram Mohan Roy','Atmiya Sabha, Brahmo Samaj'],['1842–1866','Debendranath Tagore','Brahmo revival'],['1850s–1870s','Ishwar Chandra Vidyasagar','Widow remarriage'],['1873','Jyotiba Phule','Satyashodhak Samaj'],['1875','Dayanand Saraswati','Arya Samaj'],['1875','Sir Syed Ahmad Khan','MAO College'],['1897','Swami Vivekananda','Ramakrishna Mission'],['1903','Narayana Guru','SNDP Yogam']],
+around:[['Governors-General Bentinck, Dalhousie, Canning','British India','Social laws'],['Christian missionaries (William Carey at Serampore)','Bengal','Printing, education']],
+friends:[['Bentinck–Ram Mohan Roy','Sati abolition 1829'],['Bethune–Vidyasagar','Girls’ schools'],['Theosophists–Hindu revivalists','Annie Besant’s support']],
+foes:[['Orthodox Dharma Sabha (Radhakanta Deb)','Opposed sati abolition'],['Missionary critics','Attacked Hindu practices']],
+events:[['1828','Brahmo Samaj'],['1829','Sati abolished'],['1856','Widow Remarriage Act'],['1867','Prarthana Samaj'],['1872','Native Marriage Act (Brahmo marriages)'],['1873','Satyashodhak Samaj'],['1875','Arya Samaj; Theosophical Society'],['1891','Age of Consent Act'],['1893','Vivekananda at Chicago'],['1897','Ramakrishna Mission']],
+writings:[['Tuhfat-ul-Muwahhidin','Ram Mohan Roy','Monotheism'],['Satyarth Prakash','Dayanand','Vedic revival'],['Gulamgiri','Jyotiba Phule','Caste slavery'],['Asbab-e-Baghawat-e-Hind','Sir Syed','Causes of 1857'],['Stri Purush Tulana','Tarabai Shinde','Gender equality']],
+extra:['Pandita Ramabai founded Sharada Sadan (1889) for widows.','Behramji Malabari campaigned for the Age of Consent Act (1891).','Young Bengal movement: Henry Vivian Derozio.','Andhra: Kandukuri Veeresalingam’s first widow remarriage (1881) followed Vidyasagar’s lead.']});
+
+TL('revolts',{
+rulers:[['1763–1800','Sanyasi–Fakir rebels','Bengal'],['1817','Bakshi Jagabandhu','Paika, Odisha'],['1831–32','Kol leaders (Buddho Bhagat)','Chota Nagpur'],['1855–56','Sidhu and Kanhu','Santhal Hul'],['1859–60','Indigo cultivators (Digambar and Bishnu Biswas)','Bengal'],['1899–1900','Birsa Munda','Ulgulan']],
+around:[['Company rule; Governors-General','British India','Revenue policies'],['Zamindars, moneylenders, planters','Local','Agents of exploitation']],
+friends:[['Christian missionaries (some)','Supported indigo ryots'],['Harish Chandra Mukherjee (Hindoo Patriot)','Wrote for indigo peasants']],
+foes:[['Planters, zamindars, moneylenders (dikus)','Targets of revolts'],['Company troops','Suppressed revolts']],
+events:[['1770','Bengal famine'],['1783','Rangpur–Dinajpur revolt'],['1817','Paika rebellion'],['1824','Jat revolt (NIOS)'],['1831','Kol uprising'],['1846','Uyyalawada Narasimha Reddy (Andhra)'],['1855','Santhal Hul'],['1859','Indigo revolt'],['1875','Deccan riots'],['1879','Rampa revolt (Andhra)'],['1899','Munda Ulgulan']],
+writings:[['Anandamath','Bankim Chandra','Sanyasi revolt in fiction'],['Neel Darpan','Dinabandhu Mitra (1860)','Indigo planters’ cruelty']],
+extra:['Santhal Pargana created after the Hul (1855).','Chota Nagpur Tenancy Act (1908) followed Birsa Munda’s revolt.','Kuka (Namdhari) movement in Punjab under Ram Singh.','Moplah (Mappila) uprisings in Malabar, especially 1921.']});
+
+TL('r1857',{
+rulers:[['1837–1857','Bahadur Shah Zafar','Proclaimed emperor'],['1856–1862','Lord Canning','Governor-General'],['1857','Nana Saheb','Kanpur'],['1857–58','Rani Lakshmibai','Jhansi (died 18 June 1858)'],['1857','Begum Hazrat Mahal','Lucknow'],['1857','Kunwar Singh','Jagdishpur'],['1857–59','Tantia Tope','Executed 1859']],
+around:[['Nizam (Afzal-ud-Daulah); Salar Jung I','Hyderabad','Stayed loyal'],['Scindia (Gwalior), Sikh chiefs','Princely states','Mostly loyal'],['Queen Victoria','Britain','1837–1901']],
+friends:[['Rebel alliance','Sepoys, princes, zamindars, peasants'],['British allies','Sikh, Gurkha regiments; Nizam; Scindia']],
+foes:[['British commanders','Nicholson, Havelock, Colin Campbell, Hugh Rose']],
+events:[['29 Mar 1857','Mangal Pandey at Barrackpore'],['10 May 1857','Meerut outbreak'],['11 May 1857','Rebels reach Delhi'],['Sep 1857','Delhi recaptured'],['Mar 1858','Lucknow recaptured'],['June 1858','Rani of Jhansi dies at Gwalior'],['2 Aug 1858','Government of India Act'],['1 Nov 1858','Queen’s Proclamation']],
+writings:[['The Indian War of Independence of 1857','V.D. Savarkar (1909)','Nationalist view'],['Asbab-e-Baghawat-e-Hind','Sir Syed','Causes'],['The Sepoy Mutiny and the Revolt of 1857','R.C. Majumdar','Critical view']],
+extra:['Bahadur Shah Zafar was exiled to Rangoon (died 1862).','Peel Commission (1858) reorganised the army: more Europeans, “martial races”.','Hyderabad: an attack on the Residency (17 July 1857) led by Turrebaz Khan was repelled.','Andhra was largely calm, but there were incidents in some areas; the Nizam and Salar Jung supported the British.']});
+
+TL('nm1',{
+rulers:[['1884–1888','Lord Dufferin','Viceroy at INC founding'],['1899–1905','Lord Curzon','Partition of Bengal'],['1905–1910','Lord Minto II','Morley–Minto'],['1910–1916','Lord Hardinge II','Capital to Delhi']],
+around:[['Queen Victoria, Edward VII, George V','Britain','Monarchs'],['Japan’s victory over Russia (1905)','Asia','Inspired nationalists'],['First World War','World','1914–18']],
+friends:[['A.O. Hume, William Wedderburn','British supporters of INC'],['Annie Besant','Home Rule League'],['Lucknow Pact (1916)','INC–Muslim League unity']],
+foes:[['Curzon','Partition'],['Government repression','Tilak’s sentences 1897, 1908'],['Communal electorates','1909']],
+events:[['1876','Indian Association (Surendranath)'],['1885','INC founded'],['1892','Indian Councils Act'],['1905','Partition; Swadeshi'],['1906','Muslim League; swaraj at Calcutta'],['1907','Surat split'],['1909','Morley–Minto'],['1911','Partition annulled; capital to Delhi'],['1913','Ghadar Party'],['1916','Home Rule Leagues; Lucknow Pact']],
+writings:[['Poverty and Un-British Rule in India','Dadabhai Naoroji',''],['Anandamath (Vande Mataram)','Bankim Chandra',''],['Kesari, Mahratta','Tilak','Newspapers'],['Gitanjali','Tagore','Nobel 1913'],['Hind Swaraj','Gandhi (1909)','Critique of modern civilisation']],
+extra:['Tilak: “Swaraj is my birthright and I shall have it.”','Delhi Durbar 1911 (George V) announced annulment.','Andhra: Bipin Chandra Pal’s Rajahmundry speeches (1907) and the Vandemataram movement.','Anushilan Samiti and Jugantar were Bengal revolutionary groups.']});
+
+TL('nm2',{
+rulers:[['1916–1921','Lord Chelmsford','Rowlatt, Jallianwala'],['1921–1926','Lord Reading','NCM ends'],['1926–1931','Lord Irwin','Simon, Gandhi–Irwin Pact'],['1931–1936','Lord Willingdon','Repression; Poona Pact'],['1936–1943','Lord Linlithgow','Quit India'],['1943–1947','Lord Wavell','Simla, Cabinet Mission'],['1947','Lord Mountbatten','Partition']],
+around:[['Russian Revolution (1917)','World','Inspired socialists'],['Second World War','World','1939–45'],['Japan in South-East Asia','Asia','INA base']],
+friends:[['Ali brothers','Khilafat'],['C.F. Andrews','Gandhi’s associate'],['INA and Azad Hind (Bose)','Armed struggle']],
+foes:[['General Dyer','Jallianwala'],['Simon Commission','All-white'],['Muslim League (Jinnah, after 1940)','Pakistan demand']],
+events:[['1917','Champaran'],['1919','Rowlatt Act; Jallianwala'],['1920','Non-Cooperation'],['1922','Chauri Chaura'],['1928','Simon boycott; Bardoli'],['1929','Lahore: Purna Swaraj'],['1930','Dandi March'],['1931','Gandhi–Irwin Pact; Karachi'],['1932','Communal Award; Poona Pact'],['1935','Government of India Act'],['1942','Cripps; Quit India'],['1946','RIN mutiny; Cabinet Mission'],['1947','Independence']],
+writings:[['Young India, Harijan','Gandhi',''],['The Story of My Experiments with Truth','Gandhi',''],['Discovery of India','Nehru',''],['Annihilation of Caste','Ambedkar (1936)',''],['Why I am an Atheist','Bhagat Singh','']],
+extra:['Bhagat Singh, Rajguru, Sukhdev executed 23 March 1931.','Individual Satyagraha (1940): Vinoba Bhave first, Nehru second.','RIN mutiny (Feb 1946) in Bombay.','Andhra: Tanguturi Prakasam’s Simon protest (1928); salt satyagraha at many coastal places (1930).']});
+
+TL('facts',{
+rulers:[['1773','Warren Hastings','First GG of Bengal'],['1833','Bentinck','First GG of India'],['1858','Canning','First Viceroy'],['1880–84','Ripon','Local self-government'],['1947','Mountbatten','Last Viceroy'],['1948–50','C. Rajagopalachari','First and last Indian GG']],
+around:[['Secretary of State for India','London','From 1858'],['Indian Legislative Councils','India','Expanded 1861, 1892, 1909, 1919']],
+friends:[['Indian press','Voice of nationalism']],
+foes:[['Press laws','1799, 1823, 1878, 1908, 1910']],
+events:[['1780','Hicky’s Bengal Gazette'],['1799','Censorship of Press Act'],['1835','Metcalfe frees the press'],['1857','Universities at Calcutta, Bombay, Madras'],['1878','Vernacular Press Act'],['1882','VPA repealed; Hunter Commission'],['1908','Newspapers Act'],['1910','Indian Press Act']],
+writings:[['Sambad Kaumudi, Mirat-ul-Akhbar','Ram Mohan Roy',''],['Amrita Bazar Patrika','Ghosh brothers',''],['The Hindu','G. Subramania Iyer (1878)',''],['Andhra Patrika','Kasinathuni Nageswara Rao (1908)','Telugu nationalist paper'],['Kesari, Mahratta','Tilak','']],
+extra:['Andhra Patrika (1908) and Krishna Patrika (Machilipatnam) were key Telugu nationalist papers.','Commissions: Hunter (1882 education), Raleigh (1902 universities), Sadler (1917), Simon (1927).','Indian Councils Act 1861 began legislative councils; 1892 introduced indirect elections.']});
+
+TL('postind',{
+rulers:[['1947–1964','Jawaharlal Nehru','PM'],['1964–1966','Lal Bahadur Shastri','PM'],['1966–1977, 1980–84','Indira Gandhi','PM'],['1977–1979','Morarji Desai','First non-Congress PM'],['1991–1996','P.V. Narasimha Rao','PM from Andhra; reforms'],['1950–1962','Rajendra Prasad','First President']],
+around:[['Pakistan, China','Neighbours','Wars 1947–48, 1962, 1965, 1971'],['USA, USSR','Cold War','Non-alignment'],['Bangladesh','Neighbour','From 1971']],
+friends:[['USSR','Treaty of Friendship 1971'],['NAM leaders (Nasser, Tito, Sukarno)','Non-alignment']],
+foes:[['Pakistan','1947–48, 1965, 1971, Kargil 1999'],['China','1962 war']],
+events:[['1947','Independence; integration'],['1948','Operation Polo'],['1950','Constitution'],['1951–52','First elections'],['1953','Andhra State'],['1956','States reorganisation'],['1962, 1965, 1971','Wars'],['1969','Bank nationalisation'],['1975–77','Emergency'],['1991','Economic reforms'],['1992','Panchayati Raj amendments']],
+writings:[['India After Independence','Bipan Chandra and others',''],['India Wins Freedom','Maulana Azad',''],['The Story of the Integration of the Indian States','V.P. Menon','']],
+extra:['First Five Year Plan (1951) focused on agriculture; Second (1956) on heavy industry (Mahalanobis).','Hyderabad merged after Operation Polo; Burgula Ramakrishna Rao first elected CM (1952).','P.V. Narasimha Rao (from Andhra) led the 1991 economic reforms with Manmohan Singh.']});
+
+/* ---------- Art and culture: timelines of patrons and works ---------- */
+TL('caves',{
+rulers:[['3rd c. BC','Ashoka, Dasharatha (Mauryas)','Barabar, Nagarjuni caves; pillars'],['2nd c. BC–2nd c. AD','Shungas, Satavahanas','Sanchi, Bharhut, Amaravati, Karle'],['5th c.','Guptas, Vakatakas (Harishena)','Deogarh, Ajanta (later caves)'],['6th–8th c.','Chalukyas, Pallavas','Badami, Aihole, Pattadakal, Mahabalipuram'],['8th c.','Rashtrakutas (Krishna I)','Kailasa, Ellora'],['10th–11th c.','Cholas, Chandelas','Thanjavur, Khajuraho'],['12th–13th c.','Hoysalas, Kakatiyas, Eastern Gangas','Belur, Ramappa, Konark'],['1192–1526','Delhi Sultans','Qutb Minar, Alai Darwaza'],['1526–1707','Mughals','Humayun’s Tomb to Taj Mahal'],['16th c.','Vijayanagara','Hampi, Lepakshi']],
+around:[['Angkor (Khmer)','Cambodia','12th c. (Indian-influenced)'],['Borobudur (Shailendras)','Java','9th c.']],
+friends:[['Guilds and merchants','Funded stupas and caves']],
+foes:[['Invasions (Mahmud, Talikota)','Destroyed temples and cities']],
+events:[['c. 250 BC','Sarnath pillar'],['2nd c. BC','Bharhut stupa'],['c. 460–480','Ajanta later caves (Vakataka)'],['c. 757–783','Kailasa temple'],['1010','Brihadeeswara completed'],['1213','Ramappa temple'],['1250','Konark temple'],['1311','Alai Darwaza'],['1632–43','Taj Mahal']],
+writings:[['Manasara, Mayamata','—','Texts on architecture (shilpa shastra)'],['Vishnudharmottara Purana (Chitrasutra)','—','Painting theory']],
+extra:['Ajanta was rediscovered in 1819 by John Smith, a British officer.','Ellora has Buddhist (1–12), Hindu (13–29) and Jain (30–34) caves.','Elephanta Trimurti (Maheshamurti) is 6th century.','Lepakshi (Anantapur) has the hanging pillar, a giant Nandi and Vijayanagara ceiling paintings.','Golconda fort and Charminar are Qutb Shahi Indo-Islamic works.']});
+
+TL('music',{
+rulers:[['c. 200 BC–AD 200','Bharata (Natya Shastra)','Theory'],['13th c.','Sharngadeva (Sangita Ratnakara)','Yadava court, Devagiri'],['1253–1325','Amir Khusrau','Delhi Sultanate'],['1433–68','Rana Kumbha (Sangita Raja)','Mewar'],['1484–1564','Purandara Dasa','Vijayanagara'],['16th c.','Tansen','Akbar’s court'],['1550','Ramamatya (Swaramela Kalanidhi)','Vijayanagara/Kondavidu'],['17th c.','Venkatamakhin (72 melakartas)','Thanjavur Nayakas'],['1767–1847','Tyagaraja','Thanjavur Marathas']],
+around:[['Raja Man Singh Tomar','Gwalior','Dhrupad patron (15th c.)'],['Thanjavur Maratha court','Tamil Nadu','Carnatic patronage']],
+friends:[['Akbar–Tansen','Royal patronage'],['Haridas (Tansen’s guru)','Vrindavan']],
+foes:[['Aurangzeb (later years)','Reduced court music']],
+events:[['13th c.','Sangita Ratnakara'],['14th c.','Khusrau’s innovations'],['1550','Swaramela Kalanidhi'],['c. 1660','72 melakarta scheme'],['1847','Tyagaraja’s death; Aradhana at Tiruvaiyaru']],
+writings:[['Natya Shastra','Bharata',''],['Sangita Ratnakara','Sharngadeva',''],['Swaramela Kalanidhi','Ramamatya',''],['Chaturdandi Prakashika','Venkatamakhin',''],['Kitab-i-Nauras','Ibrahim Adil Shah II','Songs (Bijapur)']],
+extra:['Annamacharya (1408–1503) composed about 32,000 sankirtanas (tradition).','Kshetrayya (17th c., Movva village, Krishna district) composed padams for dance.','Bhadrachala Ramadasu (Kancherla Gopanna) composed Rama kirtanas.','Hindustani gharanas: Gwalior, Agra, Kirana, Jaipur–Atrauli, Patiala.']});
+
+TL('dance',{
+rulers:[['c. 200 BC–AD 200','Bharata','Natya Shastra'],['10th–11th c.','Cholas','Temple dancers; Thanjavur inscriptions'],['13th c.','Kakatiya Ganapatideva (Jayapa Senani)','Nritta Ratnavali'],['15th c.','Shankaradeva','Sattriya'],['17th c.','Siddhendra Yogi','Kuchipudi'],['19th c.','Wajid Ali Shah','Kathak, Lucknow'],['1930s','Vallathol, Rukmini Devi','Kathakali and Bharatanatyam revival']],
+around:[['Devadasi tradition','Temples','Hereditary dancers'],['Anti-nautch movement','Colonial period','Opposed temple dance']],
+friends:[['Tanjore Quartet','Shaped Bharatanatyam repertoire (19th c.)']],
+foes:[['Anti-nautch campaigns; 1947 Madras Devadasi Act','Ended temple dedication']],
+events:[['1213','Ramappa temple dancer sculptures'],['1253 (c.)','Nritta Ratnavali'],['1930','Kerala Kalamandalam'],['1936','Kalakshetra (Rukmini Devi)']],
+writings:[['Natya Shastra','Bharata',''],['Abhinaya Darpana','Nandikeshvara',''],['Nritta Ratnavali','Jayapa Senani (Kakatiya)','Andhra dance treatise'],['Bhama Kalapam','Siddhendra Yogi','Kuchipudi']],
+extra:['Perini Shivatandavam (warrior dance) was revived by Nataraja Ramakrishna, based on Ramappa sculptures and Nritta Ratnavali.','Vempati Chinna Satyam developed solo Kuchipudi.','Sangeet Natak Akademi founded 1952.']});
+
+TL('crafts',{
+rulers:[['Mughal karkhanas','Mughals','Royal workshops'],['16th–17th c.','Golconda Qutb Shahis','Machilipatnam Kalamkari, Persian motifs'],['Vijayanagara','South','Temple Kalamkari (Srikalahasti)'],['Bahmanis','Bidar','Bidriware'],['17th–18th c.','Bobbili, Vizianagaram zamindars','Veena, crafts patronage']],
+around:[['European companies','Coasts','Exported textiles'],['British machine industry','Britain','Competition']],
+friends:[['Dutch and English traders','Bought Coromandel chintz']],
+foes:[['Machine-made cloth','Ruined handloom']],
+events:[['17th c.','Coromandel chintz exports peak'],['1813 onwards','Decline under free trade'],['1952','All India Handicrafts Board'],['2003 onwards','GI tags (GI Act 1999)']],
+writings:[['Ain-i-Akbari','Abul Fazl','Describes karkhanas']],
+extra:['GI Act 1999 came into force in 2003; Darjeeling tea was India’s first GI (2004).','Pembarthi brassware and Nirmal paintings are Telangana crafts.','Budithi brassware and Narsapur lace are AP crafts.']});
+
+TL('theatre',{
+rulers:[['c. 4th–5th c.','Bhasa, Kalidasa, Shudraka','Sanskrit drama'],['10th c.','Kulashekhara Varman','Koodiyattam reforms'],['16th c.','Krishnadevaraya’s court','Yakshagana growth'],['19th c.','Surabhi troupes','Telugu stage'],['1940s','IPTA','Theatre for social change']],
+around:[['Parsi theatre','Bombay','19th c.']],
+friends:[['National movement','Used folk theatre']],
+foes:[['Dramatic Performances Act (1876)','Censorship of nationalist plays']],
+events:[['1876','Dramatic Performances Act'],['1885','Surabhi Nataka Samajam (Andhra)'],['1943','IPTA founded'],['2001','Koodiyattam on UNESCO list'],['2005','Ramlila on UNESCO list']],
+writings:[['Swapnavasavadatta','Bhasa',''],['Abhijnanashakuntalam','Kalidasa',''],['Mrichchhakatika','Shudraka',''],['Kanyasulkam','Gurajada Apparao','Telugu social play'],['Neel Darpan','Dinabandhu Mitra','Bengali']],
+extra:['Nazar (Shaik Nazar) popularised Burrakatha.','Chindu Bhagavatam is a Telangana folk theatre.','Veedhi Natakam (street play) is an old Andhra form.']});
+
+TL('puppet',{
+rulers:[['Ancient','Natya Shastra mentions sutradhara','String-puller term'],['Medieval','Village patrons','Travelling troupes'],['Modern','Government and NGOs','Awareness shows']],
+around:[['Wayang kulit','Indonesia','Shadow puppetry (related tradition)']],
+friends:[['Sangeet Natak Akademi','Support and awards']],
+foes:[['Cinema, TV','Reduced audiences']],
+events:[['Ancient','References in Mahabharata and Tamil texts'],['20th c.','Revival efforts'],['Today','Nimmalakunta craft cluster']],
+writings:[['Natya Shastra','Bharata','Term sutradhara']],
+extra:['Sutradhara (string-holder) became the term for the stage director in Sanskrit drama.','Tholu Bommalata comic characters: Ketigadu, Bangarakka, Allatappa.']});
+
+TL('martial',{
+rulers:[['Sangam age','Chera, Chola, Pandya warriors','Early martial traditions'],['Medieval','Nayars of Kerala','Kalaripayattu'],['17th c.','Guru Hargobind, Guru Gobind Singh','Gatka'],['17th c.','Shivaji','Mardani Khel'],['Manipur kings','Manipur','Thang-ta']],
+around:[['Colonial bans','British India','Arms Act 1878']],
+friends:[['Khelo India','Promotion']],
+foes:[['Arms Act 1878','Restricted weapons']],
+events:[['1804 (c.)','British ban on Kalaripayattu (Malabar)'],['1878','Arms Act'],['2021','Kalaripayattu, Gatka, Thang-ta, Mallakhamb in Khelo India']],
+writings:[['Dhanurveda','—','Ancient science of archery']],
+extra:['Mallakhamb (Maharashtra, MP) is a pole gymnastics tradition.','Bodhidharma (from Kanchi, by tradition) is linked with Shaolin martial arts.']});
+
+TL('unesco',{
+rulers:[['1972','UNESCO World Heritage Convention',''],['1983','First Indian sites (Agra Fort, Taj Mahal, Ajanta, Ellora)',''],['2003','Intangible Heritage Convention',''],['2008','Vedic chanting, Ramlila, Koodiyattam listed','']],
+around:[['World Heritage Committee','UNESCO','Annual sessions']],
+friends:[['ASI (Archaeological Survey of India, 1861)','Conservation']],
+foes:[['Encroachment, pollution','Threats']],
+events:[['1983','First sites'],['2017','Kumbh Mela; Ahmedabad'],['2021','Dholavira, Ramappa; Durga Puja'],['2023','Santiniketan, Hoysala; Garba'],['2024','Moidams']],
+writings:[['ASI reports','Alexander Cunningham (first DG)','']],
+extra:['ASI founded in 1861 by Alexander Cunningham.','Kakatiya Rudreswara (Ramappa) is India’s 39th World Heritage Site.','Lepakshi is on India’s tentative list.']});
+
+TL('lang',{
+rulers:[['c. 300 BC','Ashoka','Brahmi inscriptions'],['1st c. BC–3rd c. AD','Satavahanas','Prakrit; Gathasaptasati'],['575 (c.)','Renati Chola Dhananjaya','Kalamalla Telugu inscription'],['11th c.','Rajaraja Narendra','Nannaya'],['16th c.','Krishnadevaraya','Telugu golden age'],['1837','James Prinsep','Deciphered Brahmi']],
+around:[['Tamil Sangam','South','300 BC–AD 300'],['Kannada (Pampa, Ranna)','Karnataka','10th c.']],
+friends:[['Christian missionaries','Printing presses, dictionaries (C.P. Brown for Telugu)']],
+foes:[['Colonial English policy','Marginalised vernaculars (1835)']],
+events:[['1837','Brahmi deciphered'],['1950','Constitution: 14 languages in 8th Schedule'],['2004','First classical language (Tamil)'],['2008','Telugu classical'],['2024','Five more classical languages']],
+writings:[['Ashtadhyayi','Panini',''],['Tolkappiyam','Tolkappiyar','Tamil grammar'],['Andhra Shabda Chintamani','Nannaya (attributed)','Telugu grammar'],['Kavirajamarga','Amoghavarsha','Kannada']],
+extra:['Telugu–Kannada script developed from the Kadamba/Chalukya script.','Bhattiprolu script is an early southern Brahmi variant.','Gidugu Ramamurthy’s spoken-language movement modernised Telugu.']});
+
+TL('philo',{
+rulers:[['c. 800–500 BC','Upanishadic sages (Yajnavalkya, Uddalaka)','Videha court (Janaka)'],['6th c. BC','Buddha, Mahavira, Makkhali Gosala, Ajita Kesakambali','Magadha'],['c. 150–250','Nagarjuna','Satavahana era; Andhra'],['c. 788–820','Shankaracharya','Advaita'],['1017–1137','Ramanuja','Vishishtadvaita'],['1238–1317','Madhva','Dvaita'],['1479–1531','Vallabha','Shuddhadvaita']],
+around:[['Greek philosophy','West','Contemporary with Buddha (Socrates, Plato)']],
+friends:[['Royal patrons','Debates at courts']],
+foes:[['Shankara vs Buddhists, Mimamsakas','Debates (e.g. with Mandana Mishra)']],
+events:[['c. 6th c. BC','Heterodox movements'],['2nd c.','Madhyamaka'],['8th c.','Shankara’s four mathas'],['12th c.','Ramanuja at Srirangam']],
+writings:[['Yoga Sutra','Patanjali',''],['Nyaya Sutra','Gautama',''],['Brahma Sutra','Badarayana',''],['Mulamadhyamakakarika','Nagarjuna',''],['Brahma Sutra Bhashya','Shankara',''],['Sri Bhashya','Ramanuja','']],
+extra:['Shankara’s mathas: Sringeri, Dwarka, Puri, Jyotirmath.','Nagarjuna is associated with Sriparvata (Nagarjunakonda) and the Satavahana king Yajna Sri (tradition).']});
+
+TL('scitech',{
+rulers:[['c. 800–500 BC','Baudhayana','Sulba Sutra'],['c. 1st–2nd c.','Charaka (Kanishka’s court, tradition)','Medicine'],['476–550','Aryabhata','Kusumapura'],['505–587','Varahamihira','Ujjain'],['598–668','Brahmagupta','Bhillamala'],['1114–1185','Bhaskara II','Ujjain'],['1688–1743','Sawai Jai Singh II','Observatories']],
+around:[['Arab scholars (Al-Khwarizmi)','Baghdad','9th c., spread Indian numerals']],
+friends:[['Abbasid translators','Translated Indian works into Arabic']],
+foes:[['None specific','—']],
+events:[['499','Aryabhatiya'],['628','Brahmasphutasiddhanta'],['1150','Lilavati'],['1724–1735','Jantar Mantar observatories'],['1975','Aryabhata satellite']],
+writings:[['Sulba Sutra','Baudhayana',''],['Charaka Samhita','Charaka',''],['Sushruta Samhita','Sushruta',''],['Aryabhatiya','Aryabhata',''],['Brihat Samhita, Panchasiddhantika','Varahamihira',''],['Siddhanta Shiromani (Lilavati)','Bhaskara II',''],['Rasaratnakara','Nagarjuna (alchemist, tradition)','Chemistry']],
+extra:['Madhava of Sangamagrama (Kerala school, 14th c.) worked on infinite series.','Wootz steel from south India (including Andhra–Telangana areas such as Konasamudram) was exported to West Asia (Damascus swords).']});
+
+TL('fest',{
+rulers:[['Ancient','Agrarian communities','Harvest festivals'],['1893','Bal Gangadhar Tilak','Public Ganapati festival'],['1895','Tilak','Shivaji festival'],['2014 onwards','Telangana government','Bathukamma as state festival']],
+around:[['Regional calendars','Across India','Solar and lunar']],
+friends:[['Communities across faiths','Shared celebrations']],
+foes:[['Pollution concerns','Idols, firecrackers']],
+events:[['1893','Ganapati festival'],['2017','Kumbh on UNESCO list'],['2021','Durga Puja'],['2023','Garba']],
+writings:[['Amuktamalyada','Krishnadevaraya','Describes festivals'],['Paes’ account','Domingo Paes','Mahanavami festival at Vijayanagara']],
+extra:['Mahanavami (Dasara) at Vijayanagara was described by Paes and Nuniz.','Tirupati Brahmotsavam is held for nine days each year.','Sammakka–Saralamma Jatara (Medaram, Telangana) is one of the largest tribal festivals.']});
+
+TL('coins',{
+rulers:[['6th c. BC','Mahajanapadas','Punch-marked coins'],['2nd c. BC','Indo-Greeks','Portrait coins'],['1st–3rd c.','Kushanas','Gold coins'],['1st c. BC–3rd c.','Satavahanas','Lead, potin; ship coins'],['4th–5th c.','Guptas','Gold dinaras'],['1210–1236','Iltutmish','Silver tanka, copper jital'],['1325–1351','Muhammad bin Tughlaq','Token currency'],['1540–1545','Sher Shah','Rupiya, dam'],['1556–1605','Akbar','Ilahi coins'],['16th c.','Vijayanagara','Gold varaha (pagoda), fanam']],
+around:[['Roman coins','Found in south India','1st–2nd c.']],
+friends:[['Merchant guilds','Used coins in trade']],
+foes:[['Forgers','Token currency failure']],
+events:[['6th c. BC','Punch-marked coins'],['AD 78','Kanishka’s era'],['1228','Tanka introduced'],['1329–32','Token currency'],['1540s','Rupiya'],['1835','Uniform Company rupee']],
+writings:[['Arthashastra','Kautilya','Mint officer (lakshanadhyaksha)']],
+extra:['Vijayanagara gold coins were called varahas (pagodas by Europeans); Golconda also issued pagodas.','Kotilingala (Telangana) yielded early Satavahana coins, including of Simuka.','Akbar issued square coins and the Ilahi coin.']});
+
+TL('travellers',{
+rulers:[['c. 302–288 BC','Megasthenes','Chandragupta Maurya'],['404–411','Fa-Hien','Chandragupta II'],['630–645','Hsuan Tsang','Harsha'],['671–695','I-tsing','Post-Harsha'],['1017–1030','Al-Biruni','Mahmud of Ghazni'],['1292–93','Marco Polo','Rudramadevi (Motupalli)'],['1333–1347','Ibn Battuta','Muhammad bin Tughlaq'],['1420','Nicolo Conti','Devaraya I'],['1443','Abdur Razzaq','Devaraya II'],['1469–72','Athanasius Nikitin','Bahmanis'],['1520–37','Paes, Nuniz','Krishnadevaraya, Achyuta'],['1615–19','Thomas Roe','Jahangir'],['1640s–1660s','Tavernier, Bernier','Shah Jahan, Aurangzeb']],
+around:[['Tang China, Abbasid world, Venice, Portugal','Home lands of travellers','—']],
+friends:[['Royal hosts','Courts welcomed travellers']],
+foes:[['Robbers','Hsuan Tsang robbed twice']],
+events:[['c. 300 BC','Indica'],['631','Hsuan Tsang arrives'],['1030','Kitab-ul-Hind'],['1292','Marco Polo in south India'],['1333','Ibn Battuta reaches Delhi'],['1443','Abdur Razzaq at Vijayanagara']],
+writings:[['Indica','Megasthenes',''],['Fo-kuo-ki','Fa-Hien',''],['Si-Yu-Ki','Hsuan Tsang',''],['Kitab-ul-Hind (Tahqiq-i-Hind)','Al-Biruni',''],['Il Milione','Marco Polo',''],['Rihla','Ibn Battuta',''],['Matla-us-Sadain','Abdur Razzaq',''],['Travels in the Mogul Empire','Bernier','']],
+extra:['Athanasius Nikitin (Russian) described the Bahmani kingdom.','Duarte Barbosa (Portuguese) described Vijayanagara and the coast (early 16th c.).','Hsuan Tsang called Andhra “An-to-lo” and visited Dhanyakataka.']});
+
+TL('ap-geo',{
+rulers:[['c. 800 BC','Aitareya Brahmana','First mention of Andhras'],['c. 300 BC','Megasthenes','Andhras’ walled towns and army'],['3rd c. BC','Ashoka','Erragudi, Rajula Mandagiri edicts'],['c. 3rd–2nd c. BC','Kubiraka (Bhattiprolu casket)','Early Brahmi inscriptions'],['c. 575','Renati Chola Dhananjaya','Kalamalla inscription']],
+around:[['Mauryas','North India','4th–2nd c. BC'],['Satavahanas','Deccan','1st c. BC onwards']],
+friends:[['Not applicable','Sources chapter']],
+foes:[['Not applicable','—']],
+events:[['c. 800 BC','Aitareya Brahmana'],['c. 300 BC','Indica'],['c. 250 BC','Ashokan edicts in Andhra'],['1870s','Bhattiprolu stupa excavated (Boswell, Rea later)'],['1926','Nagarjunakonda discovered (A.R. Saraswati)']],
+writings:[['Aitareya Brahmana','—','Andhras as a people'],['Indica','Megasthenes','Andhra power'],['Puranas (Matsya, Vayu)','—','Andhra (Satavahana) king lists'],['Periplus','Anonymous','East-coast ports']],
+extra:['Ptolemy (2nd c.) mentions Andhra towns and ports like Maisolia (Masulipatnam region).','Hsuan Tsang (7th c.) visited An-to-lo (Andhra) and Dhanyakataka.','Ghantasala and Kodur were early ports on the Krishna coast.']});
+
+TL('ap-pre',{
+rulers:[['Lower Palaeolithic','Hunters of Kurnool, Nagarjunakonda','Hand axes'],['Upper Palaeolithic','Kurnool caves (Betamcherla)','Bone tools'],['Neolithic (c. 2500–1000 BC)','Farmers of Krishna–Tungabhadra','Polished axes'],['Megalithic (c. 1200–300 BC)','Iron users','Stone-circle burials']],
+around:[['Harappans','North-west','2600–1900 BC'],['Utnur, Sanganakallu Neolithic','Karnataka (near AP)','c. 2500 BC']],
+friends:[['Not applicable','—']],foes:[['Not applicable','—']],
+events:[['1884','Robert Bruce Foote explores Kurnool caves'],['1954–60','Nagarjunakonda salvage excavations'],['2000s','Jwalapuram (Kurnool) finds after Toba eruption studies']],
+writings:[['No writing','—','Known from archaeology']],
+extra:['Jwalapuram (Kurnool) has tools found above and below ash from the Toba super-eruption (about 74,000 years ago).','Billa Surgam caves yielded animal fossils and bone tools (Foote, 1884).','Megalithic sites: Kadambapur (Telangana), Yeleswaram.']});
+
+TL('ap-sata',{
+rulers:[['c. 1st c. BC','Simuka','Founder'],['—','Krishna (Kanha)','Brother of Simuka'],['—','Satakarni I','Naneghat inscription; Ashvamedha'],['—','Hala','Gathasaptasati'],['c. 106–130','Gautamiputra Satakarni','Greatest; Nasik inscription'],['c. 130–154','Vasishthiputra Pulumavi','Amaravati'],['c. 165–194','Yajna Sri Satakarni','Last strong ruler']],
+around:[['Shungas, Kanvas','Magadha','2nd–1st c. BC'],['Kharavela','Kalinga','1st c. BC'],['Western Kshatrapas (Nahapana, Rudradaman)','Gujarat, Malwa','1st–2nd c.'],['Kushanas','North','1st–3rd c.'],['Sangam kingdoms','Tamil land','Contemporary'],['Roman empire','Mediterranean','Trade partner']],
+friends:[['Rudradaman (marriage tie)','Rudradaman’s daughter married a Satavahana prince (Junagadh inscription)'],['Buddhist sangha','Patronage'],['Roman traders','Trade']],
+foes:[['Nahapana (Shaka)','Defeated by Gautamiputra'],['Rudradaman','Claims to have defeated Satakarni twice'],['Kharavela','Claims campaigns against Satakarni']],
+events:[['c. 1st c. BC','Simuka founds dynasty'],['c. 1st c. BC','Naneghat inscription of Naganika'],['c. 124','Defeat of Nahapana'],['c. 150','Rudradaman’s Junagadh inscription'],['c. 2nd c.','Amaravati stupa enlarged'],['early 3rd c.','End; Ikshvakus follow']],
+writings:[['Gathasaptasati','Hala','Prakrit love poems'],['Brihatkatha','Gunadhya (tradition, Satavahana court)','Paishachi stories'],['Katantra','Sharvavarman (tradition)','Sanskrit grammar'],['Nasik inscription','Gautami Balasri','Praise of Gautamiputra']],
+extra:['Gautamiputra’s titles: “ekabrahmana” and destroyer of Shakas, Yavanas and Pahlavas.','Capitals named in sources: Pratishthana, and in Andhra, Dhanyakataka and Sri Kakulam (Krishna district, by tradition).','Satavahanas began land grants to Buddhists and brahmanas with tax exemptions.','Kotilingala (Telangana) gave coins of Simuka, supporting a Telangana–Andhra base.']});
+
+TL('ap-ikshvaku',{
+rulers:[['c. 225–250','Vasishthiputra Santamula','Founder; Ashvamedha'],['c. 250–275','Mathariputra Virapurushadatta','Buddhist golden age'],['c. 275–300','Ehuvala Chantamula','Temples too'],['c. 300–325','Rudrapurushadatta','Last known']],
+around:[['Later Satavahanas','Deccan','early 3rd c.'],['Abhiras','Western Deccan','3rd c.'],['Pallavas (early)','South Andhra, Kanchi','from 3rd–4th c.'],['Kushanas (late)','North','3rd c.']],
+friends:[['Ujjain Kshatrapas','Virapurushadatta married a Saka princess'],['Sri Lankan monks','Monastery at Nagarjunakonda']],
+foes:[['Abhiras / later Pallavas','Pressure ending Ikshvaku rule (debated)']],
+events:[['c. 225','Ikshvaku rule begins'],['c. 250s','Mahachaitya donations by Chantisri'],['1926','Nagarjunakonda discovered'],['1954–60','Salvage excavations before dam']],
+writings:[['Nagarjunakonda inscriptions','Royal women','Donations to Buddhism']],
+extra:['Ikshvaku rulers claimed descent from the legendary Ikshvaku line.','Nagarjunakonda had a stadium-like amphitheatre and Hindu temples (Pushpabhadraswami).','Monuments were rebuilt on Nagarjunakonda island museum.']});
+
+TL('ap-postik',{
+rulers:[['c. 300','Brihatphalayana Jayavarma','Kodur grant'],['c. 4th c.','Anandagotrikas (Kandara)','Guntur area'],['c. 300–440','Salankayanas (Hastivarman, Nandivarman)','Vengi'],['c. 420–624','Vishnukundins (Indra Varma, Madhava Varma II, Vikramendra)','Coast and Telangana'],['c. 550–750','Renati Cholas','Rayalaseema']],
+around:[['Guptas (Samudragupta defeated Hastivarman of Vengi)','North','4th c.'],['Pallavas','Kanchi','4th–9th c.'],['Vakatakas','Deccan','4th–5th c.'],['Badami Chalukyas','Karnataka','from 543']],
+friends:[['Vishnukundins–Vakatakas','Marriage alliance (Madhava Varma)']],
+foes:[['Samudragupta vs Hastivarman','Allahabad pillar lists him'],['Pulakesin II vs Vishnukundins','Conquest of Vengi, c. 616–624']],
+events:[['c. 350','Samudragupta’s southern campaign'],['c. 420','Vishnukundins rise'],['c. 575','Kalamalla inscription'],['624','Eastern Chalukyas at Vengi']],
+writings:[['Kalamalla inscription','Renati Chola Dhananjaya','Earliest Telugu'],['Janashrayi Chhandovichiti','Madhava Varma (attributed)','Sanskrit prosody']],
+extra:['Hastivarman of Vengi (Salankayana) appears in Samudragupta’s Allahabad pillar inscription.','Undavalli caves (Vishnukundin) have a large reclining Vishnu.','Erragudipadu inscription is also a Renati Chola Telugu record.']});
+
+TL('ap-chalukya',{
+rulers:[['624–641','Kubja Vishnuvardhana','Founder'],['641–673','Jayasimha I',''],['799–847','Vijayaditya II (Narendra Mrigaraja)','Rashtrakuta wars'],['848–891','Gunaga Vijayaditya III','Greatest warrior'],['892–922','Chalukya Bhima I','Draksharama'],['c. 973–1000','Jata Choda Bhima (interregnum)','Telugu Choda'],['1000–1011','Saktivarma I','Restored with Chola help'],['1011–1018','Vimaladitya','Married Chola princess'],['1019–1061','Rajaraja Narendra','Nannaya'],['1061–1070/76','Vijayaditya VII; then Kulottunga I','Merged with Cholas']],
+around:[['Badami Chalukyas','Karnataka','to 757'],['Rashtrakutas','Deccan','753–973'],['Western Chalukyas of Kalyani','Deccan','973–1189'],['Cholas (Rajaraja I, Rajendra I)','Tamil Nadu','985–1044'],['Eastern Gangas','Kalinga','Neighbours'],['Kakatiyas (feudatories)','Telangana','rising']],
+friends:[['Cholas','Marriages: Vimaladitya–Kundavai; Rajaraja Narendra–Ammangadevi'],['Badami Chalukyas','Kin (early period)']],
+foes:[['Rashtrakutas','Long wars (Govinda III, Krishna II)'],['Western Chalukyas of Kalyani','Rivals for Vengi'],['Jata Choda Bhima','Usurped throne']],
+events:[['624','Vengi kingdom founded'],['c. 870s','Gunaga Vijayaditya’s campaigns'],['c. 900','Draksharama temple'],['999','Chola-backed restoration'],['1019','Rajaraja Narendra’s accession'],['c. 1050','Nannaya’s Mahabharata begins'],['1070','Kulottunga I becomes Chola emperor']],
+writings:[['Andhra Mahabharatam (Adi, Sabha, part Aranya)','Nannaya','Telugu'],['Nandampudi grant','Rajaraja Narendra','Mentions Nannaya'],['Bezawada (Vijayawada) inscription','Yuddhamalla','Early Telugu verse']],
+extra:['Pancharama temples: Draksharama, Samarlakota (Kumararama), Amaravati, Palakollu, Bhimavaram — two are linked to Chalukya Bhima I.','Nannaya is called Vagnushasanudu (lawgiver of language).','Biccavolu temples show early Eastern Chalukya architecture.']});
+
+TL('ap-kakatiya',{
+rulers:[['c. 1000–1030','Beta I','Feudatory'],['c. 1030–1075','Prola I',''],['c. 1075–1110','Beta II','Hanumakonda'],['c. 1110–1158','Prola II','Last feudatory'],['1158–1195','Rudradeva','Independence; Thousand Pillar 1163'],['1195–1199','Mahadeva',''],['1199–1262','Ganapatideva','Peak; Orugallu'],['1262–1289','Rudramadevi','Woman ruler'],['1289–1323','Prataparudra II','Last']],
+around:[['Western Chalukyas of Kalyani','Deccan','Overlords until 1150s'],['Yadavas of Devagiri','Maharashtra','Rivals'],['Hoysalas','Karnataka','Rivals'],['Eastern Gangas','Odisha','Rivals'],['Pandyas','Tamil Nadu','Rivals'],['Delhi Sultanate (Khaljis, Tughlaqs)','North','Conquerors'],['Nellore Cholas (Manumasiddhi)','Nellore','Feudatories; Tikkana’s patron']],
+friends:[['Nellore Cholas (Manumasiddhi)','Ganapatideva restored him'],['Kayasthas, Recharla chiefs','Generals and feudatories'],['Malyala, Viryala families','Military nobles']],
+foes:[['Yadavas','Wars; Mahadeva died fighting them'],['Pandyas','Defeated Ganapatideva at Muttukur (1263)'],['Kayastha Ambadeva','Rebelled against Rudramadevi'],['Malik Kafur (1309–10)','Siege of Warangal; tribute'],['Ulugh Khan (1323)','Conquest']],
+events:[['1163','Thousand Pillar temple'],['1199','Ganapatideva’s accession'],['1213','Ramappa temple'],['1244–45','Motupalli abhaya inscription'],['1262','Rudramadevi’s rule'],['1292–93','Marco Polo at Motupalli'],['1309–10','Malik Kafur’s siege'],['1323','Fall of Warangal'],['2021','Ramappa UNESCO']],
+writings:[['Mahabharata (15 parvas)','Tikkana','Telugu'],['Nritta Ratnavali','Jayapa Senani','Dance'],['Pratapa Rudriyam','Vidyanatha','Sanskrit poetics praising Prataparudra'],['Basava Puranam','Palkuriki Somanatha','Telugu Virashaiva work'],['Ranganatha Ramayanam','Gona Budda Reddy','Telugu Ramayana'],['Krida Bhiramam','Vallabharaya','Warangal life']],
+extra:['Rudramadevi’s generals: Gona Gannareddi, Recharla Prasaditya; she ruled as “Rudradeva Maharaja”.','Kakatiya Thoranam is the emblem of Telangana.','Koh-i-noor is traditionally linked to Kollur mines and Kakatiya treasure (debated).','Prataparudra II reportedly died on the way to Delhi near the Narmada (1323).']});
+
+TL('ap-reddi',{
+rulers:[['1325–1333','Musunuri Prolaya Nayaka','Resistance leader'],['1333–1368','Musunuri Kapaya Nayaka','Recaptured Warangal'],['1325–1353','Prolaya Vema Reddi','Reddi founder, Addanki'],['1353–1364','Anavota Reddi','Kondaveedu'],['1364–1386','Anavema Reddi',''],['1386–1402','Kumaragiri Reddi','Arts'],['1402–1420','Pedakomati Vema Reddi','Srinatha'],['1420–1424','Racha Vema Reddi','Last'],['14th c.','Singama Nayaka, Anapota Nayaka','Recharla Velamas']],
+around:[['Tughlaqs','Delhi','till 1340s in Deccan'],['Vijayanagara (Harihara, Bukka, Devaraya)','South','from 1336'],['Bahmanis','Deccan','from 1347'],['Gajapatis','Odisha','from 1434'],['Hoysala Ballala III','Karnataka','Helped Kapaya']],
+friends:[['Kapaya Nayaka–Ballala III','Joint resistance'],['Kapaya–Bahmanis (early)','Alliance against Delhi (later conflict)'],['Velamas–Bahmanis','Alliance against Vijayanagara and Reddis'],['Reddis–Vijayanagara','Marriage ties at times']],
+foes:[['Tughlaq governors','Expelled'],['Velamas vs Musunuri','Bhimavaram 1368'],['Bahmanis vs Kapaya','Took Golconda region'],['Velamas vs Reddis','Long rivalry']],
+events:[['1325','Reddi kingdom founded'],['c. 1336','Warangal recaptured'],['1368','Battle of Bhimavaram; Kapaya killed'],['c. 1424','Kondaveedu falls'],['c. 1448','Rajahmundry Reddis end']],
+writings:[['Sringara Naishadham, Kasi Khandam, Bhimakhandam, Haravilasam','Srinatha',''],['Aranya parva (rest)','Errana','Completed Mahabharata'],['Harivamsam','Errana',''],['Vasantarajiyam','Kumaragiri Reddi (attributed)','Dance and drama'],['Rasarnava Sudhakara','Sarvajna Singabhupala','Poetics'],['Vilasa grant','Prolaya Nayaka','Describes Tughlaq oppression and resistance']],
+extra:['The Vilasa grant of Prolaya Nayaka records the hardships under Tughlaq rule and the Nayaka revolt.','Kondaveedu fort was later taken by the Gajapatis and then Krishnadevaraya (1515).','Potana (Bhagavatam) is linked by tradition with the Velama court of Sarvajna Singabhupala.']});
+
+TL('ap-vijay',{
+rulers:[['1336–1356','Harihara I','Sangama'],['1356–1377','Bukka I',''],['1377–1404','Harihara II',''],['1406–1422','Devaraya I','Nicolo Conti'],['1424–1446','Devaraya II','Abdur Razzaq'],['1485–1491','Saluva Narasimha','Saluva'],['1505–1509','Vira Narasimha','Tuluva founder'],['1509–1529','Krishnadevaraya','Peak'],['1529–1542','Achyuta Deva Raya',''],['1542–1570','Sadasiva Raya (Aliya Rama Raya regent)','Talikota'],['1570–1572','Tirumala','Aravidu; Penukonda'],['1586–1614','Venkata II','Chandragiri']],
+around:[['Bahmanis, then five Deccan Sultanates','Deccan','1347–1687'],['Gajapatis (Prataparudra)','Odisha','1434–1541'],['Reddis, Velamas','Andhra','14th–15th c.'],['Portuguese','Goa','from 1510'],['Mughals','North','from 1526']],
+friends:[['Portuguese','Horses; trade'],['Gajapati Prataparudra (after 1518)','Peace through marriage to Krishnadevaraya'],['Rama Raya with some Sultanates','Shifting alliances (played Sultans against each other)']],
+foes:[['Bahmanis','Raichur doab wars'],['Gajapatis','Krishnadevaraya’s eastern campaign (Udayagiri, Kondaveedu, Kondapalli)'],['Bijapur','Raichur 1520'],['Deccan confederacy','Talikota 1565']],
+events:[['1336','Founding'],['1347','Bahmani rival appears'],['1443','Abdur Razzaq’s visit'],['1509','Krishnadevaraya’s accession'],['1513–1518','Eastern campaign; Simhachalam victory pillar'],['1520','Battle of Raichur'],['23 Jan 1565','Talikota (Rakkasa–Tangadi)'],['1567','Capital to Penukonda'],['c. 1646','End of dynasty']],
+writings:[['Amuktamalyada','Krishnadevaraya','Telugu; statecraft'],['Jambavati Kalyanam','Krishnadevaraya','Sanskrit play'],['Manucharitra','Allasani Peddana','Prabandha'],['Panduranga Mahatmyam','Tenali Ramakrishna',''],['Vasucharitra','Ramaraja Bhushana',''],['Parijatapaharanam','Nandi Thimmana',''],['Madhura Vijayam','Gangadevi','Kumara Kampana’s conquest of Madurai'],['Accounts','Paes, Nuniz, Abdur Razzaq','Capital and court']],
+extra:['Ashtadiggajas (eight poets) are traditionally Peddana, Nandi Thimmana, Dhurjati, Madayyagari Mallana, Ayyalaraju Ramabhadrudu, Pingali Surana, Ramaraja Bhushana, Tenali Ramakrishna.','Krishnadevaraya’s minister Timmarusu (Appaji) is famous in tradition.','Lepakshi Veerabhadra temple was built by the brothers Virupanna and Viranna (Achyuta’s time).','Revenue terms: amaram (nayaka land), bhandaravada (crown land), manya (tax-free).']});
+
+TL('ap-qutb',{
+rulers:[['1518–1543','Sultan Quli','Founder'],['1543–1550','Jamshid',''],['1550–1580','Ibrahim Qutb Shah','Malki Bharama'],['1580–1612','Muhammad Quli Qutb Shah','Hyderabad 1591'],['1612–1626','Sultan Muhammad Qutb Shah','Mecca Masjid begun'],['1626–1672','Abdullah Qutb Shah','Mughal overlordship 1636'],['1672–1687','Abul Hasan Tana Shah','Last']],
+around:[['Vijayanagara','South','till 1565'],['Bijapur, Ahmadnagar, Bidar, Berar','Deccan','Fellow Sultanates'],['Mughals (Akbar–Aurangzeb)','North','Conquerors'],['Marathas (Shivaji)','Deccan','Ally of Tana Shah'],['Dutch, English, French','Masulipatnam','Traders']],
+friends:[['Shivaji','Tana Shah’s ally (1677 meeting at Golconda)'],['Dutch and English','Trade (Golden Farman 1632)'],['Madanna and Akkanna','Ministers of Tana Shah']],
+foes:[['Vijayanagara','Talikota 1565'],['Mughals','1636 treaty; 1687 conquest'],['Gajapatis','Early wars for coastal Andhra']],
+events:[['1518','Independence'],['1565','Talikota'],['1591','Hyderabad, Charminar'],['1632','Golden Farman to English'],['1636','Treaty with Shah Jahan'],['1656','Aurangzeb’s first attack'],['1687','Golconda falls']],
+writings:[['Kulliyat (Deccani Urdu poems)','Muhammad Quli Qutb Shah','First Urdu diwan'],['Tapati Samvaranam','Addanki Gangadhara','Telugu (Ibrahim’s court)'],['Yayati Charitra','Ponnaganti Telaganarya','Pure Telugu (achcha Telugu)'],['Dasarathi Satakam, kirtanas','Bhakta Ramadasu','Devotional'],['Tarikh-i-Qutb Shahi','—','Court history']],
+extra:['Mecca Masjid and Qutb Shahi tombs are major Hyderabad monuments.','Bhakta Ramadasu was jailed at Golconda for using revenue to build Bhadrachalam temple (tradition).','Masulipatnam’s chintz was a major export under the Qutb Shahis.']});
+
+TL('ap-asaf',{
+rulers:[['1724–1748','Nizam-ul-Mulk (Asaf Jah I)','Founder'],['1748–1751','Nasir Jung, Muzaffar Jung','Succession war'],['1751–1762','Salabat Jung','Circars to French'],['1762–1803','Nizam Ali Khan (Asaf Jah II)','Subsidiary, Ceded Districts'],['1803–1829','Sikandar Jah',''],['1829–1857','Nasir-ud-Daulah',''],['1857–1869','Afzal-ud-Daulah','Salar Jung I'],['1869–1911','Mir Mahbub Ali Khan',''],['1911–1948','Mir Osman Ali Khan','Last']],
+around:[['Marathas','Deccan','Rivals (Palkhed 1728, Kharda 1795)'],['Mysore (Haidar, Tipu)','South','Rivals'],['French (Bussy), English','Coasts','Kingmakers'],['British India','—','Paramount power']],
+friends:[['French (1750s)','Bussy supported Salabat Jung'],['English (from 1766)','Treaties; Subsidiary Alliance 1798'],['British against Tipu','1790, 1799 wars']],
+foes:[['Marathas','Palkhed 1728; Kharda 1795 (Nizam defeated)'],['Tipu Sultan','Anglo-Mysore wars']],
+events:[['1724','Battle of Shakar Kheda; Hyderabad founded'],['1753','Circars to French'],['1765–68','Circars to British'],['1795','Battle of Kharda'],['1798','Subsidiary Alliance'],['1800','Ceded Districts'],['1853','Berar assigned to British'],['1918','Osmania University'],['1948','Operation Polo']],
+writings:[['Gulzar-i-Asafiya','—','Court history'],['Telugu revival (Andhra Jana Sangham, libraries)','Suravaram Pratap Reddy and others','20th c. Telangana']],
+extra:['Salar Jung I (prime minister 1853–83) modernised administration and revenue.','Berar was assigned to the British in 1853 to pay for the Hyderabad Contingent.','Salar Jung Museum (Hyderabad) holds Salar Jung III’s collection.']});
+
+TL('ap-british',{
+rulers:[['1611','English at Masulipatnam','Factory'],['1757','Battle of Bobbili','Bussy and Vizianagaram vs Bobbili'],['1765–68','Northern Circars to British',''],['1800','Ceded Districts','Munro collector 1800–07'],['1802','Permanent Settlement in Circars',''],['1846–47','Uyyalawada Narasimha Reddy','Revolt'],['1852–55','Arthur Cotton','Anicuts']],
+around:[['Nizam (Asaf Jahis)','Hyderabad','Ruled Telangana'],['Madras Presidency governors','Madras','Ruled Andhra districts']],
+friends:[['Zamindars (Vizianagaram)','Allied with French, later British'],['Missionaries','Schools (e.g. Noble College, Machilipatnam 1843)']],
+foes:[['Bobbili (Ranga Rao)','Destroyed 1757'],['Polygars, Uyyalawada','Revolts'],['Rampa hill people','1879 revolt']],
+events:[['1611','Masulipatnam factory'],['1757','Bobbili'],['1766','Circars treaty'],['1800','Ceded Districts'],['1832–33','Guntur famine'],['1846','Uyyalawada revolt'],['1852','Dowleswaram anicut'],['1855','Krishna anicut'],['1876–78','Great famine'],['1879','Rampa revolt']],
+writings:[['Telugu dictionary, Vemana translations','C.P. Brown','Scholarship'],['Report on the Ceded Districts','Thomas Munro','Ryotwari'],['Bobbili Yuddha Katha','Folk ballad','Burrakatha theme']],
+extra:['Munro is remembered in Rayalaseema; Munro statue at Madras and memorial at Pathikonda (Kurnool), where he died in 1827.','Bobbili war: Tandra Paparayudu killed Vizianagaram ruler Vijayarama Raju in revenge.','Noble College, Machilipatnam (1843) is among Andhra’s oldest colleges.']});
+
+TL('ap-reform',{
+rulers:[['1848–1919','Kandukuri Veeresalingam','Rajahmundry'],['1862–1915','Gurajada Apparao','Vizianagaram'],['1863–1940','Gidugu Ramamurthy','Parlakimidi'],['1862–1939','Raghupati Venkataratnam Naidu','Brahmo'],['1877–1923','Komarraju Lakshmana Rao','Vignana Chandrika'],['1909–1981','Durgabai Deshmukh','Women']],
+around:[['Vidyasagar, Ram Mohan Roy','Bengal','Inspiration'],['Madras Presidency government','Madras','Social laws']],
+friends:[['Vizianagaram Maharaja (Ananda Gajapati)','Patron of Gurajada'],['Brahmo Samaj','Ideals']],
+foes:[['Orthodox leaders','Opposed widow remarriage'],['Kokkonda Venkataratnam (grandhika supporters)','Opposed spoken Telugu']],
+events:[['1874','Viveka Vardhini'],['1878','Rajasekhara Charitra'],['11 Dec 1881','First widow remarriage'],['1892','Kanyasulkam staged'],['1906','Vignana Chandrika Mandali'],['1937','Andhra Mahila Sabha']],
+writings:[['Rajasekhara Charitra','Veeresalingam','Novel'],['Kanyasulkam, Mutyala Saralu','Gurajada','Play, poems'],['Malapalli','Unnava Lakshminarayana','Novel'],['Gabbilam','Gurram Jashuva','Poem against caste'],['Andhrula Charitra','Chilukuri Veerabhadra Rao','History'],['Hindu Mahayugam','Komarraju Lakshmana Rao','History']],
+extra:['Chilakamarthi Lakshmi Narasimham wrote Ganapati and Prahlada and is called Andhra Milton (blind poet).','Tripuraneni Ramaswamy Chowdary led rationalist and anti-caste writing (Kurukshetra Sangramam, Suta Puranam).','Bhagya Reddy Varma led the Adi-Andhra (Dalit) movement in Hyderabad.']});
+
+TL('ap-national',{
+rulers:[['1907','Bipin Chandra Pal’s tour','Vandemataram'],['1910','Kopalle Hanumantha Rao','Andhra Jateeya Kalasala'],['1921','Duggirala Gopalakrishnayya','Chirala–Perala'],['1922–24','Alluri Sitarama Raju','Rampa'],['1928','Tanguturi Prakasam','Simon protest'],['1916','Pingali Venkayya','Flag designs']],
+around:[['Gandhi, Tilak','National leaders','Visited Andhra'],['Madras Presidency government','Madras','Repression']],
+friends:[['Konda Venkatappayya, Pattabhi Sitaramayya','Congress leaders'],['Annie Besant (Home Rule, Madras)','Home Rule League branches in Andhra']],
+foes:[['Rutherford (Godavari collector)','Repression of Rampa'],['Madras police','Simon protest firing']],
+events:[['1907','Kakinada, Rajahmundry incidents'],['1910','Machilipatnam national college'],['1921','Chirala–Perala; Gandhi in Andhra; AICC at Vijayawada (Bezawada)'],['1922','Palnadu satyagraha; Pedanandipadu'],['1922–24','Rampa'],['1928','Simon boycott'],['1930','Salt satyagraha'],['1942','Quit India']],
+writings:[['Andhra Patrika','Kasinathuni Nageswara Rao','Nationalist daily'],['Krishna Patrika','Mutnuri Krishna Rao','Machilipatnam'],['History of the Indian National Congress','Pattabhi Sitaramayya','']],
+extra:['The AICC met at Bezawada (Vijayawada) in March–April 1921, where Pingali Venkayya presented a flag design to Gandhi.','Ayyadevara Kaleswara Rao and Gadicherla Harisarvottama Rao were other Andhra leaders.','Rampa police stations raided: Chintapalli, Krishnadevipeta, Rajavommangi (1922).']});
+
+TL('ap-andhra',{
+rulers:[['1913','Andhra Mahasabha (Bapatla)','B.N. Sarma presided (first)'],['1918','Andhra PCC','Congress'],['1937','Sri Bagh Pact','Kasinathuni Nageswara Rao’s house'],['1952','Potti Sriramulu','Fast'],['1953','Tanguturi Prakasam','First CM, Andhra State']],
+around:[['Madras government (Rajaji, 1952–54)','Madras','Opposed Madras city for Andhra'],['Union government (Nehru)','Delhi','Announced Andhra State']],
+friends:[['Andhra Mahasabha leaders (Konda Venkatappayya, Pattabhi)','Movement'],['Rayalaseema leaders (Kadapa Koti Reddy)','Sri Bagh Pact']],
+foes:[['Tamil leaders on Madras city','Dispute over capital'],['Union hesitation (JVP 1948)','Delayed state']],
+events:[['1913','Bapatla conference'],['1918','Andhra PCC'],['1926','Andhra University (Waltair)'],['1937','Sri Bagh Pact'],['1948','Dhar Commission; JVP Committee'],['19 Oct 1952','Fast begins'],['15 Dec 1952','Sriramulu dies'],['19 Dec 1952','Nehru announces Andhra State'],['1 Oct 1953','Andhra State']],
+writings:[['Andhra Patrika','Kasinathuni Nageswara Rao','Movement voice'],['Ma Telugu Talliki','Sankarambadi Sundarachari','State song']],
+extra:['Andhra State: capital Kurnool, High Court at Guntur, Governor C.M. Trivedi, CM Tanguturi Prakasam.','Potti Sriramulu fasted for 58 days at Madras.','Nellore district was renamed Sri Potti Sriramulu Nellore district (2008).']});
+
+TL('ap-hyd',{
+rulers:[['1911–1948','Mir Osman Ali Khan','Nizam'],['1946–1951','Telangana Armed Struggle leaders (Ravi Narayana Reddy, Puchalapalli Sundarayya, Chakali Ilamma)','Andhra Mahasabha, CPI'],['1938','Swami Ramananda Tirtha','State Congress'],['1948','Qasim Razvi','Razakars'],['1948–49','Major General J.N. Chaudhuri','Military Governor'],['1952–1956','Burgula Ramakrishna Rao','First elected CM']],
+around:[['Indian Union (Patel, V.P. Menon)','Delhi','Integration'],['Pakistan','—','Nizam sought support']],
+friends:[['Standstill Agreement (Nov 1947)','India–Nizam'],['Arya Samaj, State Congress','Opposed Nizam rule']],
+foes:[['Razakars','Violence'],['Deshmukhs, jagirdars','Feudal oppression'],['Nizam’s army','Operation Polo']],
+events:[['1921','Andhra Jana Sangham'],['1930','Andhra Mahasabha, Jogipet'],['1938','State Congress'],['1946','Armed struggle (Doddi Komarayya’s death, Kadavendi)'],['Nov 1947','Standstill Agreement'],['13–17 Sep 1948','Operation Polo'],['1951','Struggle withdrawn'],['1952','Elections']],
+writings:[['Golconda Patrika','Suravaram Pratap Reddy','Telugu journal'],['Andhrula Sanghika Charitra','Suravaram Pratap Reddy','Social history'],['Telangana People’s Struggle and Its Lessons','P. Sundarayya','History'],['Maa Bhoomi','Play','Inspired peasants']],
+extra:['Doddi Komarayya’s death (4 July 1946) sparked the armed struggle.','Chakali Ilamma resisted the landlord Visnoor Deshmukh.','Bhoodan movement began at Pochampally (18 April 1951) when Vinoba Bhave received land from V. Ramachandra Reddy.']});
+
+TL('ap-1956',{
+rulers:[['1953–1955','Fazl Ali, K.M. Panikkar, H.N. Kunzru','SRC'],['1956','Neelam Sanjiva Reddy','First CM of AP'],['1956','Burgula Ramakrishna Rao','Hyderabad CM; became Governor of Kerala'],['1956','C.M. Trivedi','First Governor of AP']],
+around:[['Union government (Nehru, Pant)','Delhi','States Reorganisation Act'],['Bombay, Mysore states','Neighbours','Received parts of Hyderabad State']],
+friends:[['Vishalandhra supporters (incl. Communists)','United Telugu state'],['Gentlemen’s Agreement signatories','Bezawada Gopala Reddy, Sanjiva Reddy, Burgula, K.V. Ranga Reddy, Marri Chenna Reddy']],
+foes:[['Separate Telangana supporters (1955–56)','Feared domination']],
+events:[['1953','SRC appointed'],['1955','SRC report'],['20 Feb 1956','Gentlemen’s Agreement'],['1 Nov 1956','Andhra Pradesh formed'],['1958','Regional Committee constituted']],
+writings:[['SRC Report (para 386)','Fazl Ali Commission','Discussed Telangana']],
+extra:['Marathi areas of Hyderabad State went to Bombay State and Kannada areas to Mysore State.','Sanjiva Reddy later became President of India (1977).']});
+
+TL('ap-after',{
+rulers:[['1962–1964','Neelam Sanjiva Reddy (2nd term)',''],['1964–1971','Kasu Brahmananda Reddy','1969 agitation'],['1971–1973','P.V. Narasimha Rao','Land reforms; Jai Andhra'],['1983–89, 1994–95','N.T. Rama Rao','TDP'],['1995–2004','N. Chandrababu Naidu','IT growth'],['2004–2009','Y.S. Rajasekhara Reddy','Welfare, irrigation']],
+around:[['Indira Gandhi','PM','Six-Point Formula'],['Supreme Court','Delhi','Mulki rules case 1972']],
+friends:[['Telangana Praja Samithi (merged with Congress 1971)','—']],
+foes:[['Telangana Praja Samithi vs state government','1969'],['Jai Andhra leaders vs Mulki rules','1972']],
+events:[['1969','Telangana agitation'],['Oct 1972','Mulki rules upheld'],['1972–73','Jai Andhra'],['Jan 1973','President’s Rule'],['1973','Six-Point Formula; 371D'],['1975','Presidential Order on local cadres'],['1982','TDP founded'],['1983','NTR CM']],
+writings:[['Six-Point Formula document','Union government',''],['Presidential Order 1975','—','Zonal system']],
+extra:['Kasu Brahmananda Reddy was CM during 1969.','P.V. Narasimha Rao introduced land ceiling legislation (1972) before resigning.','NTR’s Telugu Desam stressed “Telugu atma gauravam” (Telugu self-respect).']});
+
+TL('ap-2014',{
+rulers:[['2001','K. Chandrashekar Rao','TRS founded'],['2009–2010','K. Rosaiah','CM'],['2010–2014','N. Kiran Kumar Reddy','Last CM of united AP'],['2014','K. Chandrashekar Rao','First CM of Telangana'],['2014','N. Chandrababu Naidu','CM of residual AP']],
+around:[['UPA government (Manmohan Singh)','Delhi','Passed Act'],['Srikrishna Committee','—','Report 2010']],
+friends:[['Telangana JAC (Prof. M. Kodandaram)','Joint Action Committee']],
+foes:[['Samaikyandhra movement','Opposed division (2013)']],
+events:[['2001','TRS formed'],['Nov–Dec 2009','KCR’s fast; Centre’s 9 Dec announcement'],['Dec 2010','Srikrishna report'],['2011','Sakala Janula Samme (general strike)'],['July 2013','UPA decision'],['Feb 2014','Act passed'],['2 June 2014','Telangana formed'],['2015','Amaravati foundation']],
+writings:[['AP Reorganisation Act, 2014','Parliament',''],['Srikrishna Committee Report','—','Six options']],
+extra:['The Act’s 13th Schedule lists institutions promised to residual AP (IIT, IIM, AIIMS, NIT, central university, tribal university).','Hyderabad’s common-capital period ended on 2 June 2024.','Polavaram on the Godavari is the main national project for AP.']});
+
+TL('ap-culture',{
+rulers:[['11th c.','Rajaraja Narendra','Nannaya'],['13th c.','Manumasiddhi (Nellore)','Tikkana'],['14th c.','Prolaya Vema Reddi','Errana'],['15th c.','Pedakomati Vema Reddi; Velamas','Srinatha; Potana (tradition)'],['16th c.','Krishnadevaraya','Ashtadiggajas'],['17th c.','Thanjavur and Madurai Nayakas','Telugu southern school'],['19th–20th c.','Renaissance writers','Modern literature']],
+around:[['Kannada (Pampa)','Karnataka','10th c.'],['Tamil (Kamban)','Tamil Nadu','12th c.']],
+friends:[['Royal patrons','Courts']],
+foes:[['Grandhika vs vyavaharika debate','Language style (20th c.)']],
+events:[['c. 1050','Nannaya'],['13th c.','Tikkana'],['14th c.','Errana'],['15th c.','Potana, Srinatha, Annamacharya'],['1509–29','Ashtadiggajas'],['1892','Kanyasulkam'],['1950','Maha Prasthanam (collection)'],['1970','First Telugu Jnanpith (Viswanatha)']],
+writings:[['Andhra Mahabharatam','Kavitrayam',''],['Andhra Mahabhagavatam','Potana',''],['Manucharitra','Peddana',''],['Vemana Padyalu','Vemana',''],['Kanyasulkam','Gurajada',''],['Ramayana Kalpavrukshamu','Viswanatha Satyanarayana','Jnanpith 1970'],['Maha Prasthanam','Sri Sri',''],['Vishwambhara','C. Narayana Reddy','Jnanpith 1988'],['Paakudu Raallu','Ravuri Bharadwaja','Jnanpith 2012']],
+extra:['Telugu Jnanpith winners: Viswanatha Satyanarayana (1970), C. Narayana Reddy (1988), Ravuri Bharadwaja (2012).','Molla wrote a Telugu Ramayana (16th c.); Tarigonda Vengamamba was a woman poet-saint.','Telugu was called “Italian of the East” by Niccolò de’ Conti (tradition).']});
+
+/* Life of the period: LF(id, [social, economic, political, agriculture, trade, income/revenue]) */
+const LIFE = {};
+function LF(id,a){LIFE[id]=a;}
+
+LF('prehistory',['Small bands of related families; roles by age and sex; burial of dead and rock art show beliefs.','Hunting, gathering, fishing; later herding and farming; tool-making from stone and bone.','No state; leadership by elders or band leaders.','From Neolithic (Mehrgarh c. 7000 BC): wheat, barley; later rice (Koldihwa); cattle, sheep, goats.','Exchange of stones, shells and beads between groups.','No taxes; food shared within the group.']);
+LF('chalco',['Village communities; signs of ranking (chief’s house at Inamgaon); burials under floors.','Farming and herding; copper smithing, pottery, bead-making.','Chiefdoms; no large states.','Wheat, barley, rice, lentils, cotton (Maharashtra); cattle.','Exchange with Harappan towns (Banas); copper from Rajasthan.','Possibly tribute to chiefs; stored grain in granaries.']);
+LF('indus',['Diverse urban society: traders, artisans, farmers, possibly priests; rich and poor houses; terracotta toys and ornaments.','Agriculture plus crafts (beads, seals, pottery, metal) and long-distance trade.','Some central authority (uniform weights, bricks, planning), but no palaces; nature of rule unclear.','Wheat, barley, peas, sesame, mustard, cotton (earliest); rice at Lothal; cattle, sheep; ploughed field at Kalibangan.','Inland (Khetri copper, Badakhshan lapis) and foreign (Mesopotamia/Meluhha; Dilmun, Magan); Lothal dockyard; standard weights.','Probably grain collected in granaries as tax or tribute.']);
+LF('vedic',['Early: tribal, largely equal, women in assemblies. Later: four varnas, ashramas, decline in women’s status, gotra.','Early: pastoral (cattle = wealth). Later: farming with iron, crafts, early towns.','Early: tribal chief (rajan), sabha, samiti, vidatha. Later: hereditary kings, rituals (rajasuya, ashvamedha), officials (ratnins).','Barley (yava) early; later rice (vrihi), wheat; iron ploughs; cattle.','Barter; cows as unit of value; nishka (gold ornament) as exchange.','Early: voluntary bali. Later: bali, bhaga, shulka become regular taxes collected by bhagadugha.']);
+LF('sixth',['Varna system with growing role of gahapatis (landowners) and setthis (merchants); untouchability appears; new religions open to all.','Second urbanisation; crafts, guilds (shreni); money economy.','16 Mahajanapadas: monarchies and gana-sanghas; Magadha’s rise; standing armies.','Iron ploughs, paddy transplantation, rain-fed fertile middle Ganga plain.','Punch-marked coins (about 550 types); trade routes (Uttarapatha, Dakshinapatha); river trade.','Land tax (bhaga, about one-sixth), tolls, taxes on crafts; collected by officials.']);
+LF('maurya',['Varna continues; Megasthenes mentions seven classes; slaves (dasa) used in farming; Dhamma promotes tolerance.','State-controlled economy: mines, forests, crafts, trade supervised by superintendents (adhyakshas).','Centralised monarchy; mantriparishad; provinces; espionage; standing army; Dhamma Mahamattas.','State farms (sita lands); irrigation (Sudarshana lake); shudra labour on new lands.','Punch-marked coins; Uttarapatha royal road; trade with Hellenistic world.','Bhaga (one-fourth to one-sixth of produce), bali, customs, mine and forest revenue; samaharta in charge.']);
+LF('postmaurya',['Foreigners absorbed as “fallen kshatriyas”; guilds powerful; Manusmriti sets social rules; Sangam society less rigid.','Booming crafts and trade; Roman gold; urban centres.','Many dynasties: Shungas, Indo-Greeks, Shakas, Kushanas, Satavahanas; feudatory titles grow.','Expansion in the Deccan and south; Sangam tinais (eco-zones); paddy in river valleys.','Silk Route via Kushanas; Indo-Roman sea trade (Periplus); ports Arikamedu, Muziris, Barygaza.','Land tax; customs and tolls on trade; first land grants with tax exemptions (Satavahanas).']);
+LF('gupta',['More castes; chandalas untouchable (Fa-Hien); slavery (Narada); women’s status declined; sati (Eran 510).','Agrarian; guilds; gold coins; decline of long-distance trade later.','Maharajadhiraja kings; less centralised; bhukti, vishaya; feudatories (samantas).','Expansion through land grants to brahmanas; irrigation; Amarakosha lists crops.','Silk and spices to Byzantium; decline after Roman trade ends and Hun invasions.','Bhaga (one-sixth), vishti (forced labour) begins; land grants reduce royal revenue.']);
+LF('postgupta',['Caste divisions increase; Buddhist decline begins; bhakti grows in the south.','Agrarian, with land grants; fewer towns.','Regional kingdoms; Harsha’s federation; Chalukya–Pallava rivalry.','Land grants extend farming in forests and the Deccan.','Reduced foreign trade; some trade with China and South-East Asia.','Hsuan Tsang: one-sixth land tax; officials paid with land.']);
+LF('earlymed',['Proliferation of castes; rise of Rajputs; temple as social centre; devadasis.','Agrarian, feudal tendencies; trade revives after 1000.','Decentralised states with samantas; Chola local self-government.','Tank irrigation in the south; land grants (brahmadeya, agrahara); new lands cleared.','Arab traders on west coast; Chola maritime trade; merchant guilds (Ayyavole 500, Manigramam).','Land revenue; Chola land surveys; temple endowments; tolls.']);
+LF('c13',['New ruling class (Turkish nobles, Chahalgani); ulema; Hindu chiefs (rais, ranas); slavery common.','Agrarian with growing towns; new crafts (paper, spinning wheel).','Centralised Sultanate; iqta system; army of cavalry; theory of kingship (Balban).','Canals (Firuz Shah); Muhammad bin Tughlaq’s agriculture department; peasants taxed heavily.','Markets regulated (Alauddin); tanka and jital coinage; trade with Central Asia.','Kharaj (1/6–1/3, Alauddin up to 1/2), jizya, zakat, khams (1/5 war booty).']);
+LF('c14',['Regional cultures; Sufi and Bhakti saints; nobles divided (Deccanis vs Afaqis).','Regional economies; Gujarat and Bengal trade; Deccan crafts.','Regional kingdoms; weak Sayyids and Lodis; Bahmani–Vijayanagara wars.','Fertile Raichur doab contested; tank irrigation in the south.','Gujarat ports (Cambay); horses imported via Goa; Portuguese arrive.','Land revenue; customs; tribute from feudatories.']);
+LF('mughal',['Composite culture; Rajput nobles; zamindars; caste continues; sulh-i-kul under Akbar.','Agriculture plus manufacture (karkhanas) and big trade; urban centres.','Centralised empire; mansabdari; subas; emperor as supreme.','Zabt system (Todar Mal); cash crops: indigo, cotton, sugarcane; new crops: tobacco, maize (from Americas).','Silver inflow from Europeans; exports of textiles; Surat, Masulipatnam ports.','Land revenue about one-third (zabt, batai); jizya (abolished by Akbar 1564, reimposed 1679); customs.']);
+LF('maratha',['Maratha warrior-peasants; Bhakti traditions; Sikh egalitarian community.','Agrarian; revenue from neighbours.','Chhatrapati and Ashtapradhan; later Peshwa-led confederacy; Sikh misls.','Land measured; ryotwari-like assessment; Sikh land to cultivators (Banda).','Konkan coast trade; navy protected shipping.','Land revenue; chauth (25%) and sardeshmukhi (10%) from other territories.']);
+LF('bhakti',['Challenge to caste and ritual; women and lower castes participate; Hindu–Muslim cultural meeting.','Saints often artisans (weavers, leatherworkers); langar and khanqah kitchens.','Saints mostly stayed away from politics (Chishtis refused state grants).','Rural audiences; songs tied to agrarian life.','Pilgrimage routes supported local trade.','Shrines and temples supported by donations, not taxes.']);
+LF('c18',['Regional elites; Mughal culture spreads to regional courts.','Regional growth; decline of Surat, Masulipatnam, Dhaka; rise of colonial ports.','Successor states, Marathas, Sikhs; European companies enter politics.','Generally stable until Bengal famine 1770 (NIOS).','Coastal trade shifts to Bombay, Madras, Calcutta; English duty-free trade (1717).','Revenue farming (ijara) in Bengal, Awadh; chauth by Marathas.']);
+LF('europeans',['Small European settlements; missionaries.','Trade-driven: spices, textiles, indigo, saltpetre; silver imports.','Companies had forts and armies; sided with local rulers.','Indian peasants produced export crops (indigo, cotton, pepper).','Factories at Surat, Masulipatnam, Madras, Bombay, Calcutta; sea trade.','Companies paid customs to Indian rulers; English duty-free in Bengal (1717).']);
+LF('britraj',['Old ruling families displaced; new British elite.','Plunder of Bengal; drain begins.','Company becomes a territorial power; subsidiary alliances.','Revenue pressure on peasants; famine 1770.','Company monopoly of trade.','Diwani revenue of Bengal, Bihar and Orissa (from 1765).']);
+LF('consol',['Western education for a small elite; social reform laws.','Colonial economy; India as market and raw-material source.','Centralised Governor-General; civil service; courts; police.','Permanent, ryotwari, mahalwari settlements.','Free trade after 1813; railways from 1853.','Land revenue was the main income; salt and opium monopolies; customs.']);
+LF('econ',['Peasant debt; rise of moneylenders and zamindars; artisans ruined.','Deindustrialisation; commercialisation; drain of wealth.','Colonial state serves British interests.','Cash crops (indigo, cotton, jute, tea, opium); famines; little investment except canals.','Export of raw materials; import of British manufactures.','Land revenue, salt tax, opium revenue, customs; home charges paid to Britain.']);
+LF('reform',['Campaigns against sati, child marriage, caste; women’s education; new middle class.','Professional middle class (lawyers, teachers, clerks) grows.','British laws on social issues (1829, 1856, 1891).','Rural society slower to change.','Printing and publishing as new trades.','Not applicable (social movement); funded by donations and subscriptions.']);
+LF('revolts',['Peasants, tribals, artisans unite against outsiders.','Exploitation by planters, moneylenders and revenue farmers.','Local, scattered resistance against Company rule.','Forest laws restrict shifting cultivation; forced indigo cultivation.','Penetration of traders into tribal areas.','High land revenue; forced labour (begar).']);
+LF('r1857',['Sepoys, peasants, princes, zamindars, artisans join; Hindu–Muslim unity.','Ruined artisans and indebted peasants.','Annexations anger rulers; rebels proclaim Bahadur Shah.','Revenue settlements and land auctions anger peasants (Awadh taluqdars).','Disruption of trade during revolt.','After 1858, Crown takes over finances; heavy cost of suppression charged to India.']);
+LF('nm1',['Educated middle class leads; social reform and religious revival shape nationalism.','Drain theory; swadeshi industries.','INC; moderates and extremists; separate electorates (1909).','Famines (1896–1900) intensify anger.','Swadeshi and boycott of British goods.','Nationalists demand lower land revenue and military spending.']);
+LF('nm2',['Mass participation: peasants, workers, women; untouchability campaigns.','Khadi, village industries; Indian capitalists support Congress.','Mass movements; 1919 and 1935 Acts; provincial autonomy (1937).','Peasant movements (Kheda, Bardoli); Kisan Sabhas.','Boycott of foreign cloth; salt monopoly challenged.','No-tax campaigns; salt tax protest (1930).']);
+LF('facts',['Rise of reading public through newspapers.','Press as an industry.','Viceroys and Acts shape governance.','—','Newspapers carried trade news.','Press laws imposed securities and fines.']);
+LF('postind',['Constitution abolishes untouchability; reservations; land reforms.','Mixed economy; Five Year Plans; 1991 liberalisation.','Parliamentary democracy; federalism; linguistic states.','Land reforms; Green Revolution (1960s).','Import substitution, later globalisation.','Taxes under the Constitution; planning and public sector.']);
+LF('caves',['Art reflects religious life and patronage; artisans’ guilds.','Temples as economic centres (land, employment).','Royal patronage shows power and legitimacy.','Temple lands and tanks supported agriculture.','Merchants funded stupas; trade spread art styles.','Temples received land grants and donations.']);
+LF('music',['Music in temples, courts and Sufi shrines; hereditary musician families.','Patronage economy; later concerts and radio.','Royal courts as patrons.','Folk songs tied to farming seasons.','Instrument-making crafts (Bobbili veena).','Court grants, temple endowments.']);
+LF('dance',['Devadasis, hereditary dancers; later middle-class revival.','Patronage and performance economy.','Royal and temple patronage.','Folk dances at harvest (Kolatam at Sankranti).','Costume and jewellery crafts.','Temple endowments; modern state academies.']);
+LF('crafts',['Hereditary artisan castes; women in weaving and embroidery.','Crafts as a major livelihood; decline under colonialism; revival now.','Royal karkhanas; modern handicraft boards.','Raw materials from farms: cotton, natural dyes.','Export of textiles historically; GI-tagged products today.','Taxes on crafts historically; export earnings today.']);
+LF('theatre',['Folk theatre unites village audiences; satire on social evils.','Travelling troupes depend on patrons and audiences.','Used in national movement; censored by British (1876 Act).','Performed after harvest and at festivals.','Fairs and festivals.','Patronage, ticket income.']);
+LF('puppet',['Folk performers, often hereditary families.','Livelihood from shows and crafts.','—','Performances in villages after harvest.','Puppet crafts sold (Nimmalakunta).','Village patronage; government grants.']);
+LF('martial',['Warrior communities; discipline and ritual.','Training centres (kalari, akhara).','Rulers needed trained fighters; colonial bans.','—','—','Royal support historically; sports funding today.']);
+LF('unesco',['Heritage builds identity and pride.','Tourism and jobs.','Centre–state coordination; ASI.','Heritage landscapes include tanks (Ramappa).','Tourism trade; GI products.','Tourism revenue; conservation funds.']);
+LF('lang',['Language as identity; literacy spreads with print.','Publishing industry.','Linguistic states (1953, 1956); Eighth Schedule.','—','—','Grants for classical languages.']);
+LF('philo',['Debates on caste, ritual and liberation; monasteries as centres.','Monasteries supported by donations.','Kings patronised debates.','—','—','Donations and land grants to mathas and viharas.']);
+LF('scitech',['Knowledge often held by elite groups; artisans had practical skills.','Metallurgy, textiles, shipbuilding.','Royal patronage (Guptas, Jai Singh).','Astronomy for calendars and farming seasons.','Indian numerals and steel spread abroad.','Patronage grants.']);
+LF('fest',['Festivals unite communities across castes and faiths.','Boost to local economy: crafts, food, clothes.','Used for nationalism (Ganapati 1893); state festivals today.','Harvest festivals mark agricultural cycle.','Fairs (jataras, melas) are trade events.','Spending supports artisans and traders.']);
+LF('coins',['Coins show kings’ images and religion.','Shows level of money economy and trade.','Minting as royal right and propaganda.','—','Coins needed for trade; Roman coins show foreign trade.','Taxes collected in coin (from Sultanate period more widely).']);
+LF('travellers',['Travellers describe customs, caste, women and festivals.','Describe markets, crafts, prices.','Describe courts and administration.','Describe crops and fertility (Paes on Vijayanagara).','Describe ports and goods (Marco Polo, Tavernier).','Describe taxes (Hsuan Tsang’s one-sixth).']);
+
+/* Andhra Pradesh */
+LF('ap-geo',['Diverse communities in coast, Rayalaseema, Telangana.','Delta farming, coastal trade, forest produce.','Regions shaped by rivers and hills.','Krishna–Godavari rice; dry crops in Rayalaseema.','Ports: Ghantasala, Motupalli, Masulipatnam.','Land revenue from fertile deltas.']);
+LF('ap-pre',['Hunting bands to farming villages to Megalithic chiefdoms.','Stone tools to iron tools.','Chiefdoms in Megalithic times.','Neolithic millets and pulses; cattle.','Exchange of stones and goods.','—']);
+LF('ap-sata',['Varna society; metronymics show mothers’ prestige; Buddhist and Vedic coexist.','Agriculture, guilds, crafts, coins.','Monarchy; aharas under amatyas; military feudatories.','Fertile Krishna–Godavari land; land grants open new farms.','Dakshinapatha; Roman trade; ship coins.','Land revenue; tax-free grants to brahmanas and monks.']);
+LF('ap-ikshvaku',['Royal women patrons; monks from Sri Lanka.','Agriculture and trade support monasteries.','Monarchy at Vijayapuri.','Krishna valley farming.','River and coastal trade.','Land revenue; donations to Buddhism.']);
+LF('ap-postik',['Shift towards Vedic and Puranic religion; brahmana settlements.','Agrarian; land grants.','Small kingdoms, then Vishnukundin unity.','Land grants extend farming.','Coastal trade continues.','Land revenue; agrahara grants tax-free.']);
+LF('ap-chalukya',['Brahmana settlements, Shaiva temples; Telugu literary culture.','Agrarian with temple economy.','Monarchy at Vengi; feudatories; Chola alliance.','Delta rice; land grants.','Ports on the coast; Chola trade networks.','Land revenue; temple endowments.']);
+LF('ap-kakatiya',['Shaiva sects; rise of warrior-peasant castes (Reddis, Velamas, Kammas); Rudramadevi as ruler.','Agrarian expansion through tanks; crafts (textiles, carpets).','Nayankara system; king with nayakas; feudatories.','Thousands of tanks (Ramappa, Pakhal); new villages.','Motupalli port; fair duties for foreign traders.','Land revenue (about one-sixth or more); customs at Motupalli.']);
+LF('ap-reddi',['Telugu chiefs; courts patronise poets and dance.','Agrarian; coastal trade.','Small kingdoms in constant war.','Coastal and delta farming.','Motupalli and other ports.','Land revenue; customs.']);
+LF('ap-vijay',['Temple-centred society; nayakas; brahmanas; devadasis; mixed army.','Prosperous agriculture, crafts, trade; bankers (mahajans).','Nayankara and ayagar systems; king with amaranayakas.','Tanks and canals (Tungabhadra); bhandaravada, amaram, manya lands.','Horse imports from Portuguese; textiles, spices exported; Hampi markets.','Land revenue (about one-sixth to one-third); customs; tributes from nayakas.']);
+LF('ap-qutb',['Composite Telugu–Persian culture; Hindu ministers (Madanna, Akkanna).','Diamonds, textiles, agriculture.','Sultanate at Golconda; Mughal overlordship from 1636.','Delta farming; tanks.','Masulipatnam exports chintz; European traders.','Land revenue (revenue farming); customs; diamond mines.']);
+LF('ap-asaf',['Feudal aristocracy (jagirdars, deshmukhs) in Telangana; Urdu official language.','Agrarian; jagirdari.','Nizam as ruler under British paramountcy.','Telangana dry farming with tanks; vetti labour.','Hyderabad as trade centre.','Land revenue; jagir incomes; Berar assigned (1853).']);
+LF('ap-british',['Zamindars, ryots; English education creates middle class.','Commercial agriculture in deltas; decline of Masulipatnam textiles.','Madras Presidency rule.','Zamindari (Circars) and ryotwari (Ceded); anicuts transform deltas.','Exports of rice, cotton, tobacco; railways.','Land revenue main income; salt tax.']);
+LF('ap-reform',['Widow remarriage, women’s education, anti-caste movements.','Growth of professional middle class.','British laws support reform.','—','Printing presses, journals.','Funded by donations and subscriptions.']);
+LF('ap-national',['Students, peasants, tribals, women join.','Swadeshi; no-tax campaigns.','Congress organisation in Andhra; local leaders.','Peasant grievances (Pedanandipadu); forest laws (Palnadu, Rampa).','Boycott of foreign cloth.','No-tax campaigns challenge revenue collection.']);
+LF('ap-andhra',['Telugu identity; demand for equal opportunity.','Neglect of Andhra districts in Madras Presidency.','Constitutional demand, then mass agitation.','Rayalaseema irrigation fears (Sri Bagh).','—','Revenue sharing issues.']);
+LF('ap-hyd',['Feudal oppression; vetti; peasant awakening.','Landlord-dominated economy.','Nizam’s autocracy; armed struggle; integration.','Land redistribution by peasants; Bhoodan begins (1951).','—','Heavy rents and illegal levies on peasants.']);
+LF('ap-1956',['Telugu unity with regional fears.','Different development levels of regions.','Merger with safeguards.','Krishna and Godavari projects expected to benefit all.','—','Telangana surplus revenue to be spent locally.']);
+LF('ap-after',['Regional identities sharpen; jobs and education disputes.','Unequal development; Green Revolution in deltas.','Agitations; Six-Point Formula; 371D; TDP.','Land reforms (1972).','—','Regional sharing of revenue and posts.']);
+LF('ap-2014',['Two Telugu states; migration and jobs issues.','Residual AP loses Hyderabad’s revenue base.','AP Reorganisation Act; new capital.','Polavaram irrigation; delta farming.','Ports: Visakhapatnam, Krishnapatnam.','Revenue deficit; central assistance.']);
+LF('ap-culture',['Literature reflects society: courts, devotion, reform.','Patronage economy for poets and artists.','Royal patrons across dynasties.','—','—','Royal grants (agraharas) to poets.']);
+
 /* Question bank. Q(chapter, question, [correct, wrong, wrong, wrong], explanation). Options are shuffled in the app. */
 const BANK = [];
 function Q(ch,q,o,e){BANK.push([ch,q,o,e]);}
@@ -2437,7 +3070,7 @@ function renderChapter(id){
  const x = EXTRA[id] || {};
  const sec = (key, icon, en, te, body) => body ? '<div class="card" id="s-'+key+'"><h2>'+icon+' '+T(en,te)+'</h2>'+body+'</div>' : '';
  let h = '<div class="card"><span class="tag">'+esc(T(c.g.en,c.g.te))+'</span><h1>'+esc(c.en)+'</h1><div class="te-title">'+esc(c.te)+'</div>';
- const jumps = [['brief','📘 '+T('NIOS brief','NIOS సారాంశం')],['revise','🔗 '+T('Revision','పునశ్చరణ')],['map','🗺️ '+T('Map','పటం')],['figs','🖼️ '+T('Pictures','చిత్రాలు')],['mind','🧩 '+T('Mind map','మైండ్ మ్యాప్')],['table','📊 '+T('Table','పట్టిక')],['analysis','🧠 '+T('Analysis','విశ్లేషణ')],['qa','✍️ '+T('Mains Q&A','మెయిన్స్')]];
+ const jumps = [['brief','📘 '+T('NIOS brief','NIOS సారాంశం')],['revise','🔗 '+T('Revision','పునశ్చరణ')],['map','🗺️ '+T('Map','పటం')],['figs','🖼️ '+T('Pictures','చిత్రాలు')],['mind','🧩 '+T('Mind map','మైండ్ మ్యాప్')],['table','📊 '+T('Table','పట్టిక')],['tl','🕰️ '+T('Timeline','కాలక్రమం')],['life','🏛️ '+T('Life','జీవనం')],['extra','➕ '+T('Also important','ఇంకా ముఖ్యమైనవి')],['analysis','🧠 '+T('Analysis','విశ్లేషణ')],['qa','✍️ '+T('Mains Q&A','మెయిన్స్')]];
  h += '<div class="jumps">'+jumps.filter(j => j[0] !== 'figs' || (x.figs && x.figs.length)).map(j => '<button class="chip sm" data-jump="s-'+j[0]+'">'+j[1]+'</button>').join('')+'</div></div>';
  h += '<div class="card"><h2>'+T('Introduction','పరిచయం')+'</h2><p>'+esc(d.intro)+'</p></div>';
  h += '<div class="card"><h2>'+T('Key points','ముఖ్యాంశాలు')+'</h2><ul>'+d.points.map(p => '<li>'+esc(p)+'</li>').join('')+'</ul></div>';
@@ -2447,6 +3080,21 @@ function renderChapter(id){
  if(x.figs && x.figs.length) h += sec('figs','🖼️','Pictures and maps from the NIOS book','NIOS పుస్తకంలోని చిత్రాలు, పటాలు','<div class="gal">'+x.figs.map(f => '<figure data-zoom="img/'+f+'.jpg" data-cap="'+esc(FIG_CAP[f]||f)+'"><img loading="lazy" src="img/'+f+'.jpg" alt="'+esc(FIG_CAP[f]||f)+'"><figcaption>'+esc(FIG_CAP[f]||f)+'</figcaption></figure>').join('')+'</div><p class="muted small">'+T('Source: NIOS Senior Secondary History (311). Tap a picture to enlarge.','మూలం: NIOS సీనియర్ సెకండరీ చరిత్ర (311). పెద్దదిగా చూడటానికి నొక్కండి.')+'</p>');
  if(x.mind) h += sec('mind','🧩','Mind map','మైండ్ మ్యాప్', mindHTML(x.mind));
  if(x.table) h += sec('table','📊',x.table[0],x.table[0], '<table class="kt"><tr>'+x.table[1].map(t => '<th>'+esc(t)+'</th>').join('')+'</tr>'+x.table[2].map(r => '<tr>'+r.map((v,i) => '<td>'+(i?esc(v):'<b>'+esc(v)+'</b>')+'</td>').join('')+'</tr>').join('')+'</table>');
+ const tl = TLD[id];
+ if(tl){
+  let b = '<h3>'+T('Rulers in order','పాలకుల క్రమం')+'</h3><div class="tline">'+tl.rulers.map(r => '<div><span class="ty">'+esc(r[0])+'</span><b>'+esc(r[1])+'</b>'+(r[2]?'<span class="muted"> — '+esc(r[2])+'</span>':'')+'</div>').join('')+'</div>';
+  b += '<h3>'+T('Rulers around them (contemporaries)','సమకాలీన పాలకులు')+'</h3><table class="kt"><tr><th>'+T('Ruler / dynasty','పాలకుడు / వంశం')+'</th><th>'+T('Region','ప్రాంతం')+'</th><th>'+T('When','ఎప్పుడు')+'</th></tr>'+tl.around.map(r => '<tr><td><b>'+esc(r[0])+'</b></td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table>';
+  b += '<div class="ff"><div class="fr"><h3>🤝 '+T('Friends and allies','మిత్రులు')+'</h3><ul>'+tl.friends.map(r => '<li><b>'+esc(r[0])+'</b> — '+esc(r[1])+'</li>').join('')+'</ul></div><div class="fo"><h3>⚔️ '+T('Opponents','శత్రువులు')+'</h3><ul>'+tl.foes.map(r => '<li><b>'+esc(r[0])+'</b> — '+esc(r[1])+'</li>').join('')+'</ul></div></div>';
+  b += '<h3>'+T('Events in order','సంఘటనల క్రమం')+'</h3><div class="tl">'+tl.events.map(e => '<div><b>'+esc(e[0])+'</b> '+esc(e[1])+'</div>').join('')+'</div>';
+  b += '<h3>'+T('Writings of the period','ఆ కాలపు రచనలు')+'</h3><table class="kt"><tr><th>'+T('Work','రచన')+'</th><th>'+T('Author','రచయిత')+'</th><th>'+T('About','విషయం')+'</th></tr>'+tl.writings.map(r => '<tr><td><b>'+esc(r[0])+'</b></td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>').join('')+'</table>';
+  h += sec('tl','🕰️','Timeline and connections','కాలక్రమం, సంబంధాలు', b);
+ }
+ const lf = LIFE[id];
+ if(lf){
+  const lab = [['👥','Social','సామాజిక'],['💰','Economic','ఆర్థిక'],['👑','Political','రాజకీయ'],['🌾','Agriculture','వ్యవసాయం'],['🚢','Trade','వ్యాపారం'],['🪙','Income (revenue and taxes)','ఆదాయం (పన్నులు)']];
+  h += sec('life','🏛️','Life of the period','ఆ కాలపు జీవనం', '<div class="life">'+lab.map((l,i) => '<div class="lf"><b>'+l[0]+' '+T(l[1],l[2])+'</b><p>'+esc(lf[i])+'</p></div>').join('')+'</div>');
+ }
+ if(tl && tl.extra) h += sec('extra','➕','Also important (often asked)','ఇంకా ముఖ్యమైనవి (తరచుగా అడిగేవి)','<ul>'+tl.extra.map(e => '<li>'+esc(e)+'</li>').join('')+'</ul>');
  h += '<div class="card"><h2>'+T('Cause → Effect','కారణం → ఫలితం')+'</h2><p class="chain">'+esc(d.chain)+'</p></div>';
  h += '<div class="card"><h2>'+T('Memory hook','జ్ఞాపక సూత్రం')+'</h2><p class="hook">'+esc(d.hook)+'</p></div>';
  h += '<div class="card"><h2>'+T('Persons and places','వ్యక్తులు, ప్రదేశాలు')+'</h2><p><b>'+T('Persons','వ్యక్తులు')+':</b> '+esc(d.persons)+'</p><p><b>'+T('Places','ప్రదేశాలు')+':</b> '+esc(d.places)+'</p></div>';
@@ -2690,7 +3338,7 @@ function renderSearch(){
  crumb(T('Search','వెతుకు')+': '+q);
  if(q.length < 2) return view('<div class="card"><p class="muted">'+T('Type at least 2 letters.','కనీసం 2 అక్షరాలు టైప్ చేయండి.')+'</p></div>');
  const hits = [];
- CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const x = EXTRA[c.id] || {}; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook, x.brief||'', (x.revise||[]).join(' '), (x.analysis||[]).join(' '), (x.places||[]).map(p => p[0]).join(' ')].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
+ CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const x = EXTRA[c.id] || {}; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook, x.brief||'', (x.revise||[]).join(' '), (x.analysis||[]).join(' '), (x.places||[]).map(p => p[0]).join(' '), JSON.stringify(TLD[c.id]||''), (LIFE[c.id]||[]).join(' ')].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
  DYN_AP.concat(DYN_IN).forEach(d => { const k = d.kings.find(k => k.join(' ').toLowerCase().includes(q)); if(k || d.name.toLowerCase().includes(q)) hits.push('<button data-go="kings"><b>👑 '+esc(T(d.name,d.te))+'</b><br><span class="muted">'+esc(k ? k[0]+' — '+k[1]+' '+k[2] : d.years)+'</span></button>'); });
  view('<div class="card"><h1>'+hits.length+' '+T('results','ఫలితాలు')+'</h1><div class="list">'+hits.join('')+'</div></div>');
 }
