@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>House Expenses</title>
+<meta name="description" content="Keep every rupee of your house construction: materials, labour, shop balances and budget.">
+<meta name="theme-color" content="#7a3b12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="House Expenses">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#f6f1ea; --card:#fffdf9; --ink:#2a1d12; --mute:#7b6a5b; --line:#e6dccf;
+  --brick:#a8481c; --brick-d:#7a3b12; --ok:#1f7a4d; --warn:#b3261e; --gold:#c98a1b; --soft:#f3e6d8;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);
+  padding-bottom:calc(150px + env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
+header{background:linear-gradient(160deg,var(--brick-d),var(--brick));color:#fff;padding:16px 16px 54px;
+  background-image:linear-gradient(160deg,rgba(122,59,18,.96),rgba(168,72,28,.94)),
+  repeating-linear-gradient(0deg,transparent 0 22px,rgba(255,255,255,.5) 22px 24px),
+  repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.5) 46px 48px)}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:720px;margin:0 auto}
+h1{font-size:20px;margin:0;letter-spacing:.2px}
+h1 small{display:block;font-weight:500;font-size:12.5px;opacity:.85;margin-top:2px}
+.chip{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.14);color:#fff;border-radius:999px;
+  padding:7px 12px;font-size:12.5px;font-weight:600;white-space:nowrap;cursor:pointer}
+main{max-width:720px;margin:-40px auto 0;padding:0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;
+  box-shadow:0 2px 10px rgba(80,45,15,.06)}
+.big{font-size:30px;font-weight:800;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.lbl{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+.bar{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;margin:10px 0 8px}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .3s}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.trio div{background:var(--soft);border-radius:12px;padding:9px 8px}
+.trio b{display:block;font-size:15px;font-variant-numeric:tabular-nums;margin-top:2px}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tabs button{flex:1;border:1px solid var(--line);background:var(--card);color:var(--mute);padding:10px 6px;border-radius:12px;
+  font-weight:700;font-size:14px;cursor:pointer}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.filters{display:flex;gap:8px;margin-bottom:10px}
+input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;
+  padding:11px 12px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brick)}
+.day{font-size:12.5px;font-weight:800;color:var(--mute);margin:14px 4px 6px;display:flex;justify-content:space-between}
+.item{display:flex;gap:10px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:11px 12px;margin-bottom:7px;cursor:pointer}
+.ic{width:40px;height:40px;border-radius:11px;background:var(--soft);display:grid;place-items:center;font-size:20px;flex:none}
+.item .mid{flex:1;min-width:0}
+.item .nm{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .sub{font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .amt{font-weight:800;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.due{display:block;font-size:11.5px;color:var(--warn);font-weight:700}
+.empty{text-align:center;color:var(--mute);padding:34px 16px}
+.empty div{font-size:44px}
+.fab{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,var(--bg) 35%);z-index:5}
+.fab button{display:block;width:100%;max-width:696px;margin:0 auto}
+.btn{border:0;border-radius:14px;padding:15px 16px;font:inherit;font-weight:800;font-size:16.5px;cursor:pointer;
+  background:var(--brick);color:#fff;box-shadow:0 6px 16px rgba(168,72,28,.35)}
+.btn.sec{background:#fff;color:var(--ink);border:1.5px solid var(--line);box-shadow:none;font-size:15px;padding:12px 14px}
+.btn.del{background:#fff;color:var(--warn);border:1.5px solid #efc7c3;box-shadow:none;font-size:15px}
+.btn:disabled{opacity:.55}
+.sheet{position:fixed;inset:0;background:rgba(30,18,8,.5);z-index:20;display:none;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.panel{background:var(--card);width:100%;max-width:720px;max-height:94vh;overflow:auto;border-radius:20px 20px 0 0;
+  padding:16px 16px calc(18px + env(safe-area-inset-bottom))}
+.panel h2{margin:0 0 12px;font-size:18px;display:flex;justify-content:space-between;align-items:center}
+.x{border:0;background:var(--soft);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer}
+.f{margin-bottom:11px}
+.f label{display:block;font-size:12.5px;font-weight:700;color:var(--mute);margin-bottom:5px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1.1fr 1fr 1.1fr;gap:8px}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.cats button{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:8px 2px;font:inherit;font-size:11.5px;
+  font-weight:600;cursor:pointer;color:var(--ink);line-height:1.25}
+.cats button span{display:block;font-size:20px}
+.cats button.on{border-color:var(--brick);background:var(--soft);color:var(--brick-d)}
+.row{display:flex;gap:8px;margin-top:6px}
+.row .btn{flex:1}
+.srow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.srow:last-child{border-bottom:0}
+.srow .n{flex:1;min-width:0;font-weight:600;font-size:14.5px}
+.srow .n i{display:block;height:6px;border-radius:99px;background:var(--gold);margin-top:5px;min-width:3px}
+.srow b{font-variant-numeric:tabular-nums}
+.msg{font-size:13.5px;margin:8px 0;padding:9px 11px;border-radius:10px;background:var(--soft)}
+.msg.err{background:#fde8e6;color:var(--warn)}
+.msg.ok{background:#e3f3ea;color:var(--ok)}
+p.hint{font-size:13px;color:var(--mute);margin:6px 0 10px;line-height:1.45}
+h3{margin:0 0 8px;font-size:16px}
+footer{text-align:center;color:var(--mute);font-size:12px;margin:18px 0 6px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;
+  border-radius:99px;font-size:13.5px;font-weight:600;z-index:40;opacity:0;pointer-events:none;transition:opacity .25s;white-space:nowrap}
+.toast.on{opacity:1}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <h1>🏠 House Expenses<small>ఇంటి నిర్మాణ ఖర్చుల పుస్తకం</small></h1>
+    <button class="chip" id="syncChip" onclick="showTab('more')">☁️ Not saved online</button>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="lbl">Total spent · మొత్తం ఖర్చు</div>
+    <div class="big" id="tTotal">₹0</div>
+    <div class="bar"><i id="tBar" style="width:0%"></i></div>
+    <div class="lbl" id="tPct" style="text-transform:none;letter-spacing:0;font-weight:600">Set your budget in More</div>
+    <div class="trio">
+      <div><span class="lbl">Budget</span><b id="tBudget">₹0</b></div>
+      <div><span class="lbl">Remaining</span><b id="tLeft">₹0</b></div>
+      <div><span class="lbl">Due to shops</span><b id="tDue">₹0</b></div>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button id="tab-list" class="on" onclick="showTab('list')">Entries</button>
+    <button id="tab-sum" onclick="showTab('sum')">Summary</button>
+    <button id="tab-more" onclick="showTab('more')">More</button>
+  </div>
+
+  <section id="v-list">
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search material, shop…" oninput="renderList()">
+      <select id="fcat" onchange="renderList()" style="max-width:42%"></select>
+    </div>
+    <div id="list"></div>
+  </section>
+
+  <section id="v-sum" class="hide">
+    <div class="card"><h3>By category · వర్గాల వారీగా</h3><div id="sumCat"></div></div>
+    <div class="card"><h3>By stage · దశల వారీగా</h3><div id="sumStage"></div></div>
+    <div class="card"><h3>By month</h3><div id="sumMonth"></div></div>
+    <div class="card"><h3>Balance to pay · చెల్లించాల్సిన బాకీ</h3><div id="sumDue"></div></div>
+  </section>
+
+  <section id="v-more" class="hide">
+    <div class="card" id="cloudCard"></div>
+    <div class="card">
+      <h3>Budget · బడ్జెట్</h3>
+      <div class="row" style="margin-top:0">
+        <input id="budget" type="number" inputmode="numeric" placeholder="Total budget in ₹">
+        <button class="btn sec" style="flex:none" onclick="saveBudget()">Save</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Copies of your data</h3>
+      <p class="hint">Excel sheet for printing or sharing with family. Backup file keeps everything and can be restored on any phone.</p>
+      <div class="row">
+        <button class="btn sec" onclick="exportCSV()">⬇️ Excel (CSV)</button>
+        <button class="btn sec" onclick="exportBackup()">⬇️ Backup file</button>
+      </div>
+      <div class="row">
+        <button class="btn sec" onclick="document.getElementById('rfile').click()">⬆️ Restore from backup file</button>
+        <input id="rfile" type="file" accept="application/json,.json" class="hide" onchange="importBackup(this)">
+      </div>
+    </div>
+    <div class="card hide" id="installCard">
+      <h3>📲 Install app</h3>
+      <p class="hint" id="installHint">Add this app to your home screen so it opens like a normal app, even without internet.</p>
+      <button class="btn sec" id="installBtn" style="width:100%">Install on this phone</button>
+    </div>
+  </section>
+
+  <footer>Designed by Sivananda Pujari</footer>
+</main>
+
+<div class="fab"><button class="btn" onclick="openForm()">＋ Add Material · సామగ్రి చేర్చు</button></div>
+
+<div class="sheet" id="sheet">
+  <div class="panel">
+    <h2><span id="fTitle">Add material</span><button class="x" onclick="closeForm()">✕</button></h2>
+    <div class="f"><label>Category · వర్గం</label><div class="cats" id="fCats"></div></div>
+    <div class="f"><label>Material / work name · సామగ్రి పేరు</label>
+      <input id="fName" list="nameList" placeholder="e.g. Cement 53 grade" autocomplete="off"><datalist id="nameList"></datalist></div>
+    <div class="g3">
+      <div class="f"><label>Quantity</label><input id="fQty" type="number" inputmode="decimal" step="any" oninput="calcAmt()"></div>
+      <div class="f"><label>Unit</label><select id="fUnit"></select></div>
+      <div class="f"><label>Rate ₹</label><input id="fRate" type="number" inputmode="decimal" step="any" oninput="calcAmt()"></div>
+    </div>
+    <div class="g2">
+      <div class="f"><label>Total amount ₹ · మొత్తం</label><input id="fAmt" type="number" inputmode="decimal" step="any" oninput="amtTyped()"></div>
+      <div class="f"><label>Paid now ₹ · చెల్లించింది</label><input id="fPaid" type="number" inputmode="decimal" step="any" oninput="paidTouched=true"></div>
+    </div>
+    <div class="g2">
+      <div class="f"><label>Date · తేదీ</label><input id="fDate" type="date"></div>
+      <div class="f"><label>Stage · దశ</label><select id="fStage"></select></div>
+    </div>
+    <div class="f"><label>Shop / person · దుకాణం / వ్యక్తి</label>
+      <input id="fShop" list="shopList" placeholder="e.g. Sri Sai Traders" autocomplete="off"><datalist id="shopList"></datalist></div>
+    <div class="f"><label>Note (bill no., vehicle, etc.)</label><input id="fNote" placeholder="Optional"></div>
+    <div id="fErr" class="msg err hide"></div>
+    <div class="row">
+      <button class="btn del hide" id="fDel" style="flex:.6" onclick="delItem()">Delete</button>
+      <button class="btn" onclick="saveItem()">Save · సేవ్</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const API = "https://rdtnikmsxyejimvudzvc.supabase.co/rest/v1/rpc/";
+const KEY = "sb_publishable_Qy84k0vqQTGupexO6HHlQQ_cDqrgYc0";
+const LS = "houseExp.v1", LSA = "houseExp.acct";
+const CATS = [
+  ["Cement","🧱"],["Steel","🔩"],["Sand","⏳"],["Bricks","🟧"],["Jelly/Stone","🪨"],["Labour","👷"],["Wood/Doors","🚪"],["Electrical","💡"],
+  ["Plumbing","🚰"],["Flooring","◻️"],["Paint","🎨"],["Water","💧"],["Transport","🚚"],["Centring","🏗️"],["Fees/Plan","📄"],["Other","📦"]];
+const ICON = Object.fromEntries(CATS);
+const STAGES = ["Foundation","Pillars & Beams","Walls","Slab / Roof","Plastering","Electrical & Plumbing","Flooring","Doors & Windows","Painting","Finishing","General"];
+const UNITS = ["bags","kg","tons","nos","tractor loads","lorry loads","cft","sq ft","days","litres","feet","lump sum"];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rs = n => "₹" + Math.round(n || 0).toLocaleString("en-IN");
+const num = v => { const n = parseFloat(v); return isFinite(n) ? n : 0; };
+const today = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+
+let S = { budget: 0, bu: 0, items: [] };
+let acct = null, editId = null, selCat = "Cement", paidTouched = false, amtManual = false, syncing = false, pending = false, syncT = null;
+
+function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function fetchStore(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
+function load() {
+  const d = fetchStore(LS); if (d && Array.isArray(d.items)) S = d;
+  acct = fetchStore(LSA);
+}
+function persist(changed) { store(LS, S); if (changed !== false) { store(LS + ".dirty", 1); queueSync(); } }
+const live = () => S.items.filter(i => !i.del);
+
+/* ---------- screen ---------- */
+function showTab(t) {
+  for (const k of ["list", "sum", "more"]) { $("v-" + k).classList.toggle("hide", k !== t); $("tab-" + k).classList.toggle("on", k === t); }
+  if (t === "sum") renderSum(); if (t === "more") renderCloud();
+}
+function renderTop() {
+  const it = live(), total = it.reduce((a, i) => a + num(i.amount), 0), due = it.reduce((a, i) => a + Math.max(0, num(i.amount) - num(i.paid)), 0);
+  $("tTotal").textContent = rs(total); $("tBudget").textContent = S.budget ? rs(S.budget) : "—"; $("tDue").textContent = rs(due);
+  const left = S.budget - total; $("tLeft").textContent = S.budget ? rs(left) : "—"; $("tLeft").style.color = S.budget && left < 0 ? "var(--warn)" : "";
+  const pct = S.budget ? total / S.budget * 100 : 0;
+  $("tBar").style.width = Math.min(100, pct) + "%"; $("tBar").style.background = pct > 100 ? "var(--warn)" : pct > 85 ? "var(--gold)" : "var(--ok)";
+  $("tPct").textContent = S.budget ? (pct > 100 ? "Over budget by " + rs(-left) : Math.round(pct) + "% of budget used · " + it.length + " entries") : it.length + " entries · set your budget in More";
+}
+function renderList() {
+  const q = $("q").value.trim().toLowerCase(), fc = $("fcat").value;
+  let it = live().filter(i => (!fc || i.cat === fc) && (!q || [i.name, i.shop, i.note, i.cat, i.stage].join(" ").toLowerCase().includes(q)));
+  it.sort((a, b) => (b.date || "").localeCompare(a.date || "") || b.c - a.c);
+  if (!it.length) {
+    $("list").innerHTML = '<div class="empty"><div>🧱</div><p><b>' + (live().length ? "Nothing matches" : "No entries yet") + "</b><br>" +
+      (live().length ? "Try another word or category." : "Tap <b>＋ Add Material</b> below to write your first expense.") + "</p></div>"; return;
+  }
+  let h = "", day = null; const dayTot = {};
+  it.forEach(i => dayTot[i.date] = (dayTot[i.date] || 0) + num(i.amount));
+  for (const i of it) {
+    if (i.date !== day) { day = i.date; h += '<div class="day"><span>' + esc(fmtDate(day)) + "</span><span>" + rs(dayTot[day]) + "</span></div>"; }
+    const due = num(i.amount) - num(i.paid);
+    const sub = [i.qty ? (+i.qty) + " " + (i.unit || "") + (i.rate ? " × ₹" + (+i.rate).toLocaleString("en-IN") : "") : "", i.shop, i.stage !== "General" ? i.stage : ""].filter(Boolean).join(" · ");
+    h += '<div class="item" onclick="openForm(\'' + esc(i.id) + '\')"><div class="ic">' + (ICON[i.cat] || "📦") + '</div><div class="mid"><div class="nm">' + esc(i.name || i.cat) +
+      '</div><div class="sub">' + esc(sub || i.cat) + '</div></div><div class="amt">' + rs(i.amount) + (due > 0.5 ? '<span class="due">Due ' + rs(due) + "</span>" : "") + "</div></div>";
+  }
+  $("list").innerHTML = h;
+}
+function fmtDate(d) {
+  if (!d) return "No date"; const t = today(); if (d === t) return "Today";
+  const x = new Date(d + "T00:00:00"); return x.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+}
+function group(key, f) { const m = {}; for (const i of live()) { const k = key(i) || "—"; m[k] = (m[k] || 0) + f(i); } return Object.entries(m).filter(e => e[1] > 0.5).sort((a, b) => b[1] - a[1]); }
+function rows(list, icon) {
+  if (!list.length) return '<p class="hint">Nothing yet.</p>';
+  const max = Math.max(...list.map(e => e[1]));
+  return list.map(([k, v]) => '<div class="srow"><div class="n">' + (icon ? (ICON[k] || "") + " " : "") + esc(k) + '<i style="width:' + (v / max * 100) + '%"></i></div><b>' + rs(v) + "</b></div>").join("");
+}
+function renderSum() {
+  $("sumCat").innerHTML = rows(group(i => i.cat, i => num(i.amount)), true);
+  $("sumStage").innerHTML = rows(group(i => i.stage, i => num(i.amount)));
+  const m = group(i => (i.date || "").slice(0, 7), i => num(i.amount)).sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([k, v]) => [k.length === 7 ? new Date(k + "-01T00:00:00").toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : k, v]);
+  $("sumMonth").innerHTML = rows(m);
+  $("sumDue").innerHTML = rows(group(i => i.shop || "(no shop name)", i => Math.max(0, num(i.amount) - num(i.paid))));
+}
+function renderAll() { renderTop(); renderList(); if (!$("v-sum").classList.contains("hide")) renderSum(); fillLists(); }
+function fillLists() {
+  const u = f => [...new Set(live().map(f).filter(Boolean))].slice(0, 200).map(v => '<option value="' + esc(v) + '">').join("");
+  $("nameList").innerHTML = u(i => i.name); $("shopList").innerHTML = u(i => i.shop);
+}
+function toast(t) { const e = $("toast"); e.textContent = t; e.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove("on"), 2200); }
+
+/* ---------- add / edit ---------- */
+function drawCats() { $("fCats").innerHTML = CATS.map(([n, ic]) => '<button type="button" class="' + (n === selCat ? "on" : "") + '" onclick="pickCat(\'' + n + '\')"><span>' + ic + "</span>" + n + "</button>").join(""); }
+function pickCat(c) {
+  selCat = c; drawCats();
+  if (!editId && !$("fQty").value) $("fUnit").value = { Cement: "bags", Steel: "kg", Sand: "tractor loads", Bricks: "nos", "Jelly/Stone": "tractor loads", Labour: "days", Paint: "litres", Flooring: "sq ft", Water: "tractor loads" }[c] || "nos";
+}
+function openForm(id) {
+  editId = id || null; const i = id ? S.items.find(x => x.id === id) : null;
+  $("fTitle").textContent = i ? "Edit entry" : "Add material"; $("fDel").classList.toggle("hide", !i); $("fErr").classList.add("hide");
+  selCat = i ? i.cat : selCat; drawCats();
+  $("fName").value = i ? i.name : ""; $("fQty").value = i && i.qty ? i.qty : ""; $("fRate").value = i && i.rate ? i.rate : "";
+  $("fAmt").value = i ? i.amount : ""; $("fPaid").value = i ? i.paid : ""; $("fDate").value = i ? i.date : today();
+  $("fStage").value = i ? i.stage : (fetchStore(LS + ".stage") || "Foundation"); $("fShop").value = i ? i.shop : ""; $("fNote").value = i ? i.note : "";
+  if (i) $("fUnit").value = i.unit || "nos"; else pickCat(selCat);
+  paidTouched = !!i; amtManual = !!i && !(i.qty && i.rate);
+  $("sheet").classList.add("on"); document.querySelector(".panel").scrollTop = 0;
+}
+function closeForm() { $("sheet").classList.remove("on"); }
+function calcAmt() {
+  const q = num($("fQty").value), r = num($("fRate").value);
+  if (q && r) { $("fAmt").value = Math.round(q * r * 100) / 100; amtManual = false; if (!paidTouched) $("fPaid").value = $("fAmt").value; }
+}
+function amtTyped() { amtManual = true; if (!paidTouched) $("fPaid").value = $("fAmt").value; }
+function saveItem() {
+  const amount = num($("fAmt").value), err = $("fErr");
+  const fail = m => { err.textContent = m; err.classList.remove("hide"); };
+  if (amount <= 0) return fail("Enter the total amount (or quantity and rate).");
+  let paid = $("fPaid").value === "" ? amount : num($("fPaid").value);
+  if (paid < 0 || paid > amount) return fail("Paid amount must be between 0 and the total amount.");
+  const now = Date.now(), old = editId ? S.items.find(x => x.id === editId) : null;
+  const it = { id: old ? old.id : now.toString(36) + Math.random().toString(36).slice(2, 8), c: old ? old.c : now, u: now,
+    cat: selCat, name: $("fName").value.trim() || selCat, qty: num($("fQty").value), unit: $("fUnit").value, rate: num($("fRate").value),
+    amount, paid, date: $("fDate").value || today(), stage: $("fStage").value, shop: $("fShop").value.trim(), note: $("fNote").value.trim() };
+  if (old) S.items[S.items.indexOf(old)] = it; else S.items.push(it);
+  store(LS + ".stage", it.stage); persist(); renderAll(); closeForm(); toast(old ? "Entry updated" : "Saved ✓ " + rs(amount));
+}
+function delItem() {
+  const i = S.items.find(x => x.id === editId); if (!i) return;
+  if (!confirm("Delete this entry?\n" + i.name + " — " + rs(i.amount))) return;
+  S.items[S.items.indexOf(i)] = { id: i.id, c: i.c, u: Date.now(), del: 1 };   // kept as a marker so other phones delete it too
+  persist(); renderAll(); closeForm(); toast("Entry deleted");
+}
+function saveBudget() { S.budget = Math.max(0, num($("budget").value)); S.bu = Date.now(); persist(); renderAll(); toast("Budget saved"); }
+
+/* ---------- online save (same data on every phone) ---------- */
+async function rpc(fn, body) {
+  const r = await fetch(API + fn, { method: "POST", headers: { apikey: KEY, Authorization: "Bearer " + KEY, "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!r.ok) throw new Error("net"); return r.json();
+}
+function merge(a, b) {
+  const m = new Map();
+  for (const i of [...(a.items || []), ...(b.items || [])]) { const o = m.get(i.id); if (!o || (i.u || 0) > (o.u || 0)) m.set(i.id, i); }
+  const nb = (b.bu || 0) > (a.bu || 0) ? b : a;
+  return { budget: nb.budget || 0, bu: nb.bu || 0, items: [...m.values()] };
+}
+const sig = d => JSON.stringify([d.budget, d.bu, [...d.items].sort((x, y) => x.id < y.id ? -1 : 1).map(i => [i.id, i.u])]);
+function chip(t) { $("syncChip").textContent = t; }
+function queueSync() { if (!acct) return; chip("☁️ Saving…"); clearTimeout(syncT); syncT = setTimeout(sync, 1200); }
+async function sync() {
+  if (!acct) { chip("☁️ Not saved online"); return false; }
+  if (syncing) { pending = true; return false; }
+  syncing = true; chip("☁️ Saving…");
+  try {
+    const r = await rpc("house_sync", { p_phone: acct.phone, p_pass: acct.pass });
+    if (!r.ok) { if (r.error === "wrong_pass" || r.error === "no_account") { acct = null; localStorage.removeItem(LSA); renderCloud(); } chip("⚠️ Sign in again"); return false; }
+    const remote = r.data && Array.isArray(r.data.items) ? r.data : { items: [] };
+    const merged = merge(S, remote), changedHere = sig(merged) !== sig(S);
+    S = merged; store(LS, S);
+    if (sig(merged) !== sig(remote)) { const w = await rpc("house_sync", { p_phone: acct.phone, p_pass: acct.pass, p_data: S }); if (!w.ok) throw new Error(w.error); }
+    localStorage.removeItem(LS + ".dirty"); store(LS + ".synced", Date.now());
+    if (changedHere) renderAll();
+    chip("☁️ Saved online ✓"); return true;
+  } catch (e) { chip(navigator.onLine ? "⚠️ Not saved, will retry" : "📴 Offline, saved on phone"); return false; }
+  finally { syncing = false; if (pending) { pending = false; queueSync(); } if (!$("v-more").classList.contains("hide")) renderCloud(); }
+}
+function renderCloud() {
+  const c = $("cloudCard"); $("budget").value = S.budget || "";
+  if (acct) {
+    const t = fetchStore(LS + ".synced");
+    c.innerHTML = '<h3>☁️ Online save is ON</h3><p class="hint">Signed in with mobile number <b>' + esc(acct.phone) + "</b>. " +
+      (t ? "Last saved online: " + new Date(t).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) + "." : "") +
+      "<br>On a new phone, open this same link and sign in with this number and password. All entries will come back.</p>" +
+      '<div class="row"><button class="btn sec" onclick="sync().then(ok=>toast(ok?\'Saved online ✓\':\'Could not reach internet\'))">🔄 Save now</button><button class="btn sec" onclick="signOut()">Sign out</button></div>';
+  } else {
+    c.innerHTML = '<h3>☁️ Save online · ఆన్‌లైన్‌లో భద్రపరచు</h3><p class="hint">Right now entries are kept only in this phone. Sign in once and they are also saved online, so they come back when you change your mobile.</p>' +
+      '<div class="f"><label>Mobile number (10 digits)</label><input id="aPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="9XXXXXXXXX"></div>' +
+      '<div class="f"><label>Password (6 letters or more)</label><input id="aPass" type="password" placeholder="Choose and remember it"></div>' +
+      '<div id="aMsg" class="msg err hide"></div><div class="row"><button class="btn" id="aIn" onclick="signIn(false)">Sign in</button><button class="btn sec" id="aNew" onclick="signIn(true)">New account</button></div>' +
+      '<p class="hint" style="margin-top:10px">First time? Tap <b>New account</b>. Write the password down: it cannot be shown again.</p>';
+  }
+}
+async function signIn(isNew) {
+  const phone = $("aPhone").value.replace(/\D/g, ""), pass = $("aPass").value, msg = $("aMsg");
+  const say = t => { msg.textContent = t; msg.classList.remove("hide"); };
+  if (!/^\d{10}$/.test(phone)) return say("Enter your 10-digit mobile number.");
+  if (pass.length < 6) return say("Password must have at least 6 letters or numbers.");
+  $("aIn").disabled = $("aNew").disabled = true;
+  try {
+    if (isNew) {
+      const r = await rpc("house_signup", { p_phone: phone, p_pass: pass });
+      if (!r.ok) { $("aIn").disabled = $("aNew").disabled = false; return say(r.error === "exists" ? "This number already has an account. Tap Sign in." : "Could not create the account. Check the number and password."); }
+    }
+    const r = await rpc("house_sync", { p_phone: phone, p_pass: pass });
+    if (!r.ok) { $("aIn").disabled = $("aNew").disabled = false;
+      return say({ no_account: "No account for this number. Tap New account.", wrong_pass: "Wrong password. Try again.", locked: "Too many wrong tries. Wait 15 minutes and try again." }[r.error] || "Could not sign in."); }
+    acct = { phone, pass }; store(LSA, acct);
+    await sync(); renderAll(); renderCloud(); toast(isNew ? "Account created, online save is ON" : "Signed in, entries loaded");
+  } catch (e) { $("aIn").disabled = $("aNew").disabled = false; say("No internet. Connect and try again."); }
+}
+function signOut() {
+  if (!confirm("Sign out on this phone?\nYour entries stay saved online and on this phone.")) return;
+  acct = null; localStorage.removeItem(LSA); chip("☁️ Not saved online"); renderCloud();
+}
+
+/* ---------- copies ---------- */
+function download(name, text, type) {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+function exportCSV() {
+  const q = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+  const it = live().sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+  const lines = [["Date", "Category", "Material / work", "Quantity", "Unit", "Rate", "Amount", "Paid", "Balance", "Stage", "Shop / person", "Note"].map(q).join(",")];
+  for (const i of it) lines.push([i.date, i.cat, i.name, i.qty || "", i.qty ? i.unit : "", i.rate || "", i.amount, i.paid, num(i.amount) - num(i.paid), i.stage, i.shop, i.note].map(q).join(","));
+  lines.push(["", "", "TOTAL", "", "", "", it.reduce((a, i) => a + num(i.amount), 0), it.reduce((a, i) => a + num(i.paid), 0), it.reduce((a, i) => a + num(i.amount) - num(i.paid), 0), "", "", ""].map(q).join(","));
+  download("house-expenses-" + today() + ".csv", "﻿" + lines.join("\r\n"), "text/csv;charset=utf-8");
+}
+function exportBackup() { download("house-expenses-backup-" + today() + ".json", JSON.stringify({ app: "house-expenses", v: 1, data: S }), "application/json"); }
+function importBackup(inp) {
+  const f = inp.files[0]; if (!f) return; const rd = new FileReader();
+  rd.onload = () => { try {
+      const j = JSON.parse(rd.result); if (j.app !== "house-expenses" || !j.data || !Array.isArray(j.data.items)) throw 0;
+      const before = live().length; S = merge(S, j.data); persist(); renderAll(); toast("Restored. " + (live().length - before) + " entries added");
+    } catch (e) { alert("This is not a House Expenses backup file."); } inp.value = ""; };
+  rd.readAsText(f);
+}
+
+/* ---------- start ---------- */
+load();
+$("fcat").innerHTML = '<option value="">All categories</option>' + CATS.map(c => "<option>" + c[0] + "</option>").join("");
+$("fUnit").innerHTML = UNITS.map(u => "<option>" + u + "</option>").join("");
+$("fStage").innerHTML = STAGES.map(u => "<option>" + u + "</option>").join("");
+$("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeForm(); });
+renderAll(); renderCloud();
+if (acct) sync();
+window.addEventListener("online", () => { if (acct) sync(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && acct) sync(); });
+
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+let deferred = null;
+if (!standalone) {
+  $("installCard").classList.remove("hide");
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  $("installHint").textContent = ios ? "On iPhone: tap the Share button in Safari, then “Add to Home Screen”." : "Add this app to your home screen so it opens like a normal app, even without internet.";
+  if (ios) $("installBtn").classList.add("hide");
+  window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; });
+  $("installBtn").onclick = async () => { if (deferred) { deferred.prompt(); await deferred.userChoice; deferred = null; } else alert("Open the Chrome menu (⋮) and tap “Add to Home screen” or “Install app”."); };
+  window.addEventListener("appinstalled", () => $("installCard").classList.add("hide"));
+}
+</script>
+</body>
+</html>

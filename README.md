@@ -31,3 +31,9 @@ Indian and Andhra Pradesh history for APPSC Group 1 and Group 2: 61 chapters wit
 Figures and maps: NIOS Senior Secondary History (311).
 
 Open the app: https://bloforms.github.io/history/
+
+# House Expenses
+
+House construction expense book: add materials and labour with quantity, rate, paid amount and shop, see budget, category and stage totals and shop balances, and save online so the entries come back on any phone.
+
+Open the app: https://bloforms.github.io/house/
