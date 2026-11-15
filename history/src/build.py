@@ -1,6 +1,6 @@
 import pathlib
 src = pathlib.Path(__file__).parent
-parts = ['content_india.js','content_art.js','content_ap.js','extra1.js','extra2.js','extra3.js','extra4.js','extra5.js','mapdata.js','tl1.js','tl2.js','tl3.js','life.js','questions1.js','questions2.js','questions3.js','kings.js','app.js']
+parts = ['content_india.js','content_art.js','content_ap.js','extra1.js','extra2.js','extra3.js','extra4.js','extra5.js','mapdata.js','tl1.js','tl2.js','tl3.js','life.js','art1.js','art2.js','ins.js','questions1.js','questions2.js','questions3.js','kings.js','app.js']
 js = '\n'.join((src/p).read_text() for p in parts)
 html = (src/'shell.html').read_text().replace('/*__DATA__*/', js)
 (pathlib.Path(__file__).parent.parent/'index.html').write_text(html)

@@ -195,7 +195,7 @@ function renderChapter(id){
  const x = EXTRA[id] || {};
  const sec = (key, icon, en, te, body) => body ? '<div class="card" id="s-'+key+'"><h2>'+icon+' '+T(en,te)+'</h2>'+body+'</div>' : '';
  let h = '<div class="card"><span class="tag">'+esc(T(c.g.en,c.g.te))+'</span><h1>'+esc(c.en)+'</h1><div class="te-title">'+esc(c.te)+'</div>';
- const jumps = [['brief','📘 '+T('NIOS brief','NIOS సారాంశం')],['revise','🔗 '+T('Revision','పునశ్చరణ')],['map','🗺️ '+T('Map','పటం')],['figs','🖼️ '+T('Pictures','చిత్రాలు')],['mind','🧩 '+T('Mind map','మైండ్ మ్యాప్')],['table','📊 '+T('Table','పట్టిక')],['tl','🕰️ '+T('Timeline','కాలక్రమం')],['life','🏛️ '+T('Life','జీవనం')],['extra','➕ '+T('Also important','ఇంకా ముఖ్యమైనవి')],['analysis','🧠 '+T('Analysis','విశ్లేషణ')],['qa','✍️ '+T('Mains Q&A','మెయిన్స్')]];
+ const jumps = [['brief','📘 '+T('NIOS brief','NIOS సారాంశం')],['revise','🔗 '+T('Revision','పునశ్చరణ')],['map','🗺️ '+T('Map','పటం')],['figs','🖼️ '+T('Pictures','చిత్రాలు')],['mind','🧩 '+T('Mind map','మైండ్ మ్యాప్')],['table','📊 '+T('Table','పట్టిక')],['art','🏛️ '+T('Art','కళ')],['ins','📜 '+T('Inscriptions','శాసనాలు')],['tl','🕰️ '+T('Timeline','కాలక్రమం')],['life','👥 '+T('Life','జీవనం')],['extra','➕ '+T('Also important','ఇంకా ముఖ్యమైనవి')],['analysis','🧠 '+T('Analysis','విశ్లేషణ')],['qa','✍️ '+T('Mains Q&A','మెయిన్స్')]];
  h += '<div class="jumps">'+jumps.filter(j => j[0] !== 'figs' || (x.figs && x.figs.length)).map(j => '<button class="chip sm" data-jump="s-'+j[0]+'">'+j[1]+'</button>').join('')+'</div></div>';
  h += '<div class="card"><h2>'+T('Introduction','పరిచయం')+'</h2><p>'+esc(d.intro)+'</p></div>';
  h += '<div class="card"><h2>'+T('Key points','ముఖ్యాంశాలు')+'</h2><ul>'+d.points.map(p => '<li>'+esc(p)+'</li>').join('')+'</ul></div>';
@@ -205,6 +205,16 @@ function renderChapter(id){
  if(x.figs && x.figs.length) h += sec('figs','🖼️','Pictures and maps from the NIOS book','NIOS పుస్తకంలోని చిత్రాలు, పటాలు','<div class="gal">'+x.figs.map(f => '<figure data-zoom="img/'+f+'.jpg" data-cap="'+esc(FIG_CAP[f]||f)+'"><img loading="lazy" src="img/'+f+'.jpg" alt="'+esc(FIG_CAP[f]||f)+'"><figcaption>'+esc(FIG_CAP[f]||f)+'</figcaption></figure>').join('')+'</div><p class="muted small">'+T('Source: NIOS Senior Secondary History (311). Tap a picture to enlarge.','మూలం: NIOS సీనియర్ సెకండరీ చరిత్ర (311). పెద్దదిగా చూడటానికి నొక్కండి.')+'</p>');
  if(x.mind) h += sec('mind','🧩','Mind map','మైండ్ మ్యాప్', mindHTML(x.mind));
  if(x.table) h += sec('table','📊',x.table[0],x.table[0], '<table class="kt"><tr>'+x.table[1].map(t => '<th>'+esc(t)+'</th>').join('')+'</tr>'+x.table[2].map(r => '<tr>'+r.map((v,i) => '<td>'+(i?esc(v):'<b>'+esc(v)+'</b>')+'</td>').join('')+'</tr>').join('')+'</table>');
+ const ar = ARTD[id];
+ if(ar){
+  let b = '<p><b>'+T('Style','శైలి')+':</b> '+esc(ar.style)+'</p><h3>'+T('Main features','ముఖ్య లక్షణాలు')+'</h3><ul>'+ar.features.map(f => '<li>'+esc(f)+'</li>').join('')+'</ul>';
+  if(ar.monuments.length && ar.monuments[0][0] !== '—') b += '<h3>'+T('Key monuments','ముఖ్య కట్టడాలు')+'</h3><table class="kt"><tr><th>'+T('Monument','కట్టడం')+'</th><th>'+T('Place','ప్రదేశం')+'</th><th>'+T('Patron / date','పోషకుడు / కాలం')+'</th><th>'+T('Why it matters','ప్రాముఖ్యత')+'</th></tr>'+ar.monuments.map(m => '<tr><td><b>'+esc(m[0])+'</b></td><td>'+esc(m[1])+'</td><td>'+esc(m[2])+'</td><td>'+esc(m[3])+'</td></tr>').join('')+'</table>';
+  if(ar.sculpture.length && ar.sculpture[0] !== '—') b += '<h3>'+T('Sculpture and painting','శిల్పం, చిత్రకళ')+'</h3><ul>'+ar.sculpture.map(f => '<li>'+esc(f)+'</li>').join('')+'</ul>';
+  b += '<h3>'+T('Analysis','విశ్లేషణ')+'</h3><ul class="anl">'+ar.analysis.map(f => '<li>'+esc(f)+'</li>').join('')+'</ul>';
+  h += sec('art','🏛️','Art and architecture: analysis','కళ, వాస్తుశిల్పం: విశ్లేషణ', b);
+ }
+ const ins = INSD[id];
+ if(ins && !(ins.length === 1 && ins[0][0] === '—')) h += sec('ins','📜','Inscriptions','శాసనాలు','<table class="kt"><tr><th>'+T('Inscription','శాసనం')+'</th><th>'+T('Place','ప్రదేశం')+'</th><th>'+T('Issued by / date','వేయించినవారు / కాలం')+'</th><th>'+T('What it tells us','ఏమి తెలియజేస్తుంది')+'</th></tr>'+ins.map(r => '<tr><td><b>'+esc(r[0])+'</b></td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td><td>'+esc(r[3])+'</td></tr>').join('')+'</table>');
  const tl = TLD[id];
  if(tl){
   let b = '<h3>'+T('Rulers in order','పాలకుల క్రమం')+'</h3><div class="tline">'+tl.rulers.map(r => '<div><span class="ty">'+esc(r[0])+'</span><b>'+esc(r[1])+'</b>'+(r[2]?'<span class="muted"> — '+esc(r[2])+'</span>':'')+'</div>').join('')+'</div>';
@@ -231,10 +241,19 @@ function renderChapter(id){
  const prev = CHAPTERS[idx-1], next = CHAPTERS[idx+1];
  h += '<div class="btns"><button class="btn alt" '+(prev?'data-go="ch:'+prev.id+'"':'disabled')+'>← '+T('Back','వెనుకకు')+'</button>';
  h += '<button class="btn" '+(next?'data-go="ch:'+next.id+'"':'disabled')+'>'+T('Next','తదుపరి')+' →</button></div>';
- view(h);
+ view(h); cardTables();
 }
 
 
+function cardTables(){
+ if(!document.querySelectorAll) return;
+ document.querySelectorAll('#view table.kt').forEach(t => {
+  const heads = Array.from(t.querySelectorAll('th')).map(th => th.textContent);
+  if(heads.length < 3) return;
+  t.classList.add('cards');
+  t.querySelectorAll('tr').forEach(tr => Array.from(tr.children).forEach((td,i) => { if(td.tagName === 'TD') td.setAttribute('data-l', heads[i] || ''); }));
+ });
+}
 /* ============ CHAPTER HELPERS: revision arrows, map, mind map ============ */
 const wc = t => (String(t).trim().match(/\S+/g) || []).length;
 function arrows(t){ return esc(t).split('→').map(s => s.trim()).join(' <span class="arr">→</span> '); }
@@ -463,7 +482,7 @@ function renderSearch(){
  crumb(T('Search','వెతుకు')+': '+q);
  if(q.length < 2) return view('<div class="card"><p class="muted">'+T('Type at least 2 letters.','కనీసం 2 అక్షరాలు టైప్ చేయండి.')+'</p></div>');
  const hits = [];
- CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const x = EXTRA[c.id] || {}; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook, x.brief||'', (x.revise||[]).join(' '), (x.analysis||[]).join(' '), (x.places||[]).map(p => p[0]).join(' '), JSON.stringify(TLD[c.id]||''), (LIFE[c.id]||[]).join(' ')].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
+ CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const x = EXTRA[c.id] || {}; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook, x.brief||'', (x.revise||[]).join(' '), (x.analysis||[]).join(' '), (x.places||[]).map(p => p[0]).join(' '), JSON.stringify(TLD[c.id]||''), JSON.stringify(ARTD[c.id]||''), JSON.stringify(INSD[c.id]||''), (LIFE[c.id]||[]).join(' ')].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
  DYN_AP.concat(DYN_IN).forEach(d => { const k = d.kings.find(k => k.join(' ').toLowerCase().includes(q)); if(k || d.name.toLowerCase().includes(q)) hits.push('<button data-go="kings"><b>👑 '+esc(T(d.name,d.te))+'</b><br><span class="muted">'+esc(k ? k[0]+' — '+k[1]+' '+k[2] : d.years)+'</span></button>'); });
  view('<div class="card"><h1>'+hits.length+' '+T('results','ఫలితాలు')+'</h1><div class="list">'+hits.join('')+'</div></div>');
 }
