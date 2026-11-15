@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#243b36">
+<title>Itihasam – Indian & AP History</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="Itihasam">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f6f3ea;--panel:#fffdf7;--ink:#2b2a26;--muted:#6b675c;--accent:#2f6b5e;--accent2:#c9a227;--line:#e4dfd0;--ok:#2f7d4a;--bad:#a33b3b;--side:#243b36;--sideText:#eae6d8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"Segoe UI","Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.65}
+.app{display:flex;min-height:100vh}
+aside{width:290px;background:var(--side);color:var(--sideText);position:sticky;top:0;height:100vh;overflow-y:auto;padding:16px 12px 30px;flex-shrink:0}
+aside .brand{font-size:1.25rem;font-weight:700;padding:4px 10px 8px;color:#fff}
+aside .brand .te{font-weight:400;opacity:.8}
+aside .brand small{display:block;font-size:.75rem;font-weight:400;opacity:.7}
+.search{width:100%;margin:4px 0 8px;padding:9px 12px;border-radius:10px;border:0;font:inherit;font-size:.92rem;background:rgba(255,255,255,.12);color:#fff}
+.search::placeholder{color:rgba(255,255,255,.55)}
+aside details{margin-top:4px}
+aside summary{cursor:pointer;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;opacity:.8;padding:10px 10px 6px;list-style:none}
+aside summary::-webkit-details-marker{display:none}
+aside summary::before{content:"▸ "}
+aside details[open]>summary::before{content:"▾ "}
+.cnt{float:right;opacity:.6;font-size:.72rem}
+aside button.nav{display:block;width:100%;text-align:left;background:none;border:0;color:inherit;padding:7px 12px;border-radius:8px;font:inherit;font-size:.92rem;cursor:pointer;line-height:1.35}
+aside button.nav:hover{background:rgba(255,255,255,.08)}
+aside button.nav.on{background:var(--accent);color:#fff}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;border:1px solid rgba(255,255,255,.45);vertical-align:middle}
+.dot.done{background:#6fbf9f;border-color:#6fbf9f}
+aside .credit{font-size:.75rem;opacity:.6;padding:20px 10px 0}
+main{flex:1;min-width:0;padding:18px clamp(14px,4vw,44px) 60px;max-width:920px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+.burger{display:none;background:var(--accent);color:#fff;border:0;border-radius:8px;font-size:20px;padding:5px 12px;cursor:pointer}
+.crumb{color:var(--muted);font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer;font:inherit;font-size:.9rem;color:inherit}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,#2f6b5e,#243b36);color:#fff;border:0}
+.hero p{opacity:.9}
+.center{text-align:center}
+h1{font-size:1.45rem;margin:.1rem 0 .3rem;line-height:1.3}
+h2{font-size:1.1rem;margin:.2rem 0 .5rem;color:var(--accent)}
+h2.q{color:var(--ink);font-size:1.15rem}
+.te-title{color:var(--muted);font-size:1.05rem}
+.muted{color:var(--muted)}
+.hero .muted{color:#dfe9e4}
+.tag{display:inline-block;font-size:.75rem;padding:2px 10px;border-radius:999px;background:#e9e4d4;color:var(--muted);margin:0 6px 6px 0}
+.hook{background:#fbf1d6;border-left:4px solid var(--accent2);padding:10px 14px;border-radius:8px}
+.chain{font-weight:600;color:var(--accent)}
+ul,ol{padding-left:1.3rem;margin:.3rem 0}
+li{margin-bottom:4px}
+.btns{display:flex;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--accent);color:#fff;border:0;padding:10px 18px;border-radius:10px;cursor:pointer;font:inherit}
+.btn.alt{background:#e9e4d4;color:var(--ink)}
+.btn.wide{width:100%;margin-top:10px}
+.btn[disabled]{opacity:.4;cursor:default}
+.pick{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;max-width:100%;color:inherit}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font:inherit;color:inherit}
+.opt.right{border-color:var(--ok);background:#e6f4ea}
+.opt.wrong{border-color:var(--bad);background:#f8e5e5}
+.qhead{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.9rem;flex-wrap:wrap}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 12px}
+.bar span{display:block;height:100%;background:var(--accent)}
+textarea{width:100%;min-height:240px;font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:inherit}
+.big{font-size:1.9rem;font-weight:700;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.tile{display:flex;flex-direction:column;gap:2px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;font:inherit;color:inherit}
+.tile:hover{border-color:var(--accent)}
+.ti{font-size:1.6rem}
+.tl{border-left:3px solid var(--accent);padding-left:16px}
+.tl div{margin-bottom:9px}
+.tl div.ap{color:#1f5e3c;font-weight:600}
+.tl b{color:var(--accent);display:inline-block;min-width:130px}
+.list button{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:8px 0;font:inherit;cursor:pointer;color:inherit}
+.flow{margin:10px 0}
+.fl{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.fl .n{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:8px 14px;font:inherit;cursor:pointer}
+.chip.bad{border-color:var(--bad);background:#f8e5e5;color:var(--bad);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.badge{font-size:.72rem;padding:2px 8px;border-radius:999px;background:#e9e4d4;color:var(--muted);font-weight:400}
+.badge.ok{background:#e6f4ea;color:var(--ok)}
+details.dyn summary{cursor:pointer;list-style:none}
+details.dyn summary::-webkit-details-marker{display:none}
+details.dyn summary::before{content:"▸ ";color:var(--accent)}
+details.dyn[open] summary::before{content:"▾ "}
+table.kt{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0;display:block;overflow-x:auto}
+.kt th,.kt td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+.kt th{color:var(--muted);font-weight:600;font-size:.82rem}
+.scrim{display:none}
+@media (max-width:820px){
+ aside{position:fixed;left:0;top:0;z-index:20;transform:translateX(-105%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.2)}
+ body.menu-open aside{transform:none}
+ body.menu-open .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10}
+ .burger{display:inline-block}
+ body{font-size:16px}
+ .card{padding:15px 16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside id="side"></aside>
+  <div class="scrim" id="scrim"></div>
+  <main>
+    <div class="top">
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+      <div class="crumb" id="crumb"></div>
+      <button class="lang" id="langBtn">తెలుగు</button>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+<script>
+/* Chapter content: Indian history. C(id, intro, points, chain, hook, persons, places, mainsQ, mainsPoints) */
+const CONTENT = {};
+function C(id,intro,points,chain,hook,persons,places,mq,ma){CONTENT[id]={intro,points,chain,hook,persons,places,mq,ma};}
+
+C('prehistory','The long period before writing, known from stone tools, cave paintings and bones. It is divided into the Palaeolithic (Old Stone Age), Mesolithic (Middle Stone Age) and Neolithic (New Stone Age).',
+['Palaeolithic: hunting and gathering with hand axes and cleavers; sites include the Soan valley, Attirampakkam (Tamil Nadu) and the Kurnool caves (AP)',
+ 'Bhimbetka rock shelters (Madhya Pradesh) have prehistoric paintings and are a UNESCO World Heritage Site',
+ 'Mesolithic: small stone tools called microliths; early animal domestication at Bagor (Rajasthan) and Adamgarh (MP)',
+ 'Neolithic: farming and polished stone tools begin',
+ 'Mehrgarh (Baluchistan) has some of the earliest evidence of farming in the subcontinent',
+ 'Burzahom (Kashmir) is known for pit dwellings; Chirand (Bihar) for bone tools'],
+'Hunting and gathering → microliths and first herding → farming, pottery and village life',
+'“Old hunts, Middle shrinks, New farms” — Palaeo hunts, Meso tools shrink to microliths, Neo starts farming.',
+'Not applicable (no written records)','Bhimbetka, Soan valley, Attirampakkam, Mehrgarh, Burzahom, Chirand, Kurnool caves',
+'How did the Neolithic period change human life in the Indian subcontinent?',
+['Intro: define the Neolithic as the age of farming and polished tools','Settled villages and food production (Mehrgarh)','Domestication of animals and pottery','Regional sites: Burzahom pit houses, Chirand bone tools, south Indian ash mounds','Conclusion: the base for later Chalcolithic and urban cultures']);
+
+C('chalco','The Chalcolithic (copper–stone) age saw the first use of copper alongside stone. In the south, the Megalithic age is known for large stone burials and iron tools.',
+['Chalcolithic cultures: Ahar–Banas (Rajasthan), Kayatha and Malwa (MP), Jorwe (Maharashtra)',
+ 'Inamgaon and Daimabad (Jorwe culture) are major sites; Daimabad is known for bronze figures',
+ 'Ochre Coloured Pottery (OCP) and copper hoards are found in the Ganga–Yamuna doab',
+ 'Painted Grey Ware (PGW) is linked with Later Vedic settlements',
+ 'Megaliths: burials marked by big stones, common in south India, with iron tools and Black-and-Red Ware',
+ 'Megalithic sites: Brahmagiri (Karnataka), Adichanallur (Tamil Nadu); many in Andhra and Telangana'],
+'Copper with stone → rural farming villages → iron tools and megalithic burials in the south',
+'“Copper first, Iron later, Big stones mark the grave.”',
+'Not applicable','Ahar, Inamgaon, Daimabad, Navdatoli, Brahmagiri, Adichanallur',
+'Describe the main features of the Megalithic culture of south India.',
+['Intro: Megaliths as burial monuments of large stones','Iron tools and weapons','Black-and-Red Ware pottery','Spread across Andhra, Karnataka, Tamil Nadu, Kerala','Conclusion: link to the early historic and Sangam period']);
+
+C('indus','A city-based Bronze Age civilisation in the north-west of the subcontinent. Harappa was among the first sites excavated, so it is also called the Harappan civilisation.',
+['Mature phase about 2600–1900 BCE',
+ 'Harappa (on the Ravi) was excavated by Daya Ram Sahni in 1921; Mohenjo-daro (on the Indus) by R.D. Banerji in 1922',
+ 'Planned towns with grid roads, burnt-brick houses and covered drains',
+ 'Mohenjo-daro: Great Bath, granary, “dancing girl” bronze, “priest-king” figure',
+ 'Lothal (Gujarat): a dockyard; Kalibangan (Rajasthan): ploughed field, fire altars; Dholavira (Gujarat): water reservoirs, UNESCO site (2021)',
+ 'Standard weights, seals (unicorn motif) and trade with Mesopotamia (called Meluhha there)',
+ 'The script is not deciphered; iron and horses are not part of the mature phase'],
+'Planned cities → drainage and trade → decline about 1900 BCE (climate, rivers shifting, trade decline)',
+'“Grid, Drain, Trade” — the three things Harappans did best. The script is still a mystery: “Seal, no deal.”',
+'Excavators: Daya Ram Sahni, R.D. Banerji, John Marshall','Harappa, Mohenjo-daro, Lothal, Kalibangan, Dholavira, Rakhigarhi',
+'Discuss the town planning of the Harappan civilisation.',
+['Intro: Harappan cities as the first urban centres of India','Grid layout, citadel and lower town','Drainage and burnt-brick houses','Public buildings: Great Bath, granaries, Lothal dockyard','Conclusion: shows strong civic administration']);
+
+C('vedic','The period when the four Vedas were composed in Sanskrit. Early Vedic life (about 1500–1000 BCE) was mainly pastoral; Later Vedic life (about 1000–600 BCE) moved to settled farming in the Ganga plains.',
+['Rigveda is the oldest Veda; it has 10 mandalas; the Gayatri mantra is in it',
+ 'Four Vedas: Rig, Sama (music), Yajur (rituals), Atharva (charms and medicine)',
+ 'Sabha and Samiti were assemblies; the king (rajan) was a tribal chief in early times',
+ 'Rigvedic gods: Indra, Agni, Varuna; cattle was the main wealth',
+ 'Later Vedic: iron (krishna ayas), larger kingdoms, varna became rigid, rituals grew',
+ 'Texts: Brahmanas, Aranyakas, Upanishads (philosophy); Satyameva Jayate is from the Mundaka Upanishad'],
+'Rigvedic pastoral life → iron and farming in the Ganga plains → larger kingdoms (Mahajanapadas)',
+'“R-S-Y-A” — Rig, Sama, Yajur, Atharva: the four Vedas in order.',
+'Rishis such as Vishwamitra and Vasishtha','Sapta Sindhu region, then the Ganga plains',
+'Compare the Early Vedic and Later Vedic periods.',
+['Intro: two phases of the Vedic age','Economy: pastoral → agricultural with iron','Polity: tribal chief → territorial king','Society and religion: flexible → rigid varna, more rituals','Conclusion: laid the base for the Mahajanapadas']);
+
+C('sixth','In the 6th century BCE, new teachers questioned costly Vedic rituals. Jainism and Buddhism grew in this period along with the sixteen Mahajanapadas.',
+['Sixteen Mahajanapadas are listed in the Anguttara Nikaya; Magadha became the strongest',
+ 'Asmaka was the only Mahajanapada south of the Vindhyas, on the Godavari',
+ 'Mahavira (24th Tirthankara): born at Kundagrama near Vaishali; Rishabhanatha was the first Tirthankara',
+ 'Jain triratna: right faith, right knowledge, right conduct; five vows including ahimsa',
+ 'Buddha: born at Lumbini, enlightened at Bodh Gaya, first sermon at Sarnath, died (mahaparinirvana) at Kushinagara',
+ 'Four Noble Truths and the Eightfold Path (the Middle Path)',
+ 'Buddhist councils: 1st Rajagriha, 2nd Vaishali, 3rd Pataliputra (Ashoka), 4th Kashmir (Kanishka)',
+ 'Magadha rulers: Bimbisara and Ajatashatru (Haryanka), then Shishunagas and Nandas'],
+'Costly rituals and social rigidity → new teachers → monks, monasteries and wide spread',
+'Buddha’s life, L-B-S-K: “Lumbini Born, Bodh Gaya woke, Sarnath spoke, Kushinagara rest.” Councils, R-V-P-K: “Raja Visits Patna, Kashmir.”',
+'Mahavira, Gautama Buddha, Bimbisara, Ajatashatru','Lumbini, Bodh Gaya, Sarnath, Kushinagara, Vaishali, Rajagriha',
+'Why did Buddhism and Jainism spread rapidly in the 6th century BCE?',
+['Intro: rise of new religious movements','Reaction against costly rituals and varna rigidity','Use of people’s languages (Pali, Prakrit)','Support of traders and kings','Conclusion: lasting effect on Indian ethics and art']);
+
+C('maurya','The first large empire of India, founded by Chandragupta Maurya about 322 BCE, with its capital at Pataliputra.',
+['Chandragupta Maurya defeated the Nandas with Kautilya’s help; he defeated Seleucus Nicator',
+ 'Megasthenes, the Greek envoy, wrote Indica about Pataliputra',
+ 'Kautilya’s Arthashastra is a text on statecraft',
+ 'Bindusara followed; then Ashoka (about 268–232 BCE)',
+ 'The Kalinga war (about 261 BCE) turned Ashoka to Dhamma',
+ 'Ashoka’s edicts are mostly in Brahmi script; Kharosthi in the north-west; Erragudi (Kurnool, AP) has Ashokan edicts',
+ 'Sarnath Lion Capital is India’s national emblem',
+ 'Last Mauryan ruler Brihadratha was killed by Pushyamitra Shunga (about 185 BCE)'],
+'Chandragupta conquers → Bindusara → Ashoka’s Kalinga war → Dhamma and edicts → decline after Ashoka',
+'“C-B-A” in order: Chandragupta, Bindusara, Ashoka. Kalinga = “Kill-then-kindness.”',
+'Chandragupta Maurya, Kautilya, Bindusara, Ashoka, Megasthenes','Pataliputra, Kalinga, Sarnath, Erragudi',
+'What was Ashoka’s Dhamma? How far did it help the empire?',
+['Intro: Kalinga war as turning point','Dhamma as a moral code: tolerance, non-violence, respect for elders','Spread through edicts and Dhamma Mahamattas','Effect: unity of a diverse empire; critics link it to weak military','Conclusion: lasting ideal of welfare kingship']);
+
+C('postmaurya','After the Mauryas, many dynasties ruled India: Shungas, Kanvas, Indo-Greeks, Shakas, Kushanas and Satavahanas, with the Sangam kingdoms in the far south.',
+['Shungas: Pushyamitra Shunga (about 185 BCE); Kanvas followed',
+ 'Indo-Greeks: Menander (Milinda) discussed Buddhism with Nagasena (Milindapanho); first coins with king’s portraits',
+ 'Shakas: Rudradaman I’s Junagadh inscription is the first long inscription in Sanskrit; repaired Sudarshana lake',
+ 'Kushanas: Kanishka started the Saka era (78 CE), held the 4th Buddhist council; Mahayana grew',
+ 'Gandhara (Greek style) and Mathura (Indian style) art schools grew in this period',
+ 'Kharavela of Kalinga: Hathigumpha inscription at Udayagiri',
+ 'Sangam age: Cheras, Cholas and Pandyas; Karikala Chola; Sangam literature in Tamil'],
+'Mauryan decline → foreign and local dynasties → trade, new art schools and Mahayana Buddhism',
+'Foreigners in order, “I-S-K”: Indo-Greeks, Shakas, Kushanas — “I See Kings.”',
+'Pushyamitra Shunga, Menander, Rudradaman, Kanishka, Kharavela, Karikala','Taxila, Mathura, Gandhara, Junagadh, Ujjain',
+'Compare the Gandhara and Mathura schools of art.',
+['Intro: both rose under the Kushanas','Gandhara: Greek-Roman style, grey schist, realistic Buddha','Mathura: Indian style, red sandstone, Buddhist, Jain and Hindu figures','Both helped create the Buddha image','Conclusion: a meeting of cultures']);
+
+C('gupta','The Gupta period (about 320–550 CE) is often called the golden age of ancient India, for its literature, science and art.',
+['Chandragupta I founded Gupta power (about 320 CE); married a Lichchhavi princess',
+ 'Samudragupta is praised in the Allahabad (Prayag) pillar inscription by Harisena; called the “Napoleon of India” by V.A. Smith',
+ 'Chandragupta II (Vikramaditya) defeated the Shakas; Fa-Hien visited in his reign',
+ 'Kumaragupta I is linked to the founding of Nalanda',
+ 'Skandagupta fought the Huns',
+ 'Aryabhata (Aryabhatiya), Varahamihira, Kalidasa (Abhijnana Shakuntalam)',
+ 'Vakatakas of the Deccan: Prabhavati Gupta (daughter of Chandragupta II) married into them; Ajanta caves partly of this time'],
+'Samudragupta’s conquests → Chandragupta II’s expansion → science, literature and art flourish → Hun invasions weaken the empire',
+'Order “C-S-C-K-S”: “Clever Samudra Chose Kind Skanda” — Chandragupta I, Samudragupta, Chandragupta II, Kumaragupta, Skandagupta.',
+'Samudragupta, Chandragupta II, Kalidasa, Aryabhata, Fa-Hien','Pataliputra, Ujjain, Nalanda, Prayag pillar',
+'Why is the Gupta period called the golden age?',
+['Intro: political unity under strong kings','Literature: Kalidasa and Sanskrit','Science: Aryabhata, Varahamihira','Art and temples: Deogarh, Ajanta influence','Conclusion: golden for culture, though trade and towns declined later']);
+
+C('postgupta','After the Guptas, power was divided. Harsha ruled the north; the Chalukyas of Badami and the Pallavas of Kanchi ruled the south.',
+['Harsha (606–647 CE) of the Pushyabhuti dynasty moved his capital from Thanesar to Kanauj',
+ 'Banabhatta wrote Harshacharita; Hiuen Tsang visited Harsha and also Andhra',
+ 'Harsha was defeated by Pulakesin II on the Narmada',
+ 'Badami Chalukyas: Pulakesin II; Aihole inscription by Ravikirti',
+ 'Pallavas: Mahendravarman I, Narasimhavarman I (Mamalla) built Mahabalipuram rathas',
+ 'Kubja Vishnuvardhana, brother of Pulakesin II, founded the Eastern Chalukyas of Vengi (624 CE)'],
+'Gupta collapse → regional kingdoms → Chalukya–Pallava rivalry in the south',
+'“Harsha North, Pulakesin Narmada, Pallava sea-shore.”',
+'Harsha, Banabhatta, Hiuen Tsang, Pulakesin II, Narasimhavarman I','Kanauj, Thanesar, Badami, Aihole, Kanchi, Mahabalipuram',
+'Assess Harsha’s reign with the help of Hiuen Tsang’s account.',
+['Intro: Harsha as the last great king of north India before the Rajputs','Administration and charity (Prayag assembly)','Support to Buddhism and Nalanda','Limits: defeat by Pulakesin II','Conclusion: important but not all-India']);
+
+C('earlymed','From about 750 to 1200 CE, the Palas, Pratiharas and Rashtrakutas fought over Kanauj, while the Cholas built a strong empire in the south and Turkish invasions began.',
+['Tripartite struggle for Kanauj: Palas (Bengal), Gurjara-Pratiharas (Rajasthan), Rashtrakutas (Deccan)',
+ 'Palas: Gopala (elected), Dharmapala founded Vikramashila university',
+ 'Rashtrakutas: Dantidurga founded; Krishna I built the Kailasa temple at Ellora; Amoghavarsha wrote Kavirajamarga (Kannada)',
+ 'Cholas: Rajaraja I built the Brihadeeswara temple (Thanjavur); Rajendra I took a naval expedition to South-East Asia',
+ 'Uttaramerur inscriptions (Parantaka I) describe village self-government',
+ 'Mahmud of Ghazni raided India 17 times; Somnath in 1025',
+ 'Muhammad Ghori: lost the First Battle of Tarain (1191), won the second (1192) against Prithviraj Chauhan'],
+'Kanauj contest → regional powers weaken each other → Turkish invasions succeed',
+'Tripartite = “P-P-R: Palas, Pratiharas, Rashtrakutas — Pull, Push, Rule over Kanauj.”',
+'Dharmapala, Krishna I, Amoghavarsha, Rajaraja I, Rajendra I, Mahmud of Ghazni, Prithviraj Chauhan','Kanauj, Ellora, Thanjavur, Gangaikondacholapuram, Tarain',
+'Describe the local self-government of the Cholas.',
+['Intro: Chola administration','Ur, Sabha and Nagaram assemblies','Uttaramerur inscriptions: election by lots (kudavolai)','Committees (variyams) for tanks, gardens, justice','Conclusion: an early model of grassroots democracy']);
+
+C('c13','The Delhi Sultanate began in 1206. The Slave (Mamluk), Khalji and Tughlaq dynasties ruled most of the 13th and 14th centuries.',
+['Qutbuddin Aibak (1206) founded the Slave dynasty; began the Qutb Minar',
+ 'Iltutmish: iqta system, silver tanka and copper jital, group of forty (Chahalgani)',
+ 'Razia Sultan was the first and only woman ruler of Delhi',
+ 'Balban: “blood and iron” policy, sijda and paibos',
+ 'Alauddin Khalji: market reforms, branding of horses (dagh), large army; Malik Kafur’s campaigns in the south, including Warangal',
+ 'Muhammad bin Tughlaq: moved capital to Daulatabad, token currency; his general Ulugh Khan took Warangal in 1323',
+ 'Firoz Shah Tughlaq: canals, jizya as a separate tax'],
+'Turkish conquest → strong central control (Balban, Alauddin) → over-reach under Muhammad bin Tughlaq',
+'Five Sultanate dynasties, “S-K-T-S-L”: “Some Kings Took Sweet Lassi” — Slave, Khalji, Tughlaq, Sayyid, Lodi.',
+'Aibak, Iltutmish, Razia, Balban, Alauddin Khalji, Muhammad bin Tughlaq, Firoz Shah','Delhi, Daulatabad, Warangal',
+'Evaluate the market reforms of Alauddin Khalji.',
+['Intro: need for a large army at low cost','Fixed prices of grain and goods; separate markets','Officers (shahna-i-mandi) and spies','Effect: stable prices; ended after his death','Conclusion: bold but tied to one ruler']);
+
+C('c14','The late 14th and 15th centuries saw the Delhi Sultanate weaken, Timur’s invasion, the Sayyids and Lodis, and the rise of regional kingdoms like the Bahmanis and Vijayanagara.',
+['Timur invaded and sacked Delhi in 1398',
+ 'Sayyids (1414–1451), then Lodis: Bahlul Lodi, Sikandar Lodi (founded Agra, 1504), Ibrahim Lodi',
+ 'Ibrahim Lodi lost to Babur at the First Battle of Panipat (1526)',
+ 'Bahmani kingdom founded in 1347 by Alauddin Hasan Bahman Shah; minister Mahmud Gawan',
+ 'The Bahmani kingdom split into five Deccan Sultanates: Bijapur, Golconda, Ahmadnagar, Berar, Bidar',
+ 'Regional kingdoms: Bengal, Gujarat, Malwa, Kashmir (Zain-ul-Abidin, “Budshah”), Mewar (Rana Kumbha’s Vijay Stambha)',
+ 'Vijayanagara was founded in 1336 (see AP chapter)'],
+'Tughlaq decline → Timur’s blow → regional kingdoms rise → Babur’s entry in 1526',
+'Five Deccan Sultanates, “B-G-A-B-B”: Bijapur, Golconda, Ahmadnagar, Berar, Bidar.',
+'Timur, Sikandar Lodi, Ibrahim Lodi, Mahmud Gawan, Zain-ul-Abidin, Rana Kumbha','Delhi, Agra, Gulbarga, Bidar, Golconda',
+'Why did the Bahmani kingdom break up?',
+['Intro: founding in 1347','Conflict between Deccanis and Afaqis (newcomers)','Execution of Mahmud Gawan (1481)','Wars with Vijayanagara','Conclusion: split into five Deccan Sultanates']);
+
+C('mughal','The Mughal empire began with Babur’s victory at Panipat in 1526 and reached its height under Akbar, Jahangir, Shah Jahan and Aurangzeb.',
+['Babur: Panipat I (1526), Khanwa (1527) against Rana Sanga; wrote Baburnama in Turki',
+ 'Humayun lost to Sher Shah at Chausa (1539) and Kannauj (1540); returned in 1555',
+ 'Sher Shah Suri: rupiya coin, Grand Trunk Road, land survey',
+ 'Akbar: Panipat II (1556); mansabdari system; abolished jizya (1564); Ibadat Khana at Fatehpur Sikri; Din-i-Ilahi (1582); Todar Mal’s land revenue (zabt)',
+ 'Jahangir: Nur Jahan’s influence; Thomas Roe visited his court',
+ 'Shah Jahan: Taj Mahal, Red Fort, Peacock Throne',
+ 'Aurangzeb: reimposed jizya (1679); annexed Bijapur (1686) and Golconda (1687); died in 1707'],
+'Babur founds → Akbar builds the system → Shah Jahan’s splendour → Aurangzeb’s over-reach → decline after 1707',
+'Six great Mughals, “B-H-A-J-S-A”: “Black Horse Ate Juicy Sweet Apples” — Babur, Humayun, Akbar, Jahangir, Shah Jahan, Aurangzeb.',
+'Babur, Humayun, Sher Shah, Akbar, Jahangir, Nur Jahan, Shah Jahan, Aurangzeb','Panipat, Agra, Fatehpur Sikri, Delhi',
+'Explain the mansabdari system of Akbar.',
+['Intro: need for a graded nobility','Zat (rank) and sawar (horsemen)','Payment by jagir; transfers to stop local power','Merits and weaknesses','Conclusion: backbone of Mughal administration']);
+
+C('maratha','The Marathas under Shivaji and the Peshwas, and the Sikhs under their Gurus and Ranjit Singh, became major powers as the Mughals declined.',
+['Shivaji crowned at Raigad in 1674; Treaty of Purandar (1665) with Jai Singh',
+ 'Ashtapradhan (council of eight ministers); chauth (one-fourth) and sardeshmukhi (one-tenth) taxes',
+ 'Peshwas: Balaji Vishwanath, Baji Rao I, Balaji Baji Rao (Nana Saheb)',
+ 'Third Battle of Panipat (1761): Marathas lost to Ahmad Shah Abdali',
+ 'Sikh Gurus: Nanak (founder), Angad (Gurmukhi), Arjan (compiled Adi Granth, 1604), Tegh Bahadur (executed 1675), Gobind Singh (Khalsa, 1699)',
+ 'Ranjit Singh built the Sikh kingdom of Punjab; Treaty of Amritsar (1809) with the British'],
+'Mughal pressure → Maratha and Sikh resistance → regional power → defeat by Abdali (Marathas) and British (both)',
+'Ten Sikh Gurus: “Nanak Angad Amar Ram, Arjan Hargobind Har Rai, Har Krishan Tegh Gobind.” Say it as a rhythm.',
+'Shivaji, Baji Rao I, Guru Nanak, Guru Arjan, Guru Gobind Singh, Ranjit Singh','Raigad, Pune, Panipat, Amritsar, Lahore',
+'Describe the administration of Shivaji.',
+['Intro: founding of the Maratha state','Ashtapradhan council','Revenue: chauth and sardeshmukhi; ryotwari-like assessment','Forts and navy','Conclusion: strong, centralised and people-oriented']);
+
+C('bhakti','The Bhakti movement stressed personal devotion to God over rituals and caste. Sufism was its mystical Islamic counterpart. Both brought people together across religions.',
+['Started with the Alvars (Vishnu) and Nayanars (Shiva) in Tamil Nadu',
+ 'Philosophers: Ramanuja (Vishishtadvaita), Madhva (Dvaita), Basavanna (Virashaiva, Anubhava Mantapa)',
+ 'North India: Kabir (dohas), Ravidas, Guru Nanak, Tulsidas (Ramcharitmanas), Surdas, Mirabai',
+ 'Bengal: Chaitanya; Assam: Shankaradeva; Maharashtra: Jnaneshwar, Namdev, Tukaram',
+ 'Andhra: Annamacharya (Tallapaka) and Vemana',
+ 'Sufi orders (silsilas): Chishti (Moinuddin at Ajmer, Nizamuddin Auliya at Delhi), Suhrawardi (Multan), Naqshbandi, Qadiri',
+ 'Amir Khusrau, disciple of Nizamuddin Auliya, wrote in Persian and Hindavi'],
+'Ritual and caste rigidity → devotion in people’s languages → social harmony and new literature',
+'“Kabir Weaves, Mira Sings, Tulsi Writes Rama, Nanak Unites.”',
+'Ramanuja, Basavanna, Kabir, Guru Nanak, Mirabai, Tulsidas, Chaitanya, Moinuddin Chishti, Nizamuddin Auliya','Ajmer, Delhi, Varanasi, Pandharpur, Puri',
+'How did the Bhakti and Sufi movements shape medieval Indian society?',
+['Intro: two devotional streams','Use of regional languages and growth of literature','Challenge to caste and ritual','Hindu–Muslim cultural meeting','Conclusion: lasting tradition of tolerance']);
+
+C('c18','After Aurangzeb’s death in 1707, the Mughal empire weakened and successor states rose. Foreign invasions by Nadir Shah and Ahmad Shah Abdali drained Delhi.',
+['Successor states: Hyderabad (Nizam-ul-Mulk, 1724), Awadh (Saadat Khan), Bengal (Murshid Quli Khan)',
+ 'Mysore rose under Haidar Ali and Tipu Sultan',
+ 'Nadir Shah invaded in 1739 and took the Peacock Throne and Koh-i-noor',
+ 'Ahmad Shah Abdali invaded many times; defeated the Marathas at Panipat (1761)',
+ 'Rajput states, Jats (Suraj Mal) and Sikhs also became independent',
+ 'Debate: decline was due to weak successors, jagirdari crisis, wars and invasions'],
+'Weak successors and jagir crisis → provinces break away → invasions → space for the British',
+'Successor states “H-A-B”: Hyderabad, Awadh, Bengal — “Has All Broken.”',
+'Nizam-ul-Mulk, Saadat Khan, Murshid Quli Khan, Nadir Shah, Ahmad Shah Abdali','Delhi, Hyderabad, Lucknow, Murshidabad',
+'What were the causes of the decline of the Mughal empire?',
+['Intro: 1707 as turning point','Weak successors and court factions','Jagirdari crisis and finances','Revolts and invasions (Nadir Shah)','Conclusion: decline opened the door for the British']);
+
+C('europeans','European traders came to India by sea from 1498. The Portuguese, Dutch, English, Danes and French set up trading posts and fought each other.',
+['Vasco da Gama reached Calicut in 1498',
+ 'Albuquerque captured Goa in 1510',
+ 'Dutch East India Company (VOC) formed 1602; factory at Masulipatnam (1605)',
+ 'English East India Company formed 1600; factory at Masulipatnam (1611) and Surat (1613)',
+ 'Danes at Tranquebar (1620); French East India Company 1664, Pondicherry (1674)',
+ 'Carnatic Wars (1746–1763) between the English and French; Battle of Wandiwash (1760) ended French hopes'],
+'Sea route → trading posts → rivalry → English victory over the French',
+'Arrival order “P-D-E-D-F”: “Please Don’t Eat Dry Fish” — Portuguese, Dutch, English, Danes, French.',
+'Vasco da Gama, Albuquerque, Dupleix, Robert Clive, Eyre Coote','Calicut, Goa, Masulipatnam, Surat, Pondicherry, Madras',
+'Why did the English succeed over the French in India?',
+['Intro: Carnatic Wars','Stronger navy and finance','Company structure and home support','Leadership (Clive vs recalled Dupleix)','Conclusion: Wandiwash settled the contest']);
+
+C('britraj','The British took political power through battles at Plassey and Buxar and wars against Mysore, the Marathas and the Sikhs.',
+['Battle of Plassey (1757): Clive defeated Siraj-ud-Daulah',
+ 'Battle of Buxar (1764): defeated Mir Qasim, Shuja-ud-Daulah and Shah Alam II',
+ 'Treaty of Allahabad (1765): the Company got the Diwani (revenue rights) of Bengal; dual government',
+ 'Four Anglo-Mysore wars (1767–1799): Tipu Sultan died at Srirangapatna (1799)',
+ 'Three Anglo-Maratha wars (1775–1818)',
+ 'Two Anglo-Sikh wars; Punjab annexed in 1849'],
+'Plassey → Buxar → Diwani → wars with Mysore, Marathas, Sikhs → British paramountcy',
+'“Plassey Planted, Buxar Built” — Plassey began British rule, Buxar made it firm.',
+'Robert Clive, Siraj-ud-Daulah, Mir Jafar, Tipu Sultan, Haidar Ali','Plassey, Buxar, Srirangapatna',
+'Why is Buxar more important than Plassey?',
+['Intro: two battles','Plassey won by conspiracy','Buxar won against three powers by arms','Led to Diwani of Bengal','Conclusion: Buxar made British power real']);
+
+C('consol','The British strengthened their rule through policies like the Subsidiary Alliance and Doctrine of Lapse, and through Acts that organised the government.',
+['Regulating Act 1773: Warren Hastings became Governor-General of Bengal; Supreme Court at Calcutta',
+ 'Pitt’s India Act 1784: Board of Control',
+ 'Wellesley’s Subsidiary Alliance (1798): Hyderabad was the first to accept',
+ 'Dalhousie’s Doctrine of Lapse: Satara (1848), Jhansi, Nagpur; Awadh annexed (1856) for misgovernance',
+ 'Charter Act 1813: ₹1 lakh for education; 1833: Governor-General of India (Bentinck)',
+ 'Macaulay’s Minute (1835) and Wood’s Despatch (1854) on English education',
+ 'Cornwallis organised the civil services and police'],
+'Treaties and annexations → paramountcy → administrative Acts → resentment that fed 1857',
+'Policies by man: “Wellesley Subsidised, Dalhousie Lapsed.”',
+'Warren Hastings, Cornwallis, Wellesley, Bentinck, Dalhousie, Macaulay','Calcutta, Hyderabad, Satara, Jhansi, Awadh',
+'How did the Subsidiary Alliance help expand British rule?',
+['Intro: Wellesley’s policy','Terms: British troops, resident, no other Europeans','Effect on Indian states: loss of independence, financial burden','Hyderabad as first, Mysore and Awadh follow','Conclusion: expansion without war']);
+
+C('econ','British economic policies changed land, trade and industry, and drained wealth from India.',
+['Permanent Settlement (1793, Cornwallis) in Bengal: fixed revenue with zamindars',
+ 'Ryotwari system (Thomas Munro, Alexander Read) in Madras: revenue directly from peasants',
+ 'Mahalwari system (Holt Mackenzie) in north-west India: village as unit',
+ 'Drain of wealth theory: Dadabhai Naoroji, “Poverty and Un-British Rule in India”',
+ 'Deindustrialisation: decline of handloom and crafts due to British machine goods',
+ 'First railway: Bombay to Thane (1853); railways served raw-material export',
+ 'Frequent famines; famine commissions'],
+'Revenue pressure → peasant debt and famines; British goods → decline of crafts; export surplus → drain',
+'Land systems: “P-R-M” — Permanent (Bengal), Ryotwari (Madras), Mahalwari (North-West).',
+'Cornwallis, Thomas Munro, Dadabhai Naoroji, R.C. Dutt','Bengal, Madras, Bombay',
+'Explain the Drain of Wealth theory.',
+['Intro: Dadabhai Naoroji and R.C. Dutt','Home charges, salaries and pensions sent to Britain','Export surplus without return','Effects: poverty and lack of capital','Conclusion: economic basis of nationalism']);
+
+C('reform','In the 19th century, Indian reformers worked against social evils like sati, child marriage and caste discrimination, and for education and women’s rights.',
+['Raja Ram Mohan Roy: Brahmo Samaj (1828); sati abolished by Bentinck (1829)',
+ 'Ishwar Chandra Vidyasagar: Hindu Widow Remarriage Act (1856)',
+ 'Dayananda Saraswati: Arya Samaj (1875), Satyarth Prakash, “Go back to the Vedas”',
+ 'Swami Vivekananda: Chicago speech (1893), Ramakrishna Mission (1897)',
+ 'Jyotiba Phule: Satyashodhak Samaj (1873), Gulamgiri; with Savitribai Phule, schools for girls',
+ 'Sir Syed Ahmad Khan: Aligarh (MAO College, 1875); Theosophical Society (1875), at Adyar from 1886',
+ 'Narayana Guru (Kerala, SNDP 1903); Periyar (Self-Respect Movement, 1925)'],
+'Social evils and new ideas → reform movements → confidence and national awakening',
+'Year pairs: “1828 Brahmo, 1875 Arya, 1897 Mission.”',
+'Ram Mohan Roy, Vidyasagar, Dayananda, Vivekananda, Jyotiba Phule, Sir Syed, Narayana Guru','Calcutta, Bombay, Aligarh, Adyar',
+'Assess the contribution of Raja Ram Mohan Roy.',
+['Intro: “father of modern India”','Brahmo Samaj and monotheism','Campaign against sati','Support for English and scientific education, press','Conclusion: pioneer of reform']);
+
+C('revolts','Peasants and tribal people revolted many times against British policies, landlords and moneylenders.',
+['Sanyasi–Fakir revolt in Bengal (late 18th century)',
+ 'Paika rebellion in Odisha (1817)',
+ 'Santhal Hul (1855–56): led by Sidhu and Kanhu',
+ 'Munda Ulgulan (1899–1900): Birsa Munda',
+ 'Indigo revolt (1859–60) in Bengal; play Neel Darpan by Dinabandhu Mitra',
+ 'Deccan riots (1875) against moneylenders',
+ 'Rampa rebellions in Andhra (1879; 1922–24 under Alluri Sitarama Raju)'],
+'Land loss and forest laws → exploitation → revolts → laws and later mass movements',
+'“S-M-I”: Santhal, Munda, Indigo — the three most asked.',
+'Sidhu, Kanhu, Birsa Munda, Alluri Sitarama Raju','Bengal, Jharkhand, Odisha, Rampa (AP)',
+'Why did tribal revolts break out under British rule?',
+['Intro: tribal life and land','Forest laws and loss of land','Moneylenders and outsiders (dikus)','Religious and cultural interference','Conclusion: early resistance to colonial rule']);
+
+C('r1857','The Revolt of 1857 began at Meerut and spread over north and central India. It ended Company rule.',
+['Mangal Pandey at Barrackpore (29 March 1857)',
+ 'The revolt began at Meerut on 10 May 1857; rebels declared Bahadur Shah Zafar emperor',
+ 'Leaders: Nana Saheb and Tatya Tope (Kanpur), Rani Lakshmibai (Jhansi), Begum Hazrat Mahal (Lucknow), Kunwar Singh (Bihar)',
+ 'Immediate cause: greased Enfield rifle cartridges',
+ 'Governor-General at the time: Lord Canning',
+ 'Government of India Act 1858: rule passed to the Crown; Queen Victoria’s Proclamation (1 November 1858)'],
+'Annexations, economic distress, army grievances → cartridges spark → revolt → Crown rule',
+'Leaders by place: “Kanpur Nana, Jhansi Rani, Lucknow Begum, Bihar Kunwar.”',
+'Mangal Pandey, Bahadur Shah Zafar, Nana Saheb, Tatya Tope, Rani Lakshmibai, Begum Hazrat Mahal, Kunwar Singh','Meerut, Delhi, Kanpur, Jhansi, Lucknow',
+'Was the Revolt of 1857 the first war of independence?',
+['Intro: different views','Arguments for: wide participation, Hindu–Muslim unity','Arguments against: limited area, no common aim, princes stayed loyal','Results: Crown rule, army reorganised','Conclusion: a major uprising that inspired later nationalism']);
+
+C('nm1','From 1857 to 1915, the national movement grew from moderate petitions to the Swadeshi movement and revolutionary activity.',
+['Indian National Congress founded 1885 at Bombay; first president W.C. Bonnerjee; A.O. Hume helped',
+ 'Moderates (Dadabhai Naoroji, Gokhale, Pherozeshah Mehta): petitions and reforms',
+ 'Extremists: Lal–Bal–Pal (Lala Lajpat Rai, Bal Gangadhar Tilak, Bipin Chandra Pal)',
+ 'Partition of Bengal (16 October 1905, Curzon) → Swadeshi and boycott',
+ 'Muslim League founded at Dhaka (1906); Surat split (1907)',
+ 'Morley–Minto reforms (1909): separate electorates for Muslims',
+ 'Partition annulled and capital moved to Delhi (1911); Ghadar Party (1913)'],
+'Economic critique → moderate politics → partition of Bengal → Swadeshi and extremism → split and repression',
+'“1885 born, 1905 torn, 1907 split, 1911 refit.”',
+'W.C. Bonnerjee, Dadabhai Naoroji, Gokhale, Tilak, Lajpat Rai, Bipin Chandra Pal, Curzon','Bombay, Calcutta, Dhaka, Surat',
+'Assess the contribution of the Moderates.',
+['Intro: early Congress','Economic critique and drain theory','Political education and demands','Limits: elite base, petitions','Conclusion: laid the base for mass nationalism']);
+
+C('nm2','From 1915 to 1947, Gandhi led mass movements that brought independence, alongside revolutionary and constitutional streams.',
+['Gandhi returned from South Africa (1915): Champaran (1917), Kheda (1918), Ahmedabad mill strike (1918)',
+ 'Rowlatt Act and Jallianwala Bagh massacre (13 April 1919)',
+ 'Non-Cooperation and Khilafat (1920–22), withdrawn after Chauri Chaura (February 1922)',
+ 'Simon Commission (1928), Nehru Report (1928), Purna Swaraj at Lahore (1929)',
+ 'Civil Disobedience: Dandi March (12 March–6 April 1930), Gandhi–Irwin Pact (1931), Poona Pact (1932)',
+ 'Government of India Act 1935; Cripps Mission (1942); Quit India (8 August 1942)',
+ 'INA (Subhas Chandra Bose); Cabinet Mission (1946); Mountbatten Plan (3 June 1947); independence 15 August 1947'],
+'Gandhi’s local satyagrahas → NCM → CDM → Quit India → negotiations → independence and partition',
+'Gandhi’s big three “N-C-Q” every ~10 years: Non-Cooperation 1920, Civil Disobedience 1930, Quit India 1942.',
+'Gandhi, Nehru, Patel, Subhas Chandra Bose, Bhagat Singh, Ambedkar, Jinnah','Champaran, Amritsar, Dandi, Lahore, Bombay',
+'Evaluate the role of the Civil Disobedience Movement.',
+['Intro: Purna Swaraj and the Salt March','Mass participation, including women','Boycott, no-tax and forest satyagraha','Gandhi–Irwin Pact and Round Table Conferences','Conclusion: brought the national movement to villages']);
+
+C('facts','This chapter gathers the facts often asked in exams: newspapers, press laws, Congress sessions, commissions and Governors-General.',
+['Hicky’s Bengal Gazette (1780) was the first newspaper in India',
+ 'Tilak: Kesari (Marathi) and Mahratta (English); Gandhi: Young India and Harijan',
+ 'Vernacular Press Act (1878) under Lytton; repealed by Ripon (1882)',
+ 'Congress sessions: 1887 Madras (Badruddin Tyabji, first Muslim president), 1917 Calcutta (Annie Besant, first woman), 1924 Belgaum (Gandhi), 1925 Kanpur (Sarojini Naidu, first Indian woman), 1929 Lahore (Nehru, Purna Swaraj), 1931 Karachi (Patel, Fundamental Rights resolution), 1938 Haripura and 1939 Tripuri (Bose)',
+ 'First Governor-General of Bengal: Warren Hastings; of India: William Bentinck; first Viceroy: Canning; last Viceroy: Mountbatten',
+ 'C. Rajagopalachari: first and last Indian Governor-General',
+ 'Ripon: local self-government (1882), called the father of local self-government in India'],
+'Key facts are best learnt as pairs: person + year + event',
+'First firsts: “Hastings–Bengal, Bentinck–India, Canning–Viceroy.”',
+'Warren Hastings, Bentinck, Canning, Ripon, Lytton, Curzon, Mountbatten, Rajagopalachari','Calcutta, Madras, Lahore, Karachi',
+'How did the Indian press contribute to the national movement?',
+['Intro: rise of Indian newspapers','Spread of political ideas and criticism','Role of Kesari, Amrita Bazar Patrika, The Hindu','British repression: Vernacular Press Act','Conclusion: press as a tool of awakening']);
+
+C('postind','After 1947, India integrated princely states, adopted a Constitution, reorganised states and built its economy and foreign policy.',
+['Integration of princely states by Sardar Patel and V.P. Menon; Junagadh, Hyderabad (Operation Polo, September 1948) and Kashmir (Instrument of Accession, 26 October 1947)',
+ 'Constitution adopted 26 November 1949, came into force 26 January 1950',
+ 'First general election 1951–52; First Five Year Plan 1951',
+ 'States Reorganisation Commission (Fazl Ali) and Act of 1956',
+ 'Panchsheel (1954); Non-Aligned Movement (Belgrade, 1961)',
+ 'Wars: 1962 (China), 1965 (Pakistan; Tashkent 1966), 1971 (Bangladesh; Simla Agreement 1972)',
+ 'Green Revolution, bank nationalisation (1969), Emergency (1975–77), Pokhran tests (1974, 1998), economic reforms (1991)'],
+'Integration → Constitution → planning and reorganisation → wars and reforms',
+'“Integrate, Constitute, Reorganise, Liberalise” — the four big steps after 1947.',
+'Sardar Patel, V.P. Menon, Nehru, Ambedkar, Lal Bahadur Shastri, Indira Gandhi, P.V. Narasimha Rao','Hyderabad, Junagadh, Kashmir, Pokhran',
+'Discuss the integration of princely states after independence.',
+['Intro: 560-plus princely states','Instrument of Accession and Standstill Agreement','Difficult cases: Junagadh, Hyderabad, Kashmir','Role of Patel and V.P. Menon','Conclusion: political unity of India']);
+
+/* Chapter content: Art and Culture */
+C('caves','India’s art history runs from rock-cut caves to great temples and Indo-Islamic buildings. Temple styles are Nagara (north), Dravida (south) and Vesara (mixed, Deccan).',
+['Barabar caves (Bihar): Mauryan, given to the Ajivikas',
+ 'Ajanta (Maharashtra): Buddhist caves with famous paintings; Ellora: Buddhist, Hindu and Jain caves, with the Kailasa temple (Rashtrakuta Krishna I)',
+ 'Elephanta (near Mumbai): Trimurti (Maheshamurti) sculpture; Udayagiri–Khandagiri (Odisha): Jain caves',
+ 'Undavalli caves (Guntur, AP) are rock-cut caves',
+ 'Nagara: Khajuraho (Chandelas), Konark Sun Temple (Narasimhadeva I, Eastern Ganga); Dravida: Brihadeeswara (Rajaraja I), Mahabalipuram (Pallavas)',
+ 'Vesara: Hoysala temples at Belur and Halebidu (UNESCO, 2023)',
+ 'Lepakshi Veerabhadra temple (Anantapur, AP) is known for Vijayanagara paintings and the hanging pillar',
+ 'Indo-Islamic: Qutb Minar, Humayun’s Tomb, Taj Mahal; Golconda fort and Charminar (Qutb Shahi)'],
+'Rock-cut caves → structural temples → regional styles → Indo-Islamic synthesis',
+'Temple styles by direction: “Nagara North, Dravida Down-south, Vesara in-between.”',
+'Krishna I, Rajaraja I, Narasimhadeva I, Shah Jahan','Ajanta, Ellora, Elephanta, Khajuraho, Konark, Thanjavur, Lepakshi, Undavalli',
+'Compare the Nagara and Dravida styles of temple architecture.',
+['Intro: two main styles','Nagara: curved shikhara, no boundary wall','Dravida: pyramid vimana, gopuram, enclosure wall','Examples of each','Conclusion: Vesara as a blend']);
+
+C('music','Indian classical music has two traditions: Hindustani (north) and Carnatic (south). Its roots are traced to the Samaveda.',
+['Hindustani forms: Dhrupad (oldest), Khayal, Thumri, Tappa, Ghazal',
+ 'Tansen was in Akbar’s court; Amir Khusrau is linked by tradition to Qawwali and new ragas',
+ 'Carnatic music is based on kritis; Purandara Dasa is called the father of Carnatic music',
+ 'Carnatic trinity: Tyagaraja, Muthuswami Dikshitar, Syama Sastri',
+ 'Tyagaraja composed mainly in Telugu; Annamacharya composed thousands of Telugu sankirtanas',
+ 'Instruments: veena, sitar, sarod, tabla, mridangam, nadaswaram; Bobbili veena (AP) has a GI tag'],
+'Samaveda chant → regional styles → two classical traditions',
+'Carnatic trinity “T-D-S”: “Telugu Daily Sings” — Tyagaraja, Dikshitar, Syama Sastri.',
+'Tansen, Amir Khusrau, Purandara Dasa, Tyagaraja, Annamacharya','Tanjore, Tirupati, Gwalior',
+'Compare Hindustani and Carnatic music.',
+['Intro: common roots','Hindustani: Persian influence, improvisation, gharanas','Carnatic: composition-based, devotional kritis','Instruments and forms','Conclusion: two branches of one tree']);
+
+C('dance','India has eight classical dances recognised by the Sangeet Natak Akademi, each from a region, plus many folk dances.',
+['Bharatanatyam (Tamil Nadu), Kathak (north India), Kathakali (Kerala), Kuchipudi (Andhra Pradesh)',
+ 'Odissi (Odisha), Manipuri (Manipur), Mohiniyattam (Kerala), Sattriya (Assam)',
+ 'Kuchipudi is named after a village in Krishna district; Siddhendra Yogi shaped it',
+ 'Natya Shastra by Bharata Muni is the basic text on dance and drama',
+ 'Folk dances of AP: Dhimsa (tribal, Araku), Kolatam, Butta Bommalu; Telangana: Perini Shivatandavam',
+ 'Kathak was shaped in Mughal and Lucknow courts'],
+'Temple ritual and Natya Shastra → regional classical styles → modern revival',
+'Eight dances, “B-K-K-K-O-M-M-S”: “Big Kites Keep Kids Outdoors, Mother Makes Snacks.”',
+'Bharata Muni, Siddhendra Yogi, Rukmini Devi Arundale','Kuchipudi, Thanjavur, Lucknow, Kerala, Manipur, Assam',
+'Describe the features of Kuchipudi.',
+['Intro: classical dance of AP','Origin in Kuchipudi village, Siddhendra Yogi','Dance-drama with speech and song','Tarangam on a brass plate','Conclusion: Telugu cultural identity']);
+
+C('crafts','Indian handicrafts are linked to regions and many have Geographical Indication (GI) tags.',
+['Kalamkari (Srikalahasti and Machilipatnam, AP): hand-painted or block-printed cloth',
+ 'Kondapalli toys (AP) of light wood; Etikoppaka lacquer toys (AP)',
+ 'Pochampally ikat (Telangana); Bidriware (Bidar, Karnataka); Channapatna toys (Karnataka)',
+ 'Madhubani (Bihar), Warli (Maharashtra), Pattachitra (Odisha) paintings',
+ 'Dhokra: lost-wax metal casting by tribal artisans',
+ 'Banarasi and Kanchipuram silks; Pashmina (Kashmir)'],
+'Local skill and materials → regional identity → GI tags protect them',
+'AP crafts “K-K-E”: Kalamkari, Kondapalli, Etikoppaka.',
+'Not applicable','Srikalahasti, Machilipatnam, Kondapalli, Etikoppaka, Pochampally, Bidar',
+'Why are GI tags important for Indian handicrafts?',
+['Intro: what a GI tag is','Protects names from copying','Helps artisans earn more','Promotes tourism and exports','Conclusion: preserves heritage']);
+
+C('theatre','India has classical Sanskrit drama and many folk theatre forms tied to regions.',
+['Sanskrit drama: Kalidasa, Bhasa, Shudraka (Mrichchhakatika)',
+ 'Koodiyattam (Kerala) is a Sanskrit theatre form on the UNESCO intangible heritage list',
+ 'Yakshagana (Karnataka), Jatra (Bengal), Nautanki (Uttar Pradesh), Tamasha (Maharashtra), Bhavai (Gujarat)',
+ 'Ramlila is on the UNESCO intangible heritage list',
+ 'AP and Telangana: Burrakatha (story with drums), Veedhi Natakam (street play), Harikatha',
+ 'Surabhi drama troupes kept Telugu stage drama alive'],
+'Sanskrit drama → regional folk forms → modern stage',
+'Theatre by state: “Yaksha-Karnataka, Jatra-Bengal, Tamasha-Maharashtra, Burra-Andhra.”',
+'Kalidasa, Bhasa, Shudraka','Kerala, Karnataka, Bengal, Andhra',
+'Discuss the role of folk theatre in spreading social messages.',
+['Intro: folk theatre forms','Use in freedom movement (Burrakatha)','Literacy and health campaigns','Threats from modern media','Conclusion: needs support']);
+
+C('puppet','India has four types of puppetry: string, shadow, rod and glove.',
+['String: Kathputli (Rajasthan), Kundhei (Odisha), Bommalattam (Tamil Nadu)',
+ 'Shadow: Tholu Bommalata (Andhra Pradesh), Togalu Gombeyaata (Karnataka), Ravanachhaya (Odisha)',
+ 'Rod: Putul Nachh (West Bengal)',
+ 'Glove: Pavakoothu (Kerala)',
+ 'Tholu Bommalata uses coloured leather puppets and tells Ramayana and Mahabharata stories'],
+'Story-telling tradition → regional puppet forms → revival efforts',
+'Four types “S-S-R-G”: “Strings Show Rods, Gloves.” AP = shadow (Tholu = leather).',
+'Not applicable','Rajasthan, Andhra Pradesh, Karnataka, Odisha, Bengal, Kerala',
+'Describe the shadow puppet traditions of India.',
+['Intro: shadow puppetry','Tholu Bommalata (AP)','Togalu Gombeyaata and Ravanachhaya','Themes from epics','Conclusion: fading art needing support']);
+
+C('martial','India has many traditional martial arts, each tied to a region.',
+['Kalaripayattu (Kerala), often called one of the oldest martial arts',
+ 'Silambam (Tamil Nadu): stick fighting',
+ 'Gatka (Punjab): Sikh martial art',
+ 'Thang-ta (Manipur): sword and spear',
+ 'Mardani Khel (Maharashtra), Pari-khanda (Bihar), Lathi (many states)',
+ 'Several were added to the National Games and Khelo India'],
+'Warrior traditions → regional schools → sport revival',
+'“Kerala Kalari, Tamil Silambam, Punjab Gatka, Manipur Thang-ta.”',
+'Not applicable','Kerala, Tamil Nadu, Punjab, Manipur',
+'How can traditional martial arts be promoted?',
+['Intro: heritage value','Include in school sports','Tourism and festivals','Training centres and funding','Conclusion: health and heritage together']);
+
+C('unesco','India has many UNESCO World Heritage Sites and Intangible Cultural Heritage elements.',
+['Recent world heritage sites: Dholavira and Ramappa temple (2021), Santiniketan and Hoysala temples (2023), Moidams of Assam (2024)',
+ 'Ramappa (Rudreswara) temple in Telangana was built in the Kakatiya period (1213 CE)',
+ 'Intangible heritage includes Vedic chanting, Ramlila, Koodiyattam, Yoga, Kumbh Mela, Durga Puja in Kolkata, Garba',
+ 'Andhra Pradesh has sites on UNESCO’s tentative list, such as Lepakshi',
+ 'GI tags from AP: Tirupati laddu, Kondapalli toys, Bobbili veena, Machilipatnam Kalamkari, Srikalahasti Kalamkari, Uppada Jamdani saree',
+ 'The list keeps growing — check the latest count on the UNESCO site before the exam'],
+'Heritage value → nomination → listing → protection and tourism',
+'Telugu link: “Ramappa 2021” — the only Kakatiya UNESCO site.',
+'Recharla Rudra (Ramappa’s builder, a Kakatiya general)','Ramappa, Dholavira, Santiniketan, Belur, Halebidu, Lepakshi',
+'What is the importance of UNESCO heritage status for India?',
+['Intro: world and intangible lists','Global recognition and tourism','Conservation funds and rules','Local pride and jobs','Conclusion: balance tourism and protection']);
+
+C('lang','India’s languages belong to several families. Scripts grew from Brahmi. Eleven languages have classical status.',
+['Language families: Indo-Aryan, Dravidian, Austro-Asiatic, Tibeto-Burman',
+ 'Brahmi is the parent of most Indian scripts; Kharosthi was written right to left',
+ 'Classical languages: Tamil (2004), Sanskrit (2005), Telugu and Kannada (2008), Malayalam (2013), Odia (2014), and Marathi, Pali, Prakrit, Assamese and Bengali (2024)',
+ 'Eighth Schedule of the Constitution lists 22 languages',
+ 'Telugu: earliest Telugu inscription is the Kalamalla inscription (Kadapa, Renati Cholas, 6th century)',
+ 'Nannaya is called the Adikavi (first poet) of Telugu'],
+'Brahmi → regional scripts → literature in many languages → classical status',
+'Telugu got classical status in “2008 — the year Telugu got its crown.”',
+'Nannaya, Kalidasa, Tiruvalluvar, Pampa','Kalamalla, Bhattiprolu',
+'What is the significance of classical language status?',
+['Intro: criteria (antiquity, literature, originality)','Grants for research and chairs','Pride and preservation','Telugu’s case','Conclusion: protects linguistic heritage']);
+
+C('philo','Indian philosophy has six orthodox (astika) schools that accept the Vedas and heterodox (nastika) schools that do not.',
+['Nyaya (Gautama): logic; Vaisheshika (Kanada): atoms',
+ 'Samkhya (Kapila): dualism of purusha and prakriti; Yoga (Patanjali): Yoga Sutras',
+ 'Mimamsa (Jaimini): ritual; Vedanta (Badarayana): Upanishads',
+ 'Advaita (Shankaracharya), Vishishtadvaita (Ramanuja), Dvaita (Madhva)',
+ 'Heterodox: Buddhism, Jainism, Charvaka (Lokayata, materialism), Ajivika (Makkhali Gosala)',
+ 'Nagarjuna (Madhyamaka Buddhism) is linked to Andhra (Nagarjunakonda region)'],
+'Vedic thought → debates → six schools and heterodox schools → Vedanta dominant later',
+'Six schools in pairs: “Nyaya–Vaisheshika, Samkhya–Yoga, Mimamsa–Vedanta.”',
+'Gautama, Kanada, Kapila, Patanjali, Jaimini, Badarayana, Shankara, Ramanuja, Madhva, Nagarjuna','Kaladi, Sriperumbudur, Udupi, Nagarjunakonda',
+'Compare Advaita and Vishishtadvaita.',
+['Intro: Vedanta traditions','Advaita: Brahman alone is real, world is maya','Vishishtadvaita: qualified non-dualism, devotion','Influence on Bhakti','Conclusion: different paths to the same goal']);
+
+C('scitech','Ancient and medieval India made major advances in mathematics, astronomy, medicine and metallurgy.',
+['Aryabhata: Aryabhatiya; earth rotates on its axis; value of pi',
+ 'Varahamihira: Brihat Samhita, Pancha Siddhantika',
+ 'Brahmagupta: rules for zero; Bhaskara II: Lilavati',
+ 'Baudhayana’s Sulba Sutra: early geometry',
+ 'Medicine: Charaka (Charaka Samhita), Sushruta (surgery, Sushruta Samhita)',
+ 'Iron Pillar at Mehrauli (Gupta) has resisted rust; Wootz steel',
+ 'Sawai Jai Singh II built Jantar Mantar observatories'],
+'Ritual geometry → astronomy and mathematics → medicine and metallurgy',
+'“A-V-B-B”: Aryabhata, Varahamihira, Brahmagupta, Bhaskara — in time order.',
+'Aryabhata, Varahamihira, Brahmagupta, Bhaskara II, Charaka, Sushruta, Sawai Jai Singh II','Ujjain, Kusumapura, Mehrauli, Jaipur',
+'Describe the contribution of ancient India to mathematics.',
+['Intro: Sulba Sutras','Decimal place value and zero','Aryabhata, Brahmagupta, Bhaskara','Spread to Arabs and Europe','Conclusion: lasting global impact']);
+
+C('fest','India’s festivals are linked to seasons, harvests and faiths. Many are region-specific.',
+['Harvest festivals: Sankranti (AP), Pongal (Tamil Nadu), Bihu (Assam), Onam (Kerala), Lohri (Punjab)',
+ 'Ugadi: Telugu and Kannada new year',
+ 'Bathukamma and Bonalu: Telangana',
+ 'Hornbill festival: Nagaland; Losar: Ladakh and Sikkim; Chhath: Bihar',
+ 'Kumbh Mela, Durga Puja (Kolkata) and Garba are on the UNESCO intangible heritage list',
+ 'Tirupati Brahmotsavam is the main festival of the Venkateswara temple'],
+'Seasons and harvest → regional festivals → national culture',
+'Harvest quartet “S-P-B-O”: Sankranti, Pongal, Bihu, Onam — same season, different states.',
+'Not applicable','Tirupati, Kolkata, Prayagraj, Kerala, Assam',
+'How do festivals reflect India’s unity in diversity?',
+['Intro: variety of festivals','Same harvest, different names','Shared celebration across faiths','Economic and social role','Conclusion: unity in diversity']);
+
+C('coins','Coins are a key source of history. They tell us about rulers, trade, religion and economy.',
+['Punch-marked coins (silver karshapana) are the earliest Indian coins',
+ 'Indo-Greeks issued the first coins bearing kings’ portraits',
+ 'Kushanas issued many gold coins; Guptas issued the largest number of gold coins (dinaras)',
+ 'Satavahanas issued lead and potin coins; some show ships, indicating sea trade',
+ 'Iltutmish: silver tanka and copper jital; Muhammad bin Tughlaq: token currency',
+ 'Sher Shah Suri introduced the rupiya'],
+'Punch-marked → portrait coins → gold coins → Sultanate tanka → Sher Shah’s rupiya',
+'“Punch, Portrait, Gold, Tanka, Rupiya” — five stages in order.',
+'Kanishka, Samudragupta, Iltutmish, Muhammad bin Tughlaq, Sher Shah','Taxila, Mathura, Pratishthana',
+'How are coins useful as a source of history?',
+['Intro: numismatics','Rulers, dates and titles','Trade and economy (Roman coins in the south)','Religion and art','Conclusion: fill gaps where texts are silent']);
+
+C('travellers','Foreign travellers left valuable accounts of India in different periods.',
+['Megasthenes (Greek): Chandragupta Maurya; wrote Indica',
+ 'Fa-Hien (Chinese): Chandragupta II',
+ 'Hiuen Tsang (Chinese): Harsha; visited Andhra (Dhanyakataka); wrote Si-Yu-Ki',
+ 'Al-Biruni: came with Mahmud of Ghazni; Kitab-ul-Hind',
+ 'Marco Polo (Venetian): visited Motupalli port in Rudramadevi’s time',
+ 'Ibn Battuta (Moroccan): Muhammad bin Tughlaq; Rihla',
+ 'Nicolo Conti (Devaraya I), Abdur Razzaq (Devaraya II), Domingo Paes and Fernao Nuniz (Krishnadevaraya) visited Vijayanagara',
+ 'Thomas Roe (Jahangir), Bernier (Shah Jahan, Aurangzeb), Tavernier (Golconda diamonds)'],
+'Each traveller pairs with one ruler — learn them as pairs',
+'Pairs “Mega–Chandra, Fa–Vikram, Hiuen–Harsha, Marco–Rudrama, Battuta–Tughlaq, Paes–Krishna.”',
+'Megasthenes, Fa-Hien, Hiuen Tsang, Al-Biruni, Marco Polo, Ibn Battuta, Paes, Nuniz, Thomas Roe, Bernier','Pataliputra, Kanauj, Motupalli, Delhi, Vijayanagara, Golconda',
+'Assess the value of foreign travellers’ accounts for Indian history.',
+['Intro: outside view','Detail on cities, trade, customs','Examples: Megasthenes, Hiuen Tsang, Paes','Limits: language, bias, short stay','Conclusion: useful when checked with Indian sources']);
+
+/* Chapter content: Andhra Pradesh history */
+C('ap-geo','Andhra’s history is shaped by its geography: the Krishna and Godavari deltas, the Eastern Ghats, Rayalaseema’s dry plateau and a long coast. Its history is known from literature, inscriptions, coins and monuments.',
+['Three regions: Coastal Andhra, Rayalaseema, and (until 2014) Telangana',
+ 'The Aitareya Brahmana is the earliest text to mention the Andhras',
+ 'Megasthenes wrote that the Andhras had many walled towns and a large army',
+ 'Ashokan edicts at Erragudi (Kurnool) and Rajula Mandagiri',
+ 'Bhattiprolu (old Guntur district, now Bapatla) inscriptions on a stupa relic casket',
+ 'The Kalamalla inscription (Kadapa, Renati Chola king Dhananjaya) is the earliest known Telugu inscription',
+ 'Coins of the Satavahanas and Roman coins show trade'],
+'Rivers and coast → farming and trade → kingdoms; sources: texts → inscriptions → coins → monuments',
+'Sources, “A-M-E-B-K”: Aitareya, Megasthenes, Erragudi, Bhattiprolu, Kalamalla — oldest to newest.',
+'Megasthenes, Renati Chola Dhananjaya','Erragudi, Bhattiprolu, Kalamalla, Amaravati',
+'Describe the sources for the early history of Andhra.',
+['Intro: need for many sources','Literary: Aitareya Brahmana, Puranas, Megasthenes','Inscriptions: Erragudi, Bhattiprolu, Kalamalla','Coins and monuments: Amaravati, Nagarjunakonda','Conclusion: together they build the story']);
+
+C('ap-pre','Andhra has rich prehistoric sites from the Old Stone Age to the Megalithic age.',
+['Palaeolithic tools found in the Kurnool region, including the Billa Surgam and Betamcherla caves',
+ 'Nagarjunakonda area has evidence from many prehistoric phases',
+ 'Mesolithic microliths are found across Rayalaseema and the coast',
+ 'Neolithic farming sites in the Krishna–Tungabhadra region',
+ 'Megalithic burials (stone circles, dolmens) are widely found, with iron tools',
+ 'Rock art is found in Kurnool and Kadapa districts'],
+'Stone Age hunters → Neolithic farmers → Megalithic iron users → early historic Andhra',
+'“Kurnool’s caves keep the oldest Andhra tools.”',
+'Not applicable','Kurnool caves, Betamcherla, Nagarjunakonda, Kadapa',
+'Trace the prehistoric cultures of Andhra Pradesh.',
+['Intro: rich prehistoric record','Palaeolithic sites in Kurnool','Neolithic farming','Megalithic burials and iron','Conclusion: base of early historic Andhra']);
+
+C('ap-sata','The Satavahanas rose in the Deccan after the Mauryan decline. They are the first major dynasty of Andhra history; the Puranas call them Andhras or Andhrabhrityas.',
+['Founder: Simuka',
+ 'Capitals: Pratishthana (Paithan, Maharashtra); Dhanyakataka (Dharanikota/Amaravati) was important later',
+ 'Hala compiled the Gathasaptasati in Prakrit',
+ 'Gautamiputra Satakarni (about 106–130 CE) is the greatest ruler; Nasik inscription of his mother Gautami Balasri praises him',
+ 'Kings used metronymics (named after mothers), such as Gautamiputra and Vasishthiputra',
+ 'Yajna Sri Satakarni was the last strong ruler',
+ 'Coins in lead and potin; ship-type coins show sea trade',
+ 'Amaravati Stupa became a great Buddhist centre; land grants to Brahmins and Buddhist monks began'],
+'Mauryan decline → Satavahana rise → trade, Buddhist art and coins → decline in the 3rd century CE',
+'Kings “S-H-G-Y”: “Simuka Started, Hala Helped poetry, Gautamiputra Greatest, Yajna Sri last.”',
+'Simuka, Hala, Gautamiputra Satakarni, Gautami Balasri, Vasishthiputra Pulumavi, Yajna Sri Satakarni','Pratishthana, Dhanyakataka, Amaravati, Nasik',
+'Assess the achievements of Gautamiputra Satakarni.',
+['Intro: greatest Satavahana','Defeated the Shakas (Nahapana)','Nasik inscription and titles','Social order and welfare','Conclusion: restored Satavahana power']);
+
+C('ap-ikshvaku','The Ikshvakus ruled the Krishna valley after the Satavahanas, from Vijayapuri (Nagarjunakonda), in the 3rd–4th century CE.',
+['Founder: Vasishthiputra Santamula (Chantamula), who performed Vedic sacrifices like Ashvamedha',
+ 'Virapurushadatta: Buddhism flourished; many stupas and viharas built',
+ 'Royal women, such as Chantisri, gave large gifts to Buddhism',
+ 'Ehuvala Chantamula and Rudrapurushadatta were later rulers',
+ 'Nagarjunakonda was excavated; many monuments were moved before the Nagarjuna Sagar dam flooded the valley',
+ 'Acharya Nagarjuna is linked to this region'],
+'Satavahana decline → Ikshvakus in the Krishna valley → Buddhist art at Nagarjunakonda → decline',
+'“Santa Started, Vira Built, Ehuvala, Rudra ended” — S-V-E-R order.',
+'Santamula, Virapurushadatta, Chantisri, Ehuvala Chantamula, Rudrapurushadatta','Vijayapuri, Nagarjunakonda',
+'Describe the contribution of the Ikshvakus to Buddhism.',
+['Intro: Ikshvakus at Vijayapuri','Royal women’s patronage','Stupas, viharas and sculptures at Nagarjunakonda','Coexistence with Vedic rituals','Conclusion: a high point of Buddhist art in Andhra']);
+
+C('ap-postik','After the Ikshvakus, several small dynasties ruled parts of Andhra before the Vishnukundins united much of it.',
+['Brihatphalayanas: Jayavarma (Kodur grant)',
+ 'Anandagotrikas ruled in Guntur area (Kandara)',
+ 'Salankayanas: capital Vengi (Pedavegi, near Eluru)',
+ 'Vishnukundins (about 5th–6th century to 624 CE): Indra Varma founder; Madhava Varma II greatest; early capital Indrapalanagara (Nalgonda region), later shifted towards the coast',
+ 'Vishnukundins supported Vedic religion; Undavalli caves are linked to them',
+ 'Pallavas held parts of southern Andhra; Renati Cholas ruled Rayalaseema'],
+'Ikshvaku end → small dynasties → Vishnukundin unity → Chalukyan conquest (624)',
+'“B-A-S-V”: Brihatphalayanas, Anandagotrikas, Salankayanas, Vishnukundins — “Brave Andhras Stay Victorious.”',
+'Jayavarma, Indra Varma, Madhava Varma II','Kodur, Vengi, Indrapalanagara, Undavalli',
+'Discuss the achievements of the Vishnukundins.',
+['Intro: rise after small dynasties','Madhava Varma II’s conquests','Vedic religion and Ashvamedhas','Undavalli caves','Conclusion: prepared ground for Eastern Chalukyas']);
+
+C('ap-chalukya','The Eastern Chalukyas of Vengi ruled coastal Andhra for about 450 years from 624 CE. Telugu literature began under them.',
+['Founder: Kubja Vishnuvardhana (624 CE), brother of Pulakesin II of Badami',
+ 'Capital: Vengi; later Rajamahendravaram (Rajahmundry)',
+ 'Gunaga Vijayaditya III was a great warrior',
+ 'Long wars with the Rashtrakutas',
+ 'Rajaraja Narendra (1019–1061): Nannaya began the Telugu Mahabharatam in his court',
+ 'Marriage ties with the Cholas; Kulottunga I (Rajendra Chalukya) united Vengi with the Chola empire (1070)',
+ 'Temples at Biccavolu and Draksharama; many land grants'],
+'Chalukyan conquest → Vengi kingdom → Rashtrakuta wars → Chola alliance → Telugu literature → merger with Cholas',
+'“Kubja Began, Gunaga Fought, Raja Wrote (Nannaya), Kulottunga Merged.”',
+'Kubja Vishnuvardhana, Gunaga Vijayaditya III, Rajaraja Narendra, Nannaya, Kulottunga I','Vengi, Rajahmundry, Draksharama, Biccavolu',
+'Explain the cultural contribution of the Eastern Chalukyas.',
+['Intro: 450 years of rule','Telugu literature: Nannaya','Temples at Biccavolu and Draksharama','Land grants and agrarian growth','Conclusion: shaped Telugu identity']);
+
+C('ap-kakatiya','The Kakatiyas united Telugu-speaking lands under one rule for the first time. They ruled from Hanumakonda and Orugallu (Warangal).',
+['Early rulers were feudatories of the Kalyani Chalukyas: Beta I, Prola I, Beta II, Prola II',
+ 'Rudradeva (Prataparudra I) declared independence; built the Thousand Pillar temple at Hanumakonda (1163)',
+ 'Ganapatideva (1199–1262): moved capital to Orugallu; promoted Motupalli port and trade',
+ 'Ramappa temple (1213) built by his general Recharla Rudra; UNESCO site (2021)',
+ 'Rudramadevi (1262–1289): one of India’s few women rulers; Marco Polo visited Motupalli',
+ 'Prataparudra II (1289–1323): defeated by Ulugh Khan (Muhammad bin Tughlaq) in 1323',
+ 'Nayankara system (military fiefs); large tanks like Ramappa, Pakhal and Laknavaram',
+ 'Kakatiya Thoranam (gateway) is a famous symbol'],
+'Feudatories → independence under Rudradeva → peak under Ganapatideva and Rudramadevi → fall in 1323',
+'Order “R-M-G-R-P”: “Rudra Made Ganapati’s Rudrama Proud” — Rudradeva, Mahadeva, Ganapatideva, Rudramadevi, Prataparudra II.',
+'Rudradeva, Ganapatideva, Rudramadevi, Prataparudra II, Recharla Rudra','Hanumakonda, Orugallu (Warangal), Ramappa, Motupalli',
+'Describe the administration and economy of the Kakatiyas.',
+['Intro: first Telugu unification','Nayankara system','Tank irrigation and agriculture','Trade through Motupalli','Conclusion: golden age of Telugu land']);
+
+C('ap-reddi','After the fall of the Kakatiyas in 1323, local Telugu chiefs drove out the Delhi Sultanate. The Musunuri Nayakas, Reddis and Recharla Velamas ruled parts of Andhra.',
+['Musunuri Prolaya Nayaka led the resistance; Kapaya Nayaka recaptured Warangal (about 1336)',
+ 'Reddi kingdom founded by Prolaya Vema Reddi (1325); capital Addanki, later Kondaveedu',
+ 'Kumaragiri Reddi and Pedakomati Vema Reddi were patrons of literature',
+ 'Srinatha was the court poet of Pedakomati Vema Reddi',
+ 'Rajahmundry branch of the Reddis: Kataya Vema, Allaya Vema',
+ 'Recharla Velamas ruled from Rachakonda and Devarakonda; Sarvajna Singabhupala was a scholar-king',
+ 'Reddi rule ended about 1424–1448, absorbed by the Gajapatis and Vijayanagara'],
+'Kakatiya fall → Nayaka resistance → Reddi and Velama kingdoms → absorbed by bigger powers',
+'“After Kakatiya came the 3 R’s: Resistance (Musunuri), Reddis, Rachakonda (Velamas).”',
+'Prolaya Nayaka, Kapaya Nayaka, Prolaya Vema Reddi, Pedakomati Vema Reddi, Srinatha, Sarvajna Singabhupala','Warangal, Addanki, Kondaveedu, Rajahmundry, Rachakonda',
+'Assess the role of the Musunuri Nayakas in Andhra history.',
+['Intro: after 1323','United Nayaka resistance','Recapture of Warangal','Paved the way for Reddis and Vijayanagara','Conclusion: saved Telugu independence']);
+
+C('ap-vijay','The Vijayanagara empire (1336–about 1646) was the great Hindu empire of the south. Krishnadevaraya made it the high point of Telugu culture.',
+['Founded in 1336 by Harihara I and Bukka I (Sangama dynasty), with Vidyaranya’s guidance',
+ 'Four dynasties: Sangama, Saluva, Tuluva, Aravidu',
+ 'Devaraya II was the greatest Sangama ruler',
+ 'Krishnadevaraya (Tuluva, 1509–1529): wrote Amuktamalyada in Telugu; called Andhra Bhoja; Ashtadiggajas in his court',
+ 'Allasani Peddana (Andhra Kavita Pitamaha) and Tenali Ramakrishna were among the Ashtadiggajas',
+ 'Battle of Talikota (Rakkasa–Tangadi), 1565: defeat by the Deccan Sultanates; Aliya Rama Raya killed',
+ 'After Talikota, capitals moved to Penukonda and Chandragiri (Aravidu dynasty)',
+ 'Nayankara and ayagar systems; Hampi ruins are a UNESCO site'],
+'Founding in 1336 → wars with Bahmanis → peak under Krishnadevaraya → Talikota 1565 → decline at Penukonda and Chandragiri',
+'Four dynasties “S-S-T-A”: “Some Sweet Tasty Apples” — Sangama, Saluva, Tuluva, Aravidu.',
+'Harihara I, Bukka I, Vidyaranya, Devaraya II, Krishnadevaraya, Allasani Peddana, Tenali Ramakrishna, Aliya Rama Raya','Hampi, Penukonda, Chandragiri, Talikota, Lepakshi',
+'Assess Krishnadevaraya as a ruler and patron of culture.',
+['Intro: greatest Vijayanagara king','Military success: Raichur, Gajapatis','Administration: Amuktamalyada’s ideas','Literature: Ashtadiggajas, Telugu golden age','Conclusion: Andhra Bhoja']);
+
+C('ap-qutb','The Qutb Shahis ruled Golconda from 1518 to 1687. They founded Hyderabad and patronised Telugu.',
+['Founder: Sultan Quli Qutb Shah (1518)',
+ 'Ibrahim Qutb Shah (called Malki Bharama by Telugu poets) supported Telugu literature',
+ 'Muhammad Quli Qutb Shah founded Hyderabad and built the Charminar (1591); wrote Urdu poetry',
+ 'Abul Hasan Tana Shah was the last ruler; ministers Madanna and Akkanna',
+ 'Kancherla Gopanna (Bhakta Ramadasu) built the Bhadrachalam temple in this period',
+ 'Golconda was famous for diamonds (Kollur mines); Tavernier described them',
+ 'Aurangzeb annexed Golconda in 1687'],
+'Bahmani split → Golconda kingdom → Hyderabad founded → Telugu–Persian culture → Mughal conquest 1687',
+'“Quli founded, Ibrahim loved Telugu, Muhammad built Hyderabad, Tana Shah lost.”',
+'Sultan Quli, Ibrahim Qutb Shah, Muhammad Quli Qutb Shah, Abul Hasan Tana Shah, Madanna, Akkanna, Bhakta Ramadasu','Golconda, Hyderabad, Bhadrachalam, Kollur',
+'Describe the cultural contribution of the Qutb Shahis.',
+['Intro: Golconda kingdom','Patronage of Telugu and Persian','Architecture: Charminar, Golconda fort, tombs','Composite culture (Deccani)','Conclusion: lasting legacy in Hyderabad']);
+
+C('ap-asaf','The Asaf Jahis (Nizams) ruled Hyderabad State from 1724 to 1948. Coastal Andhra and Rayalaseema passed from them to the British.',
+['Founder: Nizam-ul-Mulk Asaf Jah I (1724)',
+ 'Northern Circars given to the French (1753), then to the British (Mughal grant 1765; treaties of 1766 and 1768)',
+ 'Nizam Ali Khan accepted the Subsidiary Alliance (1798), the first ruler to do so',
+ 'Ceded Districts (1800): Bellary, Cuddapah, Kurnool and Anantapur given to the British — later called Rayalaseema',
+ 'Salar Jung I was a reforming prime minister',
+ 'Mir Osman Ali Khan (Asaf Jah VII, 1911–1948) was the last Nizam; Osmania University (1918)',
+ 'Hyderabad joined India after Operation Polo (September 1948)'],
+'Mughal governor turns independent → loses Circars and Ceded Districts to the British → Hyderabad State → Operation Polo 1948',
+'“Circars to French then British, Ceded to British 1800, Osman last, Polo ends it.”',
+'Nizam-ul-Mulk, Nizam Ali Khan, Salar Jung I, Mir Osman Ali Khan','Hyderabad, Northern Circars, Ceded Districts',
+'How did coastal Andhra and Rayalaseema come under British rule?',
+['Intro: Nizam’s territories','Northern Circars: French, then British (1765–68)','Subsidiary Alliance (1798)','Ceded Districts (1800)','Conclusion: Andhra split between British and Nizam']);
+
+C('ap-british','British rule in Andhra brought new land systems, irrigation works and resistance.',
+['English factory at Masulipatnam (1611); Golconda’s “Golden Farman” (1632) gave trade privileges',
+ 'Battle of Bobbili (1757): Bobbili fought Vizianagaram and the French under Bussy',
+ 'Permanent zamindari settlement in the Northern Circars (1802)',
+ 'Ryotwari system in the Ceded Districts under Thomas Munro',
+ 'Uyyalawada Narasimha Reddy revolted against the British (1846)',
+ 'Sir Arthur Cotton built the Dowleswaram anicut on the Godavari (1852); the Krishna anicut at Vijayawada followed (1855)',
+ 'C.P. Brown worked on Telugu dictionaries and Vemana’s verses'],
+'Trading posts → territorial control → land settlements → irrigation and resistance',
+'“Cotton for Godavari, Munro for Rayalaseema.”',
+'Thomas Munro, Arthur Cotton, Uyyalawada Narasimha Reddy, C.P. Brown','Masulipatnam, Bobbili, Dowleswaram, Vijayawada, Kurnool',
+'Assess the impact of British rule on Andhra.',
+['Intro: Circars and Ceded Districts','Land systems: zamindari and ryotwari','Irrigation by Cotton','Famines and resistance','Conclusion: mixed legacy']);
+
+C('ap-reform','The 19th and early 20th centuries saw a Telugu renaissance: social reform, modern prose, newspapers and education.',
+['Kandukuri Veeresalingam: father of the Telugu renaissance; first widow remarriage in Andhra (11 December 1881, Rajahmundry); Viveka Vardhini journal; Rajasekhara Charitra (early Telugu novel)',
+ 'Gurajada Apparao: play Kanyasulkam (1892) against bride price; “Desamunu preminchumanna”',
+ 'Gidugu Ramamurthy led the movement for spoken Telugu (vyavaharika bhasha); his birthday, 29 August, is Telugu Language Day',
+ 'Raghupati Venkataratnam Naidu: Brahmo leader',
+ 'Komarraju Lakshmana Rao: Vignana Chandrika Mandali (encyclopaedia and history)',
+ 'Unnava Lakshminarayana: novel Malapalli; Gurram Jashuva: poet against caste',
+ 'Durgabai Deshmukh: Andhra Mahila Sabha (1937)'],
+'Social evils → reformers and new prose → education and women’s rights → nationalism',
+'“Veeresalingam Weds widows, Gurajada Grills bride price, Gidugu Gives spoken Telugu.”',
+'Kandukuri Veeresalingam, Gurajada Apparao, Gidugu Ramamurthy, Raghupati Venkataratnam Naidu, Komarraju Lakshmana Rao, Gurram Jashuva, Durgabai Deshmukh','Rajahmundry, Vizianagaram, Kakinada, Machilipatnam',
+'Evaluate the contribution of Kandukuri Veeresalingam.',
+['Intro: father of the Telugu renaissance','Widow remarriage and women’s education','Journals and prose literature','Fight against corruption and superstition','Conclusion: pioneer of modern Andhra']);
+
+C('ap-national','Andhra took part in every phase of the national movement, from Vandemataram to Quit India.',
+['Bipin Chandra Pal’s visit (1907) sparked the Vandemataram movement in Andhra; Kakinada and Rajahmundry incidents',
+ 'Andhra Jateeya Kalasala at Machilipatnam (1910)',
+ 'Chirala–Perala movement (1921) led by Duggirala Gopalakrishnayya',
+ 'Pedanandipadu no-tax campaign (1921–22); Palnadu forest satyagraha (Kanneganti Hanumanthu)',
+ 'Alluri Sitarama Raju led the Rampa rebellion (1922–24); killed on 7 May 1924',
+ 'Tanguturi Prakasam (Andhra Kesari) faced police guns during the Simon Commission protest in Madras (1928)',
+ 'Pingali Venkayya designed the flag that became the basis for India’s national flag'],
+'Swadeshi spark → non-cooperation actions → tribal revolt → salt and Quit India',
+'Places of 1921: “Chirala, Pedanandipadu, Palnadu” — C-P-P, “Can People Protest?”',
+'Duggirala Gopalakrishnayya, Alluri Sitarama Raju, Tanguturi Prakasam, Pingali Venkayya, Konda Venkatappayya','Rajahmundry, Machilipatnam, Chirala, Pedanandipadu, Palnadu, Rampa',
+'Describe the role of Andhra in the Non-Cooperation Movement.',
+['Intro: NCM 1920–22','Chirala–Perala','Pedanandipadu no-tax','Palnadu forest satyagraha and Rampa','Conclusion: mass participation in Andhra']);
+
+C('ap-andhra','The Andhra movement demanded a separate state for Telugu speakers from Madras Presidency. Potti Sriramulu’s sacrifice led to Andhra State in 1953.',
+['First Andhra Mahasabha (conference) at Bapatla (1913)',
+ 'Congress formed a separate Andhra Provincial Congress Committee (1918)',
+ 'Sri Bagh Pact (16 November 1937) between Coastal Andhra and Rayalaseema leaders, at Kasinathuni Nageswara Rao’s house “Sri Bagh” in Madras',
+ 'Dhar Commission and JVP Committee (1948) were cautious on linguistic states',
+ 'Potti Sriramulu fasted from 19 October 1952 and died on 15 December 1952',
+ 'Andhra State formed on 1 October 1953; capital Kurnool; first Chief Minister Tanguturi Prakasam'],
+'Telugu identity → Andhra Mahasabha → Sri Bagh Pact → Potti Sriramulu’s fast → Andhra State 1953',
+'“1913 Bapatla, 1937 Sri Bagh, 1952 Sriramulu, 1953 State.”',
+'Konda Venkatappayya, Kasinathuni Nageswara Rao, Potti Sriramulu, Tanguturi Prakasam','Bapatla, Madras, Kurnool',
+'Explain the importance of the Sri Bagh Pact.',
+['Intro: fears of Rayalaseema','Terms: university, High Court, capital, irrigation','Built unity in the Andhra movement','Later relevance to state politics','Conclusion: base for regional balance']);
+
+C('ap-hyd','Telangana was part of the Nizam’s Hyderabad State. The Telangana Armed Struggle (1946–51) and Operation Polo (1948) ended feudal and Nizam rule.',
+['Andhra Jana Sangham (1921) and Andhra Mahasabha in Nizam territory (first conference at Jogipet, 1930) worked for Telugu culture and rights',
+ 'Arya Samaj and the State Congress also opposed Nizam rule',
+ 'Telangana Armed Struggle (1946–51) against landlords and the Nizam; leaders included Ravi Narayana Reddy',
+ 'Razakars under Qasim Razvi attacked people',
+ 'Operation Polo (13–17 September 1948) brought Hyderabad into India',
+ 'Hyderabad State was governed under a Military Governor; first elected Chief Minister: Burgula Ramakrishna Rao (1952)'],
+'Nizam’s feudal rule → cultural and political movements → armed struggle → Operation Polo → Hyderabad State',
+'“Jogipet 1930, Struggle 1946, Polo 1948, Burgula 1952.”',
+'Ravi Narayana Reddy, Qasim Razvi, Swami Ramananda Tirtha, Burgula Ramakrishna Rao','Hyderabad, Jogipet, Nalgonda, Warangal',
+'What were the causes and results of the Telangana Armed Struggle?',
+['Intro: Nizam’s feudal order','Vetti (forced labour) and land issues','Role of Andhra Mahasabha and Communists','Operation Polo and land reforms','Conclusion: ended feudal rule']);
+
+C('ap-1956','Andhra State and Telangana (from Hyderabad State) merged to form Andhra Pradesh on 1 November 1956, with Hyderabad as capital.',
+['States Reorganisation Commission (Fazl Ali) reported in 1955',
+ 'Gentlemen’s Agreement (20 February 1956) gave safeguards for Telangana',
+ 'Andhra Pradesh formed on 1 November 1956; capital Hyderabad',
+ 'First Chief Minister: Neelam Sanjiva Reddy',
+ 'Regional Committee for Telangana was set up as a safeguard',
+ 'Mulki rules protected local jobs in Telangana'],
+'Andhra State + Telangana → Gentlemen’s Agreement → Andhra Pradesh 1956',
+'“20 Feb agreement, 1 Nov formation — Sanjiva first.”',
+'Fazl Ali, Neelam Sanjiva Reddy, Burgula Ramakrishna Rao, Bezawada Gopala Reddy','Hyderabad, Kurnool',
+'What were the safeguards in the Gentlemen’s Agreement of 1956?',
+['Intro: background of merger','Regional Council for Telangana','Jobs and education safeguards (Mulki)','Spending of Telangana surplus revenue','Conclusion: non-implementation fed later movements']);
+
+C('ap-after','After 1956, regional movements arose in Telangana (1969) and coastal Andhra (Jai Andhra, 1972), leading to special constitutional safeguards.',
+['Telangana agitation of 1969 over jobs and safeguards',
+ 'Supreme Court upheld Mulki rules (1972), which triggered the Jai Andhra movement in coastal Andhra',
+ 'Six-Point Formula (1973) settled the dispute',
+ 'Article 371D added by the 32nd Amendment (1973): local cadres and zones for jobs and education',
+ 'Telugu Desam Party formed in 1982 by N.T. Rama Rao; came to power in 1983',
+ 'P.V. Narasimha Rao from AP became Prime Minister (1991)'],
+'Unequal development → 1969 Telangana agitation → 1972 Jai Andhra → Six-Point Formula and Article 371D',
+'“1969 Telangana, 1972 Jai Andhra, 1973 Six Points + 371D.”',
+'Marri Chenna Reddy, Kakani Venkataratnam, N.T. Rama Rao, P.V. Narasimha Rao','Hyderabad, Vijayawada',
+'Explain the significance of Article 371D.',
+['Intro: background of agitations','Local cadres and zones','Educational and job reservations for locals','Administrative tribunal','Conclusion: balanced regional opportunity']);
+
+C('ap-2014','The Andhra Pradesh Reorganisation Act, 2014 created Telangana. The residual Andhra Pradesh began a new journey.',
+['Renewed Telangana movement from 2001 (TRS, K. Chandrashekar Rao); Srikrishna Committee (2010)',
+ 'Andhra Pradesh Reorganisation Act, 2014 passed by Parliament',
+ 'Telangana formed on 2 June 2014 (appointed day)',
+ 'Hyderabad was common capital for up to ten years',
+ 'Act promised special help such as the Polavaram project as a national project',
+ 'Residual AP chose Amaravati as its capital region'],
+'Long demand → Srikrishna Committee → Reorganisation Act → Telangana on 2 June 2014',
+'“2 June 2014 — two states, one Telugu heart.”',
+'K. Chandrashekar Rao, Justice B.N. Srikrishna, N. Chandrababu Naidu','Hyderabad, Amaravati, Polavaram',
+'Discuss the challenges faced by Andhra Pradesh after bifurcation.',
+['Intro: 2014 Act','New capital and revenue loss','Polavaram and special assistance issues','Industrial and education rebuilding','Conclusion: challenges and opportunities']);
+
+C('ap-culture','Telugu literature and culture have a rich history from Nannaya to modern writers, with temples, music and dance.',
+['Kavitrayam (three poets) translated the Mahabharata: Nannaya, Tikkana, Errana',
+ 'Bammera Potana: Andhra Mahabhagavatam',
+ 'Srinatha: Kavisarvabhauma, court poet of the Reddis',
+ 'Annamacharya (Tallapaka): sankirtanas on Venkateswara',
+ 'Vemana: short verses on society; Tyagaraja: Telugu kritis',
+ 'Modern: Gurajada, Viswanatha Satyanarayana (first Telugu Jnanpith, Ramayana Kalpavrukshamu), Sri Sri (Maha Prasthanam)',
+ 'Kuchipudi dance, Burrakatha, Tholu Bommalata, Kalamkari'],
+'Translation era → Prabandha (Vijayanagara) → Renaissance → modern and revolutionary poetry',
+'Kavitrayam “N-T-E”: “Nannaya, Tikkana, Errana — Not Too Easy.”',
+'Nannaya, Tikkana, Errana, Potana, Srinatha, Annamacharya, Vemana, Viswanatha Satyanarayana, Sri Sri','Rajahmundry, Tallapaka, Tirupati, Kuchipudi',
+'Trace the development of Telugu literature.',
+['Intro: Nannaya as Adikavi','Kavitrayam and Potana','Prabandha age under Krishnadevaraya','Modern renaissance and progressive poetry','Conclusion: rich and living tradition']);
+
+/* Question bank. Q(chapter, question, [correct, wrong, wrong, wrong], explanation). Options are shuffled in the app. */
+const BANK = [];
+function Q(ch,q,o,e){BANK.push([ch,q,o,e]);}
+
+/* Prehistory */
+Q('prehistory','Bhimbetka rock shelters are in which state?',['Madhya Pradesh','Rajasthan','Andhra Pradesh','Odisha'],'Bhimbetka is in Madhya Pradesh and is a UNESCO site.');
+Q('prehistory','Microliths are typical of which age?',['Mesolithic','Palaeolithic','Neolithic','Chalcolithic'],'Small stone tools called microliths mark the Mesolithic.');
+Q('prehistory','Burzahom is known for?',['Pit dwellings','Dockyard','Great Bath','Ash mounds'],'Burzahom in Kashmir had Neolithic pit dwellings.');
+Q('prehistory','Some of the earliest evidence of farming in the subcontinent comes from?',['Mehrgarh','Lothal','Hampi','Kalibangan'],'Mehrgarh in Baluchistan.');
+Q('prehistory','Chirand in Bihar is known for Neolithic?',['Bone tools','Iron tools','Coins','Temples'],'Chirand has many bone tools.');
+Q('prehistory','Which Andhra region has Palaeolithic cave sites?',['Kurnool','Srikakulam','Krishna delta','Nellore coast'],'Kurnool caves such as Billa Surgam and Betamcherla.');
+
+/* Chalcolithic */
+Q('chalco','Inamgaon is a site of which culture?',['Jorwe','Ahar','Harappan','Painted Grey Ware'],'Inamgaon in Maharashtra belongs to the Jorwe culture.');
+Q('chalco','Megalithic burials are mainly found in?',['South India','Ganga plains','Kashmir','Gujarat coast'],'Megaliths are common across south India.');
+Q('chalco','Painted Grey Ware is linked with?',['Later Vedic settlements','Harappans','Mauryas','Guptas'],'PGW is associated with the Later Vedic period.');
+Q('chalco','The Chalcolithic age is marked by the use of?',['Copper with stone','Iron only','Bronze coins','Steel'],'Chalcolithic means copper–stone.');
+Q('chalco','Adichanallur is a megalithic site in?',['Tamil Nadu','Kerala','Andhra Pradesh','Karnataka'],'Adichanallur is in Tamil Nadu.');
+
+/* Indus */
+Q('indus','Which Indus Valley site was excavated first, in 1921?',['Harappa','Lothal','Kalibangan','Dholavira'],'Harappa, by Daya Ram Sahni, in 1921.');
+Q('indus','Dholavira lies in which state?',['Gujarat','Rajasthan','Haryana','Punjab'],'Dholavira is in Kutch, Gujarat.');
+Q('indus','A dockyard has been found at?',['Lothal','Harappa','Banawali','Ropar'],'Lothal had a dockyard.');
+Q('indus','The Great Bath was found at?',['Mohenjo-daro','Harappa','Lothal','Kalibangan'],'The Great Bath is at Mohenjo-daro.');
+Q('indus','A ploughed field was found at?',['Kalibangan','Lothal','Mohenjo-daro','Chanhudaro'],'Kalibangan in Rajasthan.');
+Q('indus','Mesopotamian records call the Indus region?',['Meluhha','Dilmun','Magan','Sumer'],'Meluhha is the Mesopotamian name.');
+Q('indus','Which metal was NOT used in the mature Harappan phase?',['Iron','Copper','Bronze','Gold'],'Iron came much later.');
+Q('indus','Who excavated Mohenjo-daro in 1922?',['R.D. Banerji','Daya Ram Sahni','Mortimer Wheeler','B.B. Lal'],'R.D. Banerji.');
+Q('indus','Dholavira became a UNESCO World Heritage Site in?',['2021','2014','2004','2023'],'Dholavira was inscribed in 2021.');
+
+/* Vedic */
+Q('vedic','Which is the oldest Veda?',['Rigveda','Samaveda','Yajurveda','Atharvaveda'],'The Rigveda.');
+Q('vedic','Sabha and Samiti were?',['Vedic assemblies','Buddhist councils','Mauryan provinces','Gupta coins'],'Popular assemblies of the Vedic period.');
+Q('vedic','The Gayatri mantra is found in?',['Rigveda','Atharvaveda','Samaveda','Upanishads'],'It is in the Rigveda.');
+Q('vedic','“Satyameva Jayate” is taken from?',['Mundaka Upanishad','Rigveda','Bhagavad Gita','Arthashastra'],'From the Mundaka Upanishad.');
+Q('vedic','The Veda related to music is?',['Samaveda','Rigveda','Yajurveda','Atharvaveda'],'Samaveda chants are the root of Indian music.');
+Q('vedic','Which Veda deals with charms and medicine?',['Atharvaveda','Samaveda','Rigveda','Yajurveda'],'Atharvaveda.');
+Q('vedic','The Rigveda has how many mandalas?',['10','4','12','18'],'Ten mandalas (books).');
+
+/* Sixth century */
+Q('sixth','Mahavira was which Tirthankara?',['24th','1st','23rd','12th'],'Mahavira was the 24th Tirthankara.');
+Q('sixth','Where did the Buddha give his first sermon?',['Sarnath','Bodh Gaya','Lumbini','Kushinagara'],'At Sarnath (Deer Park).');
+Q('sixth','Where did the Buddha attain enlightenment?',['Bodh Gaya','Sarnath','Lumbini','Rajagriha'],'At Bodh Gaya.');
+Q('sixth','Where was the Buddha born?',['Lumbini','Vaishali','Sarnath','Kushinagara'],'Lumbini, in present Nepal.');
+Q('sixth','Which Mahajanapada was located south of the Vindhyas?',['Asmaka','Magadha','Kosala','Avanti'],'Asmaka, on the Godavari.');
+Q('sixth','The first Buddhist council was held at?',['Rajagriha','Vaishali','Pataliputra','Kashmir'],'Rajagriha, soon after the Buddha’s death.');
+Q('sixth','The fourth Buddhist council was held under?',['Kanishka','Ashoka','Ajatashatru','Harsha'],'Kanishka, in Kashmir.');
+Q('sixth','Which Mahajanapada became the most powerful?',['Magadha','Kosala','Vatsa','Avanti'],'Magadha.');
+Q('sixth','The first Tirthankara of Jainism was?',['Rishabhanatha','Parshvanatha','Mahavira','Neminatha'],'Rishabhanatha (Adinatha).');
+
+/* Maurya */
+Q('maurya','Who founded the Mauryan empire?',['Chandragupta Maurya','Ashoka','Bindusara','Pushyamitra Shunga'],'Chandragupta Maurya, about 322 BCE.');
+Q('maurya','Which war changed Ashoka’s policy?',['Kalinga war','Battle of Hydaspes','Battle of Talikota','Battle of Plassey'],'The Kalinga war.');
+Q('maurya','Who wrote Indica?',['Megasthenes','Fa-Hien','Kautilya','Al-Biruni'],'Megasthenes, Greek envoy.');
+Q('maurya','Most Ashokan inscriptions in India are in which script?',['Brahmi','Kharosthi','Devanagari','Grantha'],'Brahmi.');
+Q('maurya','Ashokan edicts in Andhra are found at?',['Erragudi','Amaravati','Warangal','Nellore'],'Erragudi in Kurnool district.');
+Q('maurya','India’s national emblem is from?',['Sarnath Lion Capital','Sanchi Stupa','Allahabad pillar','Iron pillar'],'The Sarnath Lion Capital of Ashoka.');
+Q('maurya','Who killed the last Mauryan king Brihadratha?',['Pushyamitra Shunga','Kanishka','Kharavela','Menander'],'Pushyamitra Shunga, about 185 BCE.');
+Q('maurya','Who ruled between Chandragupta Maurya and Ashoka?',['Bindusara','Brihadratha','Kunala','Dasharatha'],'Bindusara.');
+
+/* Post-Maurya */
+Q('postmaurya','The Saka era began in?',['78 CE','58 BCE','320 CE','606 CE'],'78 CE, linked to Kanishka.');
+Q('postmaurya','The first long inscription in Sanskrit is?',['Junagadh inscription of Rudradaman','Hathigumpha inscription','Allahabad pillar','Aihole inscription'],'Rudradaman’s Junagadh inscription.');
+Q('postmaurya','Milindapanho records a dialogue between Menander and?',['Nagasena','Nagarjuna','Ashvaghosha','Vasubandhu'],'Nagasena.');
+Q('postmaurya','The Hathigumpha inscription belongs to?',['Kharavela','Kanishka','Rudradaman','Menander'],'Kharavela of Kalinga.');
+Q('postmaurya','The Gandhara school of art shows influence of?',['Greek-Roman art','Persian art','Chinese art','Egyptian art'],'Greek-Roman style.');
+Q('postmaurya','Which dynasty first issued coins with kings’ portraits?',['Indo-Greeks','Mauryas','Shungas','Guptas'],'The Indo-Greeks.');
+Q('postmaurya','Karikala was a famous ruler of the?',['Cholas','Cheras','Pandyas','Pallavas'],'Karikala Chola of the Sangam age.');
+
+/* Gupta */
+Q('gupta','The Allahabad pillar inscription praises?',['Samudragupta','Chandragupta II','Kumaragupta','Skandagupta'],'Written by Harisena for Samudragupta.');
+Q('gupta','Which Gupta ruler is known as Vikramaditya?',['Chandragupta II','Samudragupta','Chandragupta I','Skandagupta'],'Chandragupta II.');
+Q('gupta','Aryabhata wrote?',['Aryabhatiya','Charaka Samhita','Arthashastra','Brihat Samhita'],'Aryabhatiya.');
+Q('gupta','Fa-Hien visited India during the reign of?',['Chandragupta II','Harsha','Ashoka','Samudragupta'],'Chandragupta II.');
+Q('gupta','Who called Samudragupta the “Napoleon of India”?',['V.A. Smith','R.C. Majumdar','D.D. Kosambi','Romila Thapar'],'V.A. Smith.');
+Q('gupta','Nalanda university is linked to which Gupta ruler?',['Kumaragupta I','Samudragupta','Skandagupta','Chandragupta I'],'Kumaragupta I.');
+Q('gupta','Which Gupta ruler fought the Huns?',['Skandagupta','Chandragupta I','Ramagupta','Kumaragupta II'],'Skandagupta.');
+Q('gupta','Prabhavati Gupta married into which dynasty?',['Vakatakas','Pallavas','Kadambas','Maukharis'],'The Vakatakas.');
+
+/* Post-Gupta */
+Q('postgupta','Harsha moved his capital to?',['Kanauj','Pataliputra','Ujjain','Thanesar'],'From Thanesar to Kanauj.');
+Q('postgupta','Who wrote Harshacharita?',['Banabhatta','Kalidasa','Ravikirti','Harisena'],'Banabhatta.');
+Q('postgupta','Harsha was defeated on the Narmada by?',['Pulakesin II','Narasimhavarman I','Dharmapala','Mahendravarman'],'Pulakesin II of Badami.');
+Q('postgupta','The Aihole inscription was composed by?',['Ravikirti','Harisena','Banabhatta','Bilhana'],'Ravikirti.');
+Q('postgupta','The rathas at Mahabalipuram were built by?',['Pallavas','Cholas','Chalukyas','Rashtrakutas'],'Narasimhavarman I (Mamalla), a Pallava.');
+Q('postgupta','Who founded the Eastern Chalukya dynasty?',['Kubja Vishnuvardhana','Pulakesin II','Vijayaditya','Rajaraja Narendra'],'Kubja Vishnuvardhana, in 624 CE.');
+
+/* Early medieval */
+Q('earlymed','The Kailasa temple at Ellora was built by?',['Krishna I (Rashtrakuta)','Rajaraja I','Pulakesin II','Narasimhavarman'],'Rashtrakuta king Krishna I.');
+Q('earlymed','Vikramashila university was founded by?',['Dharmapala','Gopala','Devapala','Harsha'],'The Pala king Dharmapala.');
+Q('earlymed','The tripartite struggle was for control of?',['Kanauj','Delhi','Ujjain','Pataliputra'],'Kanauj.');
+Q('earlymed','The Brihadeeswara temple at Thanjavur was built by?',['Rajaraja I','Rajendra I','Karikala','Kulottunga I'],'Rajaraja I.');
+Q('earlymed','Uttaramerur inscriptions describe?',['Village self-government','Temple dancing','Trade guilds','Coins'],'Chola village assemblies.');
+Q('earlymed','Mahmud of Ghazni attacked Somnath in?',['1025','1192','1001','1206'],'1025 CE.');
+Q('earlymed','Prithviraj Chauhan was defeated in the Second Battle of Tarain in?',['1192','1191','1206','1526'],'1192.');
+Q('earlymed','Kavirajamarga was written by?',['Amoghavarsha','Pampa','Krishna I','Dantidurga'],'Rashtrakuta king Amoghavarsha.');
+
+/* 13th century */
+Q('c13','Who founded the Slave dynasty in 1206?',['Qutbuddin Aibak','Iltutmish','Balban','Muhammad Ghori'],'Qutbuddin Aibak.');
+Q('c13','The silver tanka and copper jital were introduced by?',['Iltutmish','Balban','Alauddin Khalji','Sher Shah'],'Iltutmish.');
+Q('c13','Who was the only woman ruler of the Delhi Sultanate?',['Razia Sultan','Nur Jahan','Chand Bibi','Rudramadevi'],'Razia Sultan.');
+Q('c13','The policy of “blood and iron” is linked to?',['Balban','Iltutmish','Firoz Shah','Ibrahim Lodi'],'Balban.');
+Q('c13','Market reforms were introduced by?',['Alauddin Khalji','Muhammad bin Tughlaq','Balban','Sikandar Lodi'],'Alauddin Khalji.');
+Q('c13','Token currency was introduced by?',['Muhammad bin Tughlaq','Firoz Shah Tughlaq','Alauddin Khalji','Iltutmish'],'Muhammad bin Tughlaq.');
+Q('c13','Warangal was conquered in 1323 by?',['Ulugh Khan','Malik Kafur','Alauddin Khalji','Timur'],'Ulugh Khan, later Muhammad bin Tughlaq.');
+Q('c13','The correct order of the Sultanate dynasties is?',['Slave, Khalji, Tughlaq, Sayyid, Lodi','Khalji, Slave, Tughlaq, Lodi, Sayyid','Slave, Tughlaq, Khalji, Sayyid, Lodi','Sayyid, Slave, Khalji, Tughlaq, Lodi'],'Slave, Khalji, Tughlaq, Sayyid, Lodi.');
+
+/* 14-15 century */
+Q('c14','Timur invaded India in?',['1398','1526','1336','1206'],'1398.');
+Q('c14','Agra was founded by?',['Sikandar Lodi','Bahlul Lodi','Akbar','Babur'],'Sikandar Lodi, 1504.');
+Q('c14','The Bahmani kingdom was founded in?',['1347','1336','1526','1398'],'1347, by Alauddin Hasan Bahman Shah.');
+Q('c14','Mahmud Gawan was a minister of?',['Bahmanis','Vijayanagara','Lodis','Qutb Shahis'],'The Bahmani kingdom.');
+Q('c14','Which is NOT one of the five Deccan Sultanates?',['Gulbarga','Bijapur','Golconda','Ahmadnagar'],'The five were Bijapur, Golconda, Ahmadnagar, Berar and Bidar.');
+Q('c14','Zain-ul-Abidin ruled?',['Kashmir','Gujarat','Bengal','Malwa'],'Kashmir; called Budshah.');
+Q('c14','The Vijay Stambha at Chittorgarh was built by?',['Rana Kumbha','Rana Sanga','Rana Pratap','Rana Hammir'],'Rana Kumbha.');
+
+/* Mughal */
+Q('mughal','The First Battle of Panipat was fought in?',['1526','1556','1761','1527'],'1526, Babur vs Ibrahim Lodi.');
+Q('mughal','Babur defeated Rana Sanga at?',['Khanwa','Panipat','Chausa','Haldighati'],'Khanwa, 1527.');
+Q('mughal','The Grand Trunk Road was improved by?',['Sher Shah Suri','Akbar','Humayun','Babur'],'Sher Shah Suri.');
+Q('mughal','Akbar abolished jizya in?',['1564','1556','1582','1605'],'1564.');
+Q('mughal','The mansabdari system was introduced by?',['Akbar','Babur','Jahangir','Aurangzeb'],'Akbar.');
+Q('mughal','Thomas Roe visited the court of?',['Jahangir','Akbar','Shah Jahan','Aurangzeb'],'Jahangir.');
+Q('mughal','Golconda was annexed by Aurangzeb in?',['1687','1707','1686','1656'],'1687.');
+Q('mughal','Baburnama was written in?',['Turki','Persian','Arabic','Urdu'],'Turki.');
+Q('mughal','Correct order of Mughal emperors?',['Babur, Humayun, Akbar, Jahangir, Shah Jahan, Aurangzeb','Babur, Akbar, Humayun, Jahangir, Aurangzeb, Shah Jahan','Humayun, Babur, Akbar, Shah Jahan, Jahangir, Aurangzeb','Babur, Humayun, Jahangir, Akbar, Shah Jahan, Aurangzeb'],'“Black Horse Ate Juicy Sweet Apples.”');
+
+/* Maratha & Sikh */
+Q('maratha','Shivaji was crowned at?',['Raigad','Pune','Satara','Purandar'],'Raigad, 1674.');
+Q('maratha','Chauth was what share of revenue?',['One-fourth','One-tenth','One-sixth','One-half'],'One-fourth.');
+Q('maratha','The Third Battle of Panipat (1761) was fought between the Marathas and?',['Ahmad Shah Abdali','Nadir Shah','British','Mughals'],'Ahmad Shah Abdali.');
+Q('maratha','The Khalsa was founded in 1699 by?',['Guru Gobind Singh','Guru Nanak','Guru Arjan','Guru Tegh Bahadur'],'Guru Gobind Singh.');
+Q('maratha','The Adi Granth was compiled by?',['Guru Arjan','Guru Nanak','Guru Angad','Guru Gobind Singh'],'Guru Arjan, 1604.');
+Q('maratha','The Gurmukhi script is linked to?',['Guru Angad','Guru Nanak','Guru Ram Das','Guru Har Rai'],'Guru Angad.');
+Q('maratha','The Treaty of Amritsar (1809) was signed by Ranjit Singh with?',['The British','Afghans','Marathas','Mughals'],'The British.');
+
+/* Bhakti */
+Q('bhakti','Vishishtadvaita was taught by?',['Ramanuja','Shankaracharya','Madhva','Vallabha'],'Ramanuja.');
+Q('bhakti','Anubhava Mantapa is linked to?',['Basavanna','Kabir','Chaitanya','Tukaram'],'Basavanna, Virashaiva movement.');
+Q('bhakti','Ramcharitmanas was written by?',['Tulsidas','Surdas','Kabir','Valmiki'],'Tulsidas.');
+Q('bhakti','Moinuddin Chishti’s dargah is at?',['Ajmer','Delhi','Multan','Fatehpur Sikri'],'Ajmer.');
+Q('bhakti','Amir Khusrau was a disciple of?',['Nizamuddin Auliya','Moinuddin Chishti','Salim Chishti','Baba Farid'],'Nizamuddin Auliya.');
+Q('bhakti','Shankaradeva spread Bhakti in?',['Assam','Bengal','Maharashtra','Odisha'],'Assam.');
+Q('bhakti','Annamacharya is from?',['Tallapaka','Bhadrachalam','Srisailam','Kuchipudi'],'Tallapaka in Kadapa district.');
+
+/* 18th century */
+Q('c18','Hyderabad state was founded in 1724 by?',['Nizam-ul-Mulk','Salabat Jung','Murshid Quli Khan','Saadat Khan'],'Nizam-ul-Mulk.');
+Q('c18','Nadir Shah invaded India in?',['1739','1761','1707','1757'],'1739.');
+Q('c18','The independent state of Awadh was founded by?',['Saadat Khan','Murshid Quli Khan','Haidar Ali','Alivardi Khan'],'Saadat Khan.');
+Q('c18','The Peacock Throne was taken away by?',['Nadir Shah','Ahmad Shah Abdali','Timur','Mahmud of Ghazni'],'Nadir Shah, 1739.');
+Q('c18','Aurangzeb died in?',['1707','1712','1739','1687'],'1707.');
+
+/* Europeans */
+Q('europeans','Vasco da Gama reached Calicut in?',['1498','1510','1600','1492'],'1498.');
+Q('europeans','Goa was captured by Albuquerque in?',['1510','1498','1526','1565'],'1510.');
+Q('europeans','The first English factory on the east coast was at?',['Masulipatnam','Madras','Calcutta','Pondicherry'],'Masulipatnam, 1611.');
+Q('europeans','The Battle of Wandiwash (1760) was between the English and?',['French','Dutch','Portuguese','Marathas'],'The French.');
+Q('europeans','The French headquarters in India was?',['Pondicherry','Goa','Surat','Tranquebar'],'Pondicherry.');
+Q('europeans','The Danes had their settlement at?',['Tranquebar','Pulicat','Cochin','Chinsura'],'Tranquebar.');
+Q('europeans','Order of arrival of Europeans?',['Portuguese, Dutch, English, Danes, French','Dutch, Portuguese, French, English, Danes','English, French, Dutch, Portuguese, Danes','Portuguese, English, Dutch, French, Danes'],'“Please Don’t Eat Dry Fish.”');
+
+/* British Raj */
+Q('britraj','The Battle of Plassey was fought in?',['1757','1764','1765','1799'],'1757.');
+Q('britraj','The Battle of Buxar was fought in?',['1764','1757','1761','1776'],'1764.');
+Q('britraj','The Diwani of Bengal was granted by the Treaty of?',['Allahabad','Salbai','Srirangapatna','Amritsar'],'Treaty of Allahabad, 1765.');
+Q('britraj','Tipu Sultan died in?',['1799','1792','1782','1818'],'1799 at Srirangapatna.');
+Q('britraj','Punjab was annexed in?',['1849','1857','1839','1818'],'1849.');
+Q('britraj','At Plassey, Clive defeated?',['Siraj-ud-Daulah','Mir Qasim','Shuja-ud-Daulah','Tipu Sultan'],'Siraj-ud-Daulah.');
+
+/* Consolidation */
+Q('consol','Which state first accepted the Subsidiary Alliance?',['Hyderabad','Mysore','Awadh','Gwalior'],'Hyderabad, 1798.');
+Q('consol','The Doctrine of Lapse is linked to?',['Dalhousie','Wellesley','Cornwallis','Bentinck'],'Dalhousie.');
+Q('consol','The first state annexed under the Doctrine of Lapse was?',['Satara','Jhansi','Nagpur','Awadh'],'Satara, 1848.');
+Q('consol','Awadh was annexed in 1856 on the ground of?',['Misgovernance','Doctrine of Lapse','War','Subsidiary Alliance'],'Misgovernance.');
+Q('consol','The Board of Control was created by?',['Pitt’s India Act 1784','Regulating Act 1773','Charter Act 1813','Charter Act 1833'],'Pitt’s India Act.');
+Q('consol','The first Governor-General of India was?',['William Bentinck','Warren Hastings','Canning','Cornwallis'],'Bentinck, under the Charter Act 1833.');
+Q('consol','Macaulay’s Minute on education was in?',['1835','1854','1813','1882'],'1835.');
+
+/* Economy */
+Q('econ','The Permanent Settlement was introduced by?',['Cornwallis','Warren Hastings','Munro','Wellesley'],'Cornwallis, 1793.');
+Q('econ','The Ryotwari system is linked to?',['Thomas Munro','Holt Mackenzie','Cornwallis','Dalhousie'],'Thomas Munro and Alexander Read.');
+Q('econ','“Poverty and Un-British Rule in India” was written by?',['Dadabhai Naoroji','R.C. Dutt','Gokhale','Ranade'],'Dadabhai Naoroji.');
+Q('econ','The first railway line in India ran between?',['Bombay and Thane','Calcutta and Delhi','Madras and Arcot','Howrah and Hooghly'],'Bombay–Thane, 1853.');
+Q('econ','The Mahalwari system was introduced in?',['North-western India','Bengal','Madras','Bombay'],'North-western provinces.');
+
+/* Reform */
+Q('reform','Brahmo Samaj was founded in?',['1828','1875','1867','1897'],'1828 by Raja Ram Mohan Roy.');
+Q('reform','Sati was abolished in 1829 by?',['William Bentinck','Dalhousie','Canning','Ripon'],'Bentinck.');
+Q('reform','Arya Samaj was founded by?',['Dayananda Saraswati','Vivekananda','Keshab Chandra Sen','Ranade'],'Dayananda Saraswati, 1875.');
+Q('reform','Satyashodhak Samaj was founded by?',['Jyotiba Phule','Ambedkar','Narayana Guru','Periyar'],'Jyotiba Phule, 1873.');
+Q('reform','The Widow Remarriage Act of 1856 was due to the efforts of?',['Ishwar Chandra Vidyasagar','Ram Mohan Roy','Dayananda','Veeresalingam'],'Vidyasagar.');
+Q('reform','Vivekananda addressed the Parliament of Religions at Chicago in?',['1893','1897','1886','1905'],'1893.');
+Q('reform','The headquarters of the Theosophical Society in India is at?',['Adyar','Pune','Calcutta','Benares'],'Adyar, Chennai.');
+
+/* Revolts */
+Q('revolts','The Santhal rebellion was led by?',['Sidhu and Kanhu','Birsa Munda','Alluri Sitarama Raju','Tilka Manjhi'],'Sidhu and Kanhu, 1855–56.');
+Q('revolts','“Ulgulan” refers to the revolt led by?',['Birsa Munda','Sidhu','Tantia Bhil','Komaram Bheem'],'Birsa Munda.');
+Q('revolts','Neel Darpan is about?',['Indigo revolt','Santhal revolt','1857 revolt','Moplah revolt'],'Indigo revolt; by Dinabandhu Mitra.');
+Q('revolts','The Paika rebellion took place in?',['Odisha','Bengal','Bihar','Andhra'],'Odisha, 1817.');
+Q('revolts','The Rampa rebellion of 1922–24 was led by?',['Alluri Sitarama Raju','Uyyalawada Narasimha Reddy','Komaram Bheem','Kanneganti Hanumanthu'],'Alluri Sitarama Raju.');
+
+/* 1857 */
+Q('r1857','The Revolt of 1857 began at?',['Meerut','Delhi','Kanpur','Barrackpore'],'Meerut, 10 May 1857.');
+Q('r1857','The Governor-General during 1857 was?',['Canning','Dalhousie','Lytton','Ripon'],'Lord Canning.');
+Q('r1857','Begum Hazrat Mahal led the revolt at?',['Lucknow','Kanpur','Jhansi','Delhi'],'Lucknow.');
+Q('r1857','Kunwar Singh led the revolt in?',['Bihar','Awadh','Jhansi','Delhi'],'Bihar (Jagdishpur).');
+Q('r1857','Queen Victoria’s Proclamation was issued on?',['1 November 1858','15 August 1857','1 January 1877','26 January 1858'],'1 November 1858.');
+Q('r1857','Who was declared emperor by the rebels in 1857?',['Bahadur Shah Zafar','Nana Saheb','Akbar II','Shah Alam II'],'Bahadur Shah Zafar.');
+
+/* National movement 1 */
+Q('nm1','The Indian National Congress was founded in?',['1885','1857','1905','1906'],'1885 at Bombay.');
+Q('nm1','The first president of the INC was?',['W.C. Bonnerjee','Dadabhai Naoroji','A.O. Hume','Surendranath Banerjee'],'W.C. Bonnerjee.');
+Q('nm1','Bengal was partitioned in 1905 by?',['Curzon','Minto','Hardinge','Ripon'],'Lord Curzon.');
+Q('nm1','The Muslim League was founded in 1906 at?',['Dhaka','Aligarh','Lucknow','Lahore'],'Dhaka.');
+Q('nm1','The Congress split at?',['Surat (1907)','Lucknow (1916)','Lahore (1929)','Calcutta (1906)'],'Surat, 1907.');
+Q('nm1','Separate electorates were introduced by?',['Morley–Minto reforms 1909','Montagu–Chelmsford 1919','Act of 1935','Indian Councils Act 1892'],'1909.');
+Q('nm1','The capital moved from Calcutta to Delhi in?',['1911','1905','1919','1931'],'1911.');
+Q('nm1','“Lal–Bal–Pal” does NOT include?',['Gokhale','Lajpat Rai','Tilak','Bipin Chandra Pal'],'Gokhale was a Moderate.');
+
+/* National movement 2 */
+Q('nm2','Gandhi’s first satyagraha in India was at?',['Champaran','Kheda','Ahmedabad','Bardoli'],'Champaran, 1917.');
+Q('nm2','The Jallianwala Bagh massacre took place on?',['13 April 1919','6 April 1919','5 February 1922','12 March 1930'],'13 April 1919.');
+Q('nm2','The Non-Cooperation Movement was withdrawn after?',['Chauri Chaura','Jallianwala Bagh','Dandi March','Simon Commission'],'Chauri Chaura, 1922.');
+Q('nm2','Purna Swaraj was declared at the session in?',['Lahore 1929','Karachi 1931','Calcutta 1928','Haripura 1938'],'Lahore, 1929.');
+Q('nm2','The Dandi March began on?',['12 March 1930','6 April 1930','26 January 1930','8 August 1942'],'12 March 1930.');
+Q('nm2','The Poona Pact (1932) was between Gandhi and?',['Ambedkar','Jinnah','Irwin','Nehru'],'B.R. Ambedkar.');
+Q('nm2','The Quit India resolution was passed on?',['8 August 1942','15 August 1942','9 August 1945','26 January 1942'],'8 August 1942.');
+Q('nm2','The Mountbatten Plan was announced on?',['3 June 1947','15 August 1947','16 August 1946','26 January 1947'],'3 June 1947.');
+
+/* Facts */
+Q('facts','The first newspaper in India was?',['Hicky’s Bengal Gazette','Kesari','Amrita Bazar Patrika','The Hindu'],'1780, by James Augustus Hicky.');
+Q('facts','The first woman president of the INC was?',['Annie Besant','Sarojini Naidu','Nellie Sengupta','Vijaya Lakshmi Pandit'],'Annie Besant, 1917.');
+Q('facts','The first Indian woman president of the INC was?',['Sarojini Naidu','Annie Besant','Durgabai Deshmukh','Aruna Asaf Ali'],'Sarojini Naidu, 1925 Kanpur.');
+Q('facts','Gandhi presided over the INC session at?',['Belgaum 1924','Lahore 1929','Karachi 1931','Tripuri 1939'],'Belgaum, 1924.');
+Q('facts','The Vernacular Press Act was passed under?',['Lytton','Ripon','Curzon','Canning'],'Lytton, 1878.');
+Q('facts','The first Viceroy of India was?',['Canning','Bentinck','Dalhousie','Elgin'],'Canning, 1858.');
+Q('facts','The first and last Indian Governor-General was?',['C. Rajagopalachari','Rajendra Prasad','Sardar Patel','Nehru'],'C. Rajagopalachari.');
+Q('facts','Kesari newspaper was started by?',['Tilak','Gandhi','Gokhale','Lajpat Rai'],'Bal Gangadhar Tilak.');
+Q('facts','The Fundamental Rights resolution was passed at?',['Karachi 1931','Lahore 1929','Haripura 1938','Lucknow 1916'],'Karachi, 1931.');
+
+/* Post-independence */
+Q('postind','Operation Polo brought which state into India?',['Hyderabad','Junagadh','Kashmir','Travancore'],'Hyderabad, September 1948.');
+Q('postind','The Constitution came into force on?',['26 January 1950','26 November 1949','15 August 1947','26 January 1949'],'26 January 1950.');
+Q('postind','The Tashkent Agreement followed the war of?',['1965','1962','1971','1947'],'1965 India–Pakistan war.');
+Q('postind','The Simla Agreement was signed in?',['1972','1966','1971','1974'],'1972.');
+Q('postind','The first summit of the Non-Aligned Movement was held at?',['Belgrade','Bandung','Cairo','New Delhi'],'Belgrade, 1961.');
+Q('postind','Banks were nationalised in?',['1969','1975','1991','1951'],'1969 (14 banks).');
+Q('postind','India’s first nuclear test was in?',['1974','1998','1962','1984'],'Pokhran, 1974.');
+Q('postind','The States Reorganisation Commission was headed by?',['Fazl Ali','K.M. Panikkar','H.N. Kunzru','S.K. Dhar'],'Fazl Ali (members Panikkar and Kunzru).');
+
+/* Art & culture */
+Q('caves','The Kailasa temple is at?',['Ellora','Ajanta','Elephanta','Badami'],'Ellora.');
+Q('caves','The Konark Sun Temple was built by?',['Narasimhadeva I','Rajaraja I','Krishnadevaraya','Anantavarman'],'Narasimhadeva I of the Eastern Gangas.');
+Q('caves','Khajuraho temples were built by the?',['Chandelas','Paramaras','Pratiharas','Solankis'],'Chandelas.');
+Q('caves','The Barabar caves were given to?',['Ajivikas','Jains','Buddhists','Vaishnavas'],'The Ajivikas, Mauryan period.');
+Q('caves','The hanging pillar is at?',['Lepakshi','Hampi','Srisailam','Ramappa'],'Lepakshi, Anantapur district.');
+Q('caves','The Vesara style is a mix of?',['Nagara and Dravida','Indo-Islamic and Nagara','Greek and Indian','Buddhist and Jain'],'Nagara and Dravida.');
+Q('caves','Undavalli caves are in?',['Andhra Pradesh','Maharashtra','Odisha','Karnataka'],'Near Vijayawada, Guntur district.');
+Q('music','Who is called the father of Carnatic music?',['Purandara Dasa','Tyagaraja','Annamacharya','Syama Sastri'],'Purandara Dasa.');
+Q('music','Which is NOT part of the Carnatic trinity?',['Annamacharya','Tyagaraja','Muthuswami Dikshitar','Syama Sastri'],'The trinity is Tyagaraja, Dikshitar, Syama Sastri.');
+Q('music','Tansen was in the court of?',['Akbar','Jahangir','Shah Jahan','Babur'],'Akbar.');
+Q('music','The oldest form of Hindustani vocal music is?',['Dhrupad','Khayal','Thumri','Ghazal'],'Dhrupad.');
+Q('music','Tyagaraja composed mostly in?',['Telugu','Tamil','Sanskrit','Kannada'],'Telugu.');
+Q('dance','Kuchipudi belongs to?',['Andhra Pradesh','Tamil Nadu','Kerala','Odisha'],'Named after Kuchipudi village, Krishna district.');
+Q('dance','Sattriya is the classical dance of?',['Assam','Manipur','Odisha','Kerala'],'Assam.');
+Q('dance','The basic text of Indian dance and drama is?',['Natya Shastra','Abhinaya Darpana','Sangita Ratnakara','Kamasutra'],'Natya Shastra by Bharata Muni.');
+Q('dance','Mohiniyattam is from?',['Kerala','Tamil Nadu','Karnataka','Andhra Pradesh'],'Kerala.');
+Q('dance','Dhimsa is a tribal dance of?',['Araku region, AP','Punjab','Gujarat','Manipur'],'Dhimsa is danced in the Araku valley.');
+Q('crafts','Kalamkari is mainly associated with?',['Srikalahasti and Machilipatnam','Bidar','Channapatna','Pochampally'],'Two AP Kalamkari styles.');
+Q('crafts','Bidriware comes from?',['Karnataka','Andhra Pradesh','Rajasthan','Odisha'],'Bidar, Karnataka.');
+Q('crafts','Etikoppaka toys are made in?',['Andhra Pradesh','Karnataka','Tamil Nadu','Telangana'],'Visakhapatnam district, AP.');
+Q('crafts','Dhokra is a craft of?',['Lost-wax metal casting','Stone carving','Wood inlay','Leather painting'],'Lost-wax casting.');
+Q('crafts','Pochampally ikat is from?',['Telangana','Gujarat','Odisha','Andhra Pradesh'],'Telangana.');
+Q('theatre','Yakshagana is the folk theatre of?',['Karnataka','Kerala','Bengal','Gujarat'],'Karnataka.');
+Q('theatre','Burrakatha is a folk form of?',['Andhra Pradesh','Bengal','Punjab','Assam'],'Andhra Pradesh and Telangana.');
+Q('theatre','Koodiyattam is from?',['Kerala','Tamil Nadu','Odisha','Manipur'],'Kerala; UNESCO intangible heritage.');
+Q('theatre','Tamasha is the folk theatre of?',['Maharashtra','Gujarat','Rajasthan','Uttar Pradesh'],'Maharashtra.');
+Q('puppet','Tholu Bommalata is a?',['Shadow puppet form of AP','String puppet of Rajasthan','Rod puppet of Bengal','Glove puppet of Kerala'],'Leather shadow puppets of AP.');
+Q('puppet','Kathputli is a string puppet form of?',['Rajasthan','Odisha','Kerala','Karnataka'],'Rajasthan.');
+Q('puppet','Pavakoothu is a glove puppet form of?',['Kerala','Tamil Nadu','Bengal','Assam'],'Kerala.');
+Q('puppet','Putul Nachh is a rod puppet form of?',['West Bengal','Bihar','Odisha','Rajasthan'],'West Bengal.');
+Q('martial','Kalaripayattu is from?',['Kerala','Tamil Nadu','Punjab','Manipur'],'Kerala.');
+Q('martial','Thang-ta is from?',['Manipur','Assam','Punjab','Maharashtra'],'Manipur.');
+Q('martial','Gatka is associated with?',['Punjab','Kerala','Maharashtra','Bihar'],'Sikh martial art, Punjab.');
+Q('martial','Silambam is a stick-fighting art of?',['Tamil Nadu','Kerala','Karnataka','Odisha'],'Tamil Nadu.');
+Q('unesco','Ramappa temple became a UNESCO site in?',['2021','2014','2023','2019'],'2021.');
+Q('unesco','Ramappa temple was built by?',['Recharla Rudra','Rudramadevi','Krishnadevaraya','Ganapatideva himself'],'His general Recharla Rudra, 1213.');
+Q('unesco','Which of these was inscribed in 2024?',['Moidams of Assam','Dholavira','Santiniketan','Ramappa'],'Moidams, Charaideo, Assam.');
+Q('unesco','Hoysala temples were inscribed in?',['2023','2021','2019','2024'],'2023.');
+Q('unesco','Which is on UNESCO’s intangible heritage list?',['Kumbh Mela','Tirupati laddu','Kalamkari','Kuchipudi'],'Kumbh Mela, 2017.');
+Q('lang','Telugu was given classical language status in?',['2008','2004','2005','2014'],'2008, with Kannada.');
+Q('lang','The first language to get classical status was?',['Tamil','Sanskrit','Telugu','Kannada'],'Tamil, 2004.');
+Q('lang','The earliest known Telugu inscription is?',['Kalamalla inscription','Bhattiprolu inscription','Nasik inscription','Aihole inscription'],'Kalamalla, Kadapa district, 6th century.');
+Q('lang','Kharosthi script was written?',['Right to left','Left to right','Top to bottom','Both ways'],'Right to left.');
+Q('lang','How many languages are in the Eighth Schedule?',['22','18','24','14'],'22.');
+Q('lang','Who is called the Adikavi of Telugu?',['Nannaya','Tikkana','Potana','Srinatha'],'Nannaya.');
+Q('philo','Samkhya philosophy was founded by?',['Kapila','Kanada','Gautama','Jaimini'],'Kapila.');
+Q('philo','Vaisheshika school, known for atomism, was founded by?',['Kanada','Kapila','Patanjali','Badarayana'],'Kanada.');
+Q('philo','Dvaita was taught by?',['Madhva','Ramanuja','Shankara','Nimbarka'],'Madhvacharya.');
+Q('philo','Charvaka philosophy is?',['Materialist','Theistic','Ritualist','Mystic'],'Materialist (Lokayata).');
+Q('philo','The Yoga Sutras were written by?',['Patanjali','Kapila','Gautama','Vyasa'],'Patanjali.');
+Q('scitech','Who wrote Lilavati?',['Bhaskara II','Aryabhata','Brahmagupta','Varahamihira'],'Bhaskara II.');
+Q('scitech','Sushruta is known for?',['Surgery','Astronomy','Grammar','Metallurgy'],'Sushruta Samhita on surgery.');
+Q('scitech','Brihat Samhita was written by?',['Varahamihira','Aryabhata','Charaka','Brahmagupta'],'Varahamihira.');
+Q('scitech','Jantar Mantar observatories were built by?',['Sawai Jai Singh II','Akbar','Shah Jahan','Raja Man Singh'],'Sawai Jai Singh II.');
+Q('scitech','Rules for working with zero were given by?',['Brahmagupta','Charaka','Panini','Kautilya'],'Brahmagupta.');
+Q('fest','Bathukamma is celebrated in?',['Telangana','Kerala','Assam','Odisha'],'Telangana.');
+Q('fest','Bihu is the festival of?',['Assam','Punjab','Bengal','Manipur'],'Assam.');
+Q('fest','Hornbill festival is held in?',['Nagaland','Mizoram','Sikkim','Meghalaya'],'Nagaland.');
+Q('fest','Ugadi marks the new year for?',['Telugu and Kannada people','Tamils','Bengalis','Punjabis'],'Telugu and Kannada new year.');
+Q('coins','The earliest Indian coins were?',['Punch-marked coins','Gupta dinaras','Kushana gold coins','Indo-Greek coins'],'Punch-marked silver coins.');
+Q('coins','The largest number of gold coins was issued by the?',['Guptas','Kushanas','Mauryas','Satavahanas'],'The Guptas.');
+Q('coins','The rupiya was introduced by?',['Sher Shah Suri','Akbar','Iltutmish','Alauddin Khalji'],'Sher Shah Suri.');
+Q('coins','Ship-type coins show the sea trade of the?',['Satavahanas','Mauryas','Guptas','Kushanas'],'Satavahanas.');
+Q('travellers','Hiuen Tsang visited India during the reign of?',['Harsha','Chandragupta II','Ashoka','Kanishka'],'Harsha.');
+Q('travellers','Marco Polo visited Motupalli during the rule of?',['Rudramadevi','Krishnadevaraya','Ganapatideva','Prataparudra II'],'Rudramadevi.');
+Q('travellers','Ibn Battuta visited the court of?',['Muhammad bin Tughlaq','Alauddin Khalji','Akbar','Firoz Shah'],'Muhammad bin Tughlaq.');
+Q('travellers','Domingo Paes visited Vijayanagara during the reign of?',['Krishnadevaraya','Devaraya II','Harihara I','Sadasiva Raya'],'Krishnadevaraya.');
+Q('travellers','Kitab-ul-Hind was written by?',['Al-Biruni','Ibn Battuta','Amir Khusrau','Abul Fazl'],'Al-Biruni.');
+Q('travellers','Abdur Razzaq visited the court of?',['Devaraya II','Krishnadevaraya','Bukka I','Achyuta Raya'],'Devaraya II.');
+Q('travellers','Fa-Hien came during the reign of?',['Chandragupta II','Harsha','Samudragupta','Skandagupta'],'Chandragupta II.');
+
+/* AP history questions */
+Q('ap-geo','The earliest text to mention the Andhras is?',['Aitareya Brahmana','Rigveda','Arthashastra','Mahabharata'],'The Aitareya Brahmana.');
+Q('ap-geo','Ashokan edicts in AP are found at Erragudi and?',['Rajula Mandagiri','Amaravati','Bhattiprolu','Draksharama'],'Both in Kurnool district.');
+Q('ap-geo','The Kalamalla inscription was issued by the?',['Renati Cholas','Satavahanas','Kakatiyas','Ikshvakus'],'Renati Chola king Dhananjaya.');
+Q('ap-geo','The Greek writer who described the military strength of the Andhras was?',['Megasthenes','Ptolemy','Herodotus','Pliny'],'Megasthenes.');
+Q('ap-geo','Bhattiprolu, known for early Brahmi inscriptions, is in which region?',['Guntur (now Bapatla district)','Kurnool','Srikakulam','Chittoor'],'It was in Guntur district; now in Bapatla district.');
+
+Q('ap-pre','Betamcherla caves are in which district?',['Kurnool','Kadapa','Prakasam','Guntur'],'Kurnool.');
+Q('ap-pre','Megalithic burials are linked with the use of?',['Iron','Copper only','Bronze coins','Steel'],'Iron tools are typical of megaliths.');
+Q('ap-pre','Rock art in AP is found mainly in?',['Kurnool and Kadapa','Krishna and Guntur','Srikakulam and Vizianagaram','Nellore and Prakasam'],'Rayalaseema districts.');
+
+Q('ap-sata','Who founded the Satavahana dynasty?',['Simuka','Gautamiputra Satakarni','Hala','Satakarni I'],'Simuka.');
+Q('ap-sata','Gathasaptasati was compiled by?',['Hala','Simuka','Yajna Sri','Pulumavi'],'King Hala, in Prakrit.');
+Q('ap-sata','The Nasik inscription praising Gautamiputra Satakarni was issued by?',['His mother Gautami Balasri','His son Pulumavi','Rudradaman','Kharavela'],'Gautami Balasri.');
+Q('ap-sata','Satavahana kings used names based on their?',['Mothers','Fathers','Gods','Capitals'],'Metronymics like Gautamiputra.');
+Q('ap-sata','The last great Satavahana ruler was?',['Yajna Sri Satakarni','Hala','Simuka','Gautamiputra Satakarni'],'Yajna Sri Satakarni.');
+Q('ap-sata','Satavahana capital Pratishthana is now?',['Paithan','Amaravati','Nasik','Kolhapur'],'Paithan, Maharashtra.');
+Q('ap-sata','Gautamiputra Satakarni defeated the Shaka ruler?',['Nahapana','Rudradaman','Chashtana','Menander'],'Nahapana.');
+Q('ap-sata','The Amaravati Stupa is in?',['Guntur district','Kurnool','Nellore','Srikakulam'],'Historically Guntur district.');
+
+Q('ap-ikshvaku','The Ikshvaku capital was?',['Vijayapuri','Pratishthana','Vengi','Warangal'],'Vijayapuri, Nagarjunakonda.');
+Q('ap-ikshvaku','Who founded the Ikshvaku dynasty?',['Vasishthiputra Santamula','Virapurushadatta','Rudrapurushadatta','Ehuvala Chantamula'],'Santamula (Chantamula).');
+Q('ap-ikshvaku','Buddhism reached its height under which Ikshvaku ruler?',['Virapurushadatta','Santamula','Rudrapurushadatta','Ehuvala'],'Virapurushadatta.');
+Q('ap-ikshvaku','Nagarjunakonda monuments were moved because of?',['Nagarjuna Sagar dam','Earthquake','Railway line','Floods of 1977'],'The dam reservoir flooded the valley.');
+Q('ap-ikshvaku','Chantisri is known for?',['Gifts to Buddhism','Building forts','Writing poetry','Naval wars'],'An Ikshvaku royal woman who donated to Buddhism.');
+
+Q('ap-postik','The Salankayanas ruled from?',['Vengi','Kondaveedu','Warangal','Hampi'],'Vengi (Pedavegi).');
+Q('ap-postik','The greatest Vishnukundin ruler was?',['Madhava Varma II','Indra Varma','Govinda Varma','Vikramendra Varma'],'Madhava Varma II.');
+Q('ap-postik','Undavalli caves are linked to the?',['Vishnukundins','Kakatiyas','Reddis','Qutb Shahis'],'Vishnukundins.');
+Q('ap-postik','Which dynasty ended Vishnukundin rule?',['Badami Chalukyas','Cholas','Pallavas','Rashtrakutas'],'Pulakesin II conquered Vengi; his brother founded the Eastern Chalukyas.');
+
+Q('ap-chalukya','The Eastern Chalukya dynasty was founded in?',['624 CE','1019 CE','1070 CE','575 CE'],'624 CE by Kubja Vishnuvardhana.');
+Q('ap-chalukya','Nannaya began the Telugu Mahabharatam under?',['Rajaraja Narendra','Kulottunga I','Gunaga Vijayaditya','Kubja Vishnuvardhana'],'Rajaraja Narendra.');
+Q('ap-chalukya','Rajaraja Narendra’s capital was?',['Rajamahendravaram','Vengi','Warangal','Kondaveedu'],'Rajahmundry.');
+Q('ap-chalukya','Kulottunga I merged Vengi with the?',['Chola empire','Kakatiya kingdom','Rashtrakuta empire','Pallava kingdom'],'Cholas, 1070.');
+Q('ap-chalukya','The Eastern Chalukyas fought long wars with the?',['Rashtrakutas','Mughals','Qutb Shahis','Satavahanas'],'Rashtrakutas.');
+Q('ap-chalukya','Kubja Vishnuvardhana was the brother of?',['Pulakesin II','Harsha','Narasimhavarman I','Kirtivarman'],'Pulakesin II.');
+
+Q('ap-kakatiya','The Thousand Pillar temple at Hanumakonda was built by?',['Rudradeva','Ganapatideva','Rudramadevi','Prataparudra II'],'Rudradeva (Prataparudra I), 1163.');
+Q('ap-kakatiya','Who moved the Kakatiya capital to Orugallu?',['Ganapatideva','Rudradeva','Beta I','Prola II'],'Ganapatideva.');
+Q('ap-kakatiya','Rudramadevi ruled from?',['1262 to 1289','1199 to 1262','1289 to 1323','1158 to 1195'],'1262–1289.');
+Q('ap-kakatiya','The last Kakatiya ruler was?',['Prataparudra II','Rudramadevi','Ganapatideva','Mahadeva'],'Prataparudra II.');
+Q('ap-kakatiya','The Kakatiya port visited by Marco Polo was?',['Motupalli','Machilipatnam','Visakhapatnam','Kalingapatnam'],'Motupalli.');
+Q('ap-kakatiya','The Kakatiya military fief system was called?',['Nayankara','Iqta','Mansabdari','Jagirdari'],'Nayankara.');
+Q('ap-kakatiya','Correct order of Kakatiya rulers?',['Rudradeva, Ganapatideva, Rudramadevi, Prataparudra II','Ganapatideva, Rudradeva, Prataparudra II, Rudramadevi','Rudramadevi, Ganapatideva, Rudradeva, Prataparudra II','Rudradeva, Rudramadevi, Ganapatideva, Prataparudra II'],'“Rudra Made Ganapati’s Rudrama Proud.”');
+Q('ap-kakatiya','The Kakatiyas fell in?',['1323','1336','1309','1347'],'1323, to Ulugh Khan.');
+
+Q('ap-reddi','The Reddi kingdom was founded by?',['Prolaya Vema Reddi','Kumaragiri Reddi','Pedakomati Vema Reddi','Kataya Vema'],'Prolaya Vema Reddi, 1325.');
+Q('ap-reddi','The first Reddi capital was?',['Addanki','Kondaveedu','Rajahmundry','Warangal'],'Addanki; later Kondaveedu.');
+Q('ap-reddi','Srinatha was the court poet of?',['Pedakomati Vema Reddi','Krishnadevaraya','Rajaraja Narendra','Ganapatideva'],'Pedakomati Vema Reddi.');
+Q('ap-reddi','Who recaptured Warangal from the Tughlaqs?',['Kapaya Nayaka','Prolaya Vema Reddi','Harihara I','Singama Nayaka'],'Kapaya Nayaka, about 1336.');
+Q('ap-reddi','The Recharla Velamas ruled from?',['Rachakonda and Devarakonda','Kondaveedu and Addanki','Penukonda and Chandragiri','Vengi and Rajahmundry'],'Rachakonda and Devarakonda.');
+Q('ap-reddi','Sarvajna Singabhupala was a?',['Recharla Velama king and scholar','Reddi poet','Kakatiya general','Vijayanagara minister'],'A Recharla Velama king.');
+
+Q('ap-vijay','The Vijayanagara empire was founded in?',['1336','1347','1323','1509'],'1336.');
+Q('ap-vijay','Who founded Vijayanagara?',['Harihara I and Bukka I','Krishnadevaraya','Devaraya II','Saluva Narasimha'],'Harihara and Bukka, with Vidyaranya.');
+Q('ap-vijay','Krishnadevaraya belonged to the?',['Tuluva dynasty','Sangama dynasty','Saluva dynasty','Aravidu dynasty'],'Tuluva.');
+Q('ap-vijay','Amuktamalyada was written by?',['Krishnadevaraya','Allasani Peddana','Tenali Ramakrishna','Srinatha'],'Krishnadevaraya, in Telugu.');
+Q('ap-vijay','Who is called Andhra Kavita Pitamaha?',['Allasani Peddana','Nannaya','Tikkana','Potana'],'Allasani Peddana.');
+Q('ap-vijay','The Battle of Talikota was fought in?',['1565','1526','1509','1646'],'1565.');
+Q('ap-vijay','After Talikota, the capital moved to?',['Penukonda','Kondaveedu','Warangal','Golconda'],'Penukonda, later Chandragiri.');
+Q('ap-vijay','Correct order of Vijayanagara dynasties?',['Sangama, Saluva, Tuluva, Aravidu','Saluva, Sangama, Aravidu, Tuluva','Tuluva, Sangama, Saluva, Aravidu','Sangama, Tuluva, Saluva, Aravidu'],'“Some Sweet Tasty Apples.”');
+Q('ap-vijay','Krishnadevaraya’s title was?',['Andhra Bhoja','Kavisarvabhauma','Andhra Kesari','Malki Bharama'],'Andhra Bhoja.');
+Q('ap-vijay','The greatest Sangama ruler was?',['Devaraya II','Harihara I','Bukka I','Virupaksha II'],'Devaraya II.');
+
+Q('ap-qutb','The Qutb Shahi dynasty was founded by?',['Sultan Quli','Ibrahim Qutb Shah','Muhammad Quli','Abdullah Qutb Shah'],'Sultan Quli, 1518.');
+Q('ap-qutb','Charminar was built in?',['1591','1518','1687','1724'],'1591, by Muhammad Quli Qutb Shah.');
+Q('ap-qutb','Telugu poets called which Qutb Shahi ruler Malki Bharama?',['Ibrahim Qutb Shah','Sultan Quli','Tana Shah','Muhammad Quli'],'Ibrahim Qutb Shah.');
+Q('ap-qutb','The last Qutb Shahi ruler was?',['Abul Hasan Tana Shah','Abdullah Qutb Shah','Muhammad Qutb Shah','Jamshid'],'Tana Shah.');
+Q('ap-qutb','Madanna and Akkanna were ministers of?',['Tana Shah','Krishnadevaraya','Aurangzeb','Nizam Ali Khan'],'Abul Hasan Tana Shah.');
+Q('ap-qutb','Bhakta Ramadasu built the temple at?',['Bhadrachalam','Srisailam','Tirupati','Simhachalam'],'Bhadrachalam.');
+Q('ap-qutb','The Golconda diamond mines were at?',['Kollur','Kurnool','Kolar','Panna'],'Kollur on the Krishna.');
+
+Q('ap-asaf','The Asaf Jahi dynasty was founded in?',['1724','1687','1748','1798'],'1724.');
+Q('ap-asaf','The Ceded Districts were given to the British in?',['1800','1766','1798','1853'],'1800.');
+Q('ap-asaf','Which is NOT one of the Ceded Districts?',['Nellore','Bellary','Cuddapah','Anantapur'],'They were Bellary, Cuddapah, Kurnool and Anantapur.');
+Q('ap-asaf','The last Nizam of Hyderabad was?',['Mir Osman Ali Khan','Mir Mahbub Ali Khan','Nizam Ali Khan','Afzal-ud-Daulah'],'Mir Osman Ali Khan.');
+Q('ap-asaf','Osmania University was founded in?',['1918','1948','1857','1926'],'1918.');
+Q('ap-asaf','The Northern Circars were first given to the?',['French','British','Dutch','Marathas'],'To the French (Bussy), 1753.');
+
+Q('ap-british','Dowleswaram anicut was built by?',['Arthur Cotton','Thomas Munro','C.P. Brown','Mackenzie'],'Sir Arthur Cotton, 1852.');
+Q('ap-british','The Battle of Bobbili was fought in?',['1757','1765','1800','1857'],'1757.');
+Q('ap-british','Who introduced ryotwari in the Ceded Districts?',['Thomas Munro','Cornwallis','Arthur Cotton','Dalhousie'],'Thomas Munro.');
+Q('ap-british','Uyyalawada Narasimha Reddy revolted in?',['1846','1857','1922','1800'],'1846.');
+Q('ap-british','The “Golden Farman” (1632) was granted to the English by?',['Golconda Sultan','Mughal emperor','Nizam','Vijayanagara king'],'The Golconda Sultan.');
+Q('ap-british','C.P. Brown is known for work on?',['Telugu dictionaries and Vemana','Godavari irrigation','Land revenue','Railways'],'Telugu scholarship.');
+
+Q('ap-reform','The first widow remarriage in Andhra was arranged by Veeresalingam in?',['1881','1856','1874','1892'],'11 December 1881, Rajahmundry.');
+Q('ap-reform','Kanyasulkam was written by?',['Gurajada Apparao','Veeresalingam','Gidugu Ramamurthy','Chilakamarthi'],'Gurajada Apparao, 1892.');
+Q('ap-reform','Telugu Language Day (29 August) marks the birthday of?',['Gidugu Ramamurthy','Gurajada Apparao','Veeresalingam','Potti Sriramulu'],'Gidugu Ramamurthy.');
+Q('ap-reform','Viveka Vardhini was started by?',['Kandukuri Veeresalingam','Komarraju Lakshmana Rao','Gurajada','Raghupati Venkataratnam'],'Veeresalingam.');
+Q('ap-reform','Malapalli was written by?',['Unnava Lakshminarayana','Gurram Jashuva','Sri Sri','Viswanatha'],'Unnava Lakshminarayana.');
+Q('ap-reform','Andhra Mahila Sabha was founded by?',['Durgabai Deshmukh','Sarojini Naidu','Annie Besant','Rukmini Lakshmipathi'],'Durgabai Deshmukh, 1937.');
+Q('ap-reform','Vignana Chandrika Mandali was founded by?',['Komarraju Lakshmana Rao','Gidugu','Veeresalingam','Kasinathuni Nageswara Rao'],'Komarraju Lakshmana Rao.');
+
+Q('ap-national','Chirala–Perala movement was led by?',['Duggirala Gopalakrishnayya','Tanguturi Prakasam','Alluri Sitarama Raju','Konda Venkatappayya'],'Duggirala Gopalakrishnayya, 1921.');
+Q('ap-national','Who is called Andhra Kesari?',['Tanguturi Prakasam','Potti Sriramulu','Alluri Sitarama Raju','Pingali Venkayya'],'Tanguturi Prakasam.');
+Q('ap-national','The national flag’s basic design is credited to?',['Pingali Venkayya','Sarojini Naidu','Annie Besant','Konda Venkatappayya'],'Pingali Venkayya.');
+Q('ap-national','Palnadu forest satyagraha is linked to?',['Kanneganti Hanumanthu','Duggirala','Prakasam','Ayyadevara'],'Kanneganti Hanumanthu.');
+Q('ap-national','Alluri Sitarama Raju died on?',['7 May 1924','13 April 1919','15 December 1952','10 May 1857'],'7 May 1924.');
+Q('ap-national','Andhra Jateeya Kalasala was founded at?',['Machilipatnam','Rajahmundry','Guntur','Kakinada'],'Machilipatnam, 1910.');
+Q('ap-national','Which leader’s visit in 1907 sparked the Vandemataram movement in Andhra?',['Bipin Chandra Pal','Tilak','Gandhi','Lajpat Rai'],'Bipin Chandra Pal.');
+
+Q('ap-andhra','The first Andhra Mahasabha was held at?',['Bapatla','Guntur','Nellore','Kurnool'],'Bapatla, 1913.');
+Q('ap-andhra','The Sri Bagh Pact was signed in?',['1937','1913','1953','1956'],'16 November 1937.');
+Q('ap-andhra','Potti Sriramulu died on?',['15 December 1952','1 October 1953','19 October 1952','1 November 1956'],'15 December 1952.');
+Q('ap-andhra','Andhra State was formed on?',['1 October 1953','1 November 1956','2 June 2014','26 January 1950'],'1 October 1953.');
+Q('ap-andhra','The capital of Andhra State (1953) was?',['Kurnool','Hyderabad','Guntur','Vijayawada'],'Kurnool.');
+Q('ap-andhra','The first Chief Minister of Andhra State was?',['Tanguturi Prakasam','Neelam Sanjiva Reddy','Bezawada Gopala Reddy','Burgula Ramakrishna Rao'],'Tanguturi Prakasam.');
+Q('ap-andhra','The Sri Bagh Pact was signed at the house of?',['Kasinathuni Nageswara Rao','Pattabhi Sitaramayya','Konda Venkatappayya','Potti Sriramulu'],'His house “Sri Bagh” in Madras.');
+
+Q('ap-hyd','Operation Polo took place in?',['September 1948','August 1947','October 1953','November 1956'],'13–17 September 1948.');
+Q('ap-hyd','The Razakars were led by?',['Qasim Razvi','Nizam Ali Khan','Ravi Narayana Reddy','Salar Jung'],'Qasim Razvi.');
+Q('ap-hyd','The first Andhra Mahasabha conference in Nizam territory was at?',['Jogipet','Bapatla','Warangal','Nalgonda'],'Jogipet, 1930.');
+Q('ap-hyd','The first elected Chief Minister of Hyderabad State was?',['Burgula Ramakrishna Rao','Neelam Sanjiva Reddy','Ravi Narayana Reddy','Swami Ramananda Tirtha'],'Burgula Ramakrishna Rao, 1952.');
+Q('ap-hyd','The Telangana Armed Struggle lasted from?',['1946 to 1951','1930 to 1937','1953 to 1956','1969 to 1973'],'1946–51.');
+
+Q('ap-1956','Andhra Pradesh was formed on?',['1 November 1956','1 October 1953','2 June 2014','26 January 1950'],'1 November 1956.');
+Q('ap-1956','The first Chief Minister of Andhra Pradesh was?',['Neelam Sanjiva Reddy','Tanguturi Prakasam','Burgula Ramakrishna Rao','Kasu Brahmananda Reddy'],'Neelam Sanjiva Reddy.');
+Q('ap-1956','The Gentlemen’s Agreement was signed on?',['20 February 1956','1 November 1956','16 November 1937','1 October 1953'],'20 February 1956.');
+Q('ap-1956','Mulki rules were meant to protect?',['Local jobs in Telangana','Coastal ports','Rayalaseema irrigation','Telugu language'],'Local jobs.');
+
+Q('ap-after','Article 371D was added by which amendment?',['32nd','42nd','7th','73rd'],'32nd Amendment, 1973.');
+Q('ap-after','The Jai Andhra movement took place in?',['1972','1969','1956','1983'],'1972.');
+Q('ap-after','The Six-Point Formula was announced in?',['1973','1969','1956','1985'],'1973.');
+Q('ap-after','The Telugu Desam Party was founded by?',['N.T. Rama Rao','P.V. Narasimha Rao','Chandrababu Naidu','Marri Chenna Reddy'],'NTR, 1982.');
+Q('ap-after','The 1969 Telangana agitation was led politically by?',['Marri Chenna Reddy','Kakani Venkataratnam','NTR','Tanguturi Prakasam'],'Telangana Praja Samithi under Marri Chenna Reddy.');
+
+Q('ap-2014','Telangana was formed on?',['2 June 2014','1 November 2014','2 October 2014','15 August 2014'],'2 June 2014.');
+Q('ap-2014','Hyderabad was the common capital for up to?',['10 years','5 years','15 years','3 years'],'Ten years.');
+Q('ap-2014','The Srikrishna Committee on Telangana reported in?',['2010','2014','2004','2001'],'December 2010.');
+Q('ap-2014','Which project was made a national project in the 2014 Act?',['Polavaram','Nagarjuna Sagar','Srisailam','Telugu Ganga'],'Polavaram.');
+
+Q('ap-culture','The Kavitrayam translated which epic into Telugu?',['Mahabharata','Ramayana','Bhagavata','Puranas'],'Nannaya, Tikkana, Errana.');
+Q('ap-culture','Andhra Mahabhagavatam was written by?',['Bammera Potana','Tikkana','Srinatha','Errana'],'Potana.');
+Q('ap-culture','The first Telugu Jnanpith award went to?',['Viswanatha Satyanarayana','C. Narayana Reddy','Sri Sri','Ravuri Bharadwaja'],'Viswanatha Satyanarayana, for Ramayana Kalpavrukshamu.');
+Q('ap-culture','Maha Prasthanam was written by?',['Sri Sri','Gurajada','Jashuva','Devulapalli'],'Sri Sri.');
+Q('ap-culture','Who is called Kavisarvabhauma?',['Srinatha','Peddana','Potana','Nannaya'],'Srinatha.');
+Q('ap-culture','Correct order of the Kavitrayam?',['Nannaya, Tikkana, Errana','Tikkana, Nannaya, Errana','Errana, Tikkana, Nannaya','Nannaya, Errana, Tikkana'],'“Not Too Easy.”');
+
+/* Kings & Kingdoms. Each dynasty: id, name, te, years, capital, hook, kings [[name, years, fact]] */
+const AP_ORDER_HOOK = '“Sita Is Very Clever, Krishna Reads Very Quietly, Not Bored” — Satavahana, Ikshvaku, Vishnukundin, Chalukya (Eastern), Kakatiya, Reddi, Vijayanagara, Qutb Shahi, Nizam (Asaf Jahi), British.';
+
+const DYN_AP = [
+ {id:'sata',name:'Satavahanas',te:'శాతవాహనులు',years:'c. 1st century BCE – early 3rd century CE (some date the start to the 3rd century BCE)',capital:'Pratishthana (Paithan); Dhanyakataka (Amaravati)',
+  hook:'“S-K-S-H-G-V-Y”: “Simuka Kept Satakarni’s Hala Giving Very Young” — learn just the four bold ones: Simuka, Hala, Gautamiputra, Yajna Sri.',
+  kings:[['Simuka','founder','Founded the dynasty after Mauryan decline'],['Krishna (Kanha)','','Brother of Simuka'],['Satakarni I','','Naneghat inscription of his queen Naganika; performed Ashvamedha'],['Hala','','Compiled Gathasaptasati in Prakrit'],['Gautamiputra Satakarni','c. 106–130 CE','Greatest king; defeated Nahapana; Nasik inscription'],['Vasishthiputra Pulumavi','c. 130–154 CE','Son of Gautamiputra; Amaravati linked to him'],['Yajna Sri Satakarni','c. 165–194 CE','Last strong ruler; ship coins']]},
+ {id:'iksh',name:'Ikshvakus',te:'ఇక్ష్వాకులు',years:'3rd – 4th century CE',capital:'Vijayapuri (Nagarjunakonda)',
+  hook:'“Santa, Vira, Ehu, Rudra” — S-V-E-R, like “SaVER”.',
+  kings:[['Vasishthiputra Santamula','founder','Vedic sacrifices, Ashvamedha'],['Virapurushadatta','','Buddhism at its height; royal women donate'],['Ehuvala Chantamula','','Hindu temples also built'],['Rudrapurushadatta','last','Last known ruler']]},
+ {id:'small',name:'Brihatphalayanas, Anandagotrikas, Salankayanas',te:'బృహత్పలాయనులు, ఆనందగోత్రికులు, శాలంకాయనులు',years:'c. 4th – 5th century CE',capital:'Kodur; Kandarapura; Vengi (Pedavegi)',
+  hook:'“B-A-S” before V: “Brave Andhras Stay” … then Vishnukundins.',
+  kings:[['Jayavarma','Brihatphalayana','Known from the Kodur grant'],['Kandara','Anandagotrika','Ruled the Guntur area'],['Hastivarma, Nandivarma','Salankayana','Ruled from Vengi near Eluru']]},
+ {id:'vishnu',name:'Vishnukundins',te:'విష్ణుకుండినులు',years:'c. 5th century – 624 CE',capital:'Indrapalanagara, later towards the coast',
+  hook:'“Indra Began, Madhava Best.” (The order of the middle kings is debated.)',
+  kings:[['Indra Varma','founder','Founded the dynasty'],['Govinda Varma','','Supported Buddhist viharas too'],['Madhava Varma II','greatest','Many Ashvamedhas; widest kingdom'],['Vikramendra Varma, Indra Bhattaraka Varma','later','Wars with neighbours; ended by Pulakesin II’s conquest']]},
+ {id:'echal',name:'Eastern Chalukyas of Vengi',te:'వేంగి తూర్పు చాళుక్యులు',years:'624 – c. 1070 CE',capital:'Vengi; later Rajamahendravaram',
+  hook:'“Kubja Began, Gunaga Fought, Raja Wrote, Kulottunga Merged.”',
+  kings:[['Kubja Vishnuvardhana','624–641','Founder; brother of Pulakesin II'],['Jayasimha I','','Consolidated the kingdom'],['Vijayaditya II (Narendra Mrigaraja)','','Fought the Rashtrakutas; built temples'],['Gunaga Vijayaditya III','9th century','Greatest warrior king'],['Chalukya Bhima I','','Linked to the Draksharama and Samarlakota (Kumararama) temples'],['Danarnava','','After him came a period of Telugu Choda interruption'],['Saktivarma I, Vimaladitya','','Restored with Chola help; Chola marriages'],['Rajaraja Narendra','1019–1061','Nannaya’s Telugu Mahabharatam; capital Rajahmundry'],['Kulottunga I (Rajendra Chalukya)','1070','Merged Vengi into the Chola empire']]},
+ {id:'kaka',name:'Kakatiyas',te:'కాకతీయులు',years:'c. 1000 (as feudatories); independent 1158/1163 – 1323',capital:'Hanumakonda, then Orugallu (Warangal)',
+  hook:'Feudatories “B-P-B-P”: Beta, Prola, Beta, Prola. Then “Rudra Made Ganapati’s Rudrama Proud.”',
+  kings:[['Beta I','feudatory','Early chief under the Kalyani Chalukyas'],['Prola I','feudatory',''],['Beta II','feudatory',''],['Prola II','died 1158','Last feudatory; laid ground for independence'],['Rudradeva (Prataparudra I)','1158–1195','Independence; Thousand Pillar temple (1163)'],['Mahadeva','1195–1199','Brief rule; died in war'],['Ganapatideva','1199–1262','Moved capital to Orugallu; Motupalli; Ramappa (1213) built by his general'],['Rudramadevi','1262–1289','Woman ruler; Marco Polo’s visit'],['Prataparudra II','1289–1323','Last; defeated by Ulugh Khan in 1323']]},
+ {id:'musu',name:'Musunuri Nayakas',te:'ముసునూరి నాయకులు',years:'1325 – 1368',capital:'Warangal (after recapture)',
+  hook:'“Prolaya Planned, Kapaya Captured Warangal.”',
+  kings:[['Prolaya Nayaka','1325–c. 1333','United Nayaka chiefs against the Tughlaqs'],['Kapaya Nayaka','c. 1333–1368','Recaptured Warangal; killed by Recharla Velamas at Bhimavaram (1368)']]},
+ {id:'reddi',name:'Reddi Kingdom (Kondaveedu)',te:'రెడ్డి రాజ్యం (కొండవీడు)',years:'1325 – 1424 (Rajahmundry branch to c. 1448)',capital:'Addanki, then Kondaveedu',
+  hook:'“Prolaya, Anavota, Anavema, Kumaragiri, Pedakomati, Racha” — “Pretty Ants Always Keep Peanuts Ready.”',
+  kings:[['Prolaya Vema Reddi','1325–1353','Founder; capital Addanki'],['Anavota Reddi','1353–1364','Moved capital to Kondaveedu'],['Anavema Reddi','1364–1386','Expanded kingdom'],['Kumaragiri Reddi','1386–1402','Patron of dance and the arts'],['Pedakomati Vema Reddi','1402–1420','Srinatha was his court poet'],['Racha Vema Reddi','1420–1424','Last; kingdom absorbed']]},
+ {id:'velama',name:'Recharla Velamas',te:'రేచర్ల వెలమలు',years:'14th – 15th century',capital:'Rachakonda and Devarakonda',
+  hook:'“Rachakonda Rivals of Reddis.”',
+  kings:[['Singama Nayaka I','','Founder of Velama power'],['Anapota Nayaka','','Defeated Kapaya Nayaka (1368)'],['Sarvajna Singabhupala','','Scholar-king; wrote Rasarnava Sudhakara']]},
+ {id:'vijay',name:'Vijayanagara Empire',te:'విజయనగర సామ్రాజ్యం',years:'1336 – c. 1646',capital:'Vijayanagara (Hampi); after 1565 Penukonda, then Chandragiri',
+  hook:'Four dynasties “Some Sweet Tasty Apples” — Sangama, Saluva, Tuluva, Aravidu.',
+  kings:[['Harihara I','1336–1356','Sangama; founder with brother Bukka'],['Bukka I','1356–1377','Sangama; expanded the empire'],['Harihara II','1377–1404','Sangama; expanded the empire further'],['Devaraya I','1406–1422','Sangama; Nicolo Conti visited'],['Devaraya II','c. 1424–1446','Sangama; greatest of the line; Abdur Razzaq visited'],['Saluva Narasimha','1485–1491','Saluva; saved the empire'],['Vira Narasimha','1505–1509','Tuluva; founder of Tuluva line'],['Krishnadevaraya','1509–1529','Tuluva; Amuktamalyada; Ashtadiggajas; Paes and Nuniz'],['Achyuta Deva Raya','1529–1542','Tuluva'],['Sadasiva Raya','1542–1570','Tuluva; Aliya Rama Raya held real power; Talikota 1565'],['Tirumala','1570–1572','Aravidu; capital Penukonda'],['Venkata II (Venkatapati Raya)','1586–1614','Aravidu; Penukonda and Chandragiri'],['Sriranga III','to c. 1646','Aravidu; last ruler']]},
+ {id:'qutb',name:'Qutb Shahis of Golconda',te:'గోల్కొండ కుతుబ్ షాహీలు',years:'1518 – 1687',capital:'Golconda; Hyderabad from 1591',
+  hook:'“Sultan Jumped, Subhan Slipped, Ibrahim Inspired, Muhammad Made Hyderabad, Muhammad, Abdullah, Abul lost.”',
+  kings:[['Sultan Quli Qutb Shah','1518–1543','Founder'],['Jamshid','1543–1550',''],['Subhan Quli','1550','Child ruler, brief'],['Ibrahim Qutb Shah','1550–1580','“Malki Bharama”; patron of Telugu poets'],['Muhammad Quli Qutb Shah','1580–1612','Founded Hyderabad; Charminar (1591); Urdu poet'],['Muhammad Qutb Shah','1612–1626','Mecca Masjid begun'],['Abdullah Qutb Shah','1626–1672','Accepted Mughal overlordship'],['Abul Hasan Tana Shah','1672–1687','Last; ministers Madanna and Akkanna; Aurangzeb annexed']]},
+ {id:'asaf',name:'Asaf Jahis (Nizams)',te:'అసఫ్ జాహీలు (నిజాంలు)',years:'1724 – 1948',capital:'Aurangabad, then Hyderabad',
+  hook:'Seven numbered Nizams (Asaf Jah I to VII). Learn: I founded, II subsidiary, VI Mahbub, VII Osman last.',
+  kings:[['Nizam-ul-Mulk (Asaf Jah I)','1724–1748','Founder'],['Nasir Jung, Muzaffar Jung','1748–1751','Succession war with French and British involvement'],['Salabat Jung','1751–1762','Gave Northern Circars to the French (1753)'],['Nizam Ali Khan (Asaf Jah II)','1762–1803','Subsidiary Alliance (1798); Ceded Districts (1800)'],['Sikandar Jah (III)','1803–1829',''],['Nasir-ud-Daulah (IV)','1829–1857',''],['Afzal-ud-Daulah (V)','1857–1869','Salar Jung I as reforming minister'],['Mir Mahbub Ali Khan (VI)','1869–1911',''],['Mir Osman Ali Khan (VII)','1911–1948','Osmania University; Operation Polo ended his rule']]},
+ {id:'modern',name:'Modern Andhra (states)',te:'ఆధునిక ఆంధ్ర',years:'1953 – today',capital:'Kurnool (1953); Hyderabad (1956–2014); Amaravati (residual AP)',
+  hook:'“53 Kurnool, 56 Hyderabad, 2014 two states.”',
+  kings:[['Andhra State','1 Oct 1953','CM Tanguturi Prakasam; capital Kurnool'],['Andhra Pradesh','1 Nov 1956','CM Neelam Sanjiva Reddy; capital Hyderabad'],['Article 371D','1973','After Jai Andhra and Telangana agitations'],['Telangana formed','2 Jun 2014','AP Reorganisation Act 2014']]}
+];
+
+const AP_SIDE = [
+ ['c. 1st c. BCE – 3rd c. CE','Satavahanas','Whole Deccan'],
+ ['3rd – 4th c. CE','Ikshvakus','Krishna valley'],
+ ['4th – 5th c.','Brihatphalayanas, Anandagotrikas, Salankayanas','Coastal Andhra'],
+ ['5th c. – 624','Vishnukundins','Coastal Andhra and Telangana'],
+ ['6th – 8th c.','Renati Cholas (alongside)','Rayalaseema'],
+ ['624 – 1070','Eastern Chalukyas','Vengi (coast)'],
+ ['1158 – 1323','Kakatiyas','Telangana and most Telugu land'],
+ ['1325 – 1368','Musunuri Nayakas','Telangana'],
+ ['1325 – 1448','Reddis','Coastal Andhra'],
+ ['14th – 15th c.','Recharla Velamas','Rachakonda'],
+ ['1336 – 1646','Vijayanagara','Rayalaseema and south'],
+ ['1347 – 1518','Bahmanis (alongside)','Telangana'],
+ ['1518 – 1687','Qutb Shahis','Golconda'],
+ ['1687 – 1724','Mughals','Deccan subah'],
+ ['1724 – 1948','Asaf Jahis','Hyderabad State'],
+ ['1766 / 1800 – 1947','British','Circars and Ceded Districts'],
+ ['1953 / 1956 / 2014','Andhra State / AP / two states','Telugu states']
+];
+
+const DYN_IN = [
+ {id:'maurya',name:'Mauryas',te:'మౌర్యులు',years:'c. 322 – 185 BCE',capital:'Pataliputra',hook:'“C-B-A”: Chandragupta, Bindusara, Ashoka.',
+  kings:[['Chandragupta Maurya','c. 322–298 BCE','Founder; Kautilya; Megasthenes'],['Bindusara','c. 298–273 BCE','Called Amitraghata'],['Ashoka','c. 268–232 BCE','Kalinga war; Dhamma'],['Brihadratha','to c. 185 BCE','Last; killed by Pushyamitra Shunga']]},
+ {id:'gupta',name:'Guptas',te:'గుప్తులు',years:'c. 320 – 550 CE',capital:'Pataliputra; Ujjain',hook:'“Clever Samudra Chose Kind Skanda.”',
+  kings:[['Chandragupta I','c. 320–335','Founder of imperial line; Gupta era 320 CE'],['Samudragupta','c. 335–375','Allahabad pillar; Napoleon of India'],['Chandragupta II','c. 375–415','Vikramaditya; Fa-Hien'],['Kumaragupta I','c. 415–455','Nalanda'],['Skandagupta','c. 455–467','Fought the Huns']]},
+ {id:'sultan',name:'Delhi Sultanate',te:'ఢిల్లీ సుల్తానులు',years:'1206 – 1526',capital:'Delhi; Agra (Lodis)',hook:'“Some Kings Took Sweet Lassi” — Slave, Khalji, Tughlaq, Sayyid, Lodi.',
+  kings:[['Slave (Mamluk)','1206–1290','Aibak, Iltutmish, Razia, Balban'],['Khalji','1290–1320','Jalaluddin, Alauddin'],['Tughlaq','1320–1414','Ghiyasuddin, Muhammad bin Tughlaq, Firoz Shah'],['Sayyid','1414–1451','Khizr Khan'],['Lodi','1451–1526','Bahlul, Sikandar, Ibrahim']]},
+ {id:'mughal',name:'Mughals',te:'మొఘలులు',years:'1526 – 1857',capital:'Agra; Fatehpur Sikri; Delhi',hook:'“Black Horse Ate Juicy Sweet Apples.”',
+  kings:[['Babur','1526–1530','Panipat I, Khanwa'],['Humayun','1530–1540; 1555–1556','Lost to Sher Shah; returned'],['Akbar','1556–1605','Mansabdari; Din-i-Ilahi'],['Jahangir','1605–1627','Nur Jahan; Thomas Roe'],['Shah Jahan','1628–1658','Taj Mahal'],['Aurangzeb','1658–1707','Annexed Golconda 1687'],['Bahadur Shah Zafar','1837–1857','Last; exiled after 1857']]},
+ {id:'sikh',name:'Sikh Gurus',te:'సిక్కు గురువులు',years:'1469 – 1708',capital:'—',hook:'“Nanak Angad Amar Ram, Arjan Hargobind Har Rai, Har Krishan Tegh Gobind.”',
+  kings:[['Guru Nanak','1st','Founder'],['Guru Angad','2nd','Gurmukhi'],['Guru Amar Das','3rd','Manji system; strengthened langar'],['Guru Ram Das','4th','Founded Amritsar'],['Guru Arjan','5th','Adi Granth 1604; executed 1606'],['Guru Hargobind','6th','Akal Takht'],['Guru Har Rai','7th',''],['Guru Har Krishan','8th','Child guru'],['Guru Tegh Bahadur','9th','Executed 1675'],['Guru Gobind Singh','10th','Khalsa 1699']]},
+ {id:'gg',name:'Governors-General and Viceroys',te:'గవర్నర్ జనరల్స్, వైస్రాయ్‌లు',years:'1773 – 1947',capital:'Calcutta; Delhi from 1911',hook:'Pick 12 to remember: Hastings, Cornwallis, Wellesley, Bentinck, Dalhousie, Canning, Lytton, Ripon, Curzon, Irwin, Linlithgow, Mountbatten — “Hot Coffee With Biscuits Delights Children, Little Ravi Can’t Ignore Lovely Mangoes.”',
+  kings:[['Warren Hastings','1773–1785','First GG of Bengal; Regulating Act'],['Cornwallis','1786–1793','Permanent Settlement; civil services'],['Wellesley','1798–1805','Subsidiary Alliance'],['Bentinck','1828–1835','Sati abolished; first GG of India (1833)'],['Dalhousie','1848–1856','Doctrine of Lapse; railways, telegraph'],['Canning','1856–1862','1857 revolt; first Viceroy (1858)'],['Lytton','1876–1880','Vernacular Press Act; Delhi Durbar 1877'],['Ripon','1880–1884','Local self-government; Ilbert Bill'],['Dufferin','1884–1888','INC founded 1885'],['Curzon','1899–1905','Partition of Bengal'],['Minto II','1905–1910','Morley–Minto reforms'],['Hardinge II','1910–1916','Capital to Delhi (1911)'],['Chelmsford','1916–1921','Rowlatt Act; Jallianwala'],['Reading','1921–1926','Chauri Chaura'],['Irwin','1926–1931','Simon Commission; Gandhi–Irwin Pact'],['Willingdon','1931–1936','Communal Award; Poona Pact'],['Linlithgow','1936–1943','Cripps Mission; Quit India'],['Wavell','1943–1947','Simla Conference; Cabinet Mission'],['Mountbatten','1947','Last Viceroy; partition plan']]}
+];
+
+const BOOKS = {
+ ap:[
+  ['History and Culture of Andhra Pradesh (Earliest Times to 2019)','P. Raghunatha Rao','Main single-volume AP book; Sterling'],
+  ['History of Modern Andhra Pradesh','P. Raghunatha Rao','Modern period, movements and state formation'],
+  ['Ancient and Medieval History of Andhra Pradesh','P. Raghunatha Rao','Satavahanas to Asaf Jahis'],
+  ['Social and Cultural History of Andhra Pradesh','I. Seenayya','Social and cultural focus for Group 2 and Group 1'],
+  ['Andhrula Charitra (Telugu)','Dr. B.S.L. Hanumantha Rao','Classic Telugu-medium history'],
+  ['Andhrula Sanghika Charitra (Telugu)','Suravaram Pratap Reddy','Social history of the Telugu people'],
+  ['Andhra Pradesh Samagra Charitra','P.V.K. Prasada Rao','Comprehensive history'],
+  ['Andhra Pradesh History','Jogi Naidu','Exam-oriented'],
+  ['Early History of the Andhra Country','K. Gopalachari','Satavahanas and early dynasties'],
+  ['Early Dynasties of Andhradesa','B.V. Krishna Rao','Early dynasties in depth'],
+  ['The Kakatiyas','P.V. Parabrahma Sastry','Standard book on the Kakatiyas'],
+  ['Comprehensive History and Culture of AP (Vol. III, Early Medieval AD 624–1000; Late Medieval AD 1324–1724)','Telugu University / various editors','Scholarly volumes for depth'],
+  ['Telugu Akademi books on AP History and Culture','Telugu Akademi','Widely used; cross-check facts with the standard books above']
+ ],
+ india:[
+  ['Indian History','K. Krishna Reddy (McGraw Hill)','All periods in one book; many practice questions'],
+  ['Courseware on Indian History','Abhishek Mishra and Subhangini Priya (McGraw Hill)','Five themes; this app follows its chapter list'],
+  ['Indian Art and Culture','Nitin Singhania (McGraw Hill)','Art and culture chapters'],
+  ['India’s Ancient Past','R.S. Sharma','Old NCERT-based ancient history'],
+  ['History of Medieval India','Satish Chandra','Medieval history'],
+  ['A Brief History of Modern India','Rajiv Ahir (Spectrum)','Modern India for Prelims'],
+  ['India’s Struggle for Independence','Bipan Chandra and others','National movement in depth (Mains)'],
+  ['India After Independence','Bipan Chandra and others','Post-1947 history'],
+  ['NCERT textbooks (Class 6–12 history)','NCERT','Basics; read first']
+ ]
+};
+
+/* ============ CHAPTER MAP (McGraw Hill Indian History themes + AP history) ============ */
+const GROUPS = [
+ {id:'t1', en:'Ancient India', te:'ప్రాచీన భారతదేశం', ch:[
+  ['prehistory','Ancient Prehistory','చరిత్ర పూర్వ యుగం'],
+  ['chalco','Chalcolithic and Megalithic Age','తామ్ర శిలా, బృహత్ శిలా యుగాలు'],
+  ['indus','Indus Valley Civilisation','సింధూ లోయ నాగరికత'],
+  ['vedic','The Vedic Age','వైదిక కాలం'],
+  ['sixth','Sixth Century BC: Buddhism and Jainism','క్రీ.పూ. 6వ శతాబ్దం: బౌద్ధం, జైనం'],
+  ['maurya','Mauryan Age','మౌర్య యుగం'],
+  ['postmaurya','Post-Mauryan Dynasties','మౌర్యానంతర రాజవంశాలు'],
+  ['gupta','Gupta Age and Vakatakas','గుప్త యుగం, వాకాటకులు']]},
+ {id:'t2', en:'Early Medieval India', te:'పూర్వ మధ్యయుగ భారతదేశం', ch:[
+  ['postgupta','Post-Gupta Dynasties','గుప్తానంతర రాజవంశాలు'],
+  ['earlymed','Early Medieval Dynasties','పూర్వ మధ్యయుగ రాజవంశాలు']]},
+ {id:'t3', en:'Medieval India', te:'మధ్యయుగ భారతదేశం', ch:[
+  ['c13','13th–14th Century: Delhi Sultanate','13–14 శతాబ్దాలు: ఢిల్లీ సుల్తానులు'],
+  ['c14','14th–15th Century: Regional Kingdoms','14–15 శతాబ్దాలు: ప్రాంతీయ రాజ్యాలు'],
+  ['mughal','Mughal India','మొఘల్ భారతదేశం'],
+  ['maratha','Marathas and Sikhs','మరాఠాలు, సిక్కులు'],
+  ['bhakti','Bhakti and Sufism','భక్తి, సూఫీ ఉద్యమాలు']]},
+ {id:'t4', en:'Modern India', te:'ఆధునిక భారతదేశం', ch:[
+  ['c18','Eighteenth Century India','18వ శతాబ్దపు భారతదేశం'],
+  ['europeans','Advent of Europeans','ఐరోపావారి రాక'],
+  ['britraj','Establishment of British Raj','బ్రిటిష్ పాలన స్థాపన'],
+  ['consol','Consolidation of British Raj','బ్రిటిష్ పాలన సుస్థిరత'],
+  ['econ','Economic Policies of British Raj','బ్రిటిష్ ఆర్థిక విధానాలు'],
+  ['reform','Socio-Religious Reform Movements','సామాజిక–మత సంస్కరణ ఉద్యమాలు'],
+  ['revolts','Peasant and Tribal Revolts','రైతు, గిరిజన తిరుగుబాట్లు'],
+  ['r1857','Revolt of 1857','1857 తిరుగుబాటు'],
+  ['nm1','National Movement (1857–1915)','జాతీయోద్యమం (1857–1915)'],
+  ['nm2','National Movement (1915–1947)','జాతీయోద్యమం (1915–1947)'],
+  ['facts','Press, Congress Sessions, Governors-General','పత్రికలు, కాంగ్రెస్ సమావేశాలు, గవర్నర్ జనరల్స్'],
+  ['postind','Post-Independence India','స్వాతంత్ర్యానంతర భారతదేశం']]},
+ {id:'t5', en:'Art and Culture', te:'కళలు, సంస్కృతి', ch:[
+  ['caves','Caves, Temples and Architecture','గుహలు, ఆలయాలు, వాస్తుశిల్పం'],
+  ['music','Indian Music','భారతీయ సంగీతం'],
+  ['dance','Indian Dances','భారతీయ నృత్యాలు'],
+  ['crafts','Handicrafts','హస్తకళలు'],
+  ['theatre','Theatre Forms','నాటక రూపాలు'],
+  ['puppet','Puppetry','తోలుబొమ్మలాట'],
+  ['martial','Martial Arts','యుద్ధ కళలు'],
+  ['unesco','UNESCO Heritage and GI Tags','యునెస్కో వారసత్వం, జి.ఐ. ట్యాగ్‌లు'],
+  ['lang','Languages, Scripts and Literature','భాషలు, లిపులు, సాహిత్యం'],
+  ['philo','Schools of Philosophy','తాత్విక సంప్రదాయాలు'],
+  ['scitech','Science and Technology (Ancient, Medieval)','ప్రాచీన, మధ్యయుగ విజ్ఞానం'],
+  ['fest','Festivals of India','భారతీయ పండుగలు'],
+  ['coins','Numismatics (Coins)','నాణేల అధ్యయనం'],
+  ['travellers','Foreign Travellers','విదేశీ యాత్రికులు']]},
+ {id:'ap', en:'Andhra Pradesh History', te:'ఆంధ్రప్రదేశ్ చరిత్ర', ch:[
+  ['ap-geo','Geography and Sources','భౌగోళిక నేపథ్యం, ఆధారాలు'],
+  ['ap-pre','Prehistoric Andhra','చరిత్ర పూర్వ ఆంధ్ర'],
+  ['ap-sata','Satavahanas','శాతవాహనులు'],
+  ['ap-ikshvaku','Ikshvakus','ఇక్ష్వాకులు'],
+  ['ap-postik','Post-Ikshvaku Dynasties and Vishnukundins','ఇక్ష్వాకుల తర్వాతి రాజవంశాలు, విష్ణుకుండినులు'],
+  ['ap-chalukya','Eastern Chalukyas of Vengi','వేంగి తూర్పు చాళుక్యులు'],
+  ['ap-kakatiya','Kakatiyas','కాకతీయులు'],
+  ['ap-reddi','Musunuri Nayakas, Reddis, Velamas','ముసునూరి నాయకులు, రెడ్డి రాజ్యాలు, వెలమలు'],
+  ['ap-vijay','Vijayanagara Empire','విజయనగర సామ్రాజ్యం'],
+  ['ap-qutb','Qutb Shahis of Golconda','గోల్కొండ కుతుబ్ షాహీలు'],
+  ['ap-asaf','Asaf Jahis (Nizams)','అసఫ్ జాహీలు (నిజాంలు)'],
+  ['ap-british','British Rule in Andhra','ఆంధ్రలో బ్రిటిష్ పాలన'],
+  ['ap-reform','Social Reform and Telugu Renaissance','సంఘ సంస్కరణ, తెలుగు పునరుజ్జీవనం'],
+  ['ap-national','National Movement in Andhra','ఆంధ్రలో జాతీయోద్యమం'],
+  ['ap-andhra','Andhra Movement and Andhra State (1953)','ఆంధ్రోద్యమం, ఆంధ్ర రాష్ట్రం (1953)'],
+  ['ap-hyd','Hyderabad State and Telangana Struggle','హైదరాబాద్ రాష్ట్రం, తెలంగాణ సాయుధ పోరాటం'],
+  ['ap-1956','Formation of Andhra Pradesh (1956)','ఆంధ్రప్రదేశ్ అవతరణ (1956)'],
+  ['ap-after','Movements after 1956','1956 తర్వాతి ఉద్యమాలు'],
+  ['ap-2014','Bifurcation (2014)','రాష్ట్ర విభజన (2014)'],
+  ['ap-culture','Telugu Literature and Culture','తెలుగు సాహిత్యం, సంస్కృతి']]}
+];
+
+const TIMELINE = [
+ ['c. 2600–1900 BCE','Mature Indus Valley Civilisation'],['c. 1500–600 BCE','Vedic age'],['6th century BCE','Mahavira, Buddha; rise of Magadha'],
+ ['c. 322 BCE','Mauryan empire founded'],['c. 261 BCE','Kalinga war'],['c. 1st century BCE','Satavahanas rise in the Deccan'],['78 CE','Saka era (Kanishka)'],
+ ['c. 320 CE','Gupta era begins'],['606 CE','Harsha’s reign begins'],['624 CE','Eastern Chalukyas of Vengi founded'],['1025','Mahmud of Ghazni attacks Somnath'],
+ ['1163','Thousand Pillar temple, Hanumakonda'],['1192','Second Battle of Tarain'],['1206','Delhi Sultanate founded'],['1323','Fall of the Kakatiyas'],
+ ['1336','Vijayanagara founded'],['1347','Bahmani kingdom founded'],['1398','Timur sacks Delhi'],['1498','Vasco da Gama at Calicut'],['1509','Krishnadevaraya’s reign begins'],
+ ['1518','Qutb Shahi dynasty founded'],['1526','First Battle of Panipat'],['1565','Battle of Talikota'],['1591','Hyderabad and Charminar'],['1611','English factory at Masulipatnam'],
+ ['1687','Aurangzeb annexes Golconda'],['1707','Death of Aurangzeb'],['1724','Asaf Jahi dynasty founded'],['1757','Plassey; Bobbili'],['1764','Buxar'],
+ ['1798','Subsidiary Alliance (Hyderabad first)'],['1800','Ceded Districts to the British'],['1857','Revolt of 1857'],['1881','First widow remarriage in Andhra'],['1885','INC founded'],
+ ['1905','Partition of Bengal'],['1913','First Andhra Mahasabha, Bapatla'],['1917','Champaran'],['1919','Jallianwala Bagh'],['1922–24','Rampa rebellion'],
+ ['1930','Dandi March'],['1937','Sri Bagh Pact'],['1942','Quit India'],['1947','Independence'],['1948','Operation Polo'],['1950','Constitution in force'],
+ ['15 Dec 1952','Death of Potti Sriramulu'],['1 Oct 1953','Andhra State'],['1 Nov 1956','Andhra Pradesh'],['1973','Article 371D'],['2 Jun 2014','Telangana formed']
+];
+
+const TECHNIQUES = [
+ ['Anchor dates','Learn the Timeline dates first. Place every other event before or after one of them.'],
+ ['Order games','In Kings & Kingdoms, tap the dynasties or kings in the right order. Do it daily until you make no mistakes.'],
+ ['Story links','Turn a date into a short story. Example: “1565 — Talikota: the city fell, the stones still stand.”'],
+ ['First-letter codes','Make a sentence from first letters. Example: “Some Sweet Tasty Apples” for Vijayanagara’s four dynasties.'],
+ ['Cause → effect chains','Read each chapter’s chain aloud. One link reminds you of the next.'],
+ ['Map route','Walk across the AP map in your mind, from Srikakulam to Anantapur. Pin each dynasty to the place it ruled.'],
+ ['Recall first','In the Daily Prelims, answer before you look. Wrong answers come back on later days until you get them right.'],
+ ['Spaced revision','Revise a chapter after 1 day, 3 days, 7 days and 21 days. Progress shows which chapters you read.'],
+ ['Teach it','Explain one chapter aloud in Telugu in two minutes. Where you stop is what to revise.']
+];
+
+/* ============ STATE ============ */
+let S = {};
+try{ S = JSON.parse(localStorage.getItem('itihasam_v2')) || {}; }catch(e){ S = {}; }
+S.seen = S.seen || []; S.wrong = S.wrong || {}; S.days = S.days || {}; S.read = S.read || {}; S.orders = S.orders || {};
+let LANG = S.lang || 'en';
+let R = S.route || 'home';
+let Z = null;          /* current non-daily quiz (chapter or mock) */
+let G = null;          /* current order game */
+let TIMER = null;
+function save(){ try{ localStorage.setItem('itihasam_v2', JSON.stringify(S)); }catch(e){} }
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const T = (en, te) => (LANG === 'te' && te) ? te : en;
+const DAILY = 30, MOCK = 50;
+const CHAPTERS = []; GROUPS.forEach(g => g.ch.forEach(c => CHAPTERS.push({id:c[0], en:c[1], te:c[2], g})));
+const chName = id => { const c = CHAPTERS.find(x => x.id === id); return c ? T(c.en, c.te) : id; };
+function todayStr(){ try{ return new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Kolkata'}); }catch(e){ return new Date().toISOString().slice(0,10); } }
+function shuffle(a){ a = a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function dayNum(){ return Math.floor(new Date(todayStr()+'T00:00:00Z').getTime()/86400000); }
+
+/* ============ SIDE MENU ============ */
+function navBtn(r, label){ return '<button class="nav'+(R===r?' on':'')+'" data-go="'+r+'">'+esc(label)+'</button>'; }
+function renderSide(){
+ let h = '<div class="brand">Itihasam <span class="te">ఇతిహాసం</span><small>Indian &amp; AP History · Group 1 / 2</small></div>';
+ h += '<input id="q" class="search" type="search" placeholder="'+T('Search topics, kings…','అంశాలు, రాజులు వెతకండి…')+'" value="'+esc(S.q||'')+'">';
+ h += navBtn('home','🏠 '+T('Home','హోమ్'));
+ h += '<details open><summary>'+T('Practice','అభ్యాసం')+'</summary>';
+ h += navBtn('daily','📝 '+T('Daily Prelims (30)','రోజువారీ ప్రిలిమ్స్ (30)'));
+ h += navBtn('mock','⏱️ '+T('Mock Test (50)','మాక్ టెస్ట్ (50)'));
+ h += navBtn('mains','✍️ '+T('Mains 150 / 250','మెయిన్స్ 150 / 250'));
+ h += navBtn('kings','👑 '+T('Kings & Kingdoms','రాజులు, రాజ్యాలు'));
+ h += navBtn('timeline','📅 '+T('Timeline','కాలక్రమం'));
+ h += navBtn('memory','🧠 '+T('Memory Tricks','జ్ఞాపక చిట్కాలు'));
+ h += navBtn('books','📚 '+T('Best Books','ఉత్తమ పుస్తకాలు'));
+ h += navBtn('progress','📊 '+T('Progress','ప్రగతి'));
+ h += '</details>';
+ GROUPS.forEach(g => {
+  const here = R.startsWith('ch:') && g.ch.some(c => 'ch:'+c[0] === R);
+  h += '<details'+(here?' open':'')+'><summary>'+esc(T(g.en,g.te))+' <span class="cnt">'+g.ch.length+'</span></summary>';
+  g.ch.forEach(c => { h += '<button class="nav'+(R==='ch:'+c[0]?' on':'')+'" data-go="ch:'+c[0]+'"><span class="dot'+(S.read[c[0]]?' done':'')+'"></span>'+esc(T(c[1],c[2]))+'</button>'; });
+  h += '</details>';
+ });
+ h += '<div class="credit">Designed by Sivananda Pujari</div>';
+ $('#side').innerHTML = h;
+}
+
+/* ============ ROUTER ============ */
+function go(r){ R = r; S.route = r; save(); document.body.classList.remove('menu-open'); render(); window.scrollTo(0,0); }
+function render(){
+ if(TIMER && R !== 'mock'){ clearInterval(TIMER); TIMER = null; }
+ renderSide();
+ $('#langBtn').textContent = LANG === 'en' ? 'తెలుగు' : 'English';
+ if(R.startsWith('ch:')) return renderChapter(R.slice(3));
+ if(R.startsWith('order:')) return renderOrder();
+ const views = {daily:renderDaily, mock:renderMock, cquiz:renderCQuiz, mains:renderMains, kings:renderKings, timeline:renderTimeline,
+   memory:renderMemory, books:renderBooks, progress:renderProgress, search:renderSearch};
+ (views[R] || renderHome)();
+}
+function crumb(t){ $('#crumb').textContent = t; }
+function view(h){ $('#view').innerHTML = h; }
+
+/* ============ HOME ============ */
+function renderHome(){
+ crumb(T('Home','హోమ్'));
+ const t = S.today && S.today.date === todayStr() ? S.today : null;
+ let h = '<div class="card hero"><h1>'+T('Indian &amp; Andhra Pradesh History','భారత, ఆంధ్రప్రదేశ్ చరిత్ర')+'</h1><p>'+
+  T('For APPSC Group 1, Group 2 and civil services. '+CHAPTERS.length+' chapters, '+BANK.length+' Prelims questions, kings in order, and Mains answer practice.',
+    'ఏపీపీఎస్సీ గ్రూప్ 1, గ్రూప్ 2, సివిల్ సర్వీసెస్ కోసం. '+CHAPTERS.length+' అధ్యాయాలు, '+BANK.length+' ప్రిలిమ్స్ ప్రశ్నలు, రాజుల క్రమం, మెయిన్స్ సాధన.')+'</p></div>';
+ h += '<div class="grid">';
+ h += stat(Object.keys(S.read).length+' / '+CHAPTERS.length, T('Chapters read','చదివిన అధ్యాయాలు'));
+ h += stat((t ? t.i : 0)+' / '+DAILY, T("Today's Prelims",'నేటి ప్రిలిమ్స్'));
+ h += stat(Object.keys(S.wrong).length, T('Questions to revise','పునశ్చరణ ప్రశ్నలు'));
+ h += stat(streak(), T('Day streak','రోజుల వరుస'));
+ h += '</div>';
+ h += '<div class="tiles">';
+ h += tile('daily','📝',T("Today's 30 questions",'నేటి 30 ప్రశ్నలు'),T('New questions plus your mistakes','కొత్త ప్రశ్నలు, మీ తప్పులు'));
+ h += tile('kings','👑',T('Kings in order','రాజుల క్రమం'),T('Dynasty charts and order games','రాజవంశ పట్టికలు, క్రమ ఆటలు'));
+ h += tile('mains','✍️',T("Today's Mains question",'నేటి మెయిన్స్ ప్రశ్న'),T('150 or 250 words with an outline','150 లేదా 250 పదాలు'));
+ h += tile('ch:'+nextUnread(),'📖',T('Continue reading','చదవడం కొనసాగించండి'),chName(nextUnread()));
+ h += '</div>';
+ h += installCardHTML();
+ view(h);
+}
+const stat = (n, l) => '<div class="card"><div class="big">'+n+'</div><div class="muted">'+l+'</div></div>';
+const tile = (r, i, t, s) => '<button class="tile" data-go="'+r+'"><span class="ti">'+i+'</span><b>'+esc(t)+'</b><span class="muted">'+esc(s)+'</span></button>';
+function nextUnread(){ const c = CHAPTERS.find(c => !S.read[c.id]); return (c || CHAPTERS[0]).id; }
+function streak(){ let n = 0, d = new Date(todayStr()+'T00:00:00Z'); for(;;){ const k = d.toISOString().slice(0,10); if(S.days[k]){ n++; d.setUTCDate(d.getUTCDate()-1); } else break; } return n; }
+
+/* ============ CHAPTER ============ */
+function renderChapter(id){
+ const idx = CHAPTERS.findIndex(c => c.id === id);
+ if(idx < 0) return go('home');
+ const c = CHAPTERS[idx], d = CONTENT[id];
+ crumb(T(c.g.en, c.g.te)+' › '+T(c.en, c.te));
+ S.read[id] = S.read[id] || todayStr(); save();
+ const nq = BANK.filter(q => q[0] === id).length;
+ let h = '<div class="card"><span class="tag">'+esc(T(c.g.en,c.g.te))+'</span><h1>'+esc(c.en)+'</h1><div class="te-title">'+esc(c.te)+'</div></div>';
+ h += '<div class="card"><h2>'+T('Introduction','పరిచయం')+'</h2><p>'+esc(d.intro)+'</p></div>';
+ h += '<div class="card"><h2>'+T('Key points','ముఖ్యాంశాలు')+'</h2><ul>'+d.points.map(p => '<li>'+esc(p)+'</li>').join('')+'</ul></div>';
+ h += '<div class="card"><h2>'+T('Cause → Effect','కారణం → ఫలితం')+'</h2><p class="chain">'+esc(d.chain)+'</p></div>';
+ h += '<div class="card"><h2>'+T('Memory hook','జ్ఞాపక సూత్రం')+'</h2><p class="hook">'+esc(d.hook)+'</p></div>';
+ h += '<div class="card"><h2>'+T('Persons and places','వ్యక్తులు, ప్రదేశాలు')+'</h2><p><b>'+T('Persons','వ్యక్తులు')+':</b> '+esc(d.persons)+'</p><p><b>'+T('Places','ప్రదేశాలు')+':</b> '+esc(d.places)+'</p></div>';
+ h += '<div class="card"><h2>'+T('Mains question','మెయిన్స్ ప్రశ్న')+'</h2><p><b>'+esc(d.mq)+'</b></p><p class="muted">'+T('Answer outline','జవాబు రూపురేఖ')+':</p><ol>'+d.ma.map(p => '<li>'+esc(p)+'</li>').join('')+'</ol>';
+ h += '<button class="btn alt" data-mains="'+id+'">'+T('Write this answer','ఈ జవాబు రాయండి')+' →</button></div>';
+ if(nq) h += '<div class="card"><button class="btn wide" data-cquiz="'+id+'">📝 '+T('Practise this chapter','ఈ అధ్యాయం సాధన')+' ('+nq+' '+T('questions','ప్రశ్నలు')+')</button></div>';
+ const prev = CHAPTERS[idx-1], next = CHAPTERS[idx+1];
+ h += '<div class="btns"><button class="btn alt" '+(prev?'data-go="ch:'+prev.id+'"':'disabled')+'>← '+T('Back','వెనుకకు')+'</button>';
+ h += '<button class="btn" '+(next?'data-go="ch:'+next.id+'"':'disabled')+'>'+T('Next','తదుపరి')+' →</button></div>';
+ view(h);
+}
+
+/* ============ QUIZ ENGINE ============ */
+function makeQuiz(ids){ return {ids:ids, i:0, score:0, answered:null, order:ids.map(() => shuffle([0,1,2,3])), wrongIds:[]}; }
+function quizHTML(z, title){
+ const n = z.ids.length, qi = z.ids[z.i], q = BANK[qi];
+ let h = '<div class="card"><div class="qhead"><span>'+esc(title)+'</span><span>'+T('Q','ప్ర')+' '+(z.i+1)+' / '+n+' · ✅ '+z.score+'</span></div>';
+ if(z.end) h += '<div class="muted" id="clock"></div>';
+ h += '<div class="bar"><span style="width:'+(z.i/n*100)+'%"></span></div>';
+ h += '<span class="tag">'+esc(chName(q[0]))+'</span><h2 class="q">'+esc(q[1])+'</h2>';
+ z.order[z.i].forEach(oi => {
+  let cls = 'opt';
+  if(z.answered !== null){ if(oi === 0) cls += ' right'; else if(oi === z.answered) cls += ' wrong'; }
+  h += '<button class="'+cls+'" data-ans="'+oi+'">'+esc(q[2][oi])+'</button>';
+ });
+ if(z.answered !== null){
+  h += '<p class="hook">'+(z.answered === 0 ? '✅ ' : '❌ ')+esc(q[3])+'</p>';
+  h += '<div class="btns"><button class="btn alt" data-go="ch:'+q[0]+'">'+T('Read chapter','అధ్యాయం చదవండి')+'</button><button class="btn" data-next="1">'+T('Next','తదుపరి')+' →</button></div>';
+ }
+ return h + '</div>';
+}
+function resultHTML(z, title, note){
+ const n = z.ids.length;
+ let h = '<div class="card center"><h1>'+esc(title)+'</h1><div class="big">'+z.score+' / '+n+'</div><p class="muted">'+Math.round(z.score/n*100)+'%</p><p>'+esc(note)+'</p></div>';
+ if(z.wrongIds.length){
+  h += '<div class="card"><h2>'+T('Review your mistakes','మీ తప్పులు చూడండి')+'</h2><ul>'+z.wrongIds.map(i => '<li><b>'+esc(BANK[i][1])+'</b><br>✅ '+esc(BANK[i][2][0])+' — <span class="muted">'+esc(BANK[i][3])+'</span></li>').join('')+'</ul></div>';
+ }
+ return h;
+}
+function answerZ(z, oi){
+ if(z.answered !== null) return;
+ const qi = z.ids[z.i];
+ z.answered = oi;
+ if(oi === 0){ z.score++; delete S.wrong[qi]; } else { S.wrong[qi] = (S.wrong[qi]||0)+1; z.wrongIds.push(qi); }
+ if(!S.seen.includes(qi)) S.seen.push(qi);
+ save();
+}
+function currentQuiz(){ return R === 'daily' ? S.today : Z; }
+function answer(oi){ const z = currentQuiz(); if(!z) return; answerZ(z, oi); render(); }
+function nextQ(){ const z = currentQuiz(); if(!z) return; z.i++; z.answered = null; save(); render(); window.scrollTo(0,0); }
+
+/* Daily: 30 a day; up to 10 past mistakes, then unseen, then least recent */
+function todaySession(){
+ const d = todayStr();
+ if(S.today && S.today.date === d && S.today.ids.length) return S.today;
+ const all = BANK.map((_,i) => i);
+ const wrong = shuffle(Object.keys(S.wrong).map(Number).filter(i => i < BANK.length)).slice(0,10);
+ const unseen = shuffle(all.filter(i => !S.seen.includes(i) && !wrong.includes(i)));
+ const old = S.seen.filter(i => !wrong.includes(i) && i < BANK.length);
+ S.today = Object.assign(makeQuiz(wrong.concat(unseen, old).slice(0, DAILY)), {date:d});
+ save(); return S.today;
+}
+function renderDaily(){
+ crumb(T('Daily Prelims','రోజువారీ ప్రిలిమ్స్'));
+ const t = todaySession();
+ if(t.i >= t.ids.length){
+  S.days[t.date] = {score:t.score, total:t.ids.length}; save();
+  return view(resultHTML(t, T("Today's test is done",'నేటి పరీక్ష పూర్తయింది'), T('Mistakes come back in the coming days. Come back tomorrow for the next 30.','తప్పు జవాబులు రాబోయే రోజుల్లో మళ్లీ వస్తాయి. రేపు మరో 30 ప్రశ్నల కోసం రండి.')));
+ }
+ view(quizHTML(t, T('Daily Prelims','రోజువారీ ప్రిలిమ్స్')+' · '+t.date));
+}
+function startChapterQuiz(id){ Z = Object.assign(makeQuiz(shuffle(BANK.map((q,i) => q[0] === id ? i : -1).filter(i => i >= 0))), {title:chName(id), ch:id}); go('cquiz'); }
+function renderCQuiz(){
+ if(!Z || Z.mock) return go('home');
+ crumb(T('Chapter practice','అధ్యాయ సాధన')+' › '+Z.title);
+ if(Z.i >= Z.ids.length) return view(resultHTML(Z, Z.title, T('Read the chapter again for any mistakes.','తప్పుల కోసం అధ్యాయం మళ్లీ చదవండి.'))+'<div class="btns"><button class="btn alt" data-go="ch:'+Z.ch+'">'+T('Back to chapter','అధ్యాయానికి')+'</button><button class="btn" data-cquiz="'+Z.ch+'">'+T('Try again','మళ్లీ ప్రయత్నించండి')+'</button></div>');
+ view(quizHTML(Z, Z.title));
+}
+/* Mock: 50 random questions, 50 minutes */
+function renderMock(){
+ crumb(T('Mock Test','మాక్ టెస్ట్'));
+ if(!Z || !Z.mock){
+  return view('<div class="card"><h1>'+T('Mock Test','మాక్ టెస్ట్')+'</h1><p>'+T('50 questions from all chapters, with a 50-minute timer, like a real exam section. Do one every week.','అన్ని అధ్యాయాల నుండి 50 ప్రశ్నలు, 50 నిమిషాల సమయం. వారానికి ఒకసారి రాయండి.')+'</p><button class="btn wide" data-startmock="1">'+T('Start mock test','మాక్ టెస్ట్ ప్రారంభించండి')+'</button></div>'+mockHistory());
+ }
+ if(Z.i >= Z.ids.length || Date.now() > Z.end){
+  if(!Z.saved){ S.mocks = S.mocks || []; S.mocks.unshift({date:todayStr(), score:Z.score, total:Z.ids.length}); S.mocks = S.mocks.slice(0,20); Z.saved = 1; save(); }
+  const z = Z;
+  return view(resultHTML(z, T('Mock test finished','మాక్ టెస్ట్ పూర్తయింది'), Date.now() > z.end && z.i < z.ids.length ? T('Time is up. Unanswered questions count as wrong.','సమయం ముగిసింది.') : '')+'<div class="btns"><span></span><button class="btn" data-startmock="1">'+T('New mock test','కొత్త మాక్ టెస్ట్')+'</button></div>');
+ }
+ view(quizHTML(Z, T('Mock Test','మాక్ టెస్ట్')));
+ tick();
+ if(!TIMER) TIMER = setInterval(() => { if(R !== 'mock'){ clearInterval(TIMER); TIMER = null; return; } if(Date.now() > Z.end){ clearInterval(TIMER); TIMER = null; render(); } else tick(); }, 1000);
+}
+function tick(){ const el = $('#clock'); if(!el || !Z) return; const s = Math.max(0, Math.round((Z.end - Date.now())/1000)); el.textContent = '⏱️ '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+' '+T('left','మిగిలింది'); }
+function startMock(){ Z = Object.assign(makeQuiz(shuffle(BANK.map((_,i) => i)).slice(0, MOCK)), {mock:1, end:Date.now()+MOCK*60000}); go('mock'); }
+function mockHistory(){ const m = S.mocks || []; return m.length ? '<div class="card"><h2>'+T('Past mock tests','గత మాక్ టెస్టులు')+'</h2><ul>'+m.map(x => '<li>'+x.date+': '+x.score+' / '+x.total+'</li>').join('')+'</ul></div>' : ''; }
+
+/* ============ MAINS ============ */
+const MAINS_IDS = CHAPTERS.map(c => c.id);
+function renderMains(){
+ crumb(T('Mains answer practice','మెయిన్స్ జవాబు సాధన'));
+ const target = S.target || 150;
+ const id = S.mainsCh || MAINS_IDS[dayNum() % MAINS_IDS.length];
+ const d = CONTENT[id];
+ let h = '<div class="card"><h1>'+T('Mains answer writing','మెయిన్స్ జవాబు రాత')+'</h1><p class="muted">'+(S.mainsCh ? T('Chosen question','ఎంచుకున్న ప్రశ్న') : T("Today's question — it changes every day",'నేటి ప్రశ్న — రోజూ మారుతుంది'))+'</p>';
+ h += '<span class="tag">'+esc(chName(id))+'</span><h2 class="q">'+esc(d.mq)+'</h2>';
+ h += '<div class="btns" style="justify-content:flex-start"><button class="btn'+(target===150?'':' alt')+'" data-target="150">150 '+T('words','పదాలు')+'</button><button class="btn'+(target===250?'':' alt')+'" data-target="250">250 '+T('words','పదాలు')+'</button>';
+ h += '<select id="mpick" class="pick"><option value="">'+T('Pick another question…','మరో ప్రశ్న ఎంచుకోండి…')+'</option>'+CHAPTERS.map(c => '<option value="'+c.id+'"'+(c.id===S.mainsCh?' selected':'')+'>'+esc(T(c.en,c.te))+'</option>').join('')+'</select></div></div>';
+ const split = target === 150 ? ['20–25','30–35','30–35','30–35','20'] : ['30–40','45–50','45–50','45–50','30–35'];
+ h += '<div class="card"><h2>'+T('Answer outline','జవాబు రూపురేఖ')+' ('+target+' '+T('words','పదాలు')+')</h2><ol>'+d.ma.map((p,i) => '<li>'+esc(p)+' <span class="muted">· '+(split[i]||'25')+' '+T('words','పదాలు')+'</span></li>').join('')+'</ol>';
+ h += '<p class="muted">'+T('Tip: use the chapter’s Cause → Effect chain for your body points, and give one fact, date or name in each point.','చిట్కా: ప్రతి అంశంలో ఒక తేదీ లేదా పేరు ఇవ్వండి.')+'</p></div>';
+ h += '<div class="card"><h2>'+T('Write here','ఇక్కడ రాయండి')+'</h2><textarea id="ans" placeholder="'+T('Write your answer…','మీ జవాబు రాయండి…')+'">'+esc((S.drafts||{})[id+':'+target] || '')+'</textarea><p id="wc" class="muted"></p>';
+ h += '<div class="btns"><button class="btn alt" data-go="ch:'+id+'">'+T('Read the chapter','అధ్యాయం చదవండి')+'</button>'+(S.mainsCh?'<button class="btn alt" data-mainsreset="1">'+T("Back to today's question",'నేటి ప్రశ్నకు')+'</button>':'')+'</div></div>';
+ view(h); countWords();
+}
+function countWords(){
+ const ta = $('#ans'); if(!ta) return;
+ const n = (ta.value.trim().match(/\S+/g) || []).length, target = S.target || 150;
+ $('#wc').textContent = n+' / '+target+' '+T('words','పదాలు')+(n > target+20 ? ' — '+T('too long','ఎక్కువైంది') : n >= target-20 ? ' ✓' : '');
+}
+
+/* ============ KINGS & KINGDOMS ============ */
+function renderKings(){
+ crumb(T('Kings & Kingdoms','రాజులు, రాజ్యాలు'));
+ const tab = S.ktab || 'ap';
+ let h = '<div class="card"><h1>'+T('Kings &amp; Kingdoms in order','రాజులు, రాజ్యాల క్రమం')+'</h1><p class="muted">'+T('Learn the order with the chart, then play the order game until you make no mistakes.','పట్టికతో క్రమం నేర్చుకోండి, తర్వాత తప్పులు లేకుండా క్రమ ఆట ఆడండి.')+'</p>';
+ h += '<div class="btns" style="justify-content:flex-start"><button class="btn'+(tab==='ap'?'':' alt')+'" data-ktab="ap">'+T('Andhra Pradesh','ఆంధ్రప్రదేశ్')+'</button><button class="btn'+(tab==='in'?'':' alt')+'" data-ktab="in">'+T('India','భారతదేశం')+'</button></div></div>';
+ if(tab === 'ap'){
+  h += '<div class="card"><h2>'+T('Order of AP kingdoms','ఆంధ్ర రాజ్యాల క్రమం')+'</h2><p class="hook">'+esc(AP_ORDER_HOOK)+'</p>';
+  h += '<div class="flow">'+AP_SIDE.map((x,i) => '<div class="fl"><span class="n">'+(i+1)+'</span><div><b>'+esc(x[1])+'</b><div class="muted">'+esc(x[0])+' · '+esc(x[2])+'</div></div></div>').join('')+'</div>';
+  h += '<button class="btn wide" data-go="order:ap-main">🎯 '+T('Play: put AP kingdoms in order','ఆట: ఆంధ్ర రాజ్యాలను క్రమంలో పెట్టండి')+'</button>'+orderBadge('ap-main')+'</div>';
+ }
+ (tab === 'ap' ? DYN_AP : DYN_IN).forEach(d => {
+  h += '<details class="card dyn"><summary><b>'+esc(T(d.name,d.te))+'</b> <span class="muted">· '+esc(d.years)+'</span>'+orderBadge(d.id)+'</summary>';
+  h += '<p><b>'+T('Capital','రాజధాని')+':</b> '+esc(d.capital)+'</p><p class="hook">'+esc(d.hook)+'</p>';
+  h += '<table class="kt"><tr><th>#</th><th>'+T('Ruler / stage','పాలకుడు')+'</th><th>'+T('Years','సంవత్సరాలు')+'</th><th>'+T('Remember','గుర్తుంచుకోండి')+'</th></tr>';
+  d.kings.forEach((k,i) => { h += '<tr><td>'+(i+1)+'</td><td><b>'+esc(k[0])+'</b></td><td>'+esc(k[1])+'</td><td>'+esc(k[2])+'</td></tr>'; });
+  h += '</table>';
+  if(d.kings.length > 2) h += '<button class="btn alt wide" data-go="order:'+d.id+'">🎯 '+T('Play: kings in order','ఆట: రాజులను క్రమంలో పెట్టండి')+'</button>';
+  h += '</details>';
+ });
+ view(h);
+}
+function orderBadge(k){ const o = S.orders[k]; return o ? ' <span class="badge'+(o.best===0?' ok':'')+'">'+(o.best===0?'✓ ':'')+T('best','ఉత్తమ')+': '+o.best+' '+T('mistakes','తప్పులు')+'</span>' : ''; }
+function orderItems(key){
+ if(key === 'ap-main') return {title:T('AP kingdoms in order','ఆంధ్ర రాజ్యాల క్రమం'), items:['Satavahanas','Ikshvakus','Salankayanas','Vishnukundins','Eastern Chalukyas','Kakatiyas','Musunuri Nayakas','Reddis','Vijayanagara','Qutb Shahis','Mughals','Asaf Jahis']};
+ const d = DYN_AP.concat(DYN_IN).find(x => x.id === key);
+ return d ? {title:T(d.name,d.te), items:d.kings.map(k => k[0])} : null;
+}
+function renderOrder(){
+ const key = R.slice(6), def = orderItems(key);
+ if(!def) return go('kings');
+ crumb(T('Order game','క్రమ ఆట')+' › '+def.title);
+ if(!G || G.key !== key) G = {key, items:def.items, pool:shuffle(def.items.map((_,i) => i)), done:[], miss:0, flash:null};
+ let h = '<div class="card"><h1>'+esc(def.title)+'</h1><p class="muted">'+T('Tap them from first to last.','మొదటి నుండి చివరి వరకు నొక్కండి.')+' ❌ '+G.miss+'</p>';
+ h += '<div class="flow">'+G.done.map((i,n) => '<div class="fl"><span class="n">'+(n+1)+'</span><b>'+esc(G.items[i])+'</b></div>').join('')+'</div>';
+ if(G.done.length < G.items.length){
+  h += '<div class="chips">'+G.pool.filter(i => !G.done.includes(i)).map(i => '<button class="chip'+(G.flash===i?' bad':'')+'" data-pick="'+i+'">'+esc(G.items[i])+'</button>').join('')+'</div>';
+ } else {
+  h += '<p class="hook">'+(G.miss === 0 ? '🎉 '+T('Perfect order!','సరైన క్రమం!') : T('Done with','పూర్తయింది')+' '+G.miss+' '+T('mistakes. Play again until you get zero.','తప్పులతో. సున్నా వచ్చే వరకు మళ్లీ ఆడండి.'))+'</p>';
+  h += '<div class="btns"><button class="btn alt" data-go="kings">← '+T('Kings & Kingdoms','రాజులు, రాజ్యాలు')+'</button><button class="btn" data-replay="1">'+T('Play again','మళ్లీ ఆడండి')+'</button></div>';
+ }
+ view(h + '</div>');
+}
+function pick(i){
+ if(!G) return;
+ if(i === G.done.length){ G.done.push(i); G.flash = null;
+  if(G.done.length === G.items.length){ const o = S.orders[G.key]; if(!o || G.miss < o.best) S.orders[G.key] = {best:G.miss}; save(); }
+ } else { G.miss++; G.flash = i; }
+ renderOrder();
+}
+
+/* ============ TIMELINE, MEMORY, BOOKS, PROGRESS, SEARCH ============ */
+function renderTimeline(){
+ crumb(T('Timeline','కాలక్రమం'));
+ let h = '<div class="card"><h1>'+T('Anchor dates','ముఖ్య తేదీలు')+'</h1><p class="muted">'+T('India and Andhra together, in one line. Learn these first; every other event hangs on them.','భారత, ఆంధ్ర చరిత్ర ఒకే వరుసలో. ముందు ఇవి నేర్చుకోండి.')+'</p><div class="tl">';
+ TIMELINE.forEach(x => { const ap = /Andhra|Chalukya|Kakatiya|Vijayanagara|Talikota|Qutb|Hyderabad|Golconda|Masulipatnam|Asaf|Ceded|Bobbili|Bapatla|Rampa|Sri Bagh|Sriramulu|Polo|371D|Telangana|Thousand|Krishnadevaraya|Satavahana/.test(x[1]); h += '<div'+(ap?' class="ap"':'')+'><b>'+esc(x[0])+'</b> '+esc(x[1])+'</div>'; });
+ h += '</div><p class="muted">'+T('Green = Andhra events.','ఆకుపచ్చ = ఆంధ్ర సంఘటనలు.')+'</p></div>';
+ view(h);
+}
+function renderMemory(){
+ crumb(T('Memory Tricks','జ్ఞాపక చిట్కాలు'));
+ let h = '<div class="card"><h1>'+T('Ways to remember fast','వేగంగా గుర్తుంచుకునే మార్గాలు')+'</h1></div>';
+ TECHNIQUES.forEach(x => { h += '<div class="card"><h2>'+esc(x[0])+'</h2><p>'+esc(x[1])+'</p></div>'; });
+ h += '<div class="card"><h2>'+T('Dynasty order codes','రాజవంశ క్రమ సూత్రాలు')+'</h2><div class="list">';
+ DYN_AP.concat(DYN_IN).forEach(d => { h += '<button data-go="kings"><b>'+esc(T(d.name,d.te))+'</b><br><span class="muted">'+esc(d.hook)+'</span></button>'; });
+ h += '</div></div><div class="card"><h2>'+T('Chapter hooks','అధ్యాయ సూత్రాలు')+'</h2><div class="list">';
+ CHAPTERS.forEach(c => { h += '<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(CONTENT[c.id].hook)+'</span></button>'; });
+ view(h + '</div></div>');
+}
+function renderBooks(){
+ crumb(T('Best Books','ఉత్తమ పుస్తకాలు'));
+ const list = rows => '<table class="kt"><tr><th>'+T('Book','పుస్తకం')+'</th><th>'+T('Author','రచయిత')+'</th><th>'+T('Use it for','దేనికి')+'</th></tr>'+rows.map(b => '<tr><td><b>'+esc(b[0])+'</b></td><td>'+esc(b[1])+'</td><td>'+esc(b[2])+'</td></tr>').join('')+'</table>';
+ let h = '<div class="card"><h1>'+T('Best books','ఉత్తమ పుస్తకాలు')+'</h1><p class="muted">'+T('This app is a summary. For depth, read these. Start with P. Raghunatha Rao for AP and NCERT plus one McGraw Hill book for India.','ఈ యాప్ సారాంశం మాత్రమే. లోతుగా చదవడానికి ఈ పుస్తకాలు చూడండి.')+'</p></div>';
+ h += '<div class="card"><h2>'+T('Andhra Pradesh history','ఆంధ్రప్రదేశ్ చరిత్ర')+'</h2>'+list(BOOKS.ap)+'</div>';
+ h += '<div class="card"><h2>'+T('Indian history and culture','భారత చరిత్ర, సంస్కృతి')+'</h2>'+list(BOOKS.india)+'</div>';
+ h += '<div class="card"><h2>'+T('Before the exam','పరీక్షకు ముందు')+'</h2><ul><li>'+T('Check the latest APPSC syllabus notification.','తాజా ఏపీపీఎస్సీ సిలబస్ చూడండి.')+'</li><li>'+T('Solve previous APPSC Group 1 and Group 2 papers.','గత ప్రశ్నపత్రాలు సాధన చేయండి.')+'</li><li>'+T('When two books disagree on a date, follow the standard book (P. Raghunatha Rao, NCERT).','తేదీలు వేరైతే ప్రామాణిక పుస్తకం అనుసరించండి.')+'</li></ul></div>';
+ view(h);
+}
+function renderProgress(){
+ crumb(T('Progress','ప్రగతి'));
+ const days = Object.keys(S.days).sort().reverse();
+ let correct = 0, total = 0; days.forEach(d => { correct += S.days[d].score; total += S.days[d].total; });
+ let h = '<div class="grid">'+stat(Object.keys(S.read).length+' / '+CHAPTERS.length, T('Chapters read','చదివిన అధ్యాయాలు'))+stat(days.length, T('Daily tests done','పూర్తయిన పరీక్షలు'))+stat((total ? Math.round(correct/total*100) : 0)+'%', T('Accuracy','ఖచ్చితత్వం'))+stat(S.seen.length+' / '+BANK.length, T('Questions seen','చూసిన ప్రశ్నలు'))+'</div>';
+ const weak = {}; Object.keys(S.wrong).forEach(i => { const q = BANK[i]; if(q) weak[q[0]] = (weak[q[0]]||0) + 1; });
+ const wl = Object.keys(weak).sort((a,b) => weak[b]-weak[a]).slice(0,8);
+ h += '<div class="card"><h2>'+T('Weak chapters','బలహీన అధ్యాయాలు')+'</h2>'+(wl.length ? '<div class="list">'+wl.map(id => '<button data-go="ch:'+id+'"><b>'+esc(chName(id))+'</b> <span class="muted">· '+weak[id]+' '+T('to revise','పునశ్చరణ')+'</span></button>').join('')+'</div>' : '<p class="muted">'+T('No mistakes yet.','ఇంకా తప్పులు లేవు.')+'</p>')+'</div>';
+ const rev = CHAPTERS.filter(c => { const r = S.read[c.id]; if(!r) return false; const age = Math.round((new Date(todayStr()) - new Date(r))/86400000); return [1,3,7,21].includes(age); });
+ h += '<div class="card"><h2>'+T('Revise today (spaced revision)','నేడు పునశ్చరణ')+'</h2>'+(rev.length ? '<div class="list">'+rev.map(c => '<button data-go="ch:'+c.id+'">'+esc(T(c.en,c.te))+'</button>').join('')+'</div>' : '<p class="muted">'+T('Nothing due today.','నేడు ఏమీ లేదు.')+'</p>')+'</div>';
+ h += '<div class="card"><h2>'+T('Recent daily tests','ఇటీవలి పరీక్షలు')+'</h2>'+(days.length ? '<ul>'+days.slice(0,14).map(d => '<li>'+d+': '+S.days[d].score+' / '+S.days[d].total+'</li>').join('')+'</ul>' : '<p class="muted">'+T('No tests yet.','ఇంకా పరీక్షలు లేవు.')+'</p>')+'</div>';
+ h += '<div class="card"><button class="btn alt" data-reset="1">'+T('Reset all progress','మొత్తం ప్రగతి తొలగించు')+'</button></div>';
+ view(h);
+}
+function renderSearch(){
+ const q = (S.q || '').trim().toLowerCase();
+ crumb(T('Search','వెతుకు')+': '+q);
+ if(q.length < 2) return view('<div class="card"><p class="muted">'+T('Type at least 2 letters.','కనీసం 2 అక్షరాలు టైప్ చేయండి.')+'</p></div>');
+ const hits = [];
+ CHAPTERS.forEach(c => { const d = CONTENT[c.id]; const txt = [c.en, c.te, d.intro, d.points.join(' '), d.persons, d.places, d.hook].join(' ').toLowerCase(); if(txt.includes(q)) hits.push('<button data-go="ch:'+c.id+'"><b>'+esc(T(c.en,c.te))+'</b><br><span class="muted">'+esc(snippet(d, q))+'</span></button>'); });
+ DYN_AP.concat(DYN_IN).forEach(d => { const k = d.kings.find(k => k.join(' ').toLowerCase().includes(q)); if(k || d.name.toLowerCase().includes(q)) hits.push('<button data-go="kings"><b>👑 '+esc(T(d.name,d.te))+'</b><br><span class="muted">'+esc(k ? k[0]+' — '+k[1]+' '+k[2] : d.years)+'</span></button>'); });
+ view('<div class="card"><h1>'+hits.length+' '+T('results','ఫలితాలు')+'</h1><div class="list">'+hits.join('')+'</div></div>');
+}
+function snippet(d, q){ const p = d.points.find(x => x.toLowerCase().includes(q)); return p || d.intro.slice(0,110)+'…'; }
+
+/* ============ INSTALL & OFFLINE ============ */
+let installEvt = null;
+const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+function installCardHTML(){
+ if(standalone) return '';
+ const iphone = /iPhone|iPad/.test(navigator.userAgent);
+ return '<div class="card" id="installCard"><h2>📲 '+T('Install app','యాప్ ఇన్‌స్టాల్ చేయండి')+'</h2><p class="muted">'+T('Put Itihasam on your home screen. After the first visit it works without internet.','హోమ్ స్క్రీన్‌పై పెట్టండి. మొదటిసారి తెరిచిన తర్వాత ఇంటర్నెట్ లేకుండా పనిచేస్తుంది.')+'</p>'+
+  (installEvt ? '<button class="btn" data-install="1">'+T('Install','ఇన్‌స్టాల్')+'</button>' :
+   '<p>'+(iphone ? T('iPhone: tap Share, then “Add to Home Screen”.','ఐఫోన్: Share నొక్కి “Add to Home Screen” ఎంచుకోండి.') : T('Chrome: tap the ⋮ menu, then “Add to Home screen” or “Install app”.','క్రోమ్: ⋮ మెనూ నొక్కి “Add to Home screen” ఎంచుకోండి.'))+'</p>')+'</div>';
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if(R === 'home') renderHome(); });
+window.addEventListener('appinstalled', () => { const c = document.getElementById('installCard'); if(c) c.remove(); });
+if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+document.addEventListener('click', e => { if(e.target.closest('[data-install]') && installEvt){ installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; renderHome(); }); } });
+
+/* ============ EVENTS ============ */
+document.addEventListener('click', e => {
+ const t = e.target;
+ const g = t.closest('[data-go]'); if(g && !g.disabled){ if(g.dataset.go.startsWith('order:')) G = null; go(g.dataset.go); return; }
+ const a = t.closest('[data-ans]'); if(a){ answer(Number(a.dataset.ans)); return; }
+ if(t.closest('[data-next]')){ nextQ(); return; }
+ const cq = t.closest('[data-cquiz]'); if(cq){ startChapterQuiz(cq.dataset.cquiz); return; }
+ if(t.closest('[data-startmock]')){ startMock(); return; }
+ const tg = t.closest('[data-target]'); if(tg){ S.target = Number(tg.dataset.target); save(); renderMains(); return; }
+ const mn = t.closest('[data-mains]'); if(mn){ S.mainsCh = mn.dataset.mains; go('mains'); return; }
+ if(t.closest('[data-mainsreset]')){ S.mainsCh = null; save(); renderMains(); return; }
+ const kt = t.closest('[data-ktab]'); if(kt){ S.ktab = kt.dataset.ktab; save(); renderKings(); return; }
+ const pk = t.closest('[data-pick]'); if(pk){ pick(Number(pk.dataset.pick)); return; }
+ if(t.closest('[data-replay]')){ G = null; renderOrder(); return; }
+ if(t.closest('[data-reset]')){ if(confirm(T('Delete all progress on this phone?','ఈ ఫోన్‌లో మొత్తం ప్రగతి తొలగించాలా?'))){ S = {seen:[],wrong:{},days:{},read:{},orders:{},lang:LANG}; save(); go('home'); } return; }
+});
+document.addEventListener('input', e => {
+ if(e.target.id === 'ans'){ const id = S.mainsCh || MAINS_IDS[dayNum() % MAINS_IDS.length]; S.drafts = S.drafts || {}; S.drafts[id+':'+(S.target||150)] = e.target.value; save(); countWords(); }
+ if(e.target.id === 'q'){ S.q = e.target.value; save(); if(S.q.trim().length >= 2){ R = 'search'; S.route = R; renderSearch(); } }
+});
+document.addEventListener('change', e => { if(e.target.id === 'mpick' && e.target.value){ S.mainsCh = e.target.value; save(); renderMains(); } });
+document.addEventListener('keydown', e => { if(e.target.id === 'q' && e.key === 'Enter'){ e.target.blur(); go('search'); } });
+$('#burger').onclick = () => document.body.classList.toggle('menu-open');
+$('#scrim').onclick = () => document.body.classList.remove('menu-open');
+$('#langBtn').onclick = () => { LANG = LANG === 'en' ? 'te' : 'en'; S.lang = LANG; save(); render(); };
+if(R === 'cquiz' || R.startsWith('order:')) R = 'home';
+if(R === 'mock') Z = null;
+render();
+
+</script>
+</body>
+</html>

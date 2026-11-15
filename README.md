@@ -23,3 +23,9 @@ Open the app: https://bloforms.github.io/english/
 Turn an audio file or a microphone recording into text (English, Telugu, Hindi, Tamil) on your own device, then save it as PDF or text.
 
 Open the app: https://bloforms.github.io/audio/
+
+# Itihasam – Indian & AP History
+
+Indian and Andhra Pradesh history for APPSC Group 1 and Group 2: 61 chapters, kings and kingdoms in order with order games, 30 daily Prelims questions, mock tests and Mains answer practice.
+
+Open the app: https://bloforms.github.io/history/

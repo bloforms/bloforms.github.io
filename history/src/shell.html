@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#243b36">
+<title>Itihasam – Indian & AP History</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-title" content="Itihasam">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f6f3ea;--panel:#fffdf7;--ink:#2b2a26;--muted:#6b675c;--accent:#2f6b5e;--accent2:#c9a227;--line:#e4dfd0;--ok:#2f7d4a;--bad:#a33b3b;--side:#243b36;--sideText:#eae6d8}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"Segoe UI","Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.65}
+.app{display:flex;min-height:100vh}
+aside{width:290px;background:var(--side);color:var(--sideText);position:sticky;top:0;height:100vh;overflow-y:auto;padding:16px 12px 30px;flex-shrink:0}
+aside .brand{font-size:1.25rem;font-weight:700;padding:4px 10px 8px;color:#fff}
+aside .brand .te{font-weight:400;opacity:.8}
+aside .brand small{display:block;font-size:.75rem;font-weight:400;opacity:.7}
+.search{width:100%;margin:4px 0 8px;padding:9px 12px;border-radius:10px;border:0;font:inherit;font-size:.92rem;background:rgba(255,255,255,.12);color:#fff}
+.search::placeholder{color:rgba(255,255,255,.55)}
+aside details{margin-top:4px}
+aside summary{cursor:pointer;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;opacity:.8;padding:10px 10px 6px;list-style:none}
+aside summary::-webkit-details-marker{display:none}
+aside summary::before{content:"▸ "}
+aside details[open]>summary::before{content:"▾ "}
+.cnt{float:right;opacity:.6;font-size:.72rem}
+aside button.nav{display:block;width:100%;text-align:left;background:none;border:0;color:inherit;padding:7px 12px;border-radius:8px;font:inherit;font-size:.92rem;cursor:pointer;line-height:1.35}
+aside button.nav:hover{background:rgba(255,255,255,.08)}
+aside button.nav.on{background:var(--accent);color:#fff}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;border:1px solid rgba(255,255,255,.45);vertical-align:middle}
+.dot.done{background:#6fbf9f;border-color:#6fbf9f}
+aside .credit{font-size:.75rem;opacity:.6;padding:20px 10px 0}
+main{flex:1;min-width:0;padding:18px clamp(14px,4vw,44px) 60px;max-width:920px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:12px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+.burger{display:none;background:var(--accent);color:#fff;border:0;border-radius:8px;font-size:20px;padding:5px 12px;cursor:pointer}
+.crumb{color:var(--muted);font-size:.9rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer;font:inherit;font-size:.9rem;color:inherit}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,#2f6b5e,#243b36);color:#fff;border:0}
+.hero p{opacity:.9}
+.center{text-align:center}
+h1{font-size:1.45rem;margin:.1rem 0 .3rem;line-height:1.3}
+h2{font-size:1.1rem;margin:.2rem 0 .5rem;color:var(--accent)}
+h2.q{color:var(--ink);font-size:1.15rem}
+.te-title{color:var(--muted);font-size:1.05rem}
+.muted{color:var(--muted)}
+.hero .muted{color:#dfe9e4}
+.tag{display:inline-block;font-size:.75rem;padding:2px 10px;border-radius:999px;background:#e9e4d4;color:var(--muted);margin:0 6px 6px 0}
+.hook{background:#fbf1d6;border-left:4px solid var(--accent2);padding:10px 14px;border-radius:8px}
+.chain{font-weight:600;color:var(--accent)}
+ul,ol{padding-left:1.3rem;margin:.3rem 0}
+li{margin-bottom:4px}
+.btns{display:flex;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--accent);color:#fff;border:0;padding:10px 18px;border-radius:10px;cursor:pointer;font:inherit}
+.btn.alt{background:#e9e4d4;color:var(--ink)}
+.btn.wide{width:100%;margin-top:10px}
+.btn[disabled]{opacity:.4;cursor:default}
+.pick{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;max-width:100%;color:inherit}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font:inherit;color:inherit}
+.opt.right{border-color:var(--ok);background:#e6f4ea}
+.opt.wrong{border-color:var(--bad);background:#f8e5e5}
+.qhead{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.9rem;flex-wrap:wrap}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 12px}
+.bar span{display:block;height:100%;background:var(--accent)}
+textarea{width:100%;min-height:240px;font:inherit;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:inherit}
+.big{font-size:1.9rem;font-weight:700;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.tile{display:flex;flex-direction:column;gap:2px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;font:inherit;color:inherit}
+.tile:hover{border-color:var(--accent)}
+.ti{font-size:1.6rem}
+.tl{border-left:3px solid var(--accent);padding-left:16px}
+.tl div{margin-bottom:9px}
+.tl div.ap{color:#1f5e3c;font-weight:600}
+.tl b{color:var(--accent);display:inline-block;min-width:130px}
+.list button{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:8px 0;font:inherit;cursor:pointer;color:inherit}
+.flow{margin:10px 0}
+.fl{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.fl .n{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{background:#fff;border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:8px 14px;font:inherit;cursor:pointer}
+.chip.bad{border-color:var(--bad);background:#f8e5e5;color:var(--bad);animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.badge{font-size:.72rem;padding:2px 8px;border-radius:999px;background:#e9e4d4;color:var(--muted);font-weight:400}
+.badge.ok{background:#e6f4ea;color:var(--ok)}
+details.dyn summary{cursor:pointer;list-style:none}
+details.dyn summary::-webkit-details-marker{display:none}
+details.dyn summary::before{content:"▸ ";color:var(--accent)}
+details.dyn[open] summary::before{content:"▾ "}
+table.kt{width:100%;border-collapse:collapse;font-size:.92rem;margin:8px 0;display:block;overflow-x:auto}
+.kt th,.kt td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+.kt th{color:var(--muted);font-weight:600;font-size:.82rem}
+.scrim{display:none}
+@media (max-width:820px){
+ aside{position:fixed;left:0;top:0;z-index:20;transform:translateX(-105%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.2)}
+ body.menu-open aside{transform:none}
+ body.menu-open .scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:10}
+ .burger{display:inline-block}
+ body{font-size:16px}
+ .card{padding:15px 16px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside id="side"></aside>
+  <div class="scrim" id="scrim"></div>
+  <main>
+    <div class="top">
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+      <div class="crumb" id="crumb"></div>
+      <button class="lang" id="langBtn">తెలుగు</button>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+<script>
+/*__DATA__*/
+</script>
+</body>
+</html>
