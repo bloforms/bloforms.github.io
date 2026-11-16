@@ -120,7 +120,7 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
     <h2 id="entryTitle">Enter certificate</h2>
     <div id="entryEmpty" class="empty" style="display:none">No blank papers in stock.<br>Add the new stock first.<br><button class="full" data-go="stock">Receive stock</button></div>
     <form id="entryForm" autocomplete="off">
-      <label for="eNo">Certificate paper number</label>
+      <label for="eNo">Bond serial number</label>
       <select id="eNo"></select>
       <label>What happened to this paper?</label>
       <div class="seg">
@@ -128,16 +128,16 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
         <label><input type="radio" name="eStatus" value="damaged"><span>Damaged / wasted</span></label>
       </div>
       <div id="printedFields">
-        <label for="eService">Service name</label>
+        <label for="eAppNo">Transaction number</label>
+        <input id="eAppNo" placeholder="e.g. IC250716065630" autocapitalize="characters">
+        <label for="eService">Service name <em>(optional)</em></label>
         <input id="eService" list="svcList" placeholder="e.g. Income Certificate">
         <datalist id="svcList"></datalist>
-        <label for="eAppNo">Application / request number <em>(optional)</em></label>
-        <input id="eAppNo" placeholder="As shown on the application">
         <label for="eName">Applicant name <em>(optional)</em></label>
         <input id="eName">
         <div class="row">
           <div><label for="eAppDate">Application date</label><input type="date" id="eAppDate"></div>
-          <div><label for="ePrintDate">Printed date</label><input type="date" id="ePrintDate"></div>
+          <div><label for="ePrintDate">Date (printed)</label><input type="date" id="ePrintDate"></div>
         </div>
       </div>
       <div id="damagedFields" style="display:none">
@@ -157,7 +157,7 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
 
 <!-- REGISTER -->
 <section class="view" id="v-reg">
-  <input id="q" type="search" placeholder="Search number, service, name, application no">
+  <input id="q" type="search" placeholder="Search serial no, transaction no, service, name">
   <div class="chips" id="fChips" style="margin-top:10px">
     <button class="chip on" data-f="all">All</button>
     <button class="chip" data-f="printed">Printed</button>
@@ -287,7 +287,7 @@ function itemHtml(p){
   var e=db.entries[p.key],b,d;
   if(!e){b='<span class="badge bb">Blank</span>';d='Not used';}
   else if(e.status==='damaged'){b='<span class="badge bd">Damaged</span>';d='<b>'+esc(e.remarks||'Damaged / wasted')+'</b>'+fd(e.damDate);}
-  else{b='<span class="badge bp">Printed</span>';d='<b>'+esc(e.service||'—')+'</b>'+[fd(e.printDate),e.name,e.appNo].filter(Boolean).map(esc).join(' · ');}
+  else{b='<span class="badge bp">Printed</span>';d='<b>'+esc(e.appNo||e.service||'—')+'</b>'+[fd(e.printDate),e.appNo?e.service:'',e.name].filter(Boolean).map(esc).join(' · ');}
   return '<div class="item" data-key="'+esc(p.key)+'"><div class="n">'+esc(p.no)+'</div><div class="d">'+d+'</div>'+b+'</div>';
 }
 document.addEventListener('click',function(e){var it=e.target.closest('.item[data-key]');if(it)openPaper(it.dataset.key);});
@@ -331,11 +331,11 @@ $('entryForm').addEventListener('submit',function(ev){
   var st=document.querySelector('input[name=eStatus]:checked').value,rec;
   if(st==='damaged'){rec={status:'damaged',damDate:$('eDamDate').value||today(),remarks:$('eRemarks').value.trim()};}
   else{
-    var svc=$('eService').value.trim();
-    if(!svc){toast('Type the service name');$('eService').focus();return;}
-    if(!$('ePrintDate').value){toast('Choose the printed date');return;}
-    rec={status:'printed',service:svc,appNo:$('eAppNo').value.trim(),name:$('eName').value.trim(),appDate:$('eAppDate').value,printDate:$('ePrintDate').value,remarks:$('eRemarks').value.trim()};
-    db.services=[svc].concat((db.services||[]).filter(function(s){return s.toLowerCase()!==svc.toLowerCase();})).slice(0,40);
+    var svc=$('eService').value.trim(),txn=$('eAppNo').value.trim().toUpperCase();
+    if(!txn){toast('Type the transaction number');$('eAppNo').focus();return;}
+    if(!$('ePrintDate').value){toast('Choose the date');return;}
+    rec={status:'printed',service:svc,appNo:txn,name:$('eName').value.trim(),appDate:$('eAppDate').value,printDate:$('ePrintDate').value,remarks:$('eRemarks').value.trim()};
+    if(svc)db.services=[svc].concat((db.services||[]).filter(function(s){return s.toLowerCase()!==svc.toLowerCase();})).slice(0,40);
   }
   if(!editing){
     var bl=blanks();
@@ -407,23 +407,34 @@ function renderMore(){
   $('xBatch').innerHTML='<option value="all">All stock</option>'+db.batches.slice().reverse().map(function(b){return'<option value="'+b.id+'">'+esc(batchLabel(b))+'</option>';}).join('');
   $('office').value=db.office||'';
 }
-function exportRows(){
-  var id=$('xBatch').value,ps=[];
-  db.batches.forEach(function(b){if(id==='all'||String(b.id)===id)ps=ps.concat(papersOf(b));});
-  return ps.map(function(p,i){var e=db.entries[p.key]||{};
-    return [i+1,p.label,e.status==='damaged'?'':(e.service||''),e.appNo||'',e.name||'',fd(e.appDate),fd(e.status==='damaged'?e.damDate:e.printDate),e.status==='damaged'?'Damaged':(e.status?'Printed':'Blank'),e.remarks||'',fd(p.batch.date)];});
+function exportGroups(){
+  var id=$('xBatch').value,out=[];
+  db.batches.forEach(function(b){
+    if(id!=='all'&&String(b.id)!==id)return;
+    var open=b.count;
+    out.push({batch:b,rows:papersOf(b).map(function(p,i){
+      var e=db.entries[p.key]||{},dmg=e.status==='damaged';
+      var txn=dmg?('DAMAGED'+(e.remarks?' - '+e.remarks:'')):(e.appNo||'');
+      var r=[i+1,fd(dmg?e.damDate:e.printDate),txn,open,0,1,p.no,open-1,dmg?'':(e.service||''),e.remarks||''];
+      open--;return r;})});
+  });
+  return out;
 }
-var HEAD=['Sl','Certificate paper no','Service name','Application no','Applicant name','Application date','Printed date','Status','Remarks','Stock received on'];
+var HEAD=['S.No.','Date','TRANSACTION NO','Opening Stock','Receipts No.s','Issues No.s','Bond Serial No','Closing Stock','Service name','Remarks'];
 $('xPrint').addEventListener('click',function(){
-  var rows=exportRows();if(!rows.length){toast('No stock entered yet');return;}
-  $('printArea').innerHTML='<h2>Secured Certificate Paper Register</h2><p>'+esc(db.office||'')+(db.office?' · ':'')+'Printed on '+fd(today())+'</p><table><thead><tr>'+HEAD.slice(0,9).map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return'<tr>'+r.slice(0,9).map(function(c){return'<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table>';
+  var gs=exportGroups();if(!gs.length){toast('No stock entered yet');return;}
+  var thead='<thead><tr><th rowspan="2">S.No.</th><th rowspan="2">Date</th><th rowspan="2">TRANSACTION NO</th><th rowspan="2">Opening Stock</th><th rowspan="2">Receipts No.s</th><th colspan="2">Issues</th><th rowspan="2">Closing Stock</th></tr><tr><th>No.s</th><th>Bond Serial No</th></tr></thead>';
+  $('printArea').innerHTML=gs.map(function(g,i){
+    return '<div'+(i?' style="page-break-before:always"':'')+'><h2>'+esc(db.office||'Secured Paper Stock Register')+'</h2><p>'+esc(batchLabel(g.batch))+' · received '+fd(g.batch.date)+'</p><table>'+thead+'<tbody>'+g.rows.map(function(r){return'<tr>'+r.slice(0,8).map(function(c){return'<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+  }).join('');
   window.print();
 });
 function download(name,text,type){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
 $('xCsv').addEventListener('click',function(){
-  var rows=exportRows();if(!rows.length){toast('No stock entered yet');return;}
-  var csv=[HEAD].concat(rows).map(function(r){return r.map(function(c){c=String(c);if(/^[=+\-@]/.test(c))c="'"+c;return'"'+c.replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
-  download('paper-register-'+today()+'.csv','﻿'+csv,'text/csv');
+  var gs=exportGroups();if(!gs.length){toast('No stock entered yet');return;}
+  var rows=[];gs.forEach(function(g){rows.push([batchLabel(g.batch)+' received '+fd(g.batch.date)]);rows.push(HEAD);rows=rows.concat(g.rows);rows.push([]);});
+  var csv=rows.map(function(r){return r.map(function(c){c=String(c);if(/^[=+\-@]/.test(c))c="'"+c;return'"'+c.replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
+  download('paper-register-'+today()+'.csv','\ufeff'+csv,'text/csv');
 });
 $('officeSave').addEventListener('click',function(){db.office=$('office').value.trim();save();toast('Saved');});
 $('bkSave').addEventListener('click',function(){download('paper-register-backup-'+today()+'.json',JSON.stringify(db),'application/json');});
