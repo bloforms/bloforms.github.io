@@ -49,3 +49,9 @@ Open the app: https://bloforms.github.io/adhyayam/
 Stock and usage register for secured certificate papers: enter each bundle received (first number and count), then record service, application and printed date against every paper number; shows balance, damaged papers, and prints or exports the register.
 
 Open the app: https://bloforms.github.io/paper/
+
+# Medicine Guide by Age & Disease
+
+For registered medical practitioners in AP: choose male/female, age, weight, pregnancy, one or more diseases and severity to see medicines with weight-based doses, a combined prescription, interaction and referral warnings. Includes malaria, TB, child dose chart and newborn/pregnancy/elderly tables.
+
+Open the app: https://bloforms.github.io/medicine/
