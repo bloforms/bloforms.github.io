@@ -37,3 +37,9 @@ Open the app: https://bloforms.github.io/history/
 House construction expense book: add materials and labour with quantity, rate, paid amount and shop, see budget, category and stage totals and shop balances, and save online so the entries come back on any phone.
 
 Open the app: https://bloforms.github.io/house/
+
+# Adhyayam – Chapter Study Packs
+
+Study packs for APPSC Group 1 and Group 2 chapters: short notes, tables, mind map, keywords, analysis, a memory paragraph, tests and a revision plan. Chapters are built in Claude and saved as pack files; this app opens them, works offline and tracks revision.
+
+Open the app: https://bloforms.github.io/adhyayam/

@@ -1,0 +1,15 @@
+{
+  "name": "Adhyayam – Chapter Study Packs",
+  "short_name": "Adhyayam",
+  "description": "Chapter notes, tables, mind maps, memory paragraphs and tests for APPSC Group 1 and Group 2.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#e9efe8",
+  "theme_color": "#0d6656",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
