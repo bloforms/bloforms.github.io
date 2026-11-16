@@ -640,7 +640,7 @@ function mmHtml(n,level,color){
   return kids.map((c,i)=>{const col=level===1?"var(--b"+((i%6)+1)+")":color;const sub=arr(c.children).length;
     return '<li class="l'+level+'" style="--bc:'+col+'">'+(sub?'<details open><summary class="node">'+fmt(c.label)+'</summary><ul style="--bc:'+col+'">'+mmHtml(c,level+1,col)+"</ul></details>":'<span class="node">'+fmt(c.label)+"</span>")+"</li>";}).join("");
 }
-function notBuilt(what){return running&&current&&running.chId===current.id?'<div class="note">'+what+' is being written now. It will appear here by itself. Read what is ready meanwhile.</div>':'<div class="note">'+what+' is not built yet. Tap Finish this pack above.</div>';}
+function notBuilt(what){if(STANDALONE)return '<div class="note">'+what+' was not finished when this pack file was saved. Finish the chapter in Claude and save the pack file again.</div>';return running&&current&&running.chId===current.id?'<div class="note">'+what+' is being written now. It will appear here by itself. Read what is ready meanwhile.</div>':'<div class="note">'+what+' is not built yet. Tap Finish this pack above.</div>';}
 function renderPanel(){
   const ch=current,pack=ch.pack,secs=allSections(pack),A=pack.A,B=pack.B;let h="";
   if(tab==="overview"){
