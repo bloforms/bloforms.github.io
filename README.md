@@ -43,3 +43,9 @@ Open the app: https://bloforms.github.io/house/
 Study packs for APPSC Group 1 and Group 2 chapters: short notes, tables, mind map, keywords, analysis, a memory paragraph, tests and a revision plan. Chapters are built in Claude and saved as pack files; this app opens them, works offline and tracks revision.
 
 Open the app: https://bloforms.github.io/adhyayam/
+
+# Paper Register
+
+Stock and usage register for secured certificate papers: enter each bundle received (first number and count), then record service, application and printed date against every paper number; shows balance, damaged papers, and prints or exports the register.
+
+Open the app: https://bloforms.github.io/paper/

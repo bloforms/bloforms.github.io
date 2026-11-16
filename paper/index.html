@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper Register</title>
+<meta name="apple-mobile-web-app-title" content="Paper Register">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b5c8a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--blue:#0b5c8a;--blue2:#e6f2f9;--ink:#16242e;--mute:#5d6f7b;--line:#d5dfe6;--bg:#f3f6f8;--green:#18794e;--greenbg:#e2f5ea;--red:#b3261e;--redbg:#fde8e6;--amber:#8a5a00;--amberbg:#fff3d6;--card:#fff}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.4;padding-bottom:84px}
+header{background:var(--blue);color:#fff;padding:14px 16px}
+header h1{margin:0;font-size:19px}
+header p{margin:2px 0 0;font-size:12.5px;opacity:.85}
+main{max-width:760px;margin:0 auto;padding:14px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.card h2{margin:0 0 10px;font-size:16px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat b{display:block;font-size:26px;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--mute)}
+.stat.bal b{color:var(--blue)}.stat.used b{color:var(--green)}.stat.dam b{color:var(--red)}
+.next{background:var(--blue2);border:1px solid #b9d8ea;border-radius:12px;padding:14px;margin-bottom:12px}
+.next small{color:var(--mute);display:block}
+.next .no{font-size:24px;font-weight:700;letter-spacing:.5px;color:var(--red);font-variant-numeric:tabular-nums;margin:2px 0 10px}
+.next .no i{font-style:normal;color:var(--ink);font-size:17px;margin-right:6px}
+label{display:block;font-size:13.5px;font-weight:600;margin:12px 0 4px}
+label em{font-weight:400;color:var(--mute);font-style:normal}
+input,select,textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid #b8c6cf;border-radius:9px;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:1px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{font:inherit;font-weight:600;border:0;border-radius:10px;padding:12px 16px;cursor:pointer;background:var(--blue);color:#fff}
+button.sec{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+button.danger{background:#fff;color:var(--red);border:1px solid var(--red)}
+button.full{width:100%;margin-top:14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btns button{flex:1;min-width:130px}
+.seg{display:flex;gap:8px}
+.seg label{position:relative;flex:1;margin:0;font-weight:600;border:1px solid #b8c6cf;border-radius:9px;padding:10px;text-align:center;cursor:pointer;background:#fff}
+.seg input{position:absolute;opacity:0;width:0;height:0}
+.seg input:checked+span{color:var(--blue)}
+.seg label:has(input:checked){border-color:var(--blue);background:var(--blue2)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px}
+.chip{flex:none;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:600}
+.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;gap:10px;align-items:center;cursor:pointer}
+.item .n{font-weight:700;font-variant-numeric:tabular-nums;min-width:86px}
+.item .d{flex:1;min-width:0;font-size:13.5px;color:var(--mute)}
+.item .d b{display:block;color:var(--ink);font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{flex:none;font-size:12px;font-weight:700;border-radius:999px;padding:3px 9px}
+.badge.bp{background:var(--greenbg);color:var(--green)}.badge.bd{background:var(--redbg);color:var(--red)}.badge.bb{background:#eef2f5;color:var(--mute)}
+.bh{font-size:13px;font-weight:700;color:var(--mute);margin:14px 2px 6px}
+.warn{background:var(--amberbg);color:var(--amber);border-radius:10px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+.empty{text-align:center;color:var(--mute);padding:26px 10px}
+.batch{border-top:1px solid var(--line);padding:10px 0}
+.batch:first-of-type{border-top:0}
+.batch b{font-variant-numeric:tabular-nums}
+.batch small{color:var(--mute);display:block}
+.bar{height:8px;background:#e6ecf0;border-radius:9px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--green)}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;color:var(--mute);border-radius:0;padding:9px 2px 10px;font-size:11.5px;font-weight:600}
+nav button svg{display:block;margin:0 auto 2px;width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--blue)}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#16242e;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
+#toast.on{opacity:1}
+footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
+#printArea{display:none}
+@media print{
+  body{background:#fff;padding:0;font-size:11px}
+  header,nav,main,#toast{display:none!important}
+  #printArea{display:block;padding:6mm}
+  #printArea h2{font-size:15px;margin:0;text-align:center}
+  #printArea p{margin:3px 0 8px;text-align:center}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid #000;padding:3px 5px;text-align:left;vertical-align:top}
+  th{background:#eee}
+  tr{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Paper Register</h1>
+  <p id="officeLine">Secured certificate paper stock &amp; usage</p>
+</header>
+
+<main>
+<!-- HOME -->
+<section class="view on" id="v-home">
+  <div class="card" id="installCard" style="display:none">
+    <h2>📲 Install app</h2>
+    <div id="installText" style="font-size:14px;color:var(--mute)">Add this app to your home screen. It works without internet.</div>
+    <button class="full" id="installBtn">Install</button>
+  </div>
+  <div id="lowWarn"></div>
+  <div class="next" id="nextBox"></div>
+  <div class="stats">
+    <div class="stat"><b id="sTotal">0</b><span>Papers received</span></div>
+    <div class="stat used"><b id="sUsed">0</b><span>Printed</span></div>
+    <div class="stat dam"><b id="sDam">0</b><span>Damaged / wasted</span></div>
+    <div class="stat bal"><b id="sBal">0</b><span>Balance in hand</span></div>
+  </div>
+  <div class="card">
+    <h2>Today</h2>
+    <div id="todayList"></div>
+  </div>
+</section>
+
+<!-- ENTRY -->
+<section class="view" id="v-entry">
+  <div class="card">
+    <h2 id="entryTitle">Enter certificate</h2>
+    <div id="entryEmpty" class="empty" style="display:none">No blank papers in stock.<br>Add the new stock first.<br><button class="full" data-go="stock">Receive stock</button></div>
+    <form id="entryForm" autocomplete="off">
+      <label for="eNo">Certificate paper number</label>
+      <select id="eNo"></select>
+      <label>What happened to this paper?</label>
+      <div class="seg">
+        <label><input type="radio" name="eStatus" value="printed" checked><span>Printed</span></label>
+        <label><input type="radio" name="eStatus" value="damaged"><span>Damaged / wasted</span></label>
+      </div>
+      <div id="printedFields">
+        <label for="eService">Service name</label>
+        <input id="eService" list="svcList" placeholder="e.g. Income Certificate">
+        <datalist id="svcList"></datalist>
+        <label for="eAppNo">Application / request number <em>(optional)</em></label>
+        <input id="eAppNo" placeholder="As shown on the application">
+        <label for="eName">Applicant name <em>(optional)</em></label>
+        <input id="eName">
+        <div class="row">
+          <div><label for="eAppDate">Application date</label><input type="date" id="eAppDate"></div>
+          <div><label for="ePrintDate">Printed date</label><input type="date" id="ePrintDate"></div>
+        </div>
+      </div>
+      <div id="damagedFields" style="display:none">
+        <label for="eDamDate">Date</label>
+        <input type="date" id="eDamDate">
+      </div>
+      <label for="eRemarks">Remarks <em>(optional)</em></label>
+      <input id="eRemarks" placeholder="e.g. printer jam, reprint">
+      <button class="full" type="submit" id="eSave">Save</button>
+      <div class="btns" id="editBtns" style="display:none">
+        <button type="button" class="sec" id="eCancel">Cancel</button>
+        <button type="button" class="danger" id="eClear">Make blank again</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section class="view" id="v-reg">
+  <input id="q" type="search" placeholder="Search number, service, name, application no">
+  <div class="chips" id="fChips" style="margin-top:10px">
+    <button class="chip on" data-f="all">All</button>
+    <button class="chip" data-f="printed">Printed</button>
+    <button class="chip" data-f="blank">Blank</button>
+    <button class="chip" data-f="damaged">Damaged</button>
+  </div>
+  <div id="regList"></div>
+</section>
+
+<!-- STOCK -->
+<section class="view" id="v-stock">
+  <div class="card">
+    <h2>Receive new stock</h2>
+    <form id="stockForm" autocomplete="off">
+      <div class="row">
+        <div><label for="bPrefix">Series letters</label><input id="bPrefix" value="APSGSW AI"></div>
+        <div><label for="bDate">Received date</label><input type="date" id="bDate"></div>
+      </div>
+      <div class="row">
+        <div><label for="bStart">First number</label><input id="bStart" inputmode="numeric" placeholder="e.g. 1944901"></div>
+        <div><label for="bCount">How many papers</label><input id="bCount" inputmode="numeric" value="100"></div>
+      </div>
+      <div id="bPreview" style="font-size:13.5px;color:var(--mute);margin-top:8px"></div>
+      <label for="bNote">Received from / remarks <em>(optional)</em></label>
+      <input id="bNote" placeholder="e.g. Municipal office">
+      <button class="full" type="submit">Add to stock</button>
+    </form>
+  </div>
+  <div class="card">
+    <h2>Stock received so far</h2>
+    <div id="batchList"></div>
+  </div>
+</section>
+
+<!-- MORE -->
+<section class="view" id="v-more">
+  <div class="card">
+    <h2>Print / export register</h2>
+    <label for="xBatch">Which stock</label>
+    <select id="xBatch"></select>
+    <div class="btns">
+      <button id="xPrint">Print register</button>
+      <button class="sec" id="xCsv">Excel file (CSV)</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Office name on print</h2>
+    <input id="office" placeholder="Office name">
+    <button class="full sec" id="officeSave">Save office name</button>
+  </div>
+  <div class="card">
+    <h2>Backup</h2>
+    <div style="font-size:14px;color:var(--mute)">Entries are kept on this phone only. Save a backup file now and then, and keep it in Drive or WhatsApp.</div>
+    <div class="btns">
+      <button class="sec" id="bkSave">Save backup file</button>
+      <button class="sec" id="bkLoad">Restore from backup</button>
+    </div>
+    <input type="file" id="bkFile" accept=".json,application/json" style="display:none">
+  </div>
+  <footer>Designed by Sivananda Pujari</footer>
+</section>
+</main>
+
+<nav>
+  <button data-go="home" class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+  <button data-go="entry"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Entry</button>
+  <button data-go="reg"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Register</button>
+  <button data-go="stock"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/></svg>Stock</button>
+  <button data-go="more"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
+</nav>
+<div id="toast"></div>
+<div id="printArea"></div>
+
+<script>
+(function(){
+'use strict';
+var KEY='paperRegister.v1';
+var SERVICES=['Income Certificate','Integrated Certificate (Caste)','Birth Certificate','Death Certificate','Family Member Certificate','Residence Certificate','OBC Certificate','EWS Certificate','Marriage Certificate','Late Registration of Birth','Late Registration of Death','No Earning Member Certificate','Agriculture Income Certificate','Rice Card','Household Split','Encumbrance Certificate','Adangal / 1B','Possession Certificate','No Property Certificate','Trade Licence','Property Tax / Mutation','Water Tap Connection'];
+var db={batches:[],entries:{},office:'',services:[]};
+var memOnly=false;
+try{var raw=localStorage.getItem(KEY);if(raw){var o=JSON.parse(raw);if(o&&o.batches)db=Object.assign(db,o);}}catch(e){memOnly=true;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db));}catch(e){memOnly=true;toast('Could not save on this phone. Take a backup now.');}}
+
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+function fd(s){if(!s)return'';var p=s.split('-');return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:s;}
+var tt;function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on');},2600);}
+function pad(n,w){var s=String(n);while(s.length<w)s='0'+s;return s;}
+function keyOf(prefix,no){return prefix+'|'+no;}
+
+function papersOf(b){var out=[],w=b.start.length,s=parseInt(b.start,10);for(var i=0;i<b.count;i++){var no=pad(s+i,w);out.push({batch:b,prefix:b.prefix,no:no,key:keyOf(b.prefix,no),label:b.prefix+' '+no});}return out;}
+function allPapers(){var out=[];db.batches.forEach(function(b){out=out.concat(papersOf(b));});return out;}
+function blanks(){return allPapers().filter(function(p){return !db.entries[p.key];});}
+function batchLabel(b){var w=b.start.length,s=parseInt(b.start,10);return b.prefix+' '+b.start+' – '+pad(s+b.count-1,w);}
+
+/* navigation */
+function go(v){
+  document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('on',x.id==='v-'+v);});
+  document.querySelectorAll('nav button').forEach(function(x){x.classList.toggle('on',x.dataset.go===v);});
+  if(v==='home')renderHome();
+  if(v==='entry'&&!editing)startEntry();
+  if(v==='reg')renderReg();
+  if(v==='stock')renderStock();
+  if(v==='more')renderMore();
+  window.scrollTo(0,0);
+}
+document.addEventListener('click',function(e){var b=e.target.closest('[data-go]');if(b){editing=null;go(b.dataset.go);}});
+
+/* home */
+function renderHome(){
+  var all=allPapers(),used=0,dam=0;
+  all.forEach(function(p){var e=db.entries[p.key];if(e){if(e.status==='damaged')dam++;else used++;}});
+  var bal=all.length-used-dam;
+  $('sTotal').textContent=all.length;$('sUsed').textContent=used;$('sDam').textContent=dam;$('sBal').textContent=bal;
+  var nb=$('nextBox'),bl=blanks();
+  if(!db.batches.length){nb.innerHTML='<small>Start here</small><div style="margin:4px 0 10px">Enter the papers you received: first number and how many.</div><button data-go="stock">Receive stock</button>';}
+  else if(!bl.length){nb.innerHTML='<small>All papers are used</small><div style="margin:4px 0 10px">When the new bundle comes, add it to stock.</div><button data-go="stock">Receive stock</button>';}
+  else{nb.innerHTML='<small>Next paper to use</small><div class="no"><i>'+esc(bl[0].prefix)+'</i>'+esc(bl[0].no)+'</div><button data-go="entry">Enter this certificate</button>';}
+  $('lowWarn').innerHTML=(db.batches.length&&bal>0&&bal<=10)?'<div class="warn">Only '+bal+' blank paper'+(bal===1?'':'s')+' left. Ask for new stock.</div>':'';
+  if(memOnly)$('lowWarn').innerHTML+='<div class="warn">This phone is not allowing the app to save. Entries will be lost when you close it.</div>';
+  var t=today(),list=all.filter(function(p){var e=db.entries[p.key];return e&&(e.printDate===t||e.damDate===t);});
+  $('todayList').innerHTML=list.length?list.map(itemHtml).join(''):'<div class="empty" style="padding:10px">No entries today.</div>';
+  $('officeLine').textContent=db.office||'Secured certificate paper stock & usage';
+}
+function itemHtml(p){
+  var e=db.entries[p.key],b,d;
+  if(!e){b='<span class="badge bb">Blank</span>';d='Not used';}
+  else if(e.status==='damaged'){b='<span class="badge bd">Damaged</span>';d='<b>'+esc(e.remarks||'Damaged / wasted')+'</b>'+fd(e.damDate);}
+  else{b='<span class="badge bp">Printed</span>';d='<b>'+esc(e.service||'—')+'</b>'+[fd(e.printDate),e.name,e.appNo].filter(Boolean).map(esc).join(' · ');}
+  return '<div class="item" data-key="'+esc(p.key)+'"><div class="n">'+esc(p.no)+'</div><div class="d">'+d+'</div>'+b+'</div>';
+}
+document.addEventListener('click',function(e){var it=e.target.closest('.item[data-key]');if(it)openPaper(it.dataset.key);});
+
+/* entry */
+var editing=null;
+function fillServices(){var seen={},list=(db.services||[]).concat(SERVICES).filter(function(s){var k=s.toLowerCase();if(seen[k])return false;seen[k]=1;return true;});$('svcList').innerHTML=list.map(function(s){return'<option value="'+esc(s)+'">';}).join('');}
+function setStatusUI(){var dmg=document.querySelector('input[name=eStatus]:checked').value==='damaged';$('printedFields').style.display=dmg?'none':'';$('damagedFields').style.display=dmg?'':'none';}
+document.querySelectorAll('input[name=eStatus]').forEach(function(r){r.addEventListener('change',setStatusUI);});
+function startEntry(){
+  editing=null;fillServices();
+  var bl=blanks();
+  $('entryTitle').textContent='Enter certificate';
+  $('entryEmpty').style.display=bl.length?'none':'';
+  $('entryForm').style.display=bl.length?'':'none';
+  $('editBtns').style.display='none';$('eNo').disabled=false;
+  $('eNo').innerHTML=bl.slice(0,200).map(function(p){return'<option value="'+esc(p.key)+'">'+esc(p.label)+'</option>';}).join('');
+  document.querySelector('input[name=eStatus][value=printed]').checked=true;
+  ['eService','eAppNo','eName','eRemarks'].forEach(function(i){$(i).value='';});
+  $('eAppDate').value='';$('ePrintDate').value=today();$('eDamDate').value=today();
+  setStatusUI();
+}
+function openPaper(key){
+  var p=allPapers().filter(function(x){return x.key===key;})[0];if(!p)return;
+  var e=db.entries[key];
+  go('entry');
+  if(!e){$('eNo').value=key;return;}
+  editing=key;
+  $('entryTitle').textContent='Edit '+p.label;
+  $('entryEmpty').style.display='none';$('entryForm').style.display='';
+  $('eNo').innerHTML='<option value="'+esc(key)+'">'+esc(p.label)+'</option>';$('eNo').disabled=true;
+  document.querySelector('input[name=eStatus][value='+(e.status==='damaged'?'damaged':'printed')+']').checked=true;
+  $('eService').value=e.service||'';$('eAppNo').value=e.appNo||'';$('eName').value=e.name||'';
+  $('eAppDate').value=e.appDate||'';$('ePrintDate').value=e.printDate||today();$('eDamDate').value=e.damDate||today();
+  $('eRemarks').value=e.remarks||'';
+  $('editBtns').style.display='';setStatusUI();
+}
+$('entryForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var key=$('eNo').value;if(!key)return;
+  var st=document.querySelector('input[name=eStatus]:checked').value,rec;
+  if(st==='damaged'){rec={status:'damaged',damDate:$('eDamDate').value||today(),remarks:$('eRemarks').value.trim()};}
+  else{
+    var svc=$('eService').value.trim();
+    if(!svc){toast('Type the service name');$('eService').focus();return;}
+    if(!$('ePrintDate').value){toast('Choose the printed date');return;}
+    rec={status:'printed',service:svc,appNo:$('eAppNo').value.trim(),name:$('eName').value.trim(),appDate:$('eAppDate').value,printDate:$('ePrintDate').value,remarks:$('eRemarks').value.trim()};
+    db.services=[svc].concat((db.services||[]).filter(function(s){return s.toLowerCase()!==svc.toLowerCase();})).slice(0,40);
+  }
+  if(!editing){
+    var bl=blanks();
+    if(bl.length&&bl[0].key!==key&&!confirm('Paper '+bl[0].label+' is still blank and comes before this one. Save this number anyway?'))return;
+  }
+  db.entries[key]=rec;save();
+  toast('Saved '+key.split('|')[1]);
+  if(editing){editing=null;go('reg');}else{startEntry();window.scrollTo(0,0);}
+});
+$('eCancel').addEventListener('click',function(){editing=null;go('reg');});
+$('eClear').addEventListener('click',function(){
+  if(!editing)return;
+  if(!confirm('Remove this entry and mark the paper as blank again?'))return;
+  delete db.entries[editing];save();editing=null;toast('Marked blank');go('reg');
+});
+
+/* register */
+var filter='all';
+$('fChips').addEventListener('click',function(e){var c=e.target.closest('.chip');if(!c)return;filter=c.dataset.f;document.querySelectorAll('#fChips .chip').forEach(function(x){x.classList.toggle('on',x===c);});renderReg();});
+$('q').addEventListener('input',renderReg);
+function renderReg(){
+  var q=$('q').value.trim().toLowerCase(),html='',n=0;
+  db.batches.slice().reverse().forEach(function(b){
+    var rows=papersOf(b).filter(function(p){
+      var e=db.entries[p.key],st=e?e.status:'blank';
+      if(filter!=='all'&&st!==filter)return false;
+      if(!q)return true;
+      var hay=(p.label+' '+(e?[e.service,e.name,e.appNo,e.remarks].join(' '):'')).toLowerCase();
+      return hay.indexOf(q)>=0;
+    });
+    if(!rows.length)return;
+    n+=rows.length;
+    html+='<div class="bh">'+esc(batchLabel(b))+' · received '+fd(b.date)+'</div>'+rows.map(itemHtml).join('');
+  });
+  $('regList').innerHTML=html||'<div class="empty">'+(db.batches.length?'Nothing found.':'No stock entered yet.')+'</div>';
+}
+
+/* stock */
+function previewBatch(){
+  var s=$('bStart').value.trim(),c=parseInt($('bCount').value,10);
+  if(/^\d+$/.test(s)&&c>0){$('bPreview').textContent='Papers '+$('bPrefix').value.trim()+' '+s+' to '+pad(parseInt(s,10)+c-1,s.length);}
+  else $('bPreview').textContent='';
+}
+['bStart','bCount','bPrefix'].forEach(function(i){$(i).addEventListener('input',previewBatch);});
+$('stockForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var prefix=$('bPrefix').value.trim().toUpperCase().replace(/\s+/g,' '),s=$('bStart').value.trim(),c=parseInt($('bCount').value,10);
+  if(!/^\d{1,12}$/.test(s)){toast('First number must be digits only');$('bStart').focus();return;}
+  if(!(c>0&&c<=2000)){toast('Enter how many papers (1 to 2000)');$('bCount').focus();return;}
+  var a=parseInt(s,10),z=a+c-1;
+  var clash=db.batches.filter(function(b){var ba=parseInt(b.start,10),bz=ba+b.count-1;return b.prefix===prefix&&a<=bz&&ba<=z;})[0];
+  if(clash){toast('These numbers are already in stock: '+batchLabel(clash));return;}
+  db.batches.push({id:Date.now(),prefix:prefix,start:s,count:c,date:$('bDate').value||today(),note:$('bNote').value.trim()});
+  save();toast(c+' papers added to stock');
+  $('bStart').value='';$('bNote').value='';previewBatch();renderStock();
+});
+function renderStock(){
+  if(!$('bDate').value)$('bDate').value=today();
+  if(db.batches.length){var last=db.batches[db.batches.length-1];$('bPrefix').value=last.prefix;if(!$('bStart').value){$('bStart').placeholder='e.g. '+pad(parseInt(last.start,10)+last.count,last.start.length);}}
+  $('batchList').innerHTML=db.batches.length?db.batches.slice().reverse().map(function(b){
+    var ps=papersOf(b),u=ps.filter(function(p){return db.entries[p.key];}).length;
+    return '<div class="batch"><b>'+esc(batchLabel(b))+'</b><small>Received '+fd(b.date)+(b.note?' · '+esc(b.note):'')+' · '+b.count+' papers · '+u+' used · '+(b.count-u)+' blank</small><div class="bar"><i style="width:'+(u/b.count*100)+'%"></i></div>'+(u===0?'<button class="danger" style="margin-top:8px;padding:7px 12px;font-size:13px" data-del="'+b.id+'">Remove (entered by mistake)</button>':'')+'</div>';
+  }).join(''):'<div class="empty" style="padding:10px">No stock entered yet.</div>';
+}
+$('batchList').addEventListener('click',function(e){var b=e.target.closest('[data-del]');if(!b)return;if(!confirm('Remove this stock entry?'))return;db.batches=db.batches.filter(function(x){return String(x.id)!==b.dataset.del;});save();renderStock();});
+
+/* more: print, export, backup */
+function renderMore(){
+  $('xBatch').innerHTML='<option value="all">All stock</option>'+db.batches.slice().reverse().map(function(b){return'<option value="'+b.id+'">'+esc(batchLabel(b))+'</option>';}).join('');
+  $('office').value=db.office||'';
+}
+function exportRows(){
+  var id=$('xBatch').value,ps=[];
+  db.batches.forEach(function(b){if(id==='all'||String(b.id)===id)ps=ps.concat(papersOf(b));});
+  return ps.map(function(p,i){var e=db.entries[p.key]||{};
+    return [i+1,p.label,e.status==='damaged'?'':(e.service||''),e.appNo||'',e.name||'',fd(e.appDate),fd(e.status==='damaged'?e.damDate:e.printDate),e.status==='damaged'?'Damaged':(e.status?'Printed':'Blank'),e.remarks||'',fd(p.batch.date)];});
+}
+var HEAD=['Sl','Certificate paper no','Service name','Application no','Applicant name','Application date','Printed date','Status','Remarks','Stock received on'];
+$('xPrint').addEventListener('click',function(){
+  var rows=exportRows();if(!rows.length){toast('No stock entered yet');return;}
+  $('printArea').innerHTML='<h2>Secured Certificate Paper Register</h2><p>'+esc(db.office||'')+(db.office?' · ':'')+'Printed on '+fd(today())+'</p><table><thead><tr>'+HEAD.slice(0,9).map(function(h){return'<th>'+h+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return'<tr>'+r.slice(0,9).map(function(c){return'<td>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table>';
+  window.print();
+});
+function download(name,text,type){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+$('xCsv').addEventListener('click',function(){
+  var rows=exportRows();if(!rows.length){toast('No stock entered yet');return;}
+  var csv=[HEAD].concat(rows).map(function(r){return r.map(function(c){c=String(c);if(/^[=+\-@]/.test(c))c="'"+c;return'"'+c.replace(/"/g,'""')+'"';}).join(',');}).join('\r\n');
+  download('paper-register-'+today()+'.csv','﻿'+csv,'text/csv');
+});
+$('officeSave').addEventListener('click',function(){db.office=$('office').value.trim();save();toast('Saved');});
+$('bkSave').addEventListener('click',function(){download('paper-register-backup-'+today()+'.json',JSON.stringify(db),'application/json');});
+$('bkLoad').addEventListener('click',function(){$('bkFile').click();});
+$('bkFile').addEventListener('change',function(){
+  var f=this.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){try{var o=JSON.parse(r.result);if(!o||!Array.isArray(o.batches)||typeof o.entries!=='object')throw 0;
+    if(!confirm('Replace everything on this phone with the backup ('+o.batches.length+' stock entries)?'))return;
+    db={batches:o.batches,entries:o.entries||{},office:o.office||'',services:o.services||[]};save();toast('Backup restored');go('home');
+  }catch(e){toast('This is not a Paper Register backup file');}};
+  r.readAsText(f);this.value='';
+});
+
+/* install */
+var deferred=null,standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(!standalone){
+  $('installCard').style.display='';
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  $('installText').textContent=ios?'On iPhone: tap Share, then "Add to Home Screen".':'Add this app to your home screen. It works without internet.';
+  if(ios)$('installBtn').style.display='none';
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;});
+  $('installBtn').addEventListener('click',function(){if(deferred){deferred.prompt();deferred=null;}else{$('installText').textContent='Open the Chrome menu (⋮) and tap "Add to Home screen" or "Install app".';}});
+  window.addEventListener('appinstalled',function(){$('installCard').style.display='none';});
+}
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){navigator.serviceWorker.register('sw.js').catch(function(){});}
+
+window.__db=function(){return db;};
+renderHome();
+})();
+</script>
+</body>
+</html>
