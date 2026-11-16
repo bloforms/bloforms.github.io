@@ -432,21 +432,29 @@ function digest(pack){
   return d.slice(0,70000);
 }
 function promptA(o,pack){
-  return "You are a mentor for APPSC "+o.exam+" aspirants. Below are complete notes of one chapter"+(o.subject?" in "+o.subject:"")+". Help the student understand and connect it.\n"+langRule(o.lang)+"\nUse only the notes, plus well-established links to other syllabus topics.\n\n"+
+  return "You are a mentor for APPSC "+o.exam+" aspirants. Below are complete notes of one chapter"+(o.subject?" in "+o.subject:"")+". Help the student understand and connect it.\n"+langRule(o.lang)+"\nUse only the notes, plus well-established links to other syllabus topics. Keep every item short.\n\n"+
   "Produce:\n- title: the chapter's name. subject: one of Polity, History, Geography, Economy, Science and Technology, Environment, Society, Ethics, Current Affairs, or the closest.\n"+
   "- bigPicture: exactly 5 short lines that give the whole chapter before any detail.\n"+
-  "- analysis.why: 2 sentences on why this chapter matters for the exam.\n- analysis.themes: 3 to 6 core ideas, each with a 1 to 2 sentence explanation.\n- analysis.causeEffect: the main cause and effect pairs in the chapter.\n- analysis.links: links to other subjects, other chapters or current affairs.\n- analysis.prelims: what Prelims usually asks from such a chapter. analysis.mains: likely Mains questions. analysis.traps: facts students commonly confuse.\n"+
-  "- mindmap: central topic, 4 to 8 main branches that together touch EVERY section of the notes, each with 2 to 6 sub-branches, and a third level only where needed. Labels of 6 words at most.\n"+
+  "- analysis.why: 2 sentences on why this chapter matters for the exam.\n- analysis.themes: 3 to 5 core ideas, each with a 1 sentence explanation.\n- analysis.causeEffect: the main cause and effect pairs.\n- analysis.links: links to other subjects, chapters or current affairs.\n- analysis.prelims: what Prelims usually asks from such a chapter. analysis.mains: likely Mains questions. analysis.traps: facts students commonly confuse.\n"+
   "- focus: the 10 to 15 keywords to focus on first, each with a short reason.\n\n"+
-  'Reply with only JSON in this shape:\n{"title":"","subject":"","bigPicture":[""],"analysis":{"why":"","themes":[{"point":"","explain":""}],"causeEffect":[{"cause":"","effect":""}],"links":[""],"prelims":[""],"mains":[""],"traps":[""]},"mindmap":{"label":"","children":[{"label":"","children":[{"label":"","children":[]}]}]},"focus":[{"term":"","why":""}]}\n\nNOTES:\n'+digest(pack);
+  'Reply with only JSON in this shape:\n{"title":"","subject":"","bigPicture":[""],"analysis":{"why":"","themes":[{"point":"","explain":""}],"causeEffect":[{"cause":"","effect":""}],"links":[""],"prelims":[""],"mains":[""],"traps":[""]},"focus":[{"term":"","why":""}]}\n\nNOTES:\n'+digest(pack);
+}
+function promptM(o,pack){
+  return "Make a mind map of one chapter for an APPSC "+o.exam+" aspirant, from the notes below.\n"+langRule(o.lang)+"\n"+
+  "Rules: label is the central topic. 4 to 8 main branches that together touch EVERY section of the notes. Each main branch has 2 to 6 sub-branches. Add a third level only where really needed. Every label is 6 words at most. Use only the notes.\n\n"+
+  'Reply with only JSON in this shape:\n{"label":"","children":[{"label":"","children":[{"label":"","children":[]}]}]}\n\nNOTES:\n'+digest(pack);
 }
 function promptB(o,pack){
-  return "You are a memory coach for APPSC "+o.exam+" aspirants. Below are complete notes of one chapter. Help the student remember the whole chapter and test it.\n"+langRule(o.lang)+"\nUse only facts from the notes.\n\n"+
-  "Produce:\n- memory.oneLine: the chapter in one sentence.\n"+
-  "- memory.paragraph: ONE flowing paragraph that walks through the whole chapter in the same order as the notes, as a connected story where each sentence leads to the next by time, cause or logic, so that recalling the paragraph recalls the chapter. Touch every section; include the key names, numbers and dates. 150 to 300 words, longer only if a section would otherwise be skipped. Wrap cue words in **double asterisks**.\n"+
-  "- memory.order: 6 to 12 cue words in sequence, the skeleton of the paragraph.\n- memory.mnemonics: 2 to 6 memory tricks for lists or sequences that are hard to hold, each saying what it is for.\n"+
-  "- test.mcq: 10 questions in APPSC Prelims style, including statement-based ones, 4 options each, answer as index 0 to 3, with a one-line reason.\n- test.recall: 8 short questions with short answers, spread across all sections.\n- test.mains: 3 Mains questions, each with 5 to 6 points for the answer.\n\n"+
-  'Reply with only JSON in this shape:\n{"memory":{"oneLine":"","paragraph":"","order":[""],"mnemonics":[{"for":"","trick":""}]},"test":{"mcq":[{"q":"","options":["","","",""],"answer":0,"why":""}],"recall":[{"q":"","a":""}],"mains":[{"q":"","points":[""]}]}}\n\nNOTES:\n'+digest(pack);
+  return "You are a memory coach for APPSC "+o.exam+" aspirants. Below are complete notes of one chapter. Help the student remember the whole chapter.\n"+langRule(o.lang)+"\nUse only facts from the notes.\n\n"+
+  "Produce:\n- oneLine: the chapter in one sentence.\n"+
+  "- paragraph: ONE flowing paragraph that walks through the whole chapter in the same order as the notes, as a connected story where each sentence leads to the next by time, cause or logic, so that recalling the paragraph recalls the chapter. Touch every section; include the key names, numbers and dates. 150 to 300 words, longer only if a section would otherwise be skipped. Wrap cue words in **double asterisks**.\n"+
+  "- order: 6 to 12 cue words in sequence, the skeleton of the paragraph.\n- mnemonics: 2 to 6 memory tricks for lists or sequences that are hard to hold, each saying what it is for.\n\n"+
+  'Reply with only JSON in this shape:\n{"oneLine":"","paragraph":"","order":[""],"mnemonics":[{"for":"","trick":""}]}\n\nNOTES:\n'+digest(pack);
+}
+function promptT(o,pack){
+  return "You are an examiner for APPSC "+o.exam+". Below are complete notes of one chapter. Write a test from it.\n"+langRule(o.lang)+"\nUse only facts from the notes.\n\n"+
+  "Produce:\n- mcq: 10 questions in APPSC Prelims style, including statement-based ones, 4 options each, answer as index 0 to 3, with a one-line reason.\n- recall: 8 short questions with short answers, spread across all sections.\n- mains: 3 Mains questions, each with 5 to 6 points for the answer.\n\n"+
+  'Reply with only JSON in this shape:\n{"mcq":[{"q":"","options":["","","",""],"answer":0,"why":""}],"recall":[{"q":"","a":""}],"mains":[{"q":"","points":[""]}]}\n\nNOTES:\n'+digest(pack);
 }
 
 /* ---------- cleaning AI output ---------- */
@@ -467,16 +475,30 @@ function cleanA(v){const a=(v&&v.analysis)||{};
     causeEffect:arr(a.causeEffect).map(c=>({cause:str(c&&c.cause),effect:str(c&&c.effect)})),
     links:arr(a.links).map(str),prelims:arr(a.prelims).map(str),mains:arr(a.mains).map(str),traps:arr(a.traps).map(str)},
    mindmap:cleanNode((v&&v.mindmap)||{},0),focus:arr(v&&v.focus).map(k=>({term:str(k&&k.term),why:str(k&&k.why)})).filter(k=>k.term)};}
-function cleanB(v){const m=(v&&v.memory)||{},t=(v&&v.test)||{};
+function cleanM(v){const m=cleanNode(v||{},0);if(!m.label||!m.children.length)throw {code:"invalid_json"};return m;}
+function cleanB(v){const m=(v&&v.memory)||v||{};
   if(!str(m.paragraph))throw {code:"invalid_json"};
-  return {memory:{oneLine:str(m.oneLine),paragraph:str(m.paragraph),order:arr(m.order).map(str),mnemonics:arr(m.mnemonics).map(x=>({for:str(x&&x.for),trick:str(x&&x.trick)})).filter(x=>x.trick)},
-   test:{mcq:arr(t.mcq).map(q=>{let a=q&&q.answer;if(typeof a==="string"){const i="ABCD".indexOf(a.trim().toUpperCase()[0]);a=i>=0?i:parseInt(a,10);}
+  return {memory:{oneLine:str(m.oneLine),paragraph:str(m.paragraph),order:arr(m.order).map(str),mnemonics:arr(m.mnemonics).map(x=>({for:str(x&&x.for),trick:str(x&&x.trick)})).filter(x=>x.trick)}};}
+function cleanT(v){const t=(v&&v.test)||v||{};
+  const out={mcq:arr(t.mcq).map(q=>{let a=q&&q.answer;if(typeof a==="string"){const i="ABCD".indexOf(a.trim().toUpperCase()[0]);a=i>=0?i:parseInt(a,10);}
       return {q:str(q&&q.q),options:arr(q&&q.options).map(str),answer:Number.isInteger(a)?a:0,why:str(q&&q.why)};}).filter(q=>q.q&&q.options.length>1),
     recall:arr(t.recall).map(q=>({q:str(q&&q.q),a:str(q&&q.a)})).filter(q=>q.q),
-    mains:arr(t.mains).map(q=>({q:str(q&&q.q),points:arr(q&&q.points).map(str)})).filter(q=>q.q)}};}
+    mains:arr(t.mains).map(q=>({q:str(q&&q.q),points:arr(q&&q.points).map(str)})).filter(q=>q.q)};
+  if(!out.mcq.length&&!out.recall.length)throw {code:"invalid_json"};
+  return out;}
+/* older packs kept the mind map inside A and the test inside B */
+function norm(pack){
+  if(!pack.M&&pack.A&&pack.A.mindmap&&pack.A.mindmap.label&&arr(pack.A.mindmap.children).length)pack.M=pack.A.mindmap;
+  if(!pack.T&&pack.B&&pack.B.test&&(arr(pack.B.test.mcq).length||arr(pack.B.test.recall).length))pack.T=pack.B.test;
+  return pack;
+}
+/* a simple map made from the notes themselves, shown until the full mind map is written */
+function localMap(pack,title){
+  return {label:title||"Chapter",children:allSections(pack).map(x=>({label:plain(x.heading),children:(x.concepts.length?x.concepts:x.keywords.map(k=>k.term)).slice(0,7).map(c=>({label:plain(c),children:[]}))}))};
+}
 function allSections(pack){const out=[];arr(pack.parts).forEach(p=>{if(p)arr(p.sections).forEach(s=>out.push(s));});return out;}
 function missingParts(pack){const m=[];for(let i=0;i<pack.n;i++)if(!pack.parts[i])m.push(i);return m;}
-function incomplete(ch){return missingParts(ch.pack).length>0||!ch.pack.A||!ch.pack.B;}
+function incomplete(ch){const p=norm(ch.pack);return missingParts(p).length>0||!p.A||!p.M||!p.B||!p.T;}
 
 /* ---------- building ---------- */
 const FATAL=["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed","rate_limited","session_expired","cancelled"];
@@ -498,7 +520,7 @@ async function ask(sample,prompt,images,tier){
 function live(ch,kind){
   if(!current||current.id!==ch.id)return;
   $("#vtitle").textContent=ch.title;
-  const on=kind==="part"?["overview","notes","tables","keywords"]:kind==="A"?["overview","mindmap","keywords","analysis"]:["remember","test"];
+  const on={part:["overview","notes","tables","keywords","mindmap"],A:["overview","keywords","analysis"],M:["mindmap"],B:["remember"],T:["test"]}[kind]||[];
   if(on.indexOf(tab)>=0)renderPanel();
 }
 async function runPack(ch,say){
@@ -508,7 +530,7 @@ async function runPack(ch,say){
   if(!jobs[ch.id]&&missingParts(ch.pack).length){const kept=await getSrc(ch.id);if(kept)jobs[ch.id]=kept;}
   const o={exam:ch.exam,lang:ch.lang,subject:ch.subject},pack=ch.pack,units=jobs[ch.id]||[];
   let todo=missingParts(pack).filter(i=>units[i]);
-  const totalSteps=todo.length+(pack.A?0:1)+(pack.B?0:1);let done=0,lastErr=null,fatal=null;
+  norm(pack);const totalSteps=todo.length+(pack.A?0:1)+(pack.M?0:1)+(pack.B?0:1)+(pack.T?0:1);let done=0,lastErr=null,fatal=null;
   const tick=t=>say(t,totalSteps?done/totalSteps:1);
   tick(todo.length?"Making notes: part 1 of "+todo.length:"Building analysis and memory aids");
   let next=0;
@@ -527,8 +549,12 @@ async function runPack(ch,say){
   if(!fatal&&!running.stop&&allSections(pack).length){
     tick("Building mind map, analysis, memory paragraph and test");
     const jobsAB=[];
-    if(!pack.A)jobsAB.push(ask(sample,promptA(o,pack),null,tier).then(v=>{pack.A=cleanA(v);if(pack.A.title)ch.title=pack.A.title;if(!ch.subject&&pack.A.subject)ch.subject=pack.A.subject;live(ch,"A");}).catch(e=>{lastErr=e&&e.code||"upstream_error";}).then(()=>{done++;tick("Almost done");}));
-    if(!pack.B)jobsAB.push(ask(sample,promptB(o,pack),null,tier).then(v=>{pack.B=cleanB(v);live(ch,"B");}).catch(e=>{lastErr=e&&e.code||"upstream_error";}).then(()=>{done++;tick("Almost done");}));
+    const job=(key,prompt,clean,after)=>{if(pack[key])return;
+      jobsAB.push(ask(sample,prompt(o,pack),null,tier).then(v=>{pack[key]=clean(v);if(after)after();ch.unsynced=true;saveLocal();live(ch,key);}).catch(e=>{lastErr=e&&e.code||"upstream_error";}).then(()=>{done++;tick("Almost done");}));};
+    job("M",promptM,cleanM);
+    job("A",promptA,cleanA,()=>{if(pack.A.title)ch.title=pack.A.title;if(!ch.subject&&pack.A.subject)ch.subject=pack.A.subject;});
+    job("B",promptB,cleanB);
+    job("T",promptT,cleanT);
     await Promise.all(jobsAB);
   }
   if(running.stop)lastErr="cancelled";
@@ -642,7 +668,7 @@ function mmHtml(n,level,color){
 }
 function notBuilt(what){if(STANDALONE)return '<div class="note">'+what+' was not finished when this pack file was saved. Finish the chapter in Claude and save the pack file again.</div>';return running&&current&&running.chId===current.id?'<div class="note">'+what+' is being written now. It will appear here by itself. Read what is ready meanwhile.</div>':'<div class="note">'+what+' is not built yet. Tap Finish this pack above.</div>';}
 function renderPanel(){
-  const ch=current,pack=ch.pack,secs=allSections(pack),A=pack.A,B=pack.B;let h="";
+  const ch=current,pack=norm(ch.pack),secs=allSections(pack),A=pack.A,B=pack.B,T=pack.T,M=pack.M||(secs.length?localMap(pack,ch.title):null);let h="";
   if(tab==="overview"){
     const miss=missingParts(pack);
     if(pack.cut)h+='<div class="note">This chapter was very long, so only the first part was read. Upload the rest as a second chapter.</div>';
@@ -660,7 +686,8 @@ function renderPanel(){
     h+=ts.length?ts.map(tableHtml).join(""):'<p class="muted">This chapter had no information that fits a table.</p>';
   }
   if(tab==="mindmap"){
-    h+=A&&A.mindmap.label?'<p class="muted small">Tap a branch to close or open it. Try to redraw this on paper from memory.</p><div class="mm"><span class="root">'+fmt(A.mindmap.label)+"</span><ul>"+mmHtml(A.mindmap,1,"var(--line)")+"</ul></div>":notBuilt("The mind map");
+    if(M&&!pack.M)h+='<div class="note">This is a simple map made from your notes. '+(running&&running.chId===ch.id?"The full mind map is being written and will replace it.":STANDALONE?"":"Tap Finish this pack above for the full mind map.")+"</div>";
+    h+=M?'<p class="muted small">Tap a branch to close or open it. Try to redraw this on paper from memory.</p><div class="mm"><span class="root">'+fmt(M.label)+"</span><ul>"+mmHtml(M,1,"var(--line)")+"</ul></div>":notBuilt("The mind map");
   }
   if(tab==="keywords"){
     if(A&&A.focus.length)h+='<div class="sec"><h3>Focus on these first</h3><div class="kw">'+A.focus.map(k=>"<div><b><mark>"+esc(plain(k.term))+"</mark></b><span class=\"muted\">"+fmt(k.why)+"</span></div>").join("")+"</div></div>";
@@ -686,7 +713,7 @@ function renderPanel(){
       h+='<div class="sec"><h3>Revision plan</h3><p>Revise this chapter on day 1, 3, 7, 21 and 45. Each time, recite the paragraph first, then open the Test tab. Tap Mark revised today when done.</p></div>';}
   }
   if(tab==="test"){
-    if(!B)h+=notBuilt("The test");else{const t=B.test;
+    if(!T)h+=notBuilt("The test");else{const t=T;
       if(t.recall.length)h+='<div class="sec"><h3>Quick recall</h3>'+t.recall.map(q=>'<div class="q"><b>'+fmt(q.q)+"</b><details><summary>Show answer</summary><p>"+fmt(q.a)+"</p></details></div>").join("")+"</div>";
       if(t.mcq.length)h+='<div class="sec"><h3>Prelims practice</h3>'+t.mcq.map((q,i)=>'<div class="q" data-q="'+i+'"><b>'+(i+1)+". "+fmt(q.q)+'</b><div class="opts">'+q.options.map((o,j)=>'<button data-opt="'+j+'">'+"ABCD"[j]+". "+fmt(o)+"</button>").join("")+'</div><p class="small muted" data-why hidden></p></div>').join("")+"</div>";
       if(t.mains.length)h+='<div class="sec"><h3>Mains practice</h3>'+t.mains.map(q=>'<div class="q"><b>'+fmt(q.q)+"</b><details><summary>Show answer points</summary>"+ul(q.points)+"</details></div>").join("")+"</div>";}
@@ -717,7 +744,7 @@ async function importPack(file){
   await persist(ch);renderHome();openChapter(ch);
 }
 function exportHtml(ch){
-  const pack=ch.pack,secs=allSections(pack),A=pack.A,B=pack.B;
+  const pack=norm(ch.pack),secs=allSections(pack),A=pack.A,B=pack.B,T=pack.T||{mcq:[],recall:[],mains:[]},M=pack.M||localMap(pack,ch.title);
   const tb=t=>"<table>"+(t.title?"<caption>"+fmt(t.title)+"</caption>":"")+"<tr>"+t.columns.map(c=>"<th>"+fmt(c)+"</th>").join("")+"</tr>"+t.rows.map(r=>"<tr>"+t.columns.map((_,i)=>"<td>"+fmt(r[i]||"")+"</td>").join("")+"</tr>").join("")+"</table>";
   const li=a=>"<ul>"+a.map(x=>"<li>"+fmt(x)+"</li>").join("")+"</ul>";
   const tree=n=>arr(n.children).length?"<ul>"+n.children.map(c=>"<li>"+fmt(c.label)+tree(c)+"</li>").join("")+"</ul>":"";
@@ -726,9 +753,10 @@ function exportHtml(ch){
   b+="<h2>Notes</h2>"+secs.map(s=>"<h3>"+fmt(s.heading)+"</h3>"+li(s.notes)+s.tables.map(tb).join("")).join("");
   const kws=[];secs.forEach(s=>s.keywords.forEach(k=>kws.push([k.term,k.meaning])));
   b+="<h2>Keywords</h2>"+tb({columns:["Keyword","Meaning"],rows:kws});
-  if(A){const a=A.analysis;b+="<h2>Mind map</h2><p><b>"+fmt(A.mindmap.label)+"</b></p>"+tree(A.mindmap)+"<h2>Analysis</h2><p>"+fmt(a.why)+"</p>"+a.themes.map(t=>"<p><b>"+fmt(t.point)+":</b> "+fmt(t.explain)+"</p>").join("")+
+  b+="<h2>Mind map</h2><p><b>"+fmt(M.label)+"</b></p>"+tree(M);
+  if(A){const a=A.analysis;b+="<h2>Analysis</h2><p>"+fmt(a.why)+"</p>"+a.themes.map(t=>"<p><b>"+fmt(t.point)+":</b> "+fmt(t.explain)+"</p>").join("")+
     (a.causeEffect.length?tb({title:"Cause and effect",columns:["Cause","Effect"],rows:a.causeEffect.map(c=>[c.cause,c.effect])}):"")+"<h3>Links</h3>"+li(a.links)+"<h3>Prelims angle</h3>"+li(a.prelims)+"<h3>Mains angle</h3>"+li(a.mains)+"<h3>Do not confuse</h3>"+li(a.traps);}
-  if(B){const m=B.memory,t=B.test;b+="<h2>Remember</h2><p>"+fmt(m.paragraph)+"</p><p><b>Cue words:</b> "+esc(m.order.map(plain).join(" → "))+"</p>"+m.mnemonics.map(x=>"<p><b>"+fmt(x.for)+":</b> "+fmt(x.trick)+"</p>").join("")+
+  if(B){const m=B.memory,t=T;b+="<h2>Remember</h2><p>"+fmt(m.paragraph)+"</p><p><b>Cue words:</b> "+esc(m.order.map(plain).join(" → "))+"</p>"+m.mnemonics.map(x=>"<p><b>"+fmt(x.for)+":</b> "+fmt(x.trick)+"</p>").join("")+
     "<h2>Test</h2><ol>"+t.recall.map(q=>"<li>"+fmt(q.q)+"<br><i>"+fmt(q.a)+"</i></li>").join("")+"</ol><ol>"+t.mcq.map(q=>"<li>"+fmt(q.q)+"<br>"+q.options.map((o,j)=>"ABCD"[j]+". "+fmt(o)).join("<br>")+"<br><i>Answer: "+"ABCD"[q.answer]+". "+fmt(q.why)+"</i></li>").join("")+"</ol>"+t.mains.map(q=>"<p><b>"+fmt(q.q)+"</b></p>"+li(q.points)).join("");}
   return '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>'+esc(ch.title)+'</title><style>body{font-family:system-ui,sans-serif;line-height:1.55;max-width:760px;margin:0 auto;padding:16px;color:#1b2925}table{border-collapse:collapse;width:100%;margin:10px 0}th,td{border:1px solid #9aa;padding:6px 8px;text-align:left;vertical-align:top}th{background:#0d6656;color:#fff}caption{text-align:left;font-weight:700;padding:6px 0}mark{background:#ffe680}h2{border-bottom:2px solid #0d6656;padding-bottom:4px;margin-top:28px}</style></head><body>'+b+"</body></html>";
 }
@@ -761,8 +789,8 @@ $("#vactions").addEventListener("click",async e=>{const b=e.target.closest("butt
 $("#panel").addEventListener("click",e=>{
   const h=e.target.closest("button[data-act=hide]");
   if(h){const s=$("#story");const on=s.classList.toggle("hide");h.textContent=on?"Show paragraph":"Hide and recite";return;}
-  const o=e.target.closest("button[data-opt]");if(!o||!current||!current.pack.B)return;
-  const qel=o.closest(".q"),q=current.pack.B.test.mcq[+qel.getAttribute("data-q")];if(!q)return;
+  const o=e.target.closest("button[data-opt]");if(!o||!current||!current.pack.T)return;
+  const qel=o.closest(".q"),q=current.pack.T.mcq[+qel.getAttribute("data-q")];if(!q)return;
   const pick=+o.getAttribute("data-opt");
   qel.querySelectorAll("button[data-opt]").forEach((x,j)=>{x.disabled=true;if(j===q.answer)x.classList.add("right");else if(j===pick)x.classList.add("wrong");});
   const w=qel.querySelector("[data-why]");w.hidden=false;w.textContent=(pick===q.answer?"Correct. ":"Not correct. ")+plain(q.why);

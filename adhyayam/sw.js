@@ -1,5 +1,5 @@
 // Adhyayam: saved chapters open without internet after the first visit; the app page is checked online first so updates arrive.
-const CACHE = "adhyayam-v1";
+const CACHE = "adhyayam-v2";
 const LOCAL = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png"];
 const FONTS = "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600&display=swap";
 self.addEventListener("install", e => {
