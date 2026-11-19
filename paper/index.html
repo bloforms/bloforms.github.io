@@ -123,6 +123,8 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
     <input id="lOffice" placeholder="e.g. Mahaboobnagar colony -01">
     <div id="lMsg" class="warn" style="display:none;margin:12px 0 0;background:var(--redbg);color:var(--red)"></div>
     <div class="btns"><button id="lIn">Sign in</button><button class="sec" id="lNew">New account</button></div>
+    <div style="text-align:center;margin-top:12px"><a href="#" id="lForgot" style="color:var(--blue);font-weight:600;font-size:14px">Forgot password?</a></div>
+    <div id="lForgotMsg" class="warn" style="display:none;margin:10px 0 0">Ask <b>Sivananda Pujari</b> (Paper Register owner) to reset your password. He will give you a new one. Your entries are safe.</div>
     <div style="font-size:13px;color:var(--mute);margin-top:12px">First time? Type your number and choose a password, then tap <b>New account</b>. Write the password down: it cannot be shown again.</div>
   </div>
   <footer>Designed by Sivananda Pujari</footer>
@@ -627,6 +629,17 @@ function renderAcct(){
 }
 
 var OWNER='9347946239';
+$('adminBody').addEventListener('click',function(e){
+  var b=e.target.closest('[data-reset]');if(!b||!acct)return;
+  var ph=b.dataset.reset,np=prompt('New password for '+ph+' (6 letters or more):','');
+  if(np===null)return;np=np.trim();
+  if(np.length<6){toast('Password must have at least 6 letters or numbers');return;}
+  b.disabled=true;
+  rpc('paper_admin_reset',{p_phone:acct.phone,p_pass:acct.pass,p_target:ph,p_new:np}).then(function(r){
+    if(r.ok){b.textContent='✓ New password: '+np;toast('Password reset. Tell '+ph+' the new password.');}
+    else{b.disabled=false;toast(r.error==='wrong_pass'?'Sign in again':'Could not reset');}
+  }).catch(function(){b.disabled=false;toast('No internet. Try again.');});
+});
 $('adminLoad').addEventListener('click',function(){
   if(!acct||acct.phone!==OWNER)return;
   var btn=$('adminLoad');btn.disabled=true;$('adminBody').textContent='Loading…';
@@ -634,11 +647,12 @@ $('adminLoad').addEventListener('click',function(){
     if(!r.ok){$('adminBody').textContent=r.error==='wrong_pass'?'Sign in again.':'Could not load the list.';return;}
     var u=r.users||[],fmt=function(t){return t?new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}):'';};
     $('adminBody').innerHTML='<div class="ucount">'+u.length+'</div><div style="margin:2px 0 10px">user'+(u.length===1?'':'s')+' signed up</div>'+u.map(function(x,i){
-      return '<div class="urow"><b>'+(i+1)+'. '+esc(x.office||'Secretariat name not set')+'</b><br>📞 <a href="tel:'+esc(x.phone)+'">'+esc(x.phone)+'</a><br>Joined '+fmt(x.created)+' · last saved '+fmt(x.updated)+'<br>Papers received '+(x.received||0)+' · entered '+(x.used||0)+'</div>';
+      return '<div class="urow"><b>'+(i+1)+'. '+esc(x.office||'Secretariat name not set')+'</b><br>📞 <a href="tel:'+esc(x.phone)+'">'+esc(x.phone)+'</a><br>Joined '+fmt(x.created)+' · last saved '+fmt(x.updated)+'<br>Papers received '+(x.received||0)+' · entered '+(x.used||0)+(x.phone!==OWNER?'<br><button class="sec" style="margin-top:6px;padding:6px 12px;font-size:13px" data-reset="'+esc(x.phone)+'">🔑 Reset password</button>':'')+'</div>';
     }).join('');
     btn.textContent='Refresh';
   }).catch(function(){$('adminBody').textContent='No internet. Connect and try again.';}).then(function(){btn.disabled=false;});
 });
+$('lForgot').addEventListener('click',function(e){e.preventDefault();$('lForgotMsg').style.display='';});
 $('lIn').addEventListener('click',function(){doLogin(false);});
 $('lNew').addEventListener('click',function(){doLogin(true);});
 $('lPass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin(false);});
