@@ -160,6 +160,23 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 .btn.wa{background:#25d366}
 .btn.pdf{background:#b3261e}
 .shbig{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.shbig .btn{margin:0;font-size:14px;padding:12px 6px}
+.bh{font-size:15px;margin:14px 2px 8px;color:var(--g)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+@media(min-width:600px){.tiles{grid-template-columns:repeat(5,1fr)}}
+.tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border:1px solid var(--line);border-top:4px solid var(--c);border-radius:12px;background:#fff;cursor:pointer;min-height:86px}
+.tile .ti{font-size:26px;line-height:1}
+.tile .tn{font-size:11.5px;font-weight:700;text-align:center;color:#1c2321;line-height:1.2}
+.tile .tc{position:absolute;top:4px;right:6px;font-size:10px;color:var(--mut)}
+.bodywrap{display:flex;gap:12px;align-items:flex-start}
+.bodysvg{width:42%;max-width:190px;flex:none}
+.breg{fill:#d8ece5;stroke:#0f6e5c;stroke-width:2;cursor:pointer}
+.breg:hover,.breg.on{fill:#ffe58a}
+.btags{display:flex;flex-direction:column;gap:6px;flex:1}
+.btag{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px;text-align:left;font-size:14px;cursor:pointer}
+.syshead{display:flex;gap:12px;align-items:center;border-left:6px solid var(--c)}
+.sysbig{font-size:40px}
+.cnt{font-size:11px;color:var(--mut);font-weight:400}
+#dmenu a.allg{font-weight:700;color:var(--g)}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -193,7 +210,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <a data-p="chart" data-te="👶 పిల్లల మోతాదు పట్టిక">👶 Child dose chart</a>
 <a data-p="spec" data-te="🤰 నవజాత శిశువు / గర్భిణీ / వృద్ధులు">🤰 Newborn / Pregnancy / Elderly</a>
 <a data-p="danger" data-te="🚨 ప్రమాద సంకేతాలు">🚨 Danger signs</a>
-<div class="mgh" data-te="వ్యాధులు">Diseases</div>
+<div class="mgh" data-te="శరీర భాగం వారీగా">By body part</div>
 <div id="dmenu"></div>
 </div>
 </aside>
@@ -227,10 +244,11 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <button id="ddBtn" aria-label="Choose disease from list">▾</button>
 <div id="dd" class="dd hide" role="listbox"></div>
 </div>
-<div class="qlinks"><a data-go="single" id="qlS"></a> · <a data-go="combo" id="qlC"></a></div>
+<div class="qlinks"><a data-go="body" id="qlB"></a> · <a data-go="single" id="qlS"></a> · <a data-go="combo" id="qlC"></a></div>
 </div>
 <div id="found"></div>
 <div id="out"></div>
+<div id="browse"><h3 class="bh" data-te="శరీర భాగం వారీగా చూడండి">Browse by body part</h3><div id="tiles"></div><div class="card"><h3 style="margin-top:0" data-te="శరీర చిత్రం — భాగాన్ని నొక్కండి">Body picture — tap a part</h3><div id="bodyBox"></div></div></div>
 </section>
 
 <!-- REFERENCE -->
@@ -269,6 +287,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 
 <section id="p-dis" class="hide"></section>
 <section id="p-single" class="hide"></section>
+<section id="p-sys" class="hide"></section>
 <section id="p-combo" class="hide"></section>
 
 <!-- MALARIA -->
@@ -1254,6 +1273,7 @@ function analyse(){
     const sev=((a1!=null&&a1>10)||(f!=null&&f>250)||(r!=null&&r>350))?2:((a1!=null&&a1>=8)||(f!=null&&f>=180)||(pp!=null&&pp>=250)||(r!=null&&r>=250))?1:0;
     add('dm',sev,[a1!=null?'HbA1c '+a1+'%':'',f!=null?'FBS '+f:'',pp!=null?'PPBS '+pp:'',r!=null?'RBS '+r:''].filter(Boolean).join(', '));
   } else if((a1!=null&&a1>=5.7)||(f!=null&&f>=100)) N.push('Prediabetes range — diet, exercise, weight loss; recheck in 6–12 months.');
+  { const lo=[f,pp,r].filter(x=>x!=null&&x<70); if(lo.length) add('hypo',Math.min(...lo)<54?1:0,'Sugar '+Math.min(...lo)+' mg/dL (low)'); }
   const sy=v('sys'),di=v('dia');
   if(sy!=null||di!=null){ const S1=sy||0,D1=di||0;
     if(S1>=180||D1>=110) add('htn',2,'BP '+S1+'/'+D1); else if(S1>=160||D1>=100) add('htn',1,'BP '+S1+'/'+D1); else if(S1>=140||D1>=90) add('htn',0,'BP '+S1+'/'+D1);
@@ -1324,6 +1344,7 @@ function applyLang(){
   document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
   if(typeof buildDMenu==='function') buildDMenu();
   if(typeof listCounts==='function') listCounts();
+  if(typeof renderTiles==='function'){ renderTiles(); renderBody(); }
 }
 document.querySelector('.lang').addEventListener('click',e=>{ const b=e.target.closest('button[data-l]'); if(!b) return; LANG=b.dataset.l; try{ localStorage.setItem('mg_lang',LANG);}catch(_){} applyLang(); if(typeof compute==='function') compute(); });
 
@@ -1506,6 +1527,7 @@ function readText(T){
   return {v,q,info};
 }
 function sevFromText(d,T,info,used){ used=used||new Set();
+  if(d.id==='contra'){ if(/emergency|unprotected|i ?pill|72|condom (burst|broke)/.test(T)) return {s:1,why:'emergency contraception'}; if(/permanent|operation|sterili|tubectomy|vasectomy|nsv/.test(T)) return {s:2,why:'permanent method'}; return {s:0,why:'spacing'}; }
   for(const [re,s] of SEV_WORDS) if(re.test(T)){ const v=(s===2&&PAINLIKE.has(d.id)&&!DANGER.some(w=>T.includes(w)))?1:s; return {s:v,why:'you typed "'+T.match(re)[1]+'"'}; }
   const own=new Set((SYM[d.id]||[]).join(' ').split(' '));
   let best=0, why='';
@@ -1731,7 +1753,7 @@ function run(){
   const A=analyse();
   let h='<div class="card rxcard">';
   h+='<div class="rxhead"><div><b>'+L('℞ Prescription','℞ మందుల చీటీ')+'</b><div class="x">'+new Date().toLocaleDateString('en-IN')+'</div></div><div class="pchip">'+(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?'*':'')+(ALG?' · ⚠ '+L({pen:'Penicillin allergy',sulfa:'Sulfa allergy',nsaid:'NSAID allergy'}[ALG],{pen:'పెన్సిలిన్ అలర్జీ',sulfa:'సల్ఫా అలర్జీ',nsaid:'నొప్పి మాత్రల అలర్జీ'}[ALG]):'')+(preg()?' · 🤰 '+(P.preg==='t1'?L('1st trim.','1వ త్రైమాసికం'):L('2nd/3rd trim.','2/3వ త్రైమాసికం')):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'')+'</div></div>';
-  h+='<div class="dxrow">'+res.map(o=>'<span class="dx s'+o.sev+'">'+esc(dn(o.d))+' · '+SV(o.sev)+'</span>').join('')+'</div>';
+  h+='<div class="dxrow">'+res.map(o=>'<span class="dx s'+o.sev+'">'+((sysOf(o.d.id)[0]||{}).i||'')+' '+esc(dn(o.d))+' · '+SV(o.sev)+'</span>').join('')+'</div>';
   if(P.ageM<2) h+='<div class="alert org">'+L('Young infant (0–2 months): most sick infants need referral.','2 నెలల లోపు శిశువు: ఎక్కువ మందిని రిఫర్ చేయాలి.')+'</div>';
   refers.forEach(o=>h+='<div class="alert red"><b>🚑 '+L('Refer','రిఫర్ చేయండి')+' — '+esc(dn(o.d))+':</b> '+esc(o.r.refer)+'</div>');
   if(order.length){
@@ -1931,6 +1953,237 @@ $('dd').addEventListener('mousedown',e=>e.preventDefault());
 $('dd').addEventListener('click',e=>{ const gc=e.target.closest('[data-go]'); if(gc){ $('dd').classList.add('hide'); goPage('combo'); markMenu($('mCombo')); return; } const it=e.target.closest('.it[data-id]'); if(it) pickDD(it.dataset.id); });
 document.addEventListener('click',e=>{ if(!e.target.closest('.combo')) $('dd').classList.add('hide'); });
 
+// ===== v9: more conditions (body-system plan) =====
+D.push(
+// HEAD & BRAIN
+{id:'stroke',g:'Head & brain',n:'Stroke warning signs (paralysis)',kw:'stroke paralysis facial droop slurred speech weakness one side',s:['Weakness that has fully recovered (TIA)','Face drooping, arm/leg weakness, slurred speech now','Unconscious / fits / severe headache with weakness'],
+ f(s){ return out([],['FAST: Face drooping · Arm weakness · Speech difficulty · Time — call 108','Check blood sugar first (low sugar can look like stroke)','Do NOT give aspirin before CT scan; do not lower BP fast','Note the time symptoms started — clot-dissolving treatment works only within 4½ hours'],'Suspected stroke — refer immediately to a CT-capable hospital (108).');}},
+{id:'bells',g:'Head & brain',n:'Bell\'s palsy (face weakness one side)',kw:'facial palsy face deviation mouth deviation eye not closing',s:['Mild face weakness, eye closes','Eye does not close fully, started within 72 h','Arm/leg weakness, ear blisters, both sides, or child under 2'],
+ f(s){ if(s===2||P.ageM<24) return out([],[],'Not simple Bell\'s palsy (stroke / Ramsay-Hunt) — refer.');
+  const mg=adult()?50:Math.min(Math.round(P.wt),50);
+  return out([R('prednisolone','Prednisolone',mg+' mg','once daily after breakfast','10 days','Start within 72 h; not in uncontrolled diabetes'),R('artears','Carboxymethylcellulose eye drops','1–2 drops','4 times a day','until eye closes'),R('eyeoint','Lubricant eye ointment + eye pad / tape','apply','at night','until eye closes')],['Protect the eye — corneal damage risk','Face exercises; most recover in 3–6 months','Check BP and sugar']);}},
+// MIND
+{id:'addict',g:'Mind',n:'Tobacco / alcohol quitting',kw:'smoking beedi gutka alcohol drinking addiction quit',s:['Wants to quit tobacco / gutka','Daily alcohol drinking (dependence)','Alcohol withdrawal: tremors, sweating, fits, confusion'],
+ f(s){ if(s===2) return out([R('thiamine','Thiamine (Vitamin B1)','100 mg','once daily','1 month')],['Withdrawal needs supervised medicines (benzodiazepines)'],'Alcohol withdrawal — refer (risk of fits / delirium).');
+  if(s===1) return out([R('thiamine','Thiamine (Vitamin B1)','100 mg','once daily','1–3 months'),R('bcomplex','Vitamin B-complex','1 tablet','once daily','1 month')],['Counsel; involve family; de-addiction centre / Tele-MANAS 14416','Check liver (SGPT), sugar, BP']);
+  return out(adult()?[R('nicgum','Nicotine gum 2 mg (4 mg if >20 cigarettes/day)','1 piece, chew & park','every 1–2 hours when urge comes (max 15/day)','8–12 weeks','Not in pregnancy / recent heart attack')]:[],['Set a quit date; remove tobacco from home','National Tobacco Quitline: 1800-11-2356 (free)','Craving passes in 5–10 min — water, walk, chew saunf']);}},
+// EYES
+{id:'vision',g:'Eyes',n:'Blurred vision / cataract',kw:'cataract vision blurred eyesight spectacles reading',s:['Difficulty reading near (age 40+)','Slowly blurred vision / white pupil','Sudden vision loss, painful red eye, flashes'],
+ f(s){ if(s===2) return out([],[],'Sudden vision loss / painful red eye — refer to eye hospital today.');
+  return out([],[s===0?'Reading glasses (presbyopia) — eye test':'Cataract: free surgery under National Programme for Control of Blindness','Diabetics: yearly eye check (retinopathy)','Children: vision screening at school (RBSK)'],s===1?'Refer to eye surgeon.':'');}},
+{id:'eyefb',g:'Eyes',n:'Foreign body / chemical in eye',kw:'dust in eye insect eye chemical splash lime eye',s:['Dust / insect, eye watering','Scratch feeling persists after washing','Chemical / lime splash, metal piece, injury, vision blur'],
+ f(s){ if(s===2) return out([],['Chemical: wash eye with clean running water for 20–30 minutes first'],'Chemical / penetrating eye injury — wash and refer urgently.');
+  return out([R('wash','Eye wash','clean water','flush gently','once'),s===1?R('moxifloxacin','Moxifloxacin 0.5% eye drops','1 drop','4 times a day','3–5 days'):null],['Don\'t rub the eye','If not better in 24 h — refer']);}},
+// ENT
+{id:'epistaxis',g:'Ear, nose & throat',n:'Nose bleed (epistaxis)',kw:'nose bleeding bleeding from nose',s:['Small bleed, stopped','Bleeding again and again','Not stopping after 20 min, very high BP, on blood thinners'],
+ f(s){ if(s===2) return out([],['Keep pinching; sit up, lean forward'],'Uncontrolled nose bleed — refer to ENT.');
+  return out([R('salinegel','Saline nasal drops / petroleum jelly inside nose','2 drops / thin layer','2–3 times a day','1 week')],['Pinch the soft part of nose for 10–15 min, lean FORWARD','Cold compress on nose; don\'t pick nose','Check BP, Hb, platelets if repeated','Avoid aspirin / ibuprofen']);}},
+{id:'hearing',g:'Ear, nose & throat',n:'Hearing loss',kw:'hearing problem deaf not hearing',s:['Gradual, both ears (age / wax)','One ear, with ear discharge','Sudden hearing loss (within 3 days), with giddiness'],
+ f(s){ if(s===2) return out([],[],'Sudden hearing loss — refer to ENT within 72 hours (steroid treatment).');
+  return out([],['Check for ear wax first (select Ear wax)','Hearing aid assessment at district hospital','Newborn / child not responding to sound — refer early'],s===1?'Chronic ear discharge — refer to ENT.':'');}},
+// MOUTH
+{id:'gum',g:'Mouth & teeth',n:'Bleeding gums',kw:'gum bleeding gingivitis bad breath',s:['Bleeding on brushing','Swollen gums, bad breath','Bleeding from other places too / bruises'],
+ f(s){ if(s===2) return out([],[],'Bleeding from several sites — check platelets, refer.');
+  return out([adult()?R('chlorhex','Chlorhexidine 0.2% mouthwash','10 ml rinse, spit','twice daily','2 weeks'):null,R('vitc','Vitamin C','500 mg (child 100 mg)','once daily','2 weeks')],['Soft brush twice daily; dental cleaning','Stop tobacco / gutka']);}},
+// HEART
+{id:'hf',g:'Heart & BP',n:'Heart failure (breathless + leg swelling)',kw:'heart failure breathless lying down orthopnea leg swelling',s:['Known heart failure, stable','Breathless on walking, legs swollen','Breathless at rest / lying flat, frothy sputum'],
+ f(s){ if(s===2||!adult()) return out([],['Sit up; oxygen if available'],'Acute heart failure — refer urgently (108).');
+  return out([R('furosemide','Furosemide tablet (if diagnosed, by MO)','20–40 mg','once daily morning','as advised','Check potassium & creatinine')],['Salt <5 g/day; limit water to 1.5 L/day if swelling','Weigh daily — gain >2 kg in 3 days = come back','Continue cardiologist\'s medicines'],s===1?'Worsening heart failure — refer for review.':'');}},
+{id:'palp',g:'Heart & BP',n:'Palpitations (fast heartbeat)',kw:'palpitation heart racing fast heartbeat',s:['Occasional, with tea/coffee/stress','Frequent, with tiredness','With fainting, chest pain, breathlessness, pulse >150'],
+ f(s){ if(s===2) return out([],[],'Dangerous palpitations — ECG and refer urgently.');
+  return out([],['Check pulse, BP, Hb, sugar, thyroid (TSH); ECG','Reduce tea/coffee, energy drinks, tobacco','Anxiety can cause palpitations'],s===1?'Get ECG; refer if irregular.':'');}},
+// BLOOD
+{id:'sickle',g:'Blood',n:'Sickle cell / thalassaemia',kw:'sickle cell thalassemia hb electrophoresis blood transfusion',s:['Known, stable','Pain crisis / fever','Severe pain, breathless, very pale, stroke signs'],
+ f(s){ if(s===2) return out([],[],'Sickle / thalassaemia crisis — refer urgently.');
+  const rx=[R('folic','Folic acid',P.ageM<60?'1 mg':'5 mg','once daily','long term')];
+  if(s===1) rx.push(para(1));
+  return out(rx,['Plenty of fluids; treat fever early','No iron tablets in thalassaemia unless iron deficiency proven','Free care under National Sickle Cell Mission']);}},
+{id:'bleed',g:'Blood',n:'Easy bruising / bleeding',kw:'bruises bleeding spots petechiae easy bleeding',s:['Few bruises','Many bruises / gum or nose bleeds','Blood in vomit/urine/stool, very low platelets'],
+ f(s){ return out([],['Check CBC with platelets, bleeding time','Avoid aspirin, ibuprofen, injections in muscle','Think dengue, leukaemia, liver disease, blood thinners'],s>=1?'Refer for blood tests / physician.':'');}},
+// STOMACH & LIVER
+{id:'nafld',g:'Stomach & liver',n:'Fatty liver',kw:'fatty liver nafld',s:['Found on scan, liver tests normal','SGPT raised','Jaundice, swelling of abdomen, vomiting blood'],
+ f(s){ if(s===2) return out([],[],'Advanced liver disease — refer.');
+  return out([],['Lose 7–10% body weight slowly; walk 30 min daily','No alcohol; less sugar, rice, fried food','Control diabetes, BP, cholesterol','No "liver tonics" needed']);}},
+{id:'gall',g:'Stomach & liver',n:'Gallstone pain',kw:'gallstone gall bladder stone right upper pain',s:['Pain after fatty food, settles','Severe colic with vomiting','Pain with fever and jaundice'],
+ f(s){ if(s===2||preg()) return out([],[],'Cholangitis / complicated gallstone — refer urgently.');
+  const rx=[R('drotaverine','Drotaverine tablet','80 mg','3 times a day','3 days'),para(1)];
+  if(s===1) rx.unshift(R('diclo','Inj. Diclofenac 75 mg IM','75 mg','once','—','Not in kidney disease / ulcer'));
+  return out(rx,['Ultrasound abdomen; refer to surgeon for removal','Low-fat food']);}},
+{id:'panc',g:'Pancreas & hormones',n:'Pancreatitis (severe upper abdominal pain)',kw:'pancreatitis pain going to back alcohol vomiting',s:['Upper abdominal pain to back','With vomiting','Severe pain, low BP, breathless'],
+ f(s){ return out([],['Nothing by mouth; IV fluids','Usually alcohol or gallstones'],'Suspected pancreatitis — refer urgently.');}},
+{id:'obes',g:'Pancreas & hormones',n:'Obesity / overweight',kw:'obesity weight gain fat overweight bmi',s:['BMI 23–27.4 (overweight)','BMI 27.5–32.4','BMI ≥32.5 or with diabetes / BP / knee pain'],
+ f(s){ return out([],['Indian BMI cut-offs: normal <23, overweight 23–27.4, obese ≥27.5','Target 5–10% weight loss in 6 months','Walk 150 min/week; cut sugar drinks, fried snacks, white rice portions','Screen BP, sugar, cholesterol','No weight-loss pills from shops']);}},
+{id:'hypo',g:'Pancreas & hormones',n:'Low sugar (hypoglycaemia)',kw:'low sugar sweating shivering diabetic hypoglycemia',s:['Sugar <70, conscious, can swallow','Confused but can swallow','Unconscious / fits / cannot swallow'],
+ f(s){ if(s===2) return out([R('dextrose',adult()?'Inj. Dextrose 25% IV':'Inj. Dextrose 10% IV',adult()?'50 ml':rmg(3*P.wt)+' ml (2–5 ml/kg)','slow IV, once','—','Nothing by mouth if unconscious')],['Recovery position'],'Severe low sugar — give IV dextrose and refer.');
+  return out([R('glucose','Glucose / sugar',adult()?'15 g (3 teaspoons sugar in water or 1 glass juice)':'0.3 g/kg (½–2 teaspoons)','now; repeat after 15 min if sugar still <70','—'),R('snack','Snack (biscuits / chapati)','after recovery','once','—')],['Recheck sugar in 15 minutes','Find the cause: missed meal, extra Glimepiride/insulin, alcohol — reduce dose']);}},
+// KIDNEY
+{id:'neph',g:'Kidney & urine',n:'Nephrotic swelling (face & legs, frothy urine)',kw:'face swelling puffiness frothy urine protein urine edema child',s:['Puffy face in morning','Swelling of face and legs, frothy urine','Very swollen, breathless, little urine'],
+ f(s){ return out([],['Urine albumin dipstick, creatinine','Less salt; no painkillers (NSAIDs)'],'Refer to physician / paediatrician (steroids under specialist).');}},
+// BONES
+{id:'fract',g:'Bones & joints',n:'Fracture / bone injury (first aid)',kw:'fracture bone broken fall injury swelling deformity',s:['Pain and swelling after fall, can move','Deformity, cannot move / bear weight','Open wound over bone, numb/cold limb, head/spine injury'],
+ f(s){ const rx=[para(1)]; if(adult()&&!preg()&&!elderly()){ const i=ibu(); if(i) rx.push(i); }
+  if(s===2) rx.push(R('td','Td vaccine','0.5 ml IM','once',''),adult()?R('cephalexin','Cephalexin capsule (open fracture)','500 mg','4 times a day','until surgery','',true):null);
+  return out(rx,['Splint the joint above and below; ice pack; raise the limb','Remove rings/bangles early','Spine/head injury: don\'t move neck — logroll'],s>=1?'Refer for X-ray / orthopaedics'+(s===2?' urgently':'')+'.':'X-ray if pain not improving in 2–3 days.');}},
+{id:'osteo',g:'Bones & joints',n:'Osteoporosis (weak bones)',kw:'osteoporosis weak bones bone thinning fracture elderly women',s:['Woman after menopause / elderly (prevention)','Diagnosed on DEXA scan','Fracture after small fall'],
+ f(s){ const rx=[R('calcium','Calcium 500 mg + Vitamin D3','1 tablet','once daily after food','long term')];
+  if(s>=1&&adult()&&!preg()) rx.push(R('alendronate','Alendronate tablet (after DEXA, by MO)','70 mg','once a WEEK, empty stomach with full glass of water; stay upright 30 min','long term','Not if kidney disease / acid reflux'));
+  return out(rx,['Walking, sunlight, milk & ragi','Prevent falls: light at night, no loose mats'],s===2?'Fragility fracture — refer to orthopaedics.':'');}},
+{id:'ra',g:'Bones & joints',n:'Rheumatoid arthritis',kw:'rheumatoid morning stiffness small joints hands swelling both hands',s:['Morning stiffness, few joints','Many small joints swollen, both hands','Very swollen, fever, deformity'],
+ f(s){ const rx=[para(1)]; if(!preg()&&!elderly()&&adult()){ const i=ibu(); if(i) rx.push(i); }
+  return out(rx,['Test: RA factor / anti-CCP, ESR, CRP','Early disease-modifying medicine (Methotrexate) prevents deformity — by specialist'],'Refer to physician / rheumatologist.');}},
+// SPINE
+{id:'neck',g:'Spine',n:'Neck pain (cervical spondylosis)',kw:'neck pain cervical spondylosis stiff neck',s:['Neck pain and stiffness','Pain going to shoulder/arm','Arm weakness / numbness, walking difficulty, after injury'],
+ f(s){ if(s===2) return out([para(1)],[],'Nerve or spinal cord pressure — refer.');
+  const rx=[para(1),R('diclogel','Diclofenac 1% gel','apply','3 times a day','2 weeks')];
+  if(s===1&&adult()&&!preg()&&!elderly()){ const i=ibu(); if(i) rx.push(i); }
+  return out(rx,['Neck exercises; correct pillow height; avoid long phone use bending','Hot compress']);}},
+{id:'sciatica',g:'Spine',n:'Sciatica (back pain going down the leg)',kw:'sciatica leg pain from back radiating pain numbness leg',s:['Back pain going to one leg','Severe leg pain, tingling','Leg weakness, loss of urine/stool control, numb groin'],
+ f(s){ if(s===2) return out([],[],'Cauda equina / nerve damage — refer urgently.');
+  const rx=[para(1)]; if(adult()&&!preg()&&!elderly()){ const i=ibu(); if(i) rx.push(i); }
+  if(s===1&&adult()&&!preg()) rx.push(R('pregabalin','Pregabalin capsule (nerve pain)',elderly()?'25–50 mg':'75 mg','at night','2–4 weeks','Drowsiness; reduce in kidney disease'));
+  return out(rx,['Stay active, avoid bed rest; avoid lifting','Most improve in 6 weeks; MRI only if not improving']);}},
+// SKIN & HAIR
+{id:'hair',g:'Skin & hair',n:'Hair fall',kw:'hair fall hair loss baldness thinning hair',s:['Hair fall after illness / stress / delivery','Thinning on top (pattern hair loss)','Round bald patches / scarring'],
+ f(s){ if(s===2) return out([],[],'Patchy / scarring hair loss — refer to skin specialist.');
+  const rx=[]; if(s===1&&adult()&&!preg()) rx.push(R('minoxidil','Minoxidil solution '+(P.sex==='M'?'5%':'2%'),'1 ml on scalp','twice daily','at least 6 months','Hair fall may increase for first 4–6 weeks'));
+  return out(rx,['Check Hb, thyroid (TSH), Vitamin D; treat deficiency','Protein-rich diet; gentle hair care','Hair fall after fever/delivery recovers in 3–6 months']);}},
+{id:'dand',g:'Skin & hair',n:'Dandruff (seborrhoeic dermatitis)',kw:'dandruff scalp itching flakes',s:['Flakes, mild itching','Red scaly scalp / eyebrows','Thick crusts, spreading, infected'],
+ f(s){ if(s===2) return out([],[],'Refer to skin specialist.');
+  return out([R('ketoconazole','Ketoconazole 2% shampoo','apply, leave 5 min, wash','twice a week','4 weeks, then once weekly')],['Infants (cradle cap): coconut oil, gentle brushing']);}},
+{id:'wpatch',g:'Skin & hair',n:'White patches on skin',kw:'white patches pityriasis vitiligo leucoderma tinea versicolor',s:['Fine scaly light patches on chest/back (fungal)','Dry pale patches on child\'s face','Milk-white patches or numb patch (vitiligo / leprosy)'],
+ f(s){ if(s===2) return out([],['Test sensation in the patch — numb patch = leprosy'],'Refer to skin specialist / NLEP for confirmation.');
+  if(s===1) return out([R('emollient','Emollient / moisturiser','apply','twice daily','4 weeks')],['Pityriasis alba — harmless, fades with time; sunscreen']);
+  return out([R('ketoconazole','Ketoconazole 2% shampoo as body wash','apply on patches 5 min, wash','daily','1 week, then monthly'),R('clotrimazole','Clotrimazole 1% cream','thin layer','twice daily','2 weeks')],['Colour returns slowly over weeks']);}},
+// WOMEN
+{id:'pcos',g:'Women & pregnancy',n:'PCOS (irregular periods, acne, facial hair)',kw:'pcos pcod irregular periods facial hair weight gain cyst ovary',s:['Irregular periods','With weight gain, acne, facial hair','No periods >3 months / wants pregnancy'],
+ f(s){ if(P.sex!=='F') return out([],['Only for women']);
+  const rx=[]; if(s>=1&&!preg()&&adult()) rx.push(R('metformin','Metformin tablet (by MO, if insulin resistance)','500 mg','twice daily after food','3–6 months'));
+  return out(rx,['5–10% weight loss restores periods in many','Check sugar, TSH, ultrasound','Hormone tablets only by gynaecologist'],s===2?'Refer to gynaecologist.':'');}},
+{id:'contra',g:'Women & pregnancy',n:'Contraception / family planning',kw:'family planning contraception spacing pill condom copper t ipill emergency pill',s:['Wants spacing (temporary method)','Emergency: unprotected sex within 72 hours','Wants permanent method'],
+ f(s){ if(s===1) return out([R('lng','Levonorgestrel emergency pill','1.5 mg (1 tablet)','single dose, as early as possible','within 72 hours','Not a regular method')],['Copper-T within 5 days is more effective']);
+  if(s===2) return out([],['Free sterilisation (female / male NSV) at government hospitals with incentive'],'Refer for sterilisation.');
+  return out([R('mala','Combined pill (Mala-N, free)','1 tablet','daily','28-day pack','Not if breastfeeding <6 months, BP high, smoker >35'),R('chhaya','Centchroman (Chhaya, free)','30 mg','twice a week for 3 months, then once a week','long term','Safe in breastfeeding')],['Other free options: condoms, Copper-T (IUCD), Antara injection every 3 months']);}},
+{id:'meno',g:'Women & pregnancy',n:'Menopause problems',kw:'menopause hot flushes periods stopped',s:['Hot flushes, sleep problem','Joint pains, low mood','Bleeding after periods stopped (1 year)'],
+ f(s){ if(P.sex!=='F') return out([],['Only for women']);
+  if(s===2) return out([],[],'Post-menopausal bleeding — refer to gynaecologist (cancer check).');
+  return out([R('calcium','Calcium 500 mg + Vitamin D3','1 tablet','once daily after food','long term')],['Light cotton clothes, avoid tea/coffee at night','Hormone therapy only by gynaecologist','Screen BP, sugar, cholesterol, breast & cervical cancer']);}},
+// FERTILITY
+{id:'minf',g:'Fertility (sperm & egg)',n:'Male infertility (low sperm)',kw:'low sperm count male infertility semen analysis',s:['Trying >1 year, no tests yet','Abnormal semen report','No sperm / testis problem / varicocele'],
+ f(s){ if(P.sex!=='M') return out([],['For men; women — select Female infertility']);
+  return out([],['Semen analysis (3–5 days abstinence); check sugar, thyroid','Stop tobacco, alcohol; avoid hot baths, tight underwear, laptop on lap','Healthy weight; treat infections','No "sperm tonics" proven'],s>=1?'Refer to urologist / andrologist.':'');}},
+{id:'finf',g:'Fertility (sperm & egg)',n:'Female infertility (not conceiving)',kw:'not conceiving infertility pregnancy not happening ovulation egg',s:['Trying >1 year (6 months if age 35+)','Irregular periods / PCOS','Blocked tubes / repeated miscarriage / age 38+'],
+ f(s){ if(P.sex!=='F') return out([],['For women; men — select Male infertility']);
+  return out([R('folic','Folic acid','400 mcg (5 mg if previous baby with spine defect)','once daily','before & during pregnancy')],['Fertile days: day 12–16 of a 28-day cycle — intercourse every 2 days','Tests: Hb, TSH, sugar, ultrasound; husband\'s semen analysis','Fertility drugs only by gynaecologist'],s>=1?'Refer to gynaecologist / fertility clinic.':'');}},
+{id:'ed',g:'Fertility (sperm & egg)',n:'Erection problem',kw:'erectile dysfunction impotence sexual weakness',s:['Occasional, stress related','Regular problem','With chest pain on exertion / heart disease'],
+ f(s){ if(P.sex!=='M'||!adult()) return out([],['For adult men']);
+  return out([],['Check sugar, BP, cholesterol, smoking, depression — often first sign of heart disease','Counselling; reduce alcohol, tobacco','Medicines (Sildenafil) only by doctor after heart check — never with Sorbitrate/nitrates'],s===2?'Refer — heart check first.':'Refer to physician / urologist.');}},
+// CHILDREN
+{id:'newborn',g:'Children',n:'Newborn care (healthy baby)',kw:'newborn baby care breastfeeding cord vaccination',s:['Healthy newborn','Feeding problem / mild jaundice','Danger sign (not feeding, fever, cold, fits, yellow palms)'],
+ f(s){ if(s===2) return yiRefer();
+  return out([R('vitk','Inj. Vitamin K (at birth, if not given)',P.wt<1.5?'0.5 mg':'1 mg','once IM','—')],['Breastfeed within 1 hour; only breast milk for 6 months, 8–12 times a day','Keep warm (skin-to-skin, cap, socks); delay bath','Cord: keep clean and dry, nothing applied','Vaccines at birth: BCG, OPV-0, Hepatitis B','Check weight; ASHA home visits'],s===1?'Jaundice in first 24 h or on palms/soles — refer.':'');}},
+// EMERGENCIES
+{id:'poison',g:'Emergencies',n:'Poisoning (pesticide / kerosene / tablets)',kw:'poison pesticide insecticide kerosene overdose tablets consumed suicide attempt',s:['Swallowed small amount, no symptoms','Vomiting, sweating, drowsy','Unconscious, fits, breathless, small pupils'],
+ f(s){ return out([],['Pesticide: remove clothes, wash skin with soap & water','Do NOT make the person vomit (kerosene / acid / pesticide)','Bring the bottle / tablet strip to hospital','Keep airway clear; recovery position','Mental health support after recovery'],'Refer immediately (108) — atropine / antidote at hospital.');}},
+{id:'drown',g:'Emergencies',n:'Drowning / near-drowning',kw:'drowning drowned water',s:['Rescued, breathing, coughing','Breathless / vomiting','Not breathing / no pulse'],
+ f(s){ return out([],['Not breathing: start CPR — 5 rescue breaths, then 30 compressions : 2 breaths','Do not try to drain water from stomach','Keep warm; recovery position'],'Refer to hospital — even if well, observe 24 hours (late lung problems).');}}
+);
+// new brand examples, Telugu names, symptom words
+Object.assign(BRAND,{drotaverine:'Drotin',furosemide:'Lasix',folic:'Folvite',minoxidil:'Mintop',nicgum:'Nicotex',thiamine:'Benfothiamine / Neurobion',artears:'Refresh Tears',alendronate:'Osteofos',lng:'i-Pill, Unwanted-72',mala:'Govt (free)',chhaya:'Govt (free)',vitc:'Celin, Limcee',dextrose:'',glucose:'Glucon-D'});
+Object.assign(TE,{stroke:'పక్షవాతం హెచ్చరిక',bells:'ముఖ పక్షవాతం (బెల్స్ పాల్సీ)',addict:'పొగాకు / మద్యం మానుకోవడం',vision:'చూపు మసకబారడం / కంటి శుక్లం',eyefb:'కంట్లో నలుసు / రసాయనం',epistaxis:'ముక్కు నుండి రక్తం',hearing:'వినికిడి లోపం',gum:'చిగుళ్ల నుండి రక్తం',hf:'గుండె వైఫల్యం (ఆయాసం + కాళ్ల వాపు)',palp:'గుండె దడ',sickle:'సికిల్ సెల్ / తలసేమియా',bleed:'సులభంగా రక్తస్రావం / కమిలిన మచ్చలు',nafld:'ఫ్యాటీ లివర్',gall:'పిత్తాశయ రాళ్ల నొప్పి',panc:'ప్యాంక్రియాటైటిస్',obes:'అధిక బరువు / ఊబకాయం',hypo:'షుగర్ తగ్గడం (హైపోగ్లైసీమియా)',neph:'ముఖం & కాళ్ల వాపు (నెఫ్రోటిక్)',fract:'ఎముక విరగడం (ప్రథమ చికిత్స)',osteo:'ఎముకల బలహీనత (ఆస్టియోపొరోసిస్)',ra:'రుమటాయిడ్ కీళ్లవాతం',neck:'మెడ నొప్పి (సర్వైకల్)',sciatica:'సయాటికా (నడుము నుండి కాలికి నొప్పి)',hair:'జుట్టు రాలడం',dand:'చుండ్రు',wpatch:'చర్మంపై తెల్లని మచ్చలు',pcos:'పీసీఓఎస్ (క్రమం లేని నెలసరి)',contra:'కుటుంబ నియంత్రణ',meno:'మెనోపాజ్ సమస్యలు',minf:'పురుషుల సంతానలేమి (వీర్య కణాలు తక్కువ)',finf:'స్త్రీల సంతానలేమి (గర్భం రాకపోవడం)',ed:'అంగస్తంభన సమస్య',newborn:'నవజాత శిశువు సంరక్షణ',poison:'విషం తాగడం (పురుగుమందు / కిరోసిన్)',drown:'నీటిలో మునగడం'});
+Object.assign(SYM,{stroke:['stroke','paralysis','facial droop','slurred speech','one side weakness','pakshavatam','పక్షవాతం'],bells:['bells palsy','facial palsy','face deviation','mouth deviation','mouth deviated','eye not closing'],addict:['smoking','beedi','gutka','tobacco','alcohol','alcohol drinking','drinks alcohol','addiction','quit smoking','madyam','మద్యం','పొగాకు'],
+ vision:['cataract','blurred vision','vision','eyesight','spectacles','reading problem','చూపు'],eyefb:['dust in eye','something in eye','insect in eye','chemical in eye','lime in eye','eye injury','కంట్లో నలుసు'],epistaxis:['nose bleed','nose bleeding','bleeding from nose','epistaxis','ముక్కు నుండి రక్తం'],hearing:['hearing loss','not hearing','deaf','hearing problem','వినికిడి'],gum:['gum bleeding','bleeding gums','gingivitis','bad breath','చిగుళ్లు'],
+ hf:['heart failure','leg swelling','swelling of legs','breathless lying down','orthopnea','pedal edema'],palp:['palpitation','palpitations','heart racing','fast heartbeat','గుండె దడ'],sickle:['sickle','thalassemia','thalassaemia'],bleed:['bruise','bruises','bruising','petechiae','easy bleeding'],
+ nafld:['fatty liver','nafld'],gall:['gallstone','gall stone','gall bladder'],panc:['pancreatitis','pain going to back'],obes:['obesity','obese','overweight','weight gain','bmi','ఊబకాయం','బరువు ఎక్కువ'],hypo:['low sugar','hypoglycemia','hypoglycaemia','sugar low','sugar down','షుగర్ తగ్గింది'],
+ neph:['face swelling','puffy face','frothy urine','nephrotic','facial puffiness'],fract:['fracture','broken bone','bone broken','deformity','ఎముక విరిగింది'],osteo:['osteoporosis','weak bones','bone loss'],ra:['rheumatoid','morning stiffness','small joints'],
+ neck:['neck pain','cervical spondylosis','cervical pain','stiff neck','మెడ నొప్పి'],sciatica:['sciatica','pain going to leg','leg pain from back','radiating to leg'],hair:['hair fall','hair loss','baldness','జుట్టు రాలడం'],dand:['dandruff','scalp flakes','చుండ్రు'],wpatch:['white patch','white patches','vitiligo','leucoderma','తెల్ల మచ్చలు'],
+ pcos:['pcos','pcod','irregular periods','facial hair','ovarian cyst'],contra:['family planning','contraception','spacing','ipill','i pill','emergency pill','copper t','condom','unprotected'],meno:['menopause','hot flushes','periods stopped'],
+ minf:['low sperm','sperm count','male infertility','semen','వీర్యం'],finf:['not conceiving','infertility','no pregnancy','pregnancy not happening','గర్భం రావడం లేదు'],ed:['erectile','erection','impotence','sexual weakness'],newborn:['newborn','new born','baby care','cord care'],
+ poison:['poison','poisoning','pesticide','insecticide','kerosene','overdose','consumed tablets','విషం','పురుగుమందు'],drown:['drowning','drowned','నీటిలో మునిగి']});
+for(const id of ['stroke','bells','addict','vision','eyefb','epistaxis','hearing','gum','hf','palp','sickle','bleed','nafld','gall','panc','obes','hypo','neph','fract','osteo','ra','neck','sciatica','hair','dand','wpatch','pcos','contra','meno','minf','finf','ed','newborn','poison','drown']){ const d=D.find(x=>x.id===id); if(d&&!d.kw) d.kw=''; }
+SUPPRESS.back=(SUPPRESS.back||[]).concat(['sciatica','neck']);
+SUPPRESS.pain=(SUPPRESS.pain||[]).concat(['ra','fract']);
+SUPPRESS.wheeze=(SUPPRESS.wheeze||[]).concat(['hf']);
+SUPPRESS.vision=['eyefb'];
+COMBO.push(
+ [['hypo','dm'],'Low sugar in a diabetic: reduce / stop Glimepiride; check kidney function; teach sugar for emergencies.'],
+ [['hf','htn'],'Heart failure + BP: avoid Amlodipine-only control if breathless; ACE-i/ARB + diuretic by physician; salt restriction.'],
+ [['hf','pain'],'Heart failure + pain: NO NSAIDs (fluid retention) — Paracetamol only.'],
+ [['osteo','vitd'],'Osteoporosis + low Vitamin D: correct Vitamin D first, then Alendronate.'],
+ [['pcos','dm'],'PCOS + diabetes: Metformin helps both; weight loss.'],
+ [['obes','dm'],'Obesity + diabetes: Metformin preferred (no weight gain); avoid excess Glimepiride.'],
+ [['obes','htn'],'Obesity + BP: every 1 kg lost lowers BP ~1 mmHg.'],
+ [['finf','thyroid'],'Infertility + hypothyroid: treat thyroid to TSH <2.5 before pregnancy.'],
+ [['ed','htn'],'Erection problem + BP: some BP medicines worsen it — review; heart check before Sildenafil.'],
+ [['ed','chestpain'],'NEVER Sildenafil with Sorbitrate / nitrates — fatal BP drop.'],
+ [['addict','hep'],'Alcohol + jaundice: stop alcohol completely; refer.'],
+ [['epistaxis','htn'],'Nose bleed + high BP: control BP; refer if not stopping.'],
+ [['sickle','anaem'],'Sickle / thalassaemia + anaemia: do NOT give iron unless ferritin is low.'],
+ [['fract','osteo'],'Fracture after small fall = osteoporosis — start Calcium + D3 and refer.']
+);
+PREG_AVOID.minoxidil='avoid in pregnancy'; PREG_AVOID.alendronate='not in pregnancy'; PREG_AVOID.nicgum='avoid in pregnancy (counsel instead)'; PREG_AVOID.mala='stop — already pregnant'; PREG_AVOID.furosemide='only by obstetrician';
+
+// ===== Body systems =====
+const SYS=[
+ {id:'head',i:'🧠',n:'Head & brain',te:'తల & మెదడు',c:'#7b4fb5',ids:['headache','vertigo','epi','febseiz','stroke','bells']},
+ {id:'mind',i:'🧘',n:'Mind',te:'మానసిక ఆరోగ్యం',c:'#5b6bd1',ids:['mental','addict']},
+ {id:'eye',i:'👁',n:'Eyes',te:'కళ్లు',c:'#1d7fb5',ids:['conj','aconj','stye','vision','eyefb']},
+ {id:'ent',i:'👂',n:'Ear, nose & throat',te:'చెవి, ముక్కు, గొంతు',c:'#0f8a8a',ids:['otitis','earwax','hearing','throat','sinus','cold','rhin','epistaxis','mumps']},
+ {id:'mouth',i:'🦷',n:'Mouth & teeth',te:'నోరు & పళ్లు',c:'#c27a00',ids:['tooth','mouth','gum','thrush']},
+ {id:'lung',i:'🫁',n:'Lungs & breathing',te:'ఊపిరితిత్తులు',c:'#2e7d32',ids:['cough','pneu','wheeze','asthma','copd','bronch','tb','flu']},
+ {id:'heart',i:'❤️',n:'Heart & BP',te:'గుండె & బీపీ',c:'#c62828',ids:['htn','lipid','chestpain','hf','palp','rhd']},
+ {id:'blood',i:'🩸',n:'Blood',te:'రక్తం',c:'#b71c1c',ids:['anaem','ifaproph','b12','sickle','bleed','dengue']},
+ {id:'gut',i:'🍽',n:'Stomach & liver',te:'కడుపు & కాలేయం',c:'#8d6e63',ids:['diar','dys','vom','acid','pud','const','piles','worm','amoeba','cholera','hep','nafld','gall','typhoid']},
+ {id:'endo',i:'🍬',n:'Pancreas & hormones',te:'క్లోమం & హార్మోన్లు',c:'#ad1457',ids:['dm','hypo','thyroid','hyperthy','panc','obes','vitd']},
+ {id:'kidney',i:'🫘',n:'Kidney & urine',te:'కిడ్నీ & మూత్రం',c:'#6d4c41',ids:['uti','renal','ckd','neph','bph']},
+ {id:'bone',i:'🦴',n:'Bones & joints',te:'ఎముకలు & కీళ్లు',c:'#546e7a',ids:['pain','gout','ra','osteo','fract','chik','vitd']},
+ {id:'spine',i:'🧍',n:'Spine & back',te:'వెన్నెముక & నడుము',c:'#455a64',ids:['back','neck','sciatica']},
+ {id:'skin',i:'🧴',n:'Skin & hair',te:'చర్మం & జుట్టు',c:'#d84315',ids:['skin','scab','eczema','tinea','tcap','urt','acne','lice','leprosy','chickenpox','zoster','measles','nappy','burn','hair','dand','wpatch']},
+ {id:'women',i:'🤰',n:'Women & pregnancy',te:'మహిళలు & గర్భం',c:'#c2185b',ids:['dysmen','hmb','vagd','nvp','pcos','contra','meno']},
+ {id:'men',i:'👨',n:'Men\'s health',te:'పురుషుల ఆరోగ్యం',c:'#1565c0',ids:['ureth','bph','ed']},
+ {id:'fert',i:'🥚',n:'Fertility (sperm & egg)',te:'సంతానం (వీర్యం & అండం)',c:'#8e24aa',ids:['minf','finf','ed','pcos']},
+ {id:'child',i:'👶',n:'Children',te:'పిల్లలు',c:'#f57c00',ids:['newborn','febseiz','sam','vita','nappy','measles','diar','pneu']},
+ {id:'fever',i:'🦟',n:'Fevers & infections',te:'జ్వరాలు & ఇన్ఫెక్షన్లు',c:'#00897b',ids:['fever','malv','malf','dengue','typhoid','chik','scrub','lepto','flu','measles','mumps','chickenpox','filaria','hiv','cholera']},
+ {id:'emerg',i:'🚑',n:'Emergencies',te:'అత్యవసరాలు',c:'#d32f2f',ids:['dogbite','snake','scorpion','burn','wound','heat','chestpain','poison','drown','hypo','stroke','fract']}
+];
+// diseases not placed above go to their nearest group
+(function(){ const placed=new Set(SYS.flatMap(s=>s.ids)); D.forEach(d=>{ if(!placed.has(d.id)){ const s=SYS.find(x=>x.n===d.g)||SYS.find(x=>x.id==='fever'); s.ids.push(d.id); } }); })();
+function sysOf(id){ return SYS.filter(s=>s.ids.includes(id)); }
+function sysName(s){ return LANG==='te'?s.te:s.n; }
+function renderTiles(){
+  const h='<div class="tiles">'+SYS.map(s=>'<button class="tile" data-sys="'+s.id+'" style="--c:'+s.c+'"><span class="ti">'+s.i+'</span><span class="tn">'+esc(sysName(s))+'</span><span class="tc">'+s.ids.length+'</span></button>').join('')+'</div>';
+  $('tiles').innerHTML=h;
+}
+// simple front-view body; regions open groups
+const BODY_REG=[
+ {id:'head',label:['Head & brain','తల'],shape:'<circle cx="100" cy="38" r="26"/>',sys:['head','eye','ent','mouth','mind']},
+ {id:'chest',label:['Chest','ఛాతీ'],shape:'<rect x="66" y="74" width="68" height="58" rx="14"/>',sys:['lung','heart','blood']},
+ {id:'belly',label:['Belly','కడుపు'],shape:'<rect x="68" y="134" width="64" height="48" rx="12"/>',sys:['gut','endo','kidney']},
+ {id:'pelvis',label:['Private parts','జననాంగాలు'],shape:'<rect x="70" y="184" width="60" height="30" rx="12"/>',sys:['women','men','fert','kidney']},
+ {id:'larm',label:['Arms','చేతులు'],shape:'<rect x="38" y="78" width="24" height="110" rx="12"/>',sys:['bone','skin']},
+ {id:'rarm',label:['Arms','చేతులు'],shape:'<rect x="138" y="78" width="24" height="110" rx="12"/>',sys:['bone','skin']},
+ {id:'llegs',label:['Legs','కాళ్లు'],shape:'<rect x="70" y="216" width="27" height="118" rx="12"/>',sys:['bone','spine','skin']},
+ {id:'rlegs',label:['Legs','కాళ్లు'],shape:'<rect x="103" y="216" width="27" height="118" rx="12"/>',sys:['bone','spine','skin']}
+];
+function renderBody(){
+  let svg='<svg viewBox="0 0 200 345" class="bodysvg" role="img" aria-label="Body picture">'+BODY_REG.map(r=>'<g class="breg" data-reg="'+r.id+'">'+r.shape+'</g>').join('')+'<rect x="92" y="62" width="16" height="14" fill="#cfe3dc"/></svg>';
+  const tags='<div class="btags">'+[['head','🧠'],['chest','🫁'],['belly','🍽'],['pelvis','🚻'],['larm','💪'],['llegs','🦵']].map(([r,ic])=>{ const R0=BODY_REG.find(x=>x.id===r); return '<button class="btag" data-reg="'+r+'">'+ic+' '+esc(L(R0.label[0],R0.label[1]))+'</button>'; }).join('')+'<button class="btag" data-sys="skin">🧴 '+esc(L('Skin (whole body)','చర్మం'))+'</button><button class="btag" data-sys="spine">🧍 '+esc(L('Back / spine','వెన్నెముక'))+'</button><button class="btag" data-sys="emerg">🚑 '+esc(L('Emergency','అత్యవసరం'))+'</button></div>';
+  $('bodyBox').innerHTML='<div class="bodywrap">'+svg+tags+'</div><div id="regPick"></div>';
+}
+function pickRegion(rid){ const r=BODY_REG.find(x=>x.id===rid); document.querySelectorAll('.breg').forEach(g=>g.classList.toggle('on',BODY_REG.find(x=>x.id===g.dataset.reg).label[0]===r.label[0]));
+  $('regPick').innerHTML='<div class="hint" style="margin:6px 0">'+esc(L(r.label[0],r.label[1]))+' — '+L('choose:','ఎంచుకోండి:')+'</div><div class="chips">'+r.sys.map(id=>{ const s=SYS.find(x=>x.id===id); return '<span class="chip" data-sys="'+id+'">'+s.i+' '+esc(sysName(s))+'</span>'; }).join('')+'</div>'; }
+function showSys(sid){
+  const s=SYS.find(x=>x.id===sid); if(!s) return; const ds=s.ids.map(id=>D.find(d=>d.id===id)).filter(Boolean);
+  let h='<div class="card syshead" style="--c:'+s.c+'"><div class="sysbig">'+s.i+'</div><div><h2 style="margin:0">'+esc(sysName(s))+'</h2><div class="hint">'+(LANG==='te'?s.n:s.te)+' · '+ds.length+L(' conditions',' వ్యాధులు')+'</div></div></div>';
+  h+='<div class="card"><div class="hint" style="margin-bottom:6px">'+L('Tap a name for medicines by age · + to prescribe for the current patient','పేరు నొక్కితే వయస్సు వారీగా మందులు · + నొక్కితే చీటీలో చేరుతుంది')+'</div>';
+  ds.forEach(d=>{ h+='<div class="lrow"><span class="lk" data-dis="'+d.id+'"><b>'+esc(dn(d))+'</b><small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="addb" data-use="'+d.id+'">+</button></div>'; });
+  h+='</div>';
+  const cps=comboPairs().filter(c=>c.ids.some(id=>s.ids.includes(id)));
+  if(cps.length){ h+='<div class="card"><h3 style="margin-top:0">🔗 '+L('Combinations in this group','ఈ విభాగంలో కలయికలు')+' ('+cps.length+')</h3>';
+    cps.forEach(c=>{ const names=c.ids.map(id=>dn(D.find(d=>d.id===id))).join(' + '); h+='<div class="crow"><div><b>'+esc(names)+'</b><div class="x">'+esc(c.t)+'</div></div><button class="addb wide" data-use="'+c.ids.join(',')+'">'+L('Use','వాడు')+'</button></div>'; });
+    h+='</div>'; }
+  $('p-sys').innerHTML=h; goPage('sys'); window.scrollTo(0,0);
+}
+
 // reports wiring
 buildReports();
 $('repFile').addEventListener('change',()=>previews($('repFile'),'repPrev'));
@@ -2003,10 +2256,10 @@ $('menu').addEventListener('click',e=>{ const a=e.target.closest('a[data-p]'); i
   else window.scrollTo(0,0); });
 // disease list in menu
 const GTE={'Infections':'ఇన్ఫెక్షన్లు','More infections':'మరిన్ని ఇన్ఫెక్షన్లు','Stomach, gut & nutrition':'కడుపు, పేగులు & పోషణ','Breathing, allergy & skin':'శ్వాస, అలర్జీ & చర్మం','Long-term adult illnesses':'దీర్ఘకాల వ్యాధులు',"Women's health":'మహిళల ఆరోగ్యం','Injuries, bites & emergencies':'గాయాలు, కాట్లు & అత్యవసరాలు','Other common problems':'ఇతర సాధారణ సమస్యలు'};
-function buildDMenu(){ let h='',g=''; D.forEach(d=>{ if(d.g!==g){ if(g) h+='</details>'; g=d.g; h+='<details><summary>'+esc(L(g,GTE[g]||g))+'</summary>'; } h+='<a data-dis="'+d.id+'">'+esc(dn(d))+'</a>'; }); h+='</details>'; $('dmenu').innerHTML=h; }
+function buildDMenu(){ if(typeof SYS==='undefined') return; let h=''; SYS.forEach(sy=>{ h+='<details><summary>'+sy.i+' '+esc(sysName(sy))+' <span class="cnt">'+sy.ids.length+'</span></summary><a data-sysopen="'+sy.id+'" class="allg">'+L('Open group page →','విభాగం పేజీ →')+'</a>'+sy.ids.map(id=>{ const d=D.find(x=>x.id===id); return d?'<a data-dis="'+d.id+'">'+esc(dn(d))+'</a>':''; }).join('')+'</details>'; }); $('dmenu').innerHTML=h; }
 buildDMenu();
 
-$('dmenu').addEventListener('click',e=>{ const a=e.target.closest('a[data-dis]'); if(!a) return; markMenu(a); showDisease(a.dataset.dis); openSide(false); });
+$('dmenu').addEventListener('click',e=>{ const so=e.target.closest('a[data-sysopen]'); if(so){ markMenu(so); showSys(so.dataset.sysopen); openSide(false); return; } const a=e.target.closest('a[data-dis]'); if(!a) return; markMenu(a); showDisease(a.dataset.dis); openSide(false); });
 
 // sample patients for detail pages
 const PROF=[
@@ -2024,7 +2277,7 @@ function rxLine(x){ return '<b>'+esc(x.name)+'</b>: '+esc(x.dose)+(x.freq?', '+e
 let curSev=1, curDis=null;
 function showDisease(id,sev){
   const d=D.find(x=>x.id===id); if(!d) return; curDis=id; if(sev!=null) curSev=sev;
-  let h='<div class="card"><h2>'+esc(d.n)+' <span class="tag">'+esc(d.g)+'</span></h2>';
+  let h='<div class="card"><h2>'+esc(dn(d))+'</h2><div class="chips" style="margin-bottom:8px">'+sysOf(d.id).map(sy=>'<span class="chip" data-sysg="'+sy.id+'">'+sy.i+' '+esc(sysName(sy))+'</span>').join('')+'</div>';
   h+='<div class="sev" id="dsev">'+SEVN.map((n,i)=>'<span class="chip'+(i===curSev?' on':'')+'" data-v="'+i+'">'+n+'</span>').join('')+'</div>';
   h+='<div class="sevtxt" style="margin:6px 0 10px">'+esc(d.s[curSev])+'</div>';
   h+='<div class="tw"><table><tr><th>Patient</th><th>Medicine &amp; dose</th></tr>';
@@ -2055,6 +2308,7 @@ function showMed(k){
   h+='</div>'; $('p-dis').innerHTML=h; goPage('dis'); window.scrollTo(0,0);
 }
 $('p-dis').addEventListener('click',e=>{
+  const sg=e.target.closest('[data-sysg]'); if(sg){ showSys(sg.dataset.sysg); return; }
   const c=e.target.closest('#dsev .chip'); if(c){ showDisease(curDis,+c.dataset.v); return; }
   const l=e.target.closest('[data-dis]'); if(l){ showDisease(l.dataset.dis); return; }
   if(e.target.id==='addRx'){ ADDED[curDis]=curSev; OVR[curDis]=curSev; REMOVED.delete(curDis); goPage('calc'); compute(); markMenu(document.querySelector('#menu a[data-p=calc]')); setTimeout(()=>flash($('found')),60); }
@@ -2092,16 +2346,16 @@ $('gres').addEventListener('click',e=>{ const a=e.target.closest('a'); if(!a) re
 
 // ===== Single & combined disease lists =====
 function comboPairs(){ const seen=new Set(), out=[]; for(const [pr,t] of COMBO){ if(!pr||pr.length<2||!t) continue; const k=[...pr].sort().join('+'); if(seen.has(k)) continue; seen.add(k); if(pr.every(id=>D.find(d=>d.id===id))) out.push({ids:pr,t}); } return out; }
-function listCounts(){ const n=D.length, c=comboPairs().length;
+function listCounts(){ const n=D.length, c=comboPairs().length; if($('qlB')) $('qlB').textContent=L(SYS.length+' body groups',SYS.length+' శరీర విభాగాలు');
   $('qlS').textContent=L(n+' single diseases',n+' ఒకే వ్యాధులు'); $('qlC').textContent=L(c+' combined diseases',c+' కలిసిన వ్యాధులు');
   $('mSingle').textContent='🩺 '+L('Single diseases ('+n+')','ఒకే వ్యాధులు ('+n+')'); $('mCombo').textContent='🔗 '+L('Combined diseases ('+c+')','కలిసిన వ్యాధులు ('+c+')'); }
 function renderSingle(){
   const q=(($('sgq')||{}).value||'').toLowerCase(); let h='<div class="card"><h2>'+L('Single diseases','ఒకే వ్యాధులు')+' ('+D.length+')</h2><input type="search" id="sgq" placeholder="'+L('Filter…','వెతకండి…')+'" value="'+esc(q)+'"><div class="hint" style="margin-top:6px">'+L('Tap a disease to see medicines for all ages, or + to prescribe.','వ్యాధిని నొక్కితే అన్ని వయస్సుల మందులు; + నొక్కితే మందుల చీటీలో చేరుతుంది.')+'</div></div>';
-  let g='', cnt=0;
-  for(const d of D){ const hay=(d.n+' '+(TE[d.id]||'')+' '+(SYM[d.id]||[]).join(' ')).toLowerCase(); if(q&&!hay.includes(q)) continue;
-    if(d.g!==g){ if(g) h+='</div>'; g=d.g; h+='<div class="card"><h3 style="margin-top:0">'+esc(L(g,GTE[g]||g))+'</h3>'; }
-    cnt++; h+='<div class="lrow"><span class="lk" data-dis="'+d.id+'">'+esc(d.n)+'<small>'+esc(TE[d.id]||'')+'</small></span><button class="addb" data-use="'+d.id+'">+</button></div>'; }
-  if(g) h+='</div>'; if(!cnt) h+='<div class="card">'+L('No match.','సరిపోలేదు.')+'</div>';
+  let cnt=0;
+  for(const sy of SYS){ const ds=sy.ids.map(id=>D.find(d=>d.id===id)).filter(d=>d&&(!q||(d.n+' '+(TE[d.id]||'')+' '+(SYM[d.id]||[]).join(' ')).toLowerCase().includes(q))); if(!ds.length) continue;
+    h+='<div class="card"><h3 style="margin-top:0;color:'+sy.c+'">'+sy.i+' '+esc(sysName(sy))+'</h3>';
+    ds.forEach(d=>{ cnt++; h+='<div class="lrow"><span class="lk" data-dis="'+d.id+'">'+esc(dn(d))+'<small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="addb" data-use="'+d.id+'">+</button></div>'; }); h+='</div>'; }
+  if(!cnt) h+='<div class="card">'+L('No match.','సరిపోలేదు.')+'</div>';
   $('p-single').innerHTML=h; const i=$('sgq'); i.focus(); i.setSelectionRange(q.length,q.length);
 }
 function renderCombo(){
@@ -2117,7 +2371,10 @@ function renderCombo(){
 function useIds(ids){ ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); compute(); setTimeout(()=>flash($('found')),60); }
 ['p-single','p-combo'].forEach(pid=>{ $(pid).addEventListener('input',e=>{ if(e.target.id==='sgq') renderSingle(); if(e.target.id==='cbq') renderCombo(); });
   $(pid).addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); }); });
-document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
+document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; if(pg==='body'){ $('browse').scrollIntoView({behavior:'smooth'}); return; } goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
+
+$('browse').addEventListener('click',e=>{ const t=e.target.closest('[data-sys]'); if(t){ markMenu(null); showSys(t.dataset.sys); return; } const r=e.target.closest('[data-reg]'); if(r) pickRegion(r.dataset.reg); });
+$('p-sys').addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); });
 
 applyLang();
 listCounts();

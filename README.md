@@ -52,6 +52,6 @@ Open the app: https://bloforms.github.io/paper/
 
 # Medicine Guide by Age & Disease
 
-For registered medical practitioners in AP: choose male/female, age, weight, pregnancy, search and pick one or more of 90 diseases with severity to see medicines with weight-based doses, a combined prescription, interaction and referral warnings. Upload or type blood/urine reports and X-ray findings to get suggested diseases. Includes malaria, TB, child dose chart and newborn/pregnancy/elderly tables.
+For registered medical practitioners in AP: choose male/female, age, weight, pregnancy, search by symptoms (English/Telugu) or pick from 126 conditions in 20 body-part groups with tiles and a body picture, with severity to see medicines with weight-based doses, a combined prescription, interaction and referral warnings. Upload or type blood/urine reports and X-ray findings to get suggested diseases. Includes malaria, TB, child dose chart and newborn/pregnancy/elderly tables.
 
 Open the app: https://bloforms.github.io/medicine/
