@@ -55,3 +55,9 @@ Open the app: https://bloforms.github.io/paper/
 For registered medical practitioners in AP: choose male/female, age, weight, pregnancy, search by symptoms (English/Telugu) or pick from 126 conditions in 20 body-part groups with tiles and a body picture, with severity to see medicines with weight-based doses, a combined prescription, interaction and referral warnings. Upload or type blood/urine reports and X-ray findings to get suggested diseases. Includes malaria, TB, child dose chart and newborn/pregnancy/elderly tables.
 
 Open the app: https://bloforms.github.io/medicine/
+
+# Daily Attendance (3 pm – 5 pm)
+
+Fills the 08 Secretariat Mahaboob Nagar Colony-01 daily present/absent form: handwritten-style date, "—" for absent staff, handwritten remarks from a dropdown, finger signatures, geo-tag photo with GPS stamp, PDF/WhatsApp share.
+
+Open the app: https://bloforms.github.io/attendance/
