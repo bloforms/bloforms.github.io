@@ -14,10 +14,10 @@
 :root{--g:#0f6e5c;--g2:#e6f3ef;--r:#b3261e;--r2:#fdecea;--o:#8a5a00;--o2:#fff4dc;--b:#1d4f91;--b2:#e8f0fb;--ink:#1c2321;--mut:#5c6662;--line:#d9e0dd}
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:#f6f8f7;font-size:15px;line-height:1.45}
-header{background:var(--g);color:#fff;padding:14px 16px 10px;position:sticky;top:0;z-index:5}
+header{background:var(--g);color:#fff;padding:14px 16px 10px}
 header h1{margin:0;font-size:18px}
 header p{margin:2px 0 0;font-size:12px;opacity:.85}
-nav{display:flex;gap:6px;overflow-x:auto;padding:8px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:58px;z-index:4}
+nav{display:flex;gap:6px;overflow-x:auto;padding:8px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
 nav button{flex:none;border:1px solid var(--line);background:#fff;border-radius:18px;padding:6px 12px;font-size:13px;color:var(--ink)}
 nav button.on{background:var(--g);color:#fff;border-color:var(--g)}
 main{max-width:760px;margin:0 auto;padding:12px}
@@ -58,6 +58,27 @@ footer{text-align:center;font-size:12px;color:var(--mut);padding:18px 12px 30px}
 .hide{display:none}
 .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:var(--g2);color:var(--g);margin-left:4px}
 .tag.red{background:var(--r2);color:var(--r)}
+.combo{position:relative;margin-top:8px}
+.dd{position:absolute;left:0;right:0;top:100%;max-height:330px;overflow-y:auto;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.12);z-index:20;margin-top:4px}
+.dd .gh{font-size:11px;font-weight:700;color:var(--g);padding:8px 12px 4px;background:#f6f8f7;position:sticky;top:0}
+.dd .it{padding:10px 12px;border-top:1px solid #eef2f0;cursor:pointer;font-size:14px}
+.dd .it.act,.dd .it:hover{background:var(--g2)}
+.dd .it.on{color:var(--mut)}
+.dd .it.on::after{content:" ✓ added";font-size:11px;color:var(--g)}
+.dd .it small{display:block;color:var(--mut);font-size:11px}
+.sel{position:relative}
+.sel .rm{position:absolute;right:8px;top:6px;border:0;background:none;font-size:20px;color:var(--mut);cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.grid2 label.t{text-transform:none;letter-spacing:0;font-size:12px}
+.u{font-weight:400;color:var(--mut)}
+.filled{background:#fff8d6!important;border-color:#e2c35b!important}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.thumb{width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.thumb.pdf{display:flex;align-items:center;justify-content:center;font-size:11px;padding:4px;text-align:center;background:var(--g2)}
+details.det{border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-top:10px}
+pre#ocrText{white-space:pre-wrap;font-size:11px;max-height:200px;overflow:auto;background:#f6f8f7;padding:6px}
+input[type=file]{font-size:13px;width:100%}
+#xrBox .chip{font-size:13px}
 @media print{header,nav,.noprint{display:none}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -103,10 +124,33 @@ footer{text-align:center;font-size:12px;color:var(--mut);padding:18px 12px 30px}
 </div>
 
 <div class="card">
-<h2>2. Disease(s) &amp; severity</h2>
-<div class="hint">Tick one disease, or several for a combination. Then set severity for each.</div>
-<input type="search" id="q" placeholder="Search disease…" style="margin-top:8px">
-<div id="dlist"></div>
+<h2>2. Reports (optional) <span class="tag">blood · urine · X-ray</span></h2>
+<div class="hint">Upload a lab report photo/PDF to read values automatically (needs internet), or type the values. Tick X-ray findings after you read the film. Then press "Suggest disease".</div>
+<label class="t">Lab report — photo or PDF</label>
+<input type="file" id="repFile" accept="image/*,application/pdf" multiple>
+<div id="repPrev" class="thumbs"></div>
+<button class="btn sec" id="readBtn">Read values from report</button>
+<div class="hint" id="upStat"></div>
+<details id="ocrWrap" class="hide"><summary class="hint">Text read from report</summary><pre id="ocrText"></pre></details>
+<details class="det"><summary><b>Lab values (type or check)</b></summary><div id="labBox"></div></details>
+<details class="det"><summary><b>X-ray</b></summary>
+<label class="t">X-ray image (kept for your view — the app does not read X-rays)</label>
+<input type="file" id="xrFile" accept="image/*,application/pdf" multiple>
+<div id="xrPrev" class="thumbs"></div>
+<label class="t">X-ray findings (doctor's reading)</label>
+<div class="chips" id="xrBox"></div>
+</details>
+<button class="btn" id="sugBtn">Suggest disease from reports</button>
+<div id="sugBox"></div>
+</div>
+
+<div class="card">
+<h2>3. Disease(s) &amp; severity</h2>
+<div class="hint">Type to search (e.g. "sugar", "fits", "bite", "loose motions") and pick from the list. Add more than one for a combination.</div>
+<div class="combo">
+<input type="search" id="q" placeholder="Search or tap to choose disease ▾" autocomplete="off">
+<div id="dd" class="dd hide" role="listbox"></div>
+</div>
 <div id="selBox"></div>
 <button class="btn" id="go">Show medicines</button>
 </div>
@@ -553,6 +597,291 @@ const D = [
   return out([R('aed','Continue specialist\'s medicine','e.g. Levetiracetam 250–500 mg BD / Phenytoin 100 mg TDS / Carbamazepine 200 mg BD / Valproate 200–500 mg BD','as prescribed','long term','Do not stop suddenly')],[P.sex==='F'&&P.ageM>=144?'Women: avoid Valproate; Folic acid 5 mg daily if planning pregnancy':'',P.ageM<72?'Fever fits in child — refer first episode':''].filter(Boolean),s===1?'Breakthrough fits — refer for dose review.':(P.ageM<216?ped():''));}}
 ];
 
+// ===== ADDED DISEASES (v2) =====
+D.push(
+// MORE INFECTIONS
+{id:'chickenpox',g:'More infections',n:'Chickenpox (varicella)',kw:'pox rash vesicles',s:['Few spots, child well','Many spots / adolescent or adult (start within 24–72 h)','Breathless, drowsy, bleeding spots, newborn, low immunity'],
+ f(s){ if(P.ageM<2||s===2) return out([para()],[],'Severe / high-risk chickenpox — refer for IV Acyclovir.');
+  if(preg()) return out([para(),R('calamine','Calamine lotion','apply','3 times a day','')],[],'Chickenpox in pregnancy — refer to obstetrician (Acyclovir under supervision).');
+  const rx=[para(),R('calamine','Calamine lotion','apply on spots','3 times a day','until crusted'),cet()];
+  if(s===1||P.ageM>=144) rx.push(adult()?R('acyclovir','Acyclovir tablet','800 mg','5 times a day','7 days','Start within 24–72 h of rash')
+     :R('acyclovir','Acyclovir',form(Math.min(20*P.wt,800),'suspension 400 mg/5 ml',80,[200,400,800]),'4 times a day','5 days','20 mg/kg/dose'));
+  return out(rx,['NO Ibuprofen or Aspirin in chickenpox','Cut nails; keep child home until all spots crust (about 7 days)']);}},
+{id:'measles',g:'More infections',n:'Measles',kw:'rash fever red eyes',s:['Fever, rash, cough, red eyes','With diarrhoea / mouth ulcers / pus from eyes','Pneumonia, fits, drowsy, clouding of cornea, severe malnutrition'],
+ f(s){ const va=P.ageM<6?'50,000 IU':P.ageM<12?'1 lakh IU':'2 lakh IU';
+  const rx=[R('vita','Vitamin A solution',va,'Day 1 and Day 2','2 doses'+(s===2?' + Day 14':'')),para()];
+  if(s>=1) rx.push(R('ors','ORS','after each loose stool','',''),R('tetracyclineeye','Tetracycline 1% eye ointment (if pus in eyes)','apply','3 times a day','7 days'));
+  return out(rx,['Notify — measles/rubella surveillance','Isolate for 4 days after rash','Continue feeding'],s===2?'Complicated measles — Vitamin A and refer.':'');}},
+{id:'mumps',g:'More infections',n:'Mumps',kw:'parotid swelling cheek',s:['Painful swelling near ear/jaw','High fever, difficulty eating','Testis pain, severe headache/vomiting, hearing loss, abdominal pain'],
+ f(s){ return out([para()],['Soft food, fluids, warm compress','Keep home 5 days after swelling starts','No antibiotics'],s===2?'Complication (orchitis, meningitis, pancreatitis) — refer.':'');}},
+{id:'chik',g:'More infections',n:'Chikungunya',kw:'joint pain fever',s:['Fever with joint pain (first week)','Joint pain continuing after fever','Elderly/newborn with complications, bleeding, confusion'],
+ f(s){ if(s===2) return out([para()],[],'Complicated chikungunya — refer.');
+  const rx=[para()];
+  if(s===1 && !preg() && !elderly()){ const i=ibu(); if(i){ i.note='Only after dengue is excluded'; rx.push(i);} }
+  return out(rx,['Test for dengue — no NSAIDs until dengue is ruled out','Rest, fluids; gentle joint exercises','Joint pain lasting >3 months — refer']);}},
+{id:'scrub',g:'More infections',n:'Scrub typhus (eschar / black scab)',kw:'rickettsia fever eschar mite',s:['Fever with eschar, eating well','High fever, headache, cough','Breathless, jaundice, low BP, drowsy, low urine'],
+ f(s){ if(s===2) return out([para()],[],'Severe scrub typhus — refer for IV Doxycycline/Azithromycin.');
+  let rx;
+  if(preg()) rx=[R('azithromycin','Azithromycin tablet','500 mg','once daily','5 days','Safe in pregnancy',true)];
+  else if(adult()) rx=[R('doxycycline','Doxycycline capsule','100 mg','twice daily after food','7 days','Take with full glass of water, sit up 30 min',true)];
+  else rx=[azi(10,500,'5 days','10 mg/kg OD; alternative Doxycycline 2.2 mg/kg BD × 7 days (short course safe in children)')];
+  rx.push(para());
+  return out(rx,['Look for eschar in armpit, groin, waist, behind ears','Also test for dengue, malaria, leptospirosis']);}},
+{id:'lepto',g:'More infections',n:'Leptospirosis',kw:'rat fever calf pain flood paddy',s:['Fever, calf pain, red eyes','High fever, vomiting','Jaundice, low urine, bleeding, breathless'],
+ f(s){ if(s===2) return out([para()],[],'Severe leptospirosis (Weil\'s) — refer for IV Penicillin/Ceftriaxone.');
+  let rx;
+  if(preg()) rx=[R('amoxicillin','Amoxicillin capsule','500 mg','3 times a day','7 days','',true)];
+  else if(adult()) rx=[R('doxycycline','Doxycycline capsule','100 mg','twice daily after food','7 days','',true)];
+  else rx=[amox(17,500,'3 times a day','7 days','50 mg/kg/day')];
+  rx.push(para());
+  return out(rx,['History of wading in flood/paddy water, rats','Check urine output, kidney and liver tests']);}},
+{id:'filaria',g:'More infections',n:'Filariasis (lymphatic)',kw:'elephantiasis leg swelling hydrocele DEC MDA',s:['Mass drug administration (MDA) / prevention','Acute attack: fever, painful red swollen limb','Elephantiasis / hydrocele'],
+ f(s){ if(s===0){ if(P.ageM<24||preg()) return out([],['Not given under 2 years, in pregnancy or to seriously ill']);
+    const dec=P.ageM<72?'100 mg':P.ageM<180?'200 mg':'300 mg';
+    return out([R('dec','DEC (Diethylcarbamazine) 100 mg tab',dec,'single dose after food, under supervision','once a year (MDA)'),R('albendazole','Albendazole','400 mg (chew)','single dose','with DEC')],['IDA districts: Ivermectin added by height','Mild fever/aches after tablets are expected']); }
+  if(s===1){ const rx=[para(),adult()?R('amoxicillin','Amoxicillin capsule','500 mg','3 times a day','7–10 days','',true):amox(17,500,'3 times a day','7–10 days','')];
+    return out(rx,['Rest, raise the limb, cool wet cloth','Wash limb daily with soap, dry between toes (MMDP care)']); }
+  return out([],['Daily limb washing, footwear, exercises (MMDP kit)'],'Hydrocele — refer for free surgery; elephantiasis — MMDP clinic.');}},
+{id:'leprosy',g:'More infections',n:'Leprosy',kw:'patch numbness MDT hansen',s:['Few (1–5) numb patches, no nerve involvement (PB)','More than 5 patches / nerve thickened (MB)','Reaction: painful nerves, new weakness, red painful patches, eye problem'],
+ f(s){ if(s===2) return out([],[],'Lepra reaction — refer to specialist for Prednisolone; continue MDT.');
+  const dur = s===0?'6 months (PB)':'12 months (MB)';
+  let rx;
+  if(P.ageM>=180) rx=[R('mdt','MDT adult blister (monthly supervised)','Rifampicin 600 mg + Clofazimine 300 mg','once a month',dur),R('mdtd','MDT adult blister (daily)','Dapsone 100 mg + Clofazimine 50 mg','once daily',dur)];
+  else if(P.ageM>=120) rx=[R('mdt','MDT child blister (monthly supervised)','Rifampicin 450 mg + Clofazimine 150 mg','once a month',dur),R('mdtd','MDT child blister (daily)','Dapsone 50 mg daily + Clofazimine 50 mg alternate days','daily',dur)];
+  else return out([],[],'Leprosy under 10 years — weight-based MDT; refer to NLEP centre.');
+  return out(rx,['Free under National Leprosy Eradication Programme — confirm diagnosis','Uniform 3-drug MDT for PB and MB','Check eyes, hands, feet sensation every visit','Urine turns reddish (Rifampicin), skin darkens (Clofazimine) — harmless']);}},
+{id:'zoster',g:'More infections',n:'Herpes zoster (shingles)',kw:'painful rash one side',s:['Painful band-like rash, within 72 h','Elderly / severe pain / many dermatomes','Rash on forehead/nose tip/eye, or low immunity'],
+ f(s){ if(s===2) return out([para()],[],'Eye involvement or low immunity — refer (ophthalmologist / IV acyclovir).');
+  if(!adult()) return out([para(),R('calamine','Calamine lotion','apply','3 times a day','')],['Usually mild in children'],'');
+  const rx=[R('acyclovir','Acyclovir tablet','800 mg','5 times a day','7 days','Or Valacyclovir 1 g three times daily × 7 days; reduce in kidney disease'),para(),R('calamine','Calamine lotion','apply','3 times a day','')];
+  if(s===1) rx.push(R('pregabalin','Pregabalin capsule (nerve pain)',elderly()?'25–50 mg':'75 mg','at night','2–4 weeks','Causes drowsiness; reduce in kidney disease'));
+  return out(rx,['Keep rash covered; avoid contact with pregnant women and newborns','Test for HIV/diabetes if young adult']);}},
+{id:'flu',g:'More infections',n:'Influenza / flu-like illness (H1N1)',kw:'flu body ache cough fever h1n1',s:['Fever, cough, body ache — healthy (Category A)','High fever / high-risk: pregnancy, <5 or >65 yrs, diabetes, heart, lung, kidney disease (Category B)','Breathless, SpO2 <94%, chest pain, drowsy, blue lips (Category C)'],
+ f(s){ const rx=[para()];
+  const osel = P.ageM<12?rmg(3*P.wt)+' mg': P.wt<=15?'30 mg':P.wt<=23?'45 mg':P.wt<=40?'60 mg':'75 mg';
+  if(s>=1) rx.push(R('oseltamivir','Oseltamivir (capsule 30/45/75 mg or syrup)',osel,'twice daily','5 days','Safe in pregnancy'));
+  return out(rx,['Rest, fluids, home isolation, mask','No antibiotics unless pneumonia'],s===2?'Category C — first dose Oseltamivir and refer for admission.':'');}},
+{id:'cholera',g:'More infections',n:'Cholera (suspected)',kw:'rice water stools watery',s:['Watery diarrhoea, no dehydration','Some dehydration','Severe dehydration / shock'],
+ f(s){ if(s===2) return out([],['Plan C: IV Ringer lactate 100 ml/kg ('+Math.round(100*P.wt)+' ml)'],'Severe dehydration — IV fluids and refer; notify (IDSP).');
+  const ors = s===1?R('ors','ORS (Plan B)',Math.round(75*P.wt)+' ml','over 4 hours','then reassess'):R('ors','ORS (Plan A)','after each stool','','');
+  const ab = preg()?R('azithromycin','Azithromycin tablet','1 g','single dose','1 day','',true)
+           : adult()?R('doxycycline','Doxycycline','300 mg (3 × 100 mg)','single dose','1 day','',true)
+           : azi(20,1000,'single dose','20 mg/kg once');
+  return out([ors,ab,!adult()&&P.ageM>=2?R('zinc','Zinc 20 mg',P.ageM<6?'10 mg':'20 mg','once daily','14 days'):null],['Notify the health department (IDSP)','Boiled / chlorinated water, hand washing']);}},
+{id:'hiv',g:'More infections',n:'HIV (reactive test)',kw:'aids art',s:['Reactive screening test','Confirmed, not on treatment','On ART with fever / weight loss / TB symptoms'],
+ f(s){ return out([],['Free ART (Tenofovir + Lamivudine + Dolutegravir) at ART centre','Cotrimoxazole prophylaxis as per ART centre','Screen for TB at every visit','Counsel; keep confidential'],s===0?'Refer to ICTC for confirmation.':'Refer to ART centre.');}},
+// STOMACH extras
+{id:'pud',g:'Stomach, gut & nutrition',n:'Peptic ulcer / H. pylori',kw:'ulcer stomach pain',s:['Ulcer-type pain, no alarm signs','H. pylori positive / recurrent ulcer','Black stool, vomiting blood, severe pain, weight loss'],
+ f(s){ if(s===2) return out([],[],'Bleeding / perforation risk — refer urgently.');
+  if(!adult()) return out([],[],'Ulcer in child — refer.');
+  const rx=[R('pantoprazole','Pantoprazole tablet','40 mg',s===1?'twice daily before food':'once daily before breakfast',s===1?'14 days, then OD 4 weeks':'4–8 weeks')];
+  if(s===1 && !preg()) rx.push(R('amoxicillin','Amoxicillin capsule','1 g','twice daily','14 days','H. pylori triple therapy',true),R('clarithromycin','Clarithromycin tablet','500 mg','twice daily','14 days','H. pylori triple therapy',true));
+  return out(rx,['Stop NSAIDs, smoking, alcohol']);}},
+{id:'piles',g:'Stomach, gut & nutrition',n:'Piles (haemorrhoids) / fissure',kw:'bleeding per rectum anal pain',s:['Mild bleeding/itching with hard stools','Painful piles or fissure','Heavy bleeding, prolapse that won\'t go back, age >45 with bleeding'],
+ f(s){ if(s===2) return out([],[],'Refer to surgeon (bowel examination needed).');
+  const rx=[adult()?R('isabgol','Isabgol husk','2 teaspoons in water','at night','4–6 weeks'):R('lactulose','Lactulose syrup',P.ageM<60?'5 ml':'10 ml','twice daily','2–4 weeks'),
+    R('lignocaine','Lignocaine 2% jelly / ointment','apply','before and after stools','1–2 weeks')];
+  return out(rx,['Sitz bath (warm water) 10 min twice daily','Water, fibre; don\'t strain']);}},
+// BREATHING extras
+{id:'sinus',g:'Breathing, allergy & skin',n:'Sinusitis',kw:'facial pain blocked nose',s:['Blocked nose, facial heaviness <10 days (viral)','Symptoms >10 days or worsening after improving (bacterial)','Swelling around eye, severe headache, vomiting, vision change'],
+ f(s){ if(s===2) return out([para()],[],'Complicated sinusitis — refer urgently.');
+  const rx=[R('saline','Saline nasal spray / steam inhalation','2 sprays each nostril','3–4 times a day','7–10 days'),para()];
+  if(s===1){ rx.push(adult()?R('amoxicillin','Amoxicillin capsule','500 mg','3 times a day','5–7 days','',true):amox(45,1000,'twice daily','10 days','90 mg/kg/day'));
+    if(P.ageM>=48) rx.push(R('nasalster','Fluticasone 50 mcg nasal spray',adult()?'2 sprays each nostril':'1 spray each nostril','once daily','2–4 weeks')); }
+  return out(rx,['No antibiotic in the first 10 days unless very ill']);}},
+{id:'bronch',g:'Breathing, allergy & skin',n:'Acute bronchitis / cough (adult)',kw:'cough chest cold',s:['Cough <2 weeks, no fever','Cough with wheeze','Cough >2 weeks, blood in sputum, weight loss, breathless'],
+ f(s){ if(s===2) return out([],['Send 2 sputum samples for NAAT (CBNAAT/Truenat) and chest X-ray'],'Presumptive TB / other serious cause — test and refer.');
+  const rx=[para()];
+  if(s===1) rx.push(R('salbutamol','Salbutamol MDI 100 mcg + spacer','2 puffs','when breathless (up to 4 times a day)','5–7 days'));
+  return out(rx,['No antibiotics — viral in most adults','Honey with warm water / steam','Stop smoking']);}},
+{id:'copd',g:'Breathing, allergy & skin',n:'COPD (chronic bronchitis / emphysema)',kw:'smoker breathless chronic',s:['Breathless on exertion, stable','Daily symptoms, frequent cough','Flare-up: more breathless, more/coloured sputum'],
+ f(s){ if(P.ageM<420) return out([],['COPD is unusual under 35 — think asthma or TB']);
+  const rx=[R('salbutamol','Salbutamol MDI 100 mcg + spacer','2 puffs','when breathless','long term')];
+  if(s>=1) rx.push(R('tiotropium','Tiotropium 18 mcg Rotacap (inhaler)','1 capsule','once daily','long term','Long-acting; rinse mouth'));
+  if(s===2) rx.push(R('prednisolone','Prednisolone','40 mg','once daily after breakfast','5 days'),R('amoxicillin','Amoxicillin capsule (or Doxycycline 100 mg BD)','500 mg','3 times a day','5 days','If sputum is coloured',true));
+  return out(rx,['Stop smoking / chulha smoke; influenza & pneumococcal vaccine','Breathing exercises'],s===2?'Refer if SpO2 <88%, confused, or not better in 24–48 h.':'');}},
+{id:'aconj',g:'Breathing, allergy & skin',n:'Allergic conjunctivitis',kw:'itchy eyes watery',s:['Itchy watery eyes','With swollen lids / seasonal','Pain, vision change, contact lens user'],
+ f(s){ if(s===2) return out([],[],'Refer to eye specialist.');
+  const rx=[cet()]; if(P.ageM>=36) rx.unshift(R('olopatadine','Olopatadine 0.1% eye drops','1 drop each eye','twice daily','2 weeks'));
+  return out(rx.filter(Boolean),['Cold compress; don\'t rub eyes','NO steroid eye drops without eye specialist']);}},
+{id:'acne',g:'Breathing, allergy & skin',n:'Acne (pimples)',kw:'pimples face',s:['Blackheads, few pimples','Many red pimples','Painful nodules / scarring'],
+ f(s){ if(P.ageM<96) return out([],[],'Acne in young child — refer.');
+  const rx=[R('bpo','Benzoyl peroxide 2.5% gel','thin layer on whole area','at night','8–12 weeks','May cause dryness')];
+  if(s>=1){ if(!preg()) rx.push(R('adapalene','Adapalene 0.1% gel','pea-size','at night (alternate with BPO)','12 weeks','Not in pregnancy'));
+    rx.push(R('clindagel','Clindamycin 1% gel','thin layer','twice daily','12 weeks','Always with Benzoyl peroxide')); }
+  if(s===2 && !preg() && P.ageM>=144) rx.push(R('doxycycline','Doxycycline capsule','100 mg','once daily after food','3 months','Sun protection',true));
+  return out(rx,['Gentle face wash twice daily; don\'t squeeze'],s===2?'Nodular / scarring acne — refer to skin specialist.':'');}},
+{id:'nappy',g:'Breathing, allergy & skin',n:'Nappy rash (irritant)',kw:'diaper rash',s:['Red skin in nappy area','Raw, with red spots at edges (candida)','Pustules, blisters, fever'],
+ f(s){ if(s===2) return out([],[],'Infected nappy rash — refer.');
+  const rx=[R('zinccream','Zinc oxide cream','thick layer','at every nappy change','until healed')];
+  if(s===1) rx.push(R('clotrimazole','Clotrimazole 1% cream','thin layer','twice daily','7 days'));
+  return out(rx,['Nappy-free time; change often; plain water wash, no wipes with perfume']);}},
+// WOMEN'S HEALTH
+{id:'dysmen',g:'Women\'s health',n:'Painful periods (dysmenorrhoea)',kw:'menses pain cramps',s:['Cramps first 1–2 days','Severe cramps, missing school/work','Pain with fever, foul discharge, irregular heavy bleeding, pain between periods'],
+ f(s){ if(P.sex!=='F'||P.ageM<108) return out([],['Only for girls / women']);
+  if(preg()) return out([],[],'Pain in pregnancy is not dysmenorrhoea — refer.');
+  if(s===2) return out([para()],[],'Possible PID / endometriosis / fibroid — refer to gynaecologist.');
+  const rx=[R('mefenamic','Mefenamic acid tablet','500 mg','3 times a day after food','2–3 days from start of period','Or Ibuprofen 400 mg TDS')];
+  return out(rx,['Hot water bag, exercise','Start tablet at first sign of period'+(s===1?'; if not controlled, refer for hormonal treatment':'')]);}},
+{id:'hmb',g:'Women\'s health',n:'Heavy menstrual bleeding',kw:'menorrhagia heavy periods bleeding',s:['Heavy flow, Hb normal','Heavy flow with anaemia / clots','Soaking pad every hour, dizzy, Hb <7, bleeding after menopause'],
+ f(s){ if(P.sex!=='F'||P.ageM<108) return out([],['Only for girls / women']);
+  if(preg()) return out([],[],'Bleeding in pregnancy — refer urgently.');
+  if(s===2) return out([],[],'Refer urgently (transfusion / gynaecology).');
+  const rx=[R('tranexamic','Tranexamic acid tablet','500 mg–1 g','3 times a day during heavy days','max 5 days per period'),R('mefenamic','Mefenamic acid tablet','500 mg','3 times a day','during period')];
+  if(s===1) rx.push(R('ifa','IFA red tablet (60 mg iron)','2 tablets','daily after food','3 months'));
+  return out(rx,['Check Hb, TSH; ultrasound if age >40 or not settling','Refer if bleeding between periods or after sex']);}},
+{id:'vagd',g:'Women\'s health',n:'Vaginal discharge / white discharge',kw:'leucorrhoea itching sti rti',s:['Curdy white, itchy (candida)','Foul smelling / greyish / frothy / yellow (BV, trichomonas, cervicitis)','With lower abdominal pain, fever, pain during sex (PID)'],
+ f(s){ if(P.sex!=='F'||P.ageM<144) return out([],[],'Discharge in a young girl — refer (rule out foreign body / abuse).');
+  let rx=[]; const t1=P.preg==='t1';
+  if(s===0){ rx=[R('clotripess','Clotrimazole 100 mg vaginal tablet','1 tablet high in vagina','at night','6 nights','Or 500 mg single')];
+    if(!preg()) rx.push(R('fluconazole','Fluconazole (alternative)','150 mg','single dose','1 day')); }
+  else if(s===1){
+    if(preg()) rx=[t1?R('clotripess','Clotrimazole vaginal tablet','100 mg','at night','6 nights','Metronidazole only after 1st trimester'):R('metronidazole','Metronidazole tablet','400 mg','twice daily','7 days')];
+    else rx=[R('kit2','STI Kit 2 (green): Secnidazole 2 g + Fluconazole 150 mg','both tablets','single dose','1 day','Or Metronidazole 400 mg BD × 7 days'),R('kit1','STI Kit 1 (grey) if cervical discharge: Azithromycin 1 g + Cefixime 400 mg','both','single dose','1 day','',true)];
+  } else {
+    if(preg()) return out([],[],'Pelvic infection in pregnancy — refer.');
+    rx=[R('kit6','STI Kit 6 (yellow) for PID: Cefixime 400 mg single + Metronidazole 400 mg BD + Doxycycline 100 mg BD','as packed','','14 days','Refer if fever >38 °C, vomiting, IUD, or no better in 72 h',true)];
+  }
+  return out(rx,['Treat partner for trichomonas/cervicitis/PID','Condoms; offer HIV & syphilis tests','Recurrent candida — check blood sugar']);}},
+{id:'ureth',g:'Women\'s health',n:'Urethral discharge (men) / STI',kw:'sti burning penis discharge',s:['Discharge / burning urine','With genital ulcer','Painful swollen testis, fever'],
+ f(s){ if(P.sex!=='M'||P.ageM<144) return out([],['For adult men; women — select Vaginal discharge']);
+  if(s===2) return out([],[],'Epididymo-orchitis — refer.');
+  const rx=[R('kit1','STI Kit 1 (grey): Azithromycin 1 g + Cefixime 400 mg','both tablets','single dose','1 day','',true)];
+  if(s===1) rx.push(R('kit3','STI Kit 3 (white) for ulcer: Inj. Benzathine penicillin 2.4 MU IM + Azithromycin 1 g','as packed','single dose','1 day','Herpes-type painful vesicles: Acyclovir 400 mg TDS × 7 days',true));
+  return out(rx,['Treat partner; condoms; HIV & syphilis tests']);}},
+{id:'nvp',g:'Women\'s health',n:'Nausea & vomiting of pregnancy',kw:'morning sickness pregnancy vomiting',s:['Morning nausea, eating some','Vomiting several times a day','Cannot keep fluids, weight loss, ketones in urine (hyperemesis)'],
+ f(s){ if(!preg()) return out([],['Select "Pregnant" in patient details']);
+  if(s===2) return out([],[],'Hyperemesis — refer for IV fluids.');
+  const rx=[R('doxylamine','Doxylamine 10 mg + Pyridoxine 10 mg tablet','2 tablets','at bedtime (may add 1 morning, 1 afternoon)','as needed')];
+  if(s===1) rx.push(R('ondansetron','Ondansetron tablet','4 mg','up to 3 times a day','short course','Preferably after 10 weeks'));
+  return out(rx,['Small frequent dry meals; ginger','Take IFA at night after food']);}},
+// INJURIES, BITES & EMERGENCIES
+{id:'dogbite',g:'Injuries, bites & emergencies',n:'Dog / animal bite (rabies)',kw:'dog bite cat monkey rabies arv',s:['Category I: lick on intact skin','Category II: nibble / scratch without bleeding','Category III: bleeding bite, lick on broken skin or lips, bat bite'],
+ f(s){ const wash=R('wash','Wound wash','soap + running water','15 minutes','immediately','Then Povidone-iodine; do NOT suture or bandage tightly');
+  if(s===0) return out([wash],['No vaccine needed for Category I']);
+  const rx=[wash,R('arv','Anti-rabies vaccine (ARV) intradermal','0.1 ml at 2 sites','Days 0, 3, 7, 28','4 visits','Same dose all ages & pregnancy; free at govt hospitals. Previously vaccinated: Days 0 and 3 only')];
+  if(s===2){ rx.push(R('rig','Rabies immunoglobulin into and around wound','ERIG 40 IU/kg ('+Math.round(40*P.wt)+' IU) or HRIG 20 IU/kg ('+Math.round(20*P.wt)+' IU)','Day 0','once','Or rabies monoclonal antibody'));
+    rx.push(adult()?R('amoxclav','Amoxicillin-clavulanate','625 mg','3 times a day','5 days','',true):R('amoxclav','Amoxicillin-clavulanate',form(Math.min(22.5*P.wt,875),'syrup 228 mg/5 ml',45.6,[375,625]),'twice daily','5 days','',true)); }
+  rx.push(R('td','Td (tetanus) vaccine','0.5 ml IM','if not vaccinated in last 5 years',''));
+  return out(rx,['Observe the dog for 10 days','Complete all doses even if dog is well'],s===2?'If RIG not available — refer the same day.':'');}},
+{id:'snake',g:'Injuries, bites & emergencies',n:'Snake bite',kw:'snake asv',s:['Bite, no symptoms (observe)','Swelling, pain spreading','Bleeding, drooping eyelids, difficulty breathing/swallowing'],
+ f(s){ return out([R('td','Td vaccine','0.5 ml IM','once','')],['Keep calm, lie still; splint the limb like a fracture','NO tourniquet, cutting, sucking or herbal treatment','Remove rings/bangles; no NSAIDs or Aspirin','20-minute whole blood clotting test'],'Refer immediately to hospital with anti-snake venom (ASV). Observe at least 24 h even without symptoms.');}},
+{id:'scorpion',g:'Injuries, bites & emergencies',n:'Scorpion sting',kw:'scorpion sting prazosin',s:['Local pain only','Sweating, vomiting, cold hands/feet, high BP','Breathless, frothy sputum, low BP, confused'],
+ f(s){ if(s===0) return out([para(),R('lignocaine','Lignocaine 2% local infiltration','1–2 ml at sting site','once','')],['Ice pack; observe 6 hours (children closely)']);
+  const mcg = adult()?500:Math.min(500,Math.round(30*P.wt));
+  return out([R('prazosin','Prazosin tablet',mcg+' mcg','every 3 hours until hands/feet warm','as needed','30 mcg/kg in children; watch BP')],['Lie down after prazosin (BP falls)'],s===2?'Pulmonary oedema / shock — give Prazosin and refer urgently.':'Refer after first dose of Prazosin.');}},
+{id:'burn',g:'Injuries, bites & emergencies',n:'Burns (minor)',kw:'burn scald',s:['Red skin only, small','Blisters, under 10% (child) / 15% (adult), not face/hands','Large, face/hands/genitals/joints, electric, chemical, smoke'],
+ f(s){ if(s===2||P.ageM<2) return out([para()],['Cool with running water 20 min; cover with clean cloth; ORS'],'Major burn — refer (IV fluids).');
+  const rx=[R('ssd','Silver sulfadiazine 1% cream (or paraffin gauze)','thin layer + dressing','once daily','until healed','Not on face; not under 2 months'),para(),R('td','Td vaccine','0.5 ml IM','if not vaccinated in last 5 years','')];
+  return out(rx,['Cool running water 20 minutes immediately','Do not burst blisters; no toothpaste, oil or ink']);}},
+{id:'wound',g:'Injuries, bites & emergencies',n:'Cuts / wounds (tetanus)',kw:'injury cut laceration tetanus',s:['Small clean wound','Dirty / deep wound / diabetic patient','Gaping, heavy bleeding, tendon/bone visible, crush'],
+ f(s){ if(s===2) return out([para()],['Press firmly to stop bleeding'],'Refer for suturing / surgery.');
+  const rx=[R('povidone','Povidone-iodine 5% solution / ointment','clean & apply','daily dressing','until healed'),para(),R('td','Td vaccine','0.5 ml IM','if not vaccinated in last 5 years (10 years for clean wound)','')];
+  if(s===1) rx.push(adult()?R('amoxclav','Amoxicillin-clavulanate','625 mg','3 times a day','5 days','',true):R('amoxclav','Amoxicillin-clavulanate',form(Math.min(22.5*P.wt,875),'syrup 228 mg/5 ml',45.6,[375,625]),'twice daily','5 days','',true));
+  return out(rx,['Wash with clean water and soap','Return if redness spreads, pus or fever']);}},
+{id:'heat',g:'Injuries, bites & emergencies',n:'Heat illness / sunstroke',kw:'heat stroke summer dehydration',s:['Heat cramps / heat rash','Heat exhaustion: dizzy, heavy sweating, vomiting, weak','Heat stroke: temp >104 °F, confused, hot dry skin, fits'],
+ f(s){ if(s===2) return out([],['Cool immediately: wet cloth + fan, ice packs in armpits/groin','Do NOT give Paracetamol (does not work in heat stroke)'],'Heat stroke — cool and refer urgently (IV saline).');
+  return out([R('ors','ORS',adult()?'1 litre':'as much as child takes','over 1 hour, then as needed','')],['Rest in shade, loosen clothes, cool sponging','Avoid outdoor work 12–3 pm; water, buttermilk'],s===1?'Refer if not better in 1 hour.':'');}},
+{id:'febseiz',g:'Injuries, bites & emergencies',n:'Febrile convulsion (child)',kw:'fits fever child seizure',s:['Single short fit with fever, now awake','Fit >15 min, repeated, or one side of body','Fitting now for >5 minutes'],
+ f(s){ if(P.ageM<6||P.ageM>72) return out([],[],'Fit with fever outside 6 months–6 years — refer (meningitis / epilepsy).');
+  if(s===2) return out([R('midazolam','Midazolam buccal/nasal (or Diazepam rectal 0.5 mg/kg)',rmg(Math.min(0.2*P.wt,10))+' mg','once','—','0.2 mg/kg')],['Recovery position; nothing in mouth'],'Refer immediately.');
+  return out([para()],['Paracetamol is for comfort — it does not prevent fits','Teach parents first aid: side position, time the fit'],'First febrile fit — refer to rule out meningitis.');}},
+{id:'chestpain',g:'Injuries, bites & emergencies',n:'Chest pain — suspected heart attack',kw:'heart attack angina mi chest pain',s:['Chest pain on exertion, relieved by rest','Chest pain at rest >20 min, sweating','With breathlessness, low BP, collapse'],
+ f(s){ if(!adult()) return out([],[],'Chest pain in child — refer.');
+  return out([R('aspirin','Aspirin','325 mg (chew)','once','—','Not if allergic or active bleeding'),R('isdn','Isosorbide dinitrate (Sorbitrate)','5 mg under tongue','repeat every 5 min, max 3','—','Only if BP above 90 systolic'),R('atorvastatin','Atorvastatin','80 mg','once','—')],['ECG immediately; oxygen if SpO2 <90%'],'Refer to STEMI / cardiac centre immediately (108).');}},
+// OTHER COMMON PROBLEMS
+{id:'headache',g:'Other common problems',n:'Headache / migraine',kw:'migraine head pain',s:['Tension-type headache','Migraine (one-sided, vomiting, light sensitivity)','Sudden worst headache, with fever & stiff neck, weakness, after injury, new after 50 yrs'],
+ f(s){ if(s===2) return out([],[],'Red-flag headache — refer urgently.');
+  const rx=[para()];
+  if(s===1){ if(!preg()){ const i=ibu(); if(i) rx.push(i); }
+    if(adult()) rx.push(R('domperidone','Domperidone tablet','10 mg','with pain relief','as needed','For nausea'));
+    if(adult()) rx.push(R('flunarizine','Flunarizine (prevention if >4 attacks/month)','5–10 mg','at night','3 months','Or Propranolol 20–40 mg BD if no asthma')); }
+  return out(rx,['Regular sleep & meals, water; headache diary','Painkillers not more than 10 days a month']);}},
+{id:'vertigo',g:'Other common problems',n:'Vertigo / giddiness',kw:'giddiness dizziness spinning',s:['Spinning on turning head (BPPV)','With vomiting','Can\'t walk, slurred speech, double vision, weakness, new severe headache'],
+ f(s){ if(s===2) return out([],[],'Possible stroke — refer immediately.');
+  if(!adult()) return out([],[],'Vertigo in child — refer.');
+  const rx=[];
+  if(!preg()) rx.push(R('betahistine','Betahistine tablet','16 mg','3 times a day','1–2 weeks'));
+  if(s===1) rx.push(R('prochlorperazine','Prochlorperazine tablet','5 mg','3 times a day','3 days only',elderly()?'Elderly: falls risk':''));
+  return out(rx,['Epley manoeuvre for BPPV','Check BP, sugar, Hb']);}},
+{id:'back',g:'Other common problems',n:'Back pain / sprain / muscle pain',kw:'sprain strain neck pain back pain',s:['Mild pain, can work','Severe pain, sprain with swelling','Numbness/weakness of legs, urine/stool problem, fever, injury/fall, suspected fracture'],
+ f(s){ if(s===2) return out([para()],[],'Refer (X-ray / nerve or spine problem).');
+  const rx=[para(),R('diclogel','Diclofenac 1% gel','apply','3 times a day','1–2 weeks')];
+  if(s===1 && !preg() && !elderly()){ const i=ibu(); if(i) rx.push(i); }
+  return out(rx,['Sprain: rest, ice, crepe bandage, elevation (RICE)','Back pain: stay active, avoid bed rest']);}},
+{id:'gout',g:'Other common problems',n:'Gout / high uric acid',kw:'uric acid big toe',s:['High uric acid only, no attacks','Acute attack: hot swollen joint (big toe)','Repeated attacks (2+ a year) / tophi / kidney stones'],
+ f(s){ if(!adult()) return out([],[],'Gout in child — refer.');
+  if(s===0) return out([],['No medicine for high uric acid without attacks','Less meat/seafood/alcohol, more water, weight loss']);
+  if(s===1) return out([R('colchicine','Colchicine tablet','0.5 mg','2–3 times a day','until attack settles (3–5 days)','Stop if diarrhoea; reduce in kidney disease'),R('naproxen','Naproxen tablet (if no kidney/ulcer problem)','500 mg','twice daily after food','5 days','Or Prednisolone 30 mg OD × 5 days')],['Rest, raise and ice the joint','Do not start Allopurinol during attack']);
+  return out([R('allopurinol','Allopurinol tablet','100 mg → increase monthly','once daily after food','long term','Target uric acid <6; start 2 weeks after attack settles'),R('colchicine','Colchicine (cover)','0.5 mg','once daily','first 3–6 months')],['Check creatinine before Allopurinol']);}},
+{id:'mouth',g:'Other common problems',n:'Mouth ulcers / angular stomatitis',kw:'ulcer mouth tongue',s:['Few small ulcers','Many / painful ulcers','Ulcer >3 weeks, white/red patch, tobacco user'],
+ f(s){ if(s===2) return out([],[],'Non-healing ulcer — refer (oral cancer check).');
+  const rx=[R('bcomplex','Vitamin B-complex',adult()?'1 tablet':'5 ml syrup','once daily','2 weeks')];
+  if(adult()) rx.push(R('triamcinolone','Triamcinolone 0.1% oral paste','apply on ulcer','3 times a day','5–7 days'));
+  if(s===1 && P.ageM>=144) rx.push(R('chlorhex','Chlorhexidine 0.2% mouthwash','10 ml rinse, spit','twice daily','1 week'));
+  if(!adult()) rx.push(para());
+  return out(rx,['Salt water rinse; avoid spicy food','Child with many ulcers + fever = herpes stomatitis: fluids, paracetamol']);}},
+{id:'tooth',g:'Other common problems',n:'Toothache / dental abscess',kw:'tooth pain gum swelling',s:['Toothache, no swelling','Swollen gum / abscess','Face swelling spreading, can\'t open mouth, fever'],
+ f(s){ if(s===2) return out([para()],[],'Spreading facial infection — refer urgently.');
+  const rx=[para()]; if(!preg()){ const i=ibu(); if(i) rx.push(i); }
+  if(s===1){ rx.push(adult()?R('amoxicillin','Amoxicillin capsule','500 mg','3 times a day','5 days','',true):amox(17,500,'3 times a day','5 days',''));
+    if(P.preg!=='t1') rx.push(adult()?R('metronidazole','Metronidazole tablet','400 mg','3 times a day','5 days'):R('metronidazole','Metronidazole',form(Math.min(7.5*P.wt,400),'syrup 200 mg/5 ml',40,[200,400]),'3 times a day','5 days')); }
+  return out(rx,['Refer to dentist — antibiotics don\'t replace dental treatment','Warm salt water rinses']);}},
+{id:'earwax',g:'Other common problems',n:'Ear wax',kw:'ear blocked wax',s:['Blocked ear, no pain','Hard wax, reduced hearing','Ear pain, discharge, past ear drum hole'],
+ f(s){ if(s===2||P.ageM<6) return out([],['No ear drops'],'Refer to ENT.');
+  return out([R('waxdrops','Soda-glycerine ear drops (or warm olive oil)','2–3 drops','3 times a day','5 days','Then gentle syringing by trained staff')],['No ear buds, pins or oil heated too much']);}},
+{id:'stye',g:'Other common problems',n:'Stye / eyelid boil',kw:'stye chalazion eyelid',s:['Painful lump on lid','Larger / repeated','Whole lid & eye swollen, fever, vision problem'],
+ f(s){ if(s===2) return out([],[],'Orbital cellulitis risk — refer urgently.');
+  return out([R('chloro-eye','Chloramphenicol 1% eye ointment (or Moxifloxacin drops)','apply','3–4 times a day','5–7 days')],['Warm compress 10 min, 4 times a day','Don\'t squeeze',s===1?'Repeated styes — check sugar and vision':''].filter(Boolean));}},
+{id:'renal',g:'Other common problems',n:'Kidney stone pain (renal colic)',kw:'stone colic loin pain',s:['Colic, known small stone (<6 mm)','Severe colic, vomiting','Colic with fever, no urine, single kidney, pregnancy'],
+ f(s){ if(s===2||preg()||!adult()) return out([],[],'Refer urgently.');
+  const rx=[R('diclo','Inj. Diclofenac 75 mg IM','75 mg','once','—','Not if kidney disease / ulcer; then Paracetamol')];
+  rx.push(R('tamsulosin','Tamsulosin capsule','0.4 mg','once daily at bedtime','up to 4 weeks','Helps stone pass; dizziness on standing'));
+  if(s===1) rx.push(R('ondansetron','Ondansetron','4 mg','for vomiting','as needed'));
+  return out(rx,['Drink 2.5–3 litres water/day','Ultrasound KUB']);}},
+{id:'bph',g:'Other common problems',n:'Prostate enlargement (BPH)',kw:'prostate urine flow night urination',s:['Weak stream, night urination','Bothersome symptoms','Unable to pass urine, blood in urine, very large/hard prostate'],
+ f(s){ if(P.sex!=='M'||P.ageM<480) return out([],['For men over 40']);
+  if(s===2) return out([],[],'Urinary retention / suspicious — refer (catheter, PSA).');
+  const rx=[]; if(s===1) rx.push(R('tamsulosin','Tamsulosin capsule','0.4 mg','once daily at bedtime','long term','Dizziness on standing'));
+  return out(rx,['Less fluid after 6 pm; less tea/coffee/alcohol','Check PSA & urine; ultrasound']);}},
+{id:'mental',g:'Other common problems',n:'Anxiety / depression / sleep problem',kw:'stress depression anxiety insomnia sleep',s:['Stress, poor sleep','Low mood or worry most days >2 weeks','Thoughts of self-harm, not eating, not sleeping for days, hearing voices'],
+ f(s){ return out([],['Listen, counsel; sleep routine; physical activity','Tele-MANAS free helpline: 14416','Medicines (e.g. Escitalopram) only by MO / psychiatrist; avoid sleeping pills'],s===2?'Urgent referral — do not leave the person alone.':(s===1?'Refer to Medical Officer / psychiatrist (DMHP).':''));}},
+{id:'rhd',g:'Other common problems',n:'Rheumatic fever / RHD prophylaxis',kw:'rheumatic heart penicillin injection',s:['Past rheumatic fever, no heart damage','Rheumatic heart disease','Breathless, swelling of feet, palpitations'],
+ f(s){ if(s===2) return out([],[],'Heart failure — refer.');
+  const u = P.wt>=30?'12 lakh units (1.2 MU)':'6 lakh units (0.6 MU)';
+  return out([R('bpg','Inj. Benzathine penicillin G deep IM',u,'every 3 weeks (21 days)',s===0?'5 years or till age 21 (longer one)':'10 years or till age 40 (longer one)','Penicillin allergy: Erythromycin 250 mg BD',true)],['Never miss a dose; keep a card']);}},
+// LONG-TERM extras
+{id:'ckd',g:'Long-term adult illnesses',n:'Chronic kidney disease',kw:'kidney creatinine egfr',s:['eGFR 60–89 with protein in urine','eGFR 30–59','eGFR <30, swelling, less urine, breathless'],
+ f(s){ if(s===2) return out([],[],'Advanced kidney disease — refer to nephrologist.');
+  const rx=[R('telmisartan','Telmisartan (if protein in urine / BP high)','20–40 mg','once daily','long term','Check potassium & creatinine in 2 weeks')];
+  return out(rx,['AVOID NSAIDs (Ibuprofen, Diclofenac), Nitrofurantoin, herbal medicines','Metformin: half dose if eGFR 30–45, stop if <30','BP target <130/80; control sugar','Less salt; no excess protein']);}},
+{id:'hep',g:'Long-term adult illnesses',n:'Jaundice / viral hepatitis',kw:'jaundice yellow eyes liver hepatitis',s:['Yellow eyes, eating, no vomiting','Vomiting, bilirubin >10, very weak','Confusion, bleeding, swelling of abdomen, pregnancy'],
+ f(s){ if(s===2||preg()) return out([],[],'Refer urgently (liver failure risk).');
+  if(s===1) return out([],[],'Refer for admission and tests.');
+  return out([P.ageM>=6?R('ondansetron','Ondansetron (only if nausea)',adult()?'4 mg':'2 mg','up to twice daily','as needed'):null],['Rest, normal diet, plenty of fluids — no need to avoid turmeric/oil completely','No alcohol, no herbal/native medicines','Paracetamol max 2 g/day in adults','Test HBsAg, anti-HCV; hepatitis A/E in children','Boiled water; hand washing']);}},
+{id:'hyperthy',g:'Long-term adult illnesses',n:'Hyperthyroidism',kw:'thyroid overactive tsh low palpitation',s:['Low TSH, mild symptoms','Palpitations, weight loss, tremor','Very fast pulse, fever, confusion, pregnancy'],
+ f(s){ if(s===2||preg()) return out([],[],'Refer to physician / endocrinologist.');
+  const rx=[]; if(s===1) rx.push(R('propranolol','Propranolol tablet (symptom control)','10–20 mg','3 times a day','until specialist review','Not in asthma/COPD'));
+  return out(rx,['Carbimazole only after specialist confirms'],'Refer to physician for diagnosis.');}},
+{id:'vitd',g:'Long-term adult illnesses',n:'Vitamin D deficiency',kw:'vitamin d bone pain rickets',s:['Insufficient (20–29 ng/ml)','Deficient (<20 ng/ml)','Very low (<10) / rickets / tetany'],
+ f(s){ let rx;
+  if(P.ageM<12) rx=[R('vitd3','Vitamin D3 drops',s===0?'400 IU':'2000 IU','once daily',s===0?'till 1 year':'12 weeks, then 400 IU daily')];
+  else if(!adult()) rx=[R('vitd3','Vitamin D3 60,000 IU sachet/capsule',s===0?'60,000 IU':'60,000 IU','once a week'+(s===0?' for 4 weeks':''),s===0?'4 weeks':'6 weeks','Or 2000 IU daily × 12 weeks')];
+  else rx=[R('vitd3','Vitamin D3 60,000 IU capsule','60,000 IU',s===0?'once a month':'once a week',s===0?'3 months':'8 weeks, then monthly')];
+  rx.push(R('calcium','Calcium 500 mg tablet',P.ageM<12?'— (milk is enough)':'500 mg','once daily','3 months'));
+  return out(rx.filter(x=>!x.dose.startsWith('—')),['Sunlight 15–20 min on arms/legs daily'],s===2?'Rickets / tetany / very low — treat and refer for evaluation.':'');}},
+{id:'b12',g:'Long-term adult illnesses',n:'Vitamin B12 deficiency',kw:'b12 numbness tingling',s:['Low B12, no symptoms','Tingling/numbness, tiredness','Unsteady walking, memory problem, severe anaemia'],
+ f(s){ if(!adult()) return out([],[],'B12 deficiency in child — refer.');
+  if(s===2) return out([R('b12inj','Inj. Cyanocobalamin 1000 mcg IM','1000 mcg','alternate days × 1 week, then weekly × 4','then monthly','By MO')],[],'Neurological B12 deficiency — refer if not improving.');
+  return out([R('mecobal','Methylcobalamin tablet','1500 mcg','once daily','3 months')],['Common in vegetarians and long-term Metformin / Pantoprazole users','Milk, curd, eggs']);}}
+);
+function doxyChild(){ return R('doxycycline','Doxycycline',rmg(Math.min(2.2*P.wt,100))+' mg','twice daily','7 days','',true); }
+
+// keywords for older diseases (search)
+const KW={fever:'temperature jwaram',cold:'cough runny nose',throat:'tonsils tonsillitis',otitis:'ear pain',pneu:'fast breathing cough chest',typhoid:'enteric widal',dengue:'platelets ns1',malv:'malaria vivax',malf:'malaria falciparum',uti:'burning urine pus cells',skin:'boil pus impetigo',scab:'itching rash family',conj:'red eye',worm:'stomach worms pinworm deworm',tb:'tuberculosis cough sputum',diar:'loose motions ors',dys:'blood stool',vom:'vomiting',acid:'gas gastritis heartburn',const:'no motion',anaem:'hb haemoglobin low blood',ifaproph:'iron tablets',vita:'vitamin a',sam:'malnutrition muac',wheeze:'asthma breathless',asthma:'inhaler',rhin:'sneezing allergy',urt:'hives itching allergy',eczema:'dry skin',tinea:'fungal ringworm',tcap:'scalp fungus',thrush:'white patches mouth',lice:'lice',htn:'bp blood pressure',dm:'sugar diabetes',lipid:'cholesterol ldl',thyroid:'tsh thyroid',pain:'knee pain joint',epi:'fits seizure'};
+D.forEach(d=>{ if(!d.kw) d.kw=KW[d.id]||''; });
+
+
 function malaria(t,s){
   const y=P.ageM/12; const b = y<1?0:y<5?1:y<9?2:y<15?3:4;
   const CQ=['75 / 75 / 37.5 mg','150 / 150 / 75 mg','300 / 300 / 150 mg','450 / 450 / 300 mg','600 / 600 / 300 mg'];
@@ -612,6 +941,247 @@ const PREG_T1 = {albendazole:'not in 1st trimester',metronidazole:'avoid in 1st 
 const ELDER = {ibuprofen:'avoid oral NSAIDs in elderly',glimepiride:'max 2 mg in elderly (low sugar risk)'};
 const CHILD_ONLY_AB_NOTE = 'Two different antibiotics — usually one antibiotic can cover both; review.';
 
+// ===== MORE COMBINATIONS (v2) =====
+COMBO.push(
+ [['chickenpox','fever'],'Chickenpox + fever: Paracetamol only — Ibuprofen removed (skin infection risk); never Aspirin.'],
+ [['dengue','malv'],'Dengue + malaria together: treat malaria fully; Paracetamol only; watch platelets.'],
+ [['dengue','malf'],'Dengue + malaria together: treat malaria fully; Paracetamol only; watch platelets.'],
+ [['gout','htn'],'Gout + hypertension: Chlorthalidone (thiazide) raises uric acid — removed; Amlodipine + Telmisartan/Losartan preferred.'],
+ [['gout','ckd'],'Gout + kidney disease: no NSAIDs; reduce Colchicine & Allopurinol dose; refer.'],
+ [['copd','htn'],'COPD + hypertension: avoid Propranolol/Atenolol; Amlodipine preferred.'],
+ [['headache','asthma'],'Migraine + asthma: avoid Propranolol for prevention — use Flunarizine.'],
+ [['headache','wheeze'],'Migraine + asthma: avoid Propranolol for prevention — use Flunarizine.'],
+ [['headache','copd'],'Migraine + COPD: avoid Propranolol — use Flunarizine.'],
+ [['ckd','dm'],'Diabetes + kidney disease: Metformin half dose if eGFR 30–45, stop if <30; avoid Glimepiride if eGFR <30 — insulin; Telmisartan for protein in urine.'],
+ [['ckd','pain'],'Kidney disease + pain: NO NSAIDs (Ibuprofen/Diclofenac tablets) — Paracetamol + gel only.'],
+ [['ckd','back'],'Kidney disease + pain: NO NSAIDs — Paracetamol + gel only.'],
+ [['ckd','uti'],'Kidney disease + UTI: avoid Nitrofurantoin — use Cefixime/Cephalexin.'],
+ [['ckd','htn'],'Kidney disease + BP: Telmisartan protects kidneys — check potassium & creatinine after 2 weeks; target <130/80.'],
+ [['bph','htn'],'Prostate + BP medicines: Tamsulosin adds to BP lowering — take at bedtime, stand up slowly.'],
+ [['dm','wound'],'Diabetes + wound: slow healing — lower threshold for antibiotics; check sugar; daily foot checks.'],
+ [['dm','burn'],'Diabetes + burn: infection risk — check sugar, review dressing every 2 days.'],
+ [['dogbite','wound'],'Bite wound: wash 15 min; do not suture; tetanus + anti-rabies as per category.'],
+ [['hep','tb'],'Jaundice + TB: TB drugs damage the liver — refer before continuing ATT.'],
+ [['hep','fever'],'Jaundice + fever: Paracetamol max 2 g/day (adults); test for malaria, leptospirosis, hepatitis.'],
+ [['pud','pain'],'Ulcer + pain: avoid NSAIDs — Paracetamol + gel.'],
+ [['pud','back'],'Ulcer + pain: avoid NSAIDs — Paracetamol + gel.'],
+ [['pud','headache'],'Ulcer + headache: Paracetamol, not Ibuprofen.'],
+ [['flu','asthma'],'Flu + asthma: high-risk group — give Oseltamivir (Category B).'],
+ [['flu','copd'],'Flu + COPD: high-risk group — give Oseltamivir; watch for pneumonia.'],
+ [['flu','dm'],'Flu + diabetes: high-risk group — give Oseltamivir.'],
+ [['b12','dm'],'Diabetes + low B12: long-term Metformin lowers B12 — check yearly, supplement.'],
+ [['anaem','hmb'],'Anaemia + heavy periods: treat bleeding (Tranexamic acid) and give IFA treatment dose; refer if Hb <7.'],
+ [['anaem','piles'],'Anaemia + piles: look for blood loss — refer for bowel check if age >45.'],
+ [['anaem','pud'],'Anaemia + ulcer: look for hidden bleeding (black stools).'],
+ [['nvp','anaem'],'Morning sickness + IFA: take IFA at night after food to reduce nausea.'],
+ [['vagd','dm'],'Recurrent candida: check and control blood sugar.'],
+ [['hiv','tb'],'TB + HIV: ATT first, ART within 2 weeks (TB meningitis: 4–8 weeks); Dolutegravir twice daily with Rifampicin; Cotrimoxazole.'],
+ [['zoster','hiv'],'Zoster + HIV: higher risk of spread — full Acyclovir course; refer if widespread.'],
+ [['febseiz','fever'],'Febrile fit: Paracetamol is for comfort only — it does not prevent fits.'],
+ [['heat','fever'],'Heat stroke: Paracetamol does not lower temperature — physical cooling.'],
+ [['chestpain','htn'],'Chest pain with BP: refer immediately; do not give Sorbitrate if BP below 90 systolic.'],
+ [['measles','diar'],'Measles + diarrhoea: ORS + Zinc + Vitamin A — common complication.'],
+ [['measles','pneu'],'Measles + pneumonia: severe — Vitamin A and refer.'],
+ [['scorpion','htn'],'Scorpion sting + BP medicines: Prazosin lowers BP further — monitor BP.'],
+ [['scrub','lepto'],'Scrub typhus + leptospirosis: Doxycycline covers both (one course).'],
+ [['lepto','dengue'],'Fever after flood: test dengue, leptospirosis, malaria, scrub typhus; Paracetamol only.'],
+ [['copd','bronch'],'COPD + cough: treat as COPD flare-up if sputum increases.']
+);
+Object.assign(PREG_AVOID,{doxycycline:'avoid in pregnancy',adapalene:'avoid in pregnancy',kit2:'Secnidazole/Fluconazole — avoid in pregnancy',kit6:'Doxycycline — avoid in pregnancy',colchicine:'avoid in pregnancy',allopurinol:'avoid in pregnancy',clarithromycin:'avoid in pregnancy',dec:'not in pregnancy',betahistine:'avoid in pregnancy',diclo:'avoid in pregnancy',diclogel:'avoid large areas after 20 weeks',mefenamic:'avoid after 20 weeks',naproxen:'avoid in pregnancy',pregabalin:'avoid in pregnancy',flunarizine:'avoid in pregnancy',tamsulosin:'not for pregnancy'});
+Object.assign(ELDER,{prochlorperazine:'short course only (falls, confusion)',pregabalin:'start low; reduce in kidney disease (falls)',tamsulosin:'dizziness/falls — take at bedtime',naproxen:'avoid oral NSAIDs in elderly',diclo:'avoid in elderly with kidney disease'});
+
+// ===== REPORTS: lab values, upload, X-ray =====
+const LABS=[
+ {id:'hb',l:'Haemoglobin (Hb)',u:'g/dL',p:/h(a)?emoglobin|\bhb\b|\bhgb\b/},
+ {id:'plt',l:'Platelet count',u:'/µL',p:/platelet/,big:true},
+ {id:'wbc',l:'Total WBC (TLC)',u:'/µL',p:/total (leu[ck]ocyte|w\.?b\.?c)|\btlc\b|\bwbc\b|total count/,big:true},
+ {id:'fbs',l:'Fasting blood sugar',u:'mg/dL',p:/fasting (blood |plasma )?(sugar|glucose)|\bfbs\b|\bfpg\b/},
+ {id:'ppbs',l:'Post-meal sugar (2 h)',u:'mg/dL',p:/post ?prandial|\bppbs\b|\bpp ?(blood |plasma )?(sugar|glucose)|2 ?h(ou)?r/},
+ {id:'rbs',l:'Random blood sugar',u:'mg/dL',p:/random (blood |plasma )?(sugar|glucose)|\brbs\b|\bgrbs\b/},
+ {id:'hba1c',l:'HbA1c',u:'%',p:/hba1c|glycated|glycosylated/},
+ {id:'tsh',l:'TSH',u:'µIU/mL',p:/\btsh\b|thyroid stimulating/},
+ {id:'ldl',l:'LDL cholesterol',u:'mg/dL',p:/\bldl\b/},
+ {id:'tc',l:'Total cholesterol',u:'mg/dL',p:/total cholesterol|serum cholesterol|^\s*cholesterol/},
+ {id:'creat',l:'Serum creatinine',u:'mg/dL',p:/creatinine/},
+ {id:'uric',l:'Uric acid',u:'mg/dL',p:/uric acid/},
+ {id:'bili',l:'Total bilirubin',u:'mg/dL',p:/(total )?bilirubin/},
+ {id:'sgpt',l:'SGPT (ALT)',u:'U/L',p:/sgpt|\balt\b|alanine/},
+ {id:'vitd',l:'Vitamin D (25-OH)',u:'ng/mL',p:/vitamin ?d|25.?oh|25.?hydroxy/},
+ {id:'b12',l:'Vitamin B12',u:'pg/mL',p:/b ?12|cobalamin/},
+ {id:'ferritin',l:'Ferritin',u:'ng/mL',p:/ferritin/},
+ {id:'esr',l:'ESR',u:'mm/hr',p:/\besr\b/},
+ {id:'pus',l:'Urine pus cells',u:'/hpf',p:/pus cells/},
+ {id:'sys',l:'BP systolic',u:'mmHg'},{id:'dia',l:'BP diastolic',u:'mmHg'},{id:'spo2',l:'SpO2',u:'%'}
+];
+const QUAL=[
+ {id:'mal',l:'Malaria RDT / smear',o:['Not done','Negative','P. vivax','P. falciparum','Mixed']},
+ {id:'den',l:'Dengue NS1 / IgM',o:['Not done','Negative','Positive']},
+ {id:'typ',l:'Typhoid (culture / Typhidot / Widal ≥1:160)',o:['Not done','Negative','Positive']},
+ {id:'naat',l:'Sputum TB (CBNAAT / Truenat)',o:['Not done','MTB not detected','MTB detected — Rif sensitive','MTB detected — Rif resistant']},
+ {id:'hivt',l:'HIV test',o:['Not done','Non-reactive','Reactive']},
+ {id:'stool',l:'Stool test',o:['Not done','Normal','Worm ova','Amoeba / Giardia cysts','Blood / pus cells']},
+ {id:'ualb',l:'Urine albumin (protein)',o:['Not done','Nil','Trace / +','++ or more']}
+];
+const XR=[
+ ['normal','Normal X-ray'],['consol','Consolidation / patchy opacity (pneumonia)'],['tbxr','Cavity / upper-zone infiltrates / miliary / hilar nodes (TB-like)'],
+ ['hyper','Hyperinflation (COPD / asthma)'],['effusion','Pleural effusion'],['cardio','Cardiomegaly (big heart)'],['fracture','Fracture'],
+ ['oa','Knee/joint space narrowing, osteophytes (osteoarthritis)'],['sinusx','Sinus opacity / fluid level'],['afl','Air-fluid levels / dilated bowel'],['stone','Kidney / ureteric stone (KUB)']
+];
+const XRC={}; // checked findings
+function buildReports(){
+  let h='<div class="grid2">';
+  for(const L of LABS) h+='<div><label class="t" for="lab_'+L.id+'">'+L.l+' <span class="u">'+L.u+'</span></label><input type="number" step="any" id="lab_'+L.id+'" inputmode="decimal"></div>';
+  h+='</div><div class="grid2">';
+  for(const Q of QUAL) h+='<div><label class="t" for="q_'+Q.id+'">'+Q.l+'</label><select id="q_'+Q.id+'">'+Q.o.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select></div>';
+  h+='</div>';
+  $('labBox').innerHTML=h;
+  $('xrBox').innerHTML=XR.map(([k,t])=>'<span class="chip" data-x="'+k+'">'+t+'</span>').join('');
+}
+function labVal(id){ const v=parseFloat(($('lab_'+id)||{}).value); return isNaN(v)?null:v; }
+function qVal(id){ return +$('q_'+id).value; }
+
+// ---- reading uploaded reports ----
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=()=>rej(new Error('Could not load '+src+' — check internet'));document.head.appendChild(s);});}
+async function ocr(img){
+  if(!window.Tesseract) await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+  const r=await Tesseract.recognize(img,'eng',{logger:m=>{ if(m.status) setStat('Reading text: '+m.status+(m.progress?' '+Math.round(m.progress*100)+'%':'')); }});
+  return r.data.text;
+}
+async function pdfText(file){
+  if(!window.pdfjsLib){ await loadScript('https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js');
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'; }
+  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise; let t='';
+  for(let i=1;i<=Math.min(pdf.numPages,6);i++){
+    const pg=await pdf.getPage(i); const tc=await pg.getTextContent();
+    if(tc.items.length>8){ let lastY=null; for(const it of tc.items){ const y=Math.round(it.transform[5]); t+=(lastY!==null&&Math.abs(y-lastY)>3)?'\n':' '; t+=it.str; lastY=y; } t+='\n'; }
+    else { const vp=pg.getViewport({scale:2}); const c=document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+      await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise; t+=await ocr(c)+'\n'; }
+  }
+  return t;
+}
+function setStat(s){ $('upStat').textContent=s; }
+function parseReport(text){
+  const lines=text.split(/\n/).map(x=>x.toLowerCase()); const found={};
+  for(const L of LABS){ if(!L.p) continue;
+    for(let i=0;i<lines.length;i++){ const ln=lines[i]; const m=ln.match(L.p); if(!m) continue;
+      if(L.id==='hb' && /hba1c|mch|mchc|glyc/.test(ln)) continue;
+      if(L.id==='tc' && /ldl|hdl|vldl|non/.test(ln)) continue;
+      if(L.id==='bili' && /direct|indirect|conjugated/.test(ln) && !/total/.test(ln)) continue;
+      if(L.id==='b12' && !/vit|b ?12\b|cobalamin/.test(ln)) continue;
+      let rest=ln.slice(m.index+m[0].length); if(L.big) rest=rest.replace(/(\d),(?=\d)/g,'$1'); else rest=rest.replace(/(\d),(\d)/g,'$1.$2');
+      let n=rest.match(/(\d+(\.\d+)?)/); if(!n && lines[i+1]) n=lines[i+1].replace(/(\d),(?=\d)/g,'$1').match(/(\d+(\.\d+)?)/);
+      if(!n) continue; let v=parseFloat(n[1]);
+      if(L.id==='plt'){ if(v<10) v*=100000; else if(v<1000) v*=1000; }
+      if(L.id==='wbc'){ if(v<100) v*=1000; }
+      found[L.id]=v; break; }
+  }
+  const T=text.toLowerCase(); const q={};
+  if(/falciparum|\bp\.? ?f\b.*positive/.test(T)&&/vivax|\bp\.? ?v\b.*positive/.test(T)) q.mal=4; else if(/falciparum/.test(T)&&!/falciparum[^\n]{0,20}(negative|not seen)/.test(T)) q.mal=3; else if(/vivax/.test(T)&&!/vivax[^\n]{0,20}(negative|not seen)/.test(T)) q.mal=2; else if(/malaria[^\n]*(negative|not seen)/.test(T)) q.mal=1;
+  if(/(ns1|dengue)[^\n]*(positive|reactive)/.test(T)&&!/(ns1|dengue)[^\n]*(non.?reactive)/.test(T)) q.den=2; else if(/(ns1|dengue)[^\n]*negative/.test(T)) q.den=1;
+  const w=T.match(/widal[\s\S]{0,300}/); if(/typhidot[^\n]*igm[^\n]*positive|salmonella typhi[^\n]*(isolated|grown)/.test(T)||(w&&/1\s*:\s*(160|320|640)/.test(w[0]))) q.typ=2;
+  if(/mtb detected/.test(T)) q.naat=/rif(ampicin)? resistance detected/.test(T)?3:2; else if(/mtb not detected/.test(T)) q.naat=1;
+  if(/hiv[^\n]*\breactive/.test(T)&&!/non.?reactive/.test(T)) q.hivt=2; else if(/hiv[^\n]*non.?reactive/.test(T)) q.hivt=1;
+  if(/ova of|hookworm|ascaris|ova seen/.test(T)) q.stool=2; else if(/cyst|trophozoite|giardia|histolytica/.test(T)) q.stool=3;
+  return {found,q};
+}
+async function readUploads(){
+  const files=[...$('repFile').files]; if(!files.length){ setStat('Choose a report photo or PDF first.'); return; }
+  let text='';
+  try{ for(const f of files){ setStat('Opening '+f.name+'…'); text+=(f.type==='application/pdf'?await pdfText(f):await ocr(f))+'\n'; } }
+  catch(e){ setStat('Could not read the report: '+e.message+'. Type the values below instead.'); return; }
+  const {found,q}=parseReport(text); const keys=Object.keys(found);
+  for(const k of keys){ const el=$('lab_'+k); el.value=found[k]; el.classList.add('filled'); }
+  for(const k in q){ $('q_'+k).value=q[k]; $('q_'+k).classList.add('filled'); }
+  setStat(keys.length||Object.keys(q).length?'Filled '+(keys.length+Object.keys(q).length)+' values (yellow) — please check each against the report.':'No values recognised — type them below.');
+  $('ocrText').textContent=text.trim().slice(0,4000); $('ocrWrap').classList.remove('hide');
+}
+function previews(input,box){
+  $(box).innerHTML='';
+  for(const f of input.files){ if(f.type.startsWith('image/')){ const im=document.createElement('img'); im.src=URL.createObjectURL(f); im.className='thumb'; $(box).appendChild(im);} else { const d=document.createElement('div'); d.className='thumb pdf'; d.textContent='PDF: '+f.name; $(box).appendChild(d);} }
+}
+
+// ---- deciding diseases from reports ----
+function hbCut(){ // [anaemia below, mild>=, moderate>=] ; severe below moderate
+  const a=P.ageM;
+  if(a<6) return null;
+  if(a<60) return [11,10,7];
+  if(a<144) return [11.5,11,8];
+  if(a<180) return [12,11,8];
+  if(preg()) return [11,10,7];
+  if(P.sex==='F') return [12,11,8];
+  return [13,11,8];
+}
+function egfr(cr){ const F=P.sex==='F'; const k=F?0.7:0.9, al=F?-0.241:-0.302; const age=P.ageM/12;
+  return Math.round(142*Math.pow(Math.min(cr/k,1),al)*Math.pow(Math.max(cr/k,1),-1.2)*Math.pow(0.9938,age)*(F?1.012:1)); }
+function analyse(){
+  readP(); const S=[], N=[]; const add=(id,sev,why)=>S.push({id,sev,why});
+  const v=labVal, A=P.ageM>=216;
+  const hb=v('hb'), c=hbCut();
+  if(hb!=null){ if(!c) N.push('Hb under 6 months — compare with age reference; refer if pale.');
+    else if(hb<c[0]) add('anaem',hb>=c[1]?0:hb>=c[2]?1:2,'Hb '+hb+' g/dL (normal ≥'+c[0]+')'); }
+  const fer=v('ferritin'); if(fer!=null&&fer<15) N.push('Ferritin '+fer+' — iron deficiency confirmed.');
+  const f=v('fbs'),pp=v('ppbs'),r=v('rbs'),a1=v('hba1c');
+  if(preg()){ if((f!=null&&f>=92)||(pp!=null&&pp>=140)||(r!=null&&r>=140)) add('dm',1,'Pregnancy sugar high (FBS ≥92 / 2-h ≥140) — gestational diabetes; confirm with 75 g OGTT (DIPSI)'); }
+  else if((a1!=null&&a1>=6.5)||(f!=null&&f>=126)||(pp!=null&&pp>=200)||(r!=null&&r>=200)){
+    const sev=((a1!=null&&a1>10)||(f!=null&&f>250)||(r!=null&&r>350))?2:((a1!=null&&a1>=8)||(f!=null&&f>=180)||(pp!=null&&pp>=250))?1:0;
+    add('dm',sev,[a1!=null?'HbA1c '+a1+'%':'',f!=null?'FBS '+f:'',pp!=null?'PPBS '+pp:'',r!=null?'RBS '+r:''].filter(Boolean).join(', '));
+  } else if((a1!=null&&a1>=5.7)||(f!=null&&f>=100)) N.push('Prediabetes range — diet, exercise, weight loss; recheck in 6–12 months.');
+  const sy=v('sys'),di=v('dia');
+  if(sy!=null||di!=null){ const S1=sy||0,D1=di||0;
+    if(S1>=180||D1>=110) add('htn',2,'BP '+S1+'/'+D1); else if(S1>=160||D1>=100) add('htn',1,'BP '+S1+'/'+D1); else if(S1>=140||D1>=90) add('htn',0,'BP '+S1+'/'+D1);
+    if(S1&&S1<90) N.push('BP below 90 systolic — shock risk: refer urgently.'); }
+  const sp=v('spo2'); if(sp!=null&&sp<94) N.push('SpO2 '+sp+'% — low oxygen: treat as severe and refer.');
+  const t=v('tsh');
+  if(t!=null){ if(preg()){ if(t>4) add('thyroid',1,'TSH '+t+' in pregnancy'); else if(t>2.5) N.push('TSH '+t+' in pregnancy — borderline; repeat with anti-TPO.'); }
+    else if(t>10) add('thyroid',1,'TSH '+t); else if(t>4.5) add('thyroid',0,'TSH '+t+' (mildly raised — repeat with Free T4)'); else if(t<0.3) add('hyperthy',0,'TSH '+t+' (low)'); }
+  const ldl=v('ldl'),tc=v('tc');
+  if(A&&!preg()){ if(ldl!=null&&ldl>=190) add('lipid',1,'LDL '+ldl+' (very high)'); else if(ldl!=null&&ldl>=160) add('lipid',0,'LDL '+ldl); else if(tc!=null&&tc>=240) add('lipid',0,'Total cholesterol '+tc); }
+  const cr=v('creat');
+  if(cr!=null){ if(A){ const e=egfr(cr); if(e<30) add('ckd',2,'Creatinine '+cr+', eGFR ≈'+e); else if(e<60) add('ckd',1,'Creatinine '+cr+', eGFR ≈'+e); else N.push('Creatinine '+cr+', eGFR ≈'+e+' mL/min.'); }
+    else if(cr>1) N.push('Creatinine '+cr+' in child — refer.'); }
+  if(qVal('ualb')>=2) N.push('Protein in urine — kidney damage marker (diabetes/BP); Telmisartan helps.');
+  const ua=v('uric'); if(ua!=null&&ua>(P.sex==='F'?6:7)) add('gout',0,'Uric acid '+ua+' (high)');
+  const bi=v('bili'),alt=v('sgpt');
+  if((bi!=null&&bi>2)||(alt!=null&&alt>120)) add('hep',((bi!=null&&bi>10)||(alt!=null&&alt>1000))?1:0,[bi!=null?'Bilirubin '+bi:'',alt!=null?'SGPT '+alt:''].filter(Boolean).join(', '));
+  const vd=v('vitd'); if(vd!=null&&vd<30) add('vitd',vd<10?2:vd<20?1:0,'Vitamin D '+vd+' ng/mL');
+  const b=v('b12'); if(b!=null){ if(b<200) add('b12',1,'B12 '+b+' pg/mL'); else if(b<300) N.push('B12 '+b+' — borderline.'); }
+  const es=v('esr'); if(es!=null&&es>50) N.push('ESR '+es+' — high: look for TB, infection, arthritis.');
+  const mal=qVal('mal'); if(mal===2) add('malv',0,'Malaria test: P. vivax'); if(mal===3) add('malf',0,'Malaria test: P. falciparum'); if(mal===4) add('malf',0,'Malaria test: mixed infection (add 14-day Primaquine)');
+  const pl=v('plt');
+  if(qVal('den')===2){ add('dengue',pl!=null&&pl<20000?2:pl!=null&&pl<100000?1:0,'Dengue test positive'+(pl!=null?', platelets '+pl:'')); }
+  else if(pl!=null&&pl<100000) N.push('Platelets '+pl+' — low: test dengue NS1/IgM and malaria'+(pl<20000?'; refer urgently':'')+'.');
+  const wb=v('wbc'); if(wb!=null){ if(wb>11000) N.push('WBC '+wb+' — high: suggests bacterial infection.'); else if(wb<4000) N.push('WBC '+wb+' — low: viral fever, dengue, typhoid possible.'); }
+  if(qVal('typ')===2) add('typhoid',0,'Typhoid test positive (Widal alone is weak evidence — blood culture is best)');
+  const nt=qVal('naat'); if(nt===2) add('tb',0,'MTB detected, Rifampicin sensitive'); if(nt===3) N.push('MTB detected with RIFAMPICIN RESISTANCE — refer to DR-TB centre; do not start first-line ATT.');
+  if(qVal('hivt')===2) add('hiv',0,'HIV reactive');
+  const st=qVal('stool'); if(st===2) add('worm',1,'Worm ova in stool'); if(st===3) add('amoeba',1,'Amoeba / Giardia in stool'); if(st===4) add('dys',0,'Blood / pus cells in stool');
+  const pu=v('pus'); if(pu!=null&&pu>=10) add('uti',0,'Urine pus cells '+pu+'/hpf'); else if(pu!=null&&pu>=5) N.push('Urine pus cells '+pu+'/hpf — UTI if burning/fever.');
+  // X-ray
+  if(XRC.consol) add('pneu',sp!=null&&sp<94?2:1,'X-ray: consolidation');
+  if(XRC.tbxr) N.push('X-ray suggests TB — send 2 sputum samples for NAAT; start ATT only after confirmation.');
+  if(XRC.hyper){ if(P.ageM>=480) add('copd',0,'X-ray: hyperinflation'); else N.push('X-ray hyperinflation — think asthma.'); }
+  if(XRC.effusion) N.push('Pleural effusion — refer (tap; TB/heart/kidney cause).');
+  if(XRC.cardio) N.push('Cardiomegaly — refer to physician (heart failure / valve disease).');
+  if(XRC.fracture) N.push('Fracture — splint, pain relief, refer to orthopaedics.');
+  if(XRC.oa) add('pain',1,'X-ray: osteoarthritis');
+  if(XRC.sinusx) add('sinus',1,'X-ray: sinus opacity');
+  if(XRC.afl) N.push('Air-fluid levels — intestinal obstruction: nil by mouth, refer to surgeon urgently.');
+  if(XRC.stone) add('renal',1,'X-ray/USG: stone');
+  if(XRC.normal&&Object.keys(XRC).length===1) N.push('Normal X-ray.');
+  return {S,N};
+}
+function suggest(){
+  const {S,N}=analyse(); let h='';
+  if(!S.length&&!N.length){ $('sugBox').innerHTML='<div class="alert org">Enter report values or tick X-ray findings first.</div>'; return; }
+  for(const s of S){ const d=D.find(x=>x.id===s.id); if(!d) continue;
+    sel[s.id]= s.id in sel?Math.max(sel[s.id],s.sev):s.sev;
+    h+='<div class="alert blu"><b>'+esc(d.n)+'</b> — '+SEVN[s.sev]+'<br><span class="x">'+esc(s.why)+'</span></div>'; }
+  N.forEach(n=>h+='<div class="alert org">'+esc(n)+'</div>');
+  $('sugBox').innerHTML=(S.length?'<p class="hint">Added to the disease list below — remove or change severity if your examination differs.</p>':'')+h;
+  renderSel();
+}
+
+
 // ---------- UI ----------
 const sel = {}; // id -> severity
 function $(id){return document.getElementById(id);}
@@ -629,25 +1199,44 @@ function readP(){
   $('pregBox').classList.toggle('hide',!showPreg);
   if(!showPreg){P.preg='no'; $('preg').querySelectorAll('.chip').forEach((x,i)=>x.classList.toggle('on',i===0));}
 }
-function renderList(){
-  const q=$('q').value.trim().toLowerCase(); let h='', g='';
-  for(const d of D){
-    if(q && !d.n.toLowerCase().includes(q) && !d.g.toLowerCase().includes(q)) continue;
-    if(d.g!==g){g=d.g; h+='<div class="dgrp">'+g+'</div><div class="chips">';}
-    h+='<span class="chip'+(d.id in sel?' on':'')+'" data-id="'+d.id+'">'+d.n+'</span>';
-    const nxt=D[D.indexOf(d)+1]; if(!nxt||nxt.g!==g||q) h+='</div>';
-    if(q) g='';
-  }
-  $('dlist').innerHTML=h||'<p class="hint">No match.</p>';
+let ddIdx=-1;
+function norm(x){return x.toLowerCase();}
+function ddItems(){ const q=norm($('q').value.trim()); const words=q.split(/\s+/).filter(Boolean);
+  const m=f=>D.filter(d=>{ const hay=norm(f(d)); return words.every(w=>hay.includes(w)); });
+  const r=m(d=>d.n+' '+(d.kw||'')); return r.length?r:m(d=>d.n+' '+d.g+' '+(d.kw||'')); }
+function renderDD(){
+  const items=ddItems(); let h='', g='';
+  if(!items.length) h='<div class="it">No match — try another word</div>';
+  items.forEach((d,i)=>{ if(d.g!==g){g=d.g; h+='<div class="gh">'+esc(g)+'</div>';}
+    h+='<div class="it'+(d.id in sel?' on':'')+(i===ddIdx?' act':'')+'" data-id="'+d.id+'">'+esc(d.n)+'</div>'; });
+  $('dd').innerHTML=h; $('dd').classList.remove('hide');
 }
-$('dlist').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(!c) return; const id=c.dataset.id; if(id in sel) delete sel[id]; else sel[id]=1; renderList(); renderSel();});
-$('q').addEventListener('input',renderList);
+function pick(id){ if(!(id in sel)) sel[id]=1; $('q').value=''; ddIdx=-1; $('dd').classList.add('hide'); renderSel(); }
+$('q').addEventListener('focus',()=>{ddIdx=-1;renderDD();});
+$('q').addEventListener('input',()=>{ddIdx=0;renderDD();});
+$('q').addEventListener('keydown',e=>{ const items=ddItems();
+  if(e.key==='ArrowDown'){ddIdx=Math.min(items.length-1,ddIdx+1);renderDD();e.preventDefault();}
+  else if(e.key==='ArrowUp'){ddIdx=Math.max(0,ddIdx-1);renderDD();e.preventDefault();}
+  else if(e.key==='Enter'){ if(items[ddIdx<0?0:ddIdx]) pick(items[ddIdx<0?0:ddIdx].id); e.preventDefault();}
+  else if(e.key==='Escape'){$('dd').classList.add('hide');} });
+$('dd').addEventListener('mousedown',e=>e.preventDefault());
+$('dd').addEventListener('click',e=>{const it=e.target.closest('.it[data-id]'); if(it) pick(it.dataset.id);});
+document.addEventListener('click',e=>{ if(!e.target.closest('.combo')) $('dd').classList.add('hide'); });
 function renderSel(){
   let h=''; for(const id in sel){ const d=D.find(x=>x.id===id);
-    h+='<div class="sel"><b>'+d.n+'</b><div class="sev" data-id="'+id+'">'+SEVN.map((n,i)=>'<span class="chip'+(sel[id]===i?' on':'')+'" data-v="'+i+'">'+n+'</span>').join('')+'</div><div class="sevtxt">'+d.s[sel[id]]+'</div></div>'; }
-  $('selBox').innerHTML=h;
+    h+='<div class="sel"><button class="rm" data-rm="'+id+'" aria-label="Remove">×</button><b>'+esc(d.n)+'</b><div class="sev" data-id="'+id+'">'+SEVN.map((n,i)=>'<span class="chip'+(sel[id]===i?' on':'')+'" data-v="'+i+'">'+n+'</span>').join('')+'</div><div class="sevtxt">'+esc(d.s[sel[id]])+'</div></div>'; }
+  $('selBox').innerHTML=h||'<p class="hint" style="margin-top:8px">No disease selected yet.</p>';
 }
-$('selBox').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(!c) return; const id=c.parentElement.dataset.id; sel[id]=+c.dataset.v; renderSel();});
+$('selBox').addEventListener('click',e=>{ const rm=e.target.closest('[data-rm]'); if(rm){ delete sel[rm.dataset.rm]; renderSel(); return; }
+  const c=e.target.closest('.chip'); if(!c) return; const id=c.parentElement.dataset.id; sel[id]=+c.dataset.v; renderSel();});
+// reports wiring
+buildReports();
+$('repFile').addEventListener('change',()=>previews($('repFile'),'repPrev'));
+$('xrFile').addEventListener('change',()=>previews($('xrFile'),'xrPrev'));
+$('readBtn').addEventListener('click',readUploads);
+$('xrBox').addEventListener('click',e=>{const c=e.target.closest('.chip'); if(!c) return; const k=c.dataset.x; if(XRC[k]) delete XRC[k]; else XRC[k]=1; c.classList.toggle('on',!!XRC[k]);});
+$('sugBtn').addEventListener('click',suggest);
+document.addEventListener('input',e=>{ if(e.target.classList.contains('filled')) e.target.classList.remove('filled'); });
 
 function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 function rxHTML(r,flags){
@@ -670,10 +1259,17 @@ function run(){
   const res = ids.map(id=>{const d=D.find(x=>x.id===id); return {d, sev:sel[id], r:d.f(sel[id])};});
   // combination adjustments
   const has=id=>ids.includes(id);
-  if(has('dengue')) res.forEach(o=>o.r.rx=o.r.rx.filter(r=>r.k!=='ibuprofen'));
+  const noNSAID = has('dengue')||has('chickenpox')||has('ckd')||has('pud')||(has('hep'));
+  if(noNSAID) res.forEach(o=>o.r.rx=o.r.rx.filter(r=>!['ibuprofen','naproxen','diclo','mefenamic'].includes(r.k)||(r.k==='mefenamic'&&!has('dengue')&&!has('ckd')&&!has('pud'))));
+  if(has('gout')) res.forEach(o=>o.r.rx=o.r.rx.filter(r=>r.k!=='chlorthalidone'));
+  if(has('ckd')) res.forEach(o=>o.r.rx=o.r.rx.filter(r=>r.k!=='nitrofurantoin'));
+  if(has('heat')&&sel.heat===2) res.forEach(o=>o.r.rx=o.r.rx.filter(r=>r.k!=='paracetamol'));
+  if((has('asthma')||has('wheeze')||has('copd'))) res.forEach(o=>o.r.rx.forEach(r=>{ if(r.k==='flunarizine') r.note='Use Flunarizine — avoid Propranolol (asthma/COPD)'; }));
   if(has('typhoid')&&has('dys')) res.forEach(o=>{ if(o.d.id==='dys') o.r.rx=o.r.rx.filter(r=>r.k!=='ciprofloxacin'); });
   if((has('htn')||has('acid'))&&has('pain')) res.forEach(o=>{ if(o.d.id==='pain') o.r.rx=o.r.rx.filter(r=>r.k!=='ibuprofen'&&!(r.k==='pantoprazole'&&!has('acid'))); });
   let h='<div class="card"><h2>Result</h2><div class="pt">'+(P.sex==='M'?'Male':'Female')+' · '+ageText()+' · '+P.wt+' kg'+(P.est?' (estimated)':'')+(preg()?' · Pregnant ('+(P.preg==='t1'?'1st':'2nd/3rd')+' trimester)':P.preg==='lact'?' · Breastfeeding':'')+(elderly()?' · Elderly':'')+'</div>';
+  { const {S,N}=analyse(); const lab=LABS.filter(L=>labVal(L.id)!=null).map(L=>L.l+' '+labVal(L.id)+' '+L.u); const ql=QUAL.filter(Q=>qVal(Q.id)>0).map(Q=>Q.l+': '+Q.o[qVal(Q.id)]); const xr=XR.filter(([k])=>XRC[k]).map(x=>x[1]);
+    if(lab.length||ql.length||xr.length){ h+='<div class="pt"><b>Reports:</b> '+esc(lab.concat(ql).join(' · '))+(xr.length?'<br><b>X-ray:</b> '+esc(xr.join(', ')):'')+'</div>'; N.forEach(n=>h+='<div class="alert org">'+esc(n)+'</div>'); } }
   if(P.ageM<2) h+='<div class="alert org">Young infant (0–2 months): most sick infants need referral. See Newborn tab.</div>';
   // per disease
   for(const o of res){
@@ -727,7 +1323,7 @@ $('nav').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)
   if(b.dataset.p==='ref' && !$('refOut').innerHTML) renderRef();
   window.scrollTo(0,0);});
 
-readP(); renderList(); renderSel();
+readP(); renderSel();
 /* install */
 (function(){var deferred=null,standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
 if(!standalone){
