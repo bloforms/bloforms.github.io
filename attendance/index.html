@@ -62,7 +62,7 @@ input[type=range]{width:100%}
 </style>
 </head>
 <body>
-<header><h1>Daily Attendance (3 pm – 5 pm)<small>08 Secretariat · Mahaboob Nagar Colony-01</small></h1></header>
+<header><h1 style="flex:1">Daily Attendance (3 pm – 5 pm)<small>08 Secretariat · Mahaboob Nagar Colony-01</small></h1><span id="net" style="font-size:12px;background:#ffffff22;padding:4px 8px;border-radius:12px">…</span></header>
 <main>
 
 <div class="card" id="installCard" style="display:none">
@@ -115,7 +115,7 @@ input[type=range]{width:100%}
 
 <div class="card">
   <h2>Staff signatures</h2>
-  <div class="hint">Each person sets up their <b>own</b> signature once (scan from paper with the camera, or draw with finger) and keeps their own 4-digit PIN. Daily, they tap “Sign with PIN” in their row.</div>
+  <div class="hint">Saved online – works on every phone. Each person sets up their <b>own</b> signature once (scan from paper with the camera, or draw with finger) and keeps their own 4-digit PIN. Daily, they tap “Sign with PIN” in their row.</div>
   <div id="staffList"></div>
 </div>
 </main>
@@ -161,6 +161,10 @@ const SIG={x0:292.6,x1:357.2}, GEO={x0:357.2,x1:501.9}, REM={x0:501.9,x1:546.2};
 const PW=595,PH=841, PEN="rgb(30,34,112)";
 const REMARKS=["MRO office","MPL office","Leave","Maternity Leave","C.L","UPHC","Hospital","Bank for pension"];
 const $=id=>document.getElementById(id);
+const SB="https://rdtnikmsxyejimvudzvc.supabase.co",KEY="sb_publishable_Qy84k0vqQTGupexO6HHlQQ_cDqrgYc0";
+async function rpc(fn,args={}){const r=await fetch(`${SB}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:KEY,Authorization:`Bearer ${KEY}`,"Content-Type":"application/json"},body:JSON.stringify(args)});
+  const t=await r.text();if(!r.ok){let m="Server error";try{m=JSON.parse(t).message||m}catch(e){}throw new Error(m)}setNet(true);return t?JSON.parse(t):null}
+function setNet(on){const n=$("net");if(n){n.textContent=on?"● Online":"○ Offline";n.style.color=on?"#9ff0b8":"#ffd27a"}}
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}};
 
 // ---------- images ----------
@@ -224,7 +228,7 @@ async function render(scale){
   }
   return c;
 }
-let rt=null;function refresh(){clearTimeout(rt);rt=setTimeout(async()=>{const c=await render(2);const p=$("preview");const y0=70*2,y1=400*2,x0=40*2,x1=590*2;p.width=x1-x0;p.height=y1-y0;p.getContext("2d").drawImage(c,x0,y0,x1-x0,y1-y0,0,0,x1-x0,y1-y0);save()},60)}
+let rt=null;function redraw(){refresh(true)}function refresh(noSave){clearTimeout(rt);rt=setTimeout(async()=>{const c=await render(2);const p=$("preview");const y0=70*2,y1=400*2,x0=40*2,x1=590*2;p.width=x1-x0;p.height=y1-y0;p.getContext("2d").drawImage(c,x0,y0,x1-x0,y1-y0,0,0,x1-x0,y1-y0);if(!noSave)save()},60)}
 
 // ---------- UI ----------
 function remarkOptions(sel){
@@ -257,7 +261,7 @@ $("rows").addEventListener("click",e=>{
   else if((i=t.dataset.a)!==undefined){state.rows[i].p=false;buildRows();refresh()}
   else if((i=t.dataset.sign)!==undefined){openPad("sig",+i)}
   else if((i=t.dataset.unsign)!==undefined){state.rows[i].sig=null;buildRows();refresh()}
-  else if((i=t.dataset.pinsign)!==undefined){askPin(+i,"Sign today's form",()=>{state.rows[i].sig={...staffSig[i].ink};buildRows();refresh();toast("Signed")})}
+  else if((i=t.dataset.pinsign)!==undefined){askPin(+i,"Sign today's form",async pin=>{const ink=await rpc("att_sign",{p_idx:+i,p_pin:pin});if(!ink)return false;state.rows[i].sig=ink;buildRows();refresh();toast("Signed");return true})}
   else if((i=t.dataset.enrol)!==undefined){openEnrol(+i)}
 });
 $("rows").addEventListener("change",e=>{const i=e.target.dataset.rem;if(i!==undefined){state.rows[i].rem=e.target.value;
@@ -295,15 +299,15 @@ $("padOk").onclick=async()=>{
   if(padMode==="enrol"){$("padModal").classList.remove("on");enInk=ink;$("enrolModal").classList.add("on");$("enAdj").style.display="none";
     const pv=$("scanPrev"),im=await loadImg(ink.src);pv.width=600;pv.height=Math.round(600*ink.h/ink.w);pv.getContext("2d").drawImage(im,0,0,pv.width,pv.height);return}
   if(padMode==="sig"){if(STAFF[padIdx].me){mySig=ink;ls.set("mySig",mySig);showStaff()}else{state.rows[padIdx].sig=ink}}
-  else{custom=custom.filter(c=>c.name!==name);custom.push({name,...ink});ls.set("customRemarks",custom);toast("Remark added to the list")}
+  else{custom=custom.filter(c=>c.name!==name);custom.push({name,...ink});ls.set("customRemarks",custom);toast("Remark added to the list");rpc("att_add_remark",{p_name:name,p_ink:ink}).catch(()=>{})}
   $("padModal").classList.remove("on");buildRows();refresh();
 };
 $("addRemark").onclick=()=>openPad("remark");
 
 
 // ---------- staff signatures (each person's own, PIN protected) ----------
-let staffSig=ls.get("staffSig",{}); // idx -> {ink,pin}
-async function hashPin(i,p){const t=`att|${i}|${p}`;try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))|0;return "x"+h}}
+let staffSig=ls.get("staffSet",{}); // idx -> true (signature saved online)
+async function syncStaff(){try{const a=await rpc("att_status");staffSig={};a.forEach(i=>staffSig[i]=true);ls.set("staffSet",staffSig);showStaff();buildRows()}catch(e){setNet(false)}}
 function showStaff(){
   $("staffList").innerHTML=STAFF.map((p,i)=>{
     if(p.me)return `<div class="staff"><span class="nm">${p.n}</span><img class="thumb" src="${(mySig||INK.sig_sivananda).src||(mySig||INK.sig_sivananda).file}"><button class="btn s" data-redomine="1">Re-draw</button><button class="btn s" data-resetmine="1">Original</button></div>`;
@@ -312,17 +316,19 @@ function showStaff(){
 $("staffList").addEventListener("click",e=>{const t=e.target;let i;
   if(t.dataset.redomine)openPad("sig",2);
   else if(t.dataset.resetmine){mySig=null;localStorage.removeItem("mySig");showStaff();refresh()}
-  else if((i=t.dataset.enrol)!==undefined){staffSig[i]?askPin(+i,"Enter old PIN to change",()=>openEnrol(+i)):openEnrol(+i)}
-  else if((i=t.dataset.unenrol)!==undefined){if(confirm(`Delete ${STAFF[i].n}'s saved signature? They can set it up again any time.`)){delete staffSig[i];ls.set("staffSig",staffSig);showStaff();buildRows()}}
+  else if((i=t.dataset.enrol)!==undefined){staffSig[i]?askPin(+i,"Enter your old PIN to change",async pin=>{openEnrol(+i,pin);return true}):openEnrol(+i)}
+  else if((i=t.dataset.unenrol)!==undefined){askPin(+i,"Delete signature (own PIN, or WS admin PIN)",async pin=>{const ok=await rpc("att_delete",{p_idx:+i,p_pin:pin});if(ok){toast("Deleted");syncStaff()}return ok})}
 });
 let pinCb=null,pinIdx=null;
 function askPin(i,title,cb){pinIdx=i;pinCb=cb;$("pinTitle").textContent=`${STAFF[i].n} – ${title}`;$("pinIn").value="";$("pinModal").classList.add("on");setTimeout(()=>$("pinIn").focus(),100)}
 $("pinCancel").onclick=()=>$("pinModal").classList.remove("on");
-$("pinOk").onclick=async()=>{const h=await hashPin(pinIdx,$("pinIn").value);if(staffSig[pinIdx]&&h===staffSig[pinIdx].pin){$("pinModal").classList.remove("on");pinCb()}else{toast("Wrong PIN");$("pinIn").value=""}};
+let pinBusy=false;$("pinOk").onclick=async()=>{if(pinBusy)return;pinBusy=true;const v=$("pinIn").value;
+  try{const ok=await pinCb(v);if(ok){$("pinModal").classList.remove("on")}else{toast("Wrong PIN");$("pinIn").value=""}}
+  catch(e){toast(navigator.onLine?e.message:"No internet – connect to sign");$("pinIn").value=""}pinBusy=false};
 $("pinIn").addEventListener("input",e=>{if($("pinIn").value.length===4)$("pinOk").click()});
 // enrol: scan or draw
-let enIdx=null,enSrc=null,enInk=null;
-function openEnrol(i){enIdx=i;enSrc=null;enInk=null;$("enTitle").textContent=`${STAFF[i].n} – set up your signature`;$("enAdj").style.display="none";
+let enIdx=null,enSrc=null,enInk=null,enOld=null;
+function openEnrol(i,old){enIdx=i;enOld=old||null;enSrc=null;enInk=null;$("enTitle").textContent=`${STAFF[i].n} – set up your signature`;$("enAdj").style.display="none";
   $("enPin1").value="";$("enPin2").value="";const c=$("scanPrev");c.width=600;c.height=120;c.getContext("2d").clearRect(0,0,600,120);$("enrolModal").classList.add("on")}
 $("enCancel").onclick=()=>$("enrolModal").classList.remove("on");
 $("enScan").onclick=()=>$("enCam").click();
@@ -352,8 +358,11 @@ function processScan(){
 $("enSave").onclick=async()=>{
   if(!enInk){toast("Scan or draw the signature first");return}
   const a=$("enPin1").value,b=$("enPin2").value;if(!/^\d{4}$/.test(a)){toast("PIN must be 4 digits");return}if(a!==b){toast("PINs do not match");return}
-  staffSig[enIdx]={ink:enInk,pin:await hashPin(enIdx,a)};if(!ls.set("staffSig",staffSig)){toast("Phone storage full");return}
-  $("enrolModal").classList.remove("on");showStaff();buildRows();toast("Signature saved")};
+  try{const ok=await rpc("att_enrol",{p_idx:enIdx,p_ink:await shrinkInk(enInk),p_pin:a,p_old_pin:enOld});
+    if(!ok){toast("Old PIN was wrong");return}}catch(e){toast(navigator.onLine?e.message:"No internet – connect to save");return}
+  $("enrolModal").classList.remove("on");toast("Signature saved online");syncStaff()};
+async function shrinkInk(ink){const im=await loadImg(ink.src);const k=Math.min(1,500/im.width);if(k===1)return ink;
+  const c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);return {...ink,src:c.toDataURL("image/png")}}
 
 // ---------- photo ----------
 $("camBtn").onclick=()=>$("camIn").click();$("galBtn").onclick=()=>$("galIn").click();
@@ -404,16 +413,21 @@ $("shareBtn").onclick=async()=>{const b=await pdfBlob();const f=new File([b],fna
   else{dl(b,fname("pdf"));toast("Sharing not supported – PDF downloaded")}};
 
 // ---------- days / storage ----------
-function save(){const days=ls.get("days",{});days[state.date]=state;
+let upT=null;function save(){clearTimeout(upT);const snap=JSON.parse(JSON.stringify(state));upT=setTimeout(()=>rpc("att_save_day",{p_day:snap.date,p_data:snap}).then(showHist).catch(()=>setNet(false)),1500);saveLocal()}
+function saveLocal(){const days=ls.get("days",{});days[state.date]=state;
   const keys=Object.keys(days).sort().reverse();keys.slice(15).forEach(k=>delete days[k]);
   if(!ls.set("days",days)){delete days[keys[keys.length-1]];ls.set("days",days)}showHist()}
-function loadDay(d){const days=ls.get("days",{});state=days[d]||blankState(d);state.date=d;$("date").value=d;buildRows();showPhoto();refresh()}
-function showHist(){const days=ls.get("days",{});const ks=Object.keys(days).sort().reverse();
+let loadTok=0;async function loadDay(d){const tok=++loadTok;const days=ls.get("days",{});state=days[d]||blankState(d);state.date=d;$("date").value=d;buildRows();showPhoto();redraw();
+  try{const r=await rpc("att_get_day",{p_day:d});if(tok!==loadTok)return;if(r){state=r;state.date=d;buildRows();showPhoto();redraw();saveLocal()}}catch(e){setNet(false)}}
+let remoteDays=[];async function showHist(){try{remoteDays=await rpc("att_days")}catch(e){}
+  const days=ls.get("days",{});const ks=[...new Set([...Object.keys(days),...(remoteDays||[])])].sort().reverse().slice(0,30);
   $("hist").innerHTML=ks.length?ks.map(k=>`<button class="btn s" data-day="${k}">${k.split("-").reverse().join("/")}</button>`).join(""):"No saved days yet."}
 $("hist").addEventListener("click",e=>{if(e.target.dataset.day)loadDay(e.target.dataset.day)});
 function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(t._t);t._t=setTimeout(()=>t.style.display="none",2200)}
 
-showStaff();loadDay(todayStr());
+showStaff();loadDay(todayStr());syncStaff();showHist();
+rpc("att_remarks").then(r=>{if(r&&r.length){const names=new Set(r.map(x=>x.name));custom=[...r,...custom.filter(c=>!names.has(c.name))];ls.set("customRemarks",custom);buildRows()}}).catch(()=>{});
+addEventListener("online",()=>{syncStaff();save()});addEventListener("offline",()=>setNet(false));
 if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))navigator.serviceWorker.register("sw.js").catch(()=>{});
 (function(){const sa=matchMedia("(display-mode: standalone)").matches||navigator.standalone;if(sa)return;let def=null;
   const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);$("installCard").style.display="";
