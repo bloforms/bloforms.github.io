@@ -1953,7 +1953,7 @@ function renderDD(){
 }
 function pickDD(id){ if(!ddAll){ $('tx').value=$('tx').value.replace(/([^\s,]+)\s*$/,'').trim(); }
   ADDED[id]=ADDED[id]??0; REMOVED.delete(id); ddAll=false; ddIdx=-1; $('dd').classList.add('hide'); compute(); }
-$('tx').addEventListener('input',()=>{ ddAll=false; ddIdx=-1; renderDD(); });
+$('tx').addEventListener('input',()=>{ if(MENUSEL.size){ MENUSEL.forEach(id=>{ delete ADDED[id]; delete OVR[id]; }); MENUSEL.clear(); } ddAll=false; ddIdx=-1; renderDD(); });
 $('ddBtn').addEventListener('click',e=>{ e.stopPropagation(); ddAll=!$('dd').classList.contains('hide')&&ddAll?false:true; ddIdx=-1; if(ddAll) renderDD(); else $('dd').classList.add('hide'); });
 $('tx').addEventListener('keydown',e=>{ const it=ddList(); if($('dd').classList.contains('hide')) return;
   if(e.key==='ArrowDown'){ddIdx=Math.min(it.length-1,ddIdx+1);renderDD();e.preventDefault();}
@@ -2185,8 +2185,8 @@ function pickRegion(rid){ const r=BODY_REG.find(x=>x.id===rid); document.querySe
 function showSys(sid){
   const s=SYS.find(x=>x.id===sid); if(!s) return; const ds=s.ids.map(id=>D.find(d=>d.id===id)).filter(Boolean);
   let h='<div class="card syshead" style="--c:'+s.c+'"><div class="sysbig">'+s.i+'</div><div><h2 style="margin:0">'+esc(sysName(s))+'</h2><div class="hint">'+(LANG==='te'?s.n:s.te)+' · '+ds.length+L(' conditions',' వ్యాధులు')+'</div></div></div>';
-  h+='<div class="card"><div class="hint" style="margin-bottom:6px">'+L('Tap a name to show it on the main screen with medicines · ℹ = doses for all ages','పేరు నొక్కితే ప్రధాన స్క్రీన్‌లో మందులతో చూపిస్తుంది · ℹ = అన్ని వయస్సుల మోతాదులు')+'</div>';
-  ds.forEach(d=>{ h+='<div class="lrow"><span class="lk" data-use="'+d.id+'"><b>'+esc(dn(d))+'</b><small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="infob" data-dis="'+d.id+'" aria-label="Doses by age">ℹ</button><button class="addb" data-use="'+d.id+'">+</button></div>'; });
+  h+='<div class="card"><div class="hint" style="margin-bottom:6px">'+L('Tap a name = fresh prescription with that disease · + = add to current list · ℹ = doses for all ages','పేరు నొక్కితే కొత్త చీటీ · + = ప్రస్తుత జాబితాలో జోడించు · ℹ = అన్ని వయస్సుల మోతాదులు')+'</div>';
+  ds.forEach(d=>{ h+='<div class="lrow"><span class="lk" data-use="'+d.id+'"><b>'+esc(dn(d))+'</b><small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="infob" data-dis="'+d.id+'" aria-label="Doses by age">ℹ</button><button class="addb" data-keep="'+d.id+'" aria-label="Add to current list">+</button></div>'; });
   h+='</div>';
   const cps=comboPairs().filter(c=>c.ids.some(id=>s.ids.includes(id)));
   if(cps.length){ h+='<div class="card"><h3 style="margin-top:0">🔗 '+L('Combinations in this group','ఈ విభాగంలో కలయికలు')+' ('+cps.length+')</h3>';
@@ -2365,7 +2365,7 @@ function renderSingle(){
   let cnt=0;
   for(const sy of SYS){ const ds=sy.ids.map(id=>D.find(d=>d.id===id)).filter(d=>d&&(!q||(d.n+' '+(TE[d.id]||'')+' '+(SYM[d.id]||[]).join(' ')).toLowerCase().includes(q))); if(!ds.length) continue;
     h+='<div class="card"><h3 style="margin-top:0;color:'+sy.c+'">'+sy.i+' '+esc(sysName(sy))+'</h3>';
-    ds.forEach(d=>{ cnt++; h+='<div class="lrow"><span class="lk" data-use="'+d.id+'">'+esc(dn(d))+'<small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="infob" data-dis="'+d.id+'" aria-label="Doses by age">ℹ</button><button class="addb" data-use="'+d.id+'">+</button></div>'; }); h+='</div>'; }
+    ds.forEach(d=>{ cnt++; h+='<div class="lrow"><span class="lk" data-use="'+d.id+'">'+esc(dn(d))+'<small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="infob" data-dis="'+d.id+'" aria-label="Doses by age">ℹ</button><button class="addb" data-keep="'+d.id+'" aria-label="Add to current list">+</button></div>'; }); h+='</div>'; }
   if(!cnt) h+='<div class="card">'+L('No match.','సరిపోలేదు.')+'</div>';
   $('p-single').innerHTML=h; const i=$('sgq'); i.focus(); i.setSelectionRange(q.length,q.length);
 }
@@ -2379,13 +2379,14 @@ function renderCombo(){
   if(!cnt) h+=L('No match.','సరిపోలేదు.'); h+='</div>';
   $('p-combo').innerHTML=h; const i=$('cbq'); i.focus(); i.setSelectionRange(q.length,q.length);
 }
-function useIds(ids){ ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); openSide(false); window.scrollTo(0,0); compute(); setTimeout(()=>{ flash($('found')); if(!$('ag').value) $('ag').focus(); },80); }
+const MENUSEL=new Set();
+function useIds(ids,keep){ if(!keep){ ADDED={}; OVR={}; REMOVED=new Set(); MENUSEL.clear(); $('tx').value=''; lastT=''; $('out').innerHTML=''; } ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); MENUSEL.add(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); openSide(false); window.scrollTo(0,0); compute(); setTimeout(()=>{ flash($('found')); if(!$('ag').value) $('ag').focus(); },80); }
 ['p-single','p-combo'].forEach(pid=>{ $(pid).addEventListener('input',e=>{ if(e.target.id==='sgq') renderSingle(); if(e.target.id==='cbq') renderCombo(); });
-  $(pid).addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); }); });
+  $(pid).addEventListener('click',e=>{ const kp=e.target.closest('[data-keep]'); if(kp){ useIds([kp.dataset.keep],true); return; } const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); }); });
 document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; if(pg==='body'){ openSide(true); setTimeout(()=>$('dmenu').scrollIntoView({block:'start'}),50); return; } goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
 
 $('browse').addEventListener('click',e=>{ const t=e.target.closest('[data-sys]'); if(t){ markMenu(null); showSys(t.dataset.sys); return; } const r=e.target.closest('[data-reg]'); if(r) pickRegion(r.dataset.reg); });
-$('p-sys').addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); });
+$('p-sys').addEventListener('click',e=>{ const kp=e.target.closest('[data-keep]'); if(kp){ useIds([kp.dataset.keep],true); return; } const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); });
 
 applyLang();
 listCounts();
