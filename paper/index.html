@@ -459,6 +459,14 @@ if(!standalone){
   $('installBtn').addEventListener('click',function(){if(deferred){deferred.prompt();deferred=null;}else{$('installText').textContent='Open the Chrome menu (⋮) and tap "Add to Home screen" or "Install app".';}});
   window.addEventListener('appinstalled',function(){$('installCard').style.display='none';});
 }
+/* fit phone screen even when Chrome is in "Desktop site" mode */
+function fitPhone(){
+  var de=document.documentElement;de.style.zoom='';
+  var sw=Math.min(screen.width,screen.height)||0,iw=window.innerWidth;
+  var touch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+  if(touch&&sw&&sw<700&&iw>sw*1.3){de.style.zoom=(iw/sw).toFixed(3);}
+}
+fitPhone();window.addEventListener('resize',fitPhone);window.addEventListener('orientationchange',function(){setTimeout(fitPhone,300);});
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){navigator.serviceWorker.register('sw.js').catch(function(){});}
 
 window.__db=function(){return db;};
