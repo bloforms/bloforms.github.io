@@ -146,6 +146,15 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 .addb{border:1px solid var(--g);background:#fff;color:var(--g);border-radius:50%;width:32px;height:32px;font-size:18px;flex:none}
 .addb.wide{border-radius:16px;width:auto;padding:4px 12px;font-size:13px}
 #sgq,#cbq{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-size:15px}
+.row1.vit input,.row1.vit select{font-size:14px;padding:9px 6px}
+.row1.vit #vst{flex:0.9}
+.mrow{display:flex;align-items:center;gap:8px}
+.ico{flex:none;width:28px;height:28px;display:inline-flex}
+.ico svg{width:28px;height:28px}
+.mname{font-weight:800;font-size:15px;background:linear-gradient(transparent 55%,#ffe58a 55%);padding:0 2px;color:#1c2321}
+.brand{font-size:12px;color:#1d4f91;margin-top:3px;font-weight:600}
+.dx{font-weight:800!important;font-size:14px!important}
+#found .sel b{font-size:16px;font-weight:800;background:linear-gradient(transparent 60%,#ffe58a 60%)}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -193,6 +202,12 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <input type="number" id="ag" min="0" max="110" step="any" placeholder="Age" data-te-ph="వయస్సు" aria-label="Age" inputmode="decimal">
 <select id="au" aria-label="Age unit"><option value="y" data-te="సంవత్సరాలు">years</option><option value="m" data-te="నెలలు">months</option></select>
 </div>
+<div class="row1 vit">
+<input type="number" id="vw" step="any" min="1" max="200" placeholder="Weight kg" data-te-ph="బరువు కిలో" aria-label="Weight in kg" inputmode="decimal">
+<input type="text" id="vbp" placeholder="BP 130/80" data-te-ph="బీపీ 130/80" aria-label="Blood pressure" inputmode="numeric">
+<input type="number" id="vsg" step="any" placeholder="Sugar mg/dL" data-te-ph="షుగర్ mg/dL" aria-label="Blood sugar" inputmode="decimal">
+<select id="vst" aria-label="Sugar type"><option value="rbs" data-te="రాండమ్">Random</option><option value="fbs" data-te="పరగడుపు">Fasting</option><option value="ppbs" data-te="భోజనం తర్వాత">After food</option></select>
+</div>
 <div class="combo">
 <input type="search" id="tx" placeholder="Type symptoms or disease… e.g. fever 3 days vomiting" data-te-ph="లక్షణాలు లేదా వ్యాధి టైప్ చేయండి… ఉదా: జ్వరం 3 రోజులు వాంతులు" autocomplete="off" aria-label="Disease or symptoms">
 <button id="ddBtn" aria-label="Choose disease from list">▾</button>
@@ -217,14 +232,14 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <section id="p-rep" class="hide">
 <div class="card" id="repCard">
 <h2>Reports &amp; X-ray <span class="tag">blood · urine · X-ray</span></h2>
-<div class="hint">Upload a lab report photo/PDF to read values automatically (needs internet), or type the values. Tick X-ray findings after you read the film. Then press "Suggest disease" — the result opens on the main screen.</div>
+<div class="hint">Upload a report photo/PDF (needs internet) or type values. BP, sugar and weight go on the main screen.</div>
 <label class="t">Lab report — photo or PDF</label>
 <input type="file" id="repFile" accept="image/*,application/pdf" multiple>
 <div id="repPrev" class="thumbs"></div>
 <button class="btn sec" id="readBtn">Read values from report</button>
 <div class="hint" id="upStat"></div>
 <details id="ocrWrap" class="hide"><summary class="hint">Text read from report</summary><pre id="ocrText"></pre></details>
-<details class="det" id="labDet"><summary><b>Lab values (type or check)</b></summary><div id="labBox"></div></details>
+<details class="det" id="labDet" open><summary><b>Lab values (type or check)</b></summary><div id="labBox"></div></details>
 <details class="det" id="xrDet"><summary><b>X-ray</b></summary>
 <label class="t">X-ray image (kept for your view — the app does not read X-rays)</label>
 <input type="file" id="xrFile" accept="image/*,application/pdf" multiple>
@@ -1127,11 +1142,12 @@ const XR=[
 ];
 const XRC={}; // checked findings
 function buildReports(){
-  let h='<div class="grid2">';
-  for(const L of LABS) h+='<div><label class="t" for="lab_'+L.id+'">'+L.l+' <span class="u">'+L.u+'</span></label><input type="number" step="any" id="lab_'+L.id+'" inputmode="decimal"></div>';
-  h+='</div><div class="grid2">';
-  for(const Q of QUAL) h+='<div><label class="t" for="q_'+Q.id+'">'+Q.l+'</label><select id="q_'+Q.id+'">'+Q.o.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select></div>';
-  h+='</div>';
+  const COMMON=['hb','plt','wbc','rbs','fbs','hba1c','creat','pus','spo2'], QCOM=['mal','den','typ'];
+  const fl=L=>'<div><label class="t" for="lab_'+L.id+'">'+L.l+' <span class="u">'+L.u+'</span></label><input type="number" step="any" id="lab_'+L.id+'" inputmode="decimal"></div>';
+  const fq=Q=>'<div><label class="t" for="q_'+Q.id+'">'+Q.l+'</label><select id="q_'+Q.id+'">'+Q.o.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select></div>';
+  let h='<div class="hint">Common tests</div><div class="grid2">'+LABS.filter(x=>COMMON.includes(x.id)).map(fl).join('')+QUAL.filter(x=>QCOM.includes(x.id)).map(fq).join('')+'</div>';
+  h+='<details><summary class="hint" style="margin-top:8px">More tests (thyroid, cholesterol, liver, vitamins, TB, HIV, stool, urine protein…)</summary><div class="grid2">'+LABS.filter(x=>!COMMON.includes(x.id)&&!['sys','dia'].includes(x.id)).map(fl).join('')+QUAL.filter(x=>!QCOM.includes(x.id)).map(fq).join('')+'</div></details>';
+  h+='<input type="hidden" id="lab_sys"><input type="hidden" id="lab_dia">';
   $('labBox').innerHTML=h;
   $('xrBox').innerHTML=XR.map(([k,t])=>'<span class="chip" data-x="'+k+'">'+t+'</span>').join('');
 }
@@ -1499,6 +1515,9 @@ function detect(){
   const raw=$('tx').value; const T=nrm(raw);
   if(raw.trim()!==lastT){ if(!raw.trim()){ OVR={}; REMOVED=new Set(); } lastT=raw.trim(); }
   const R=readText(T); TXTV=R.v; TXTQ=R.q;
+  { const w=parseFloat($('vw').value); if(w>0) R.info.wt=w;
+    const bp=($('vbp').value||'').match(/(\d{2,3})\s*[\/\-\s]\s*(\d{2,3})/); if(bp){ TXTV.sys=+bp[1]; TXTV.dia=+bp[2]; }
+    const sg=parseFloat($('vsg').value); if(sg>0){ delete TXTV.rbs; delete TXTV.fbs; delete TXTV.ppbs; TXTV[$('vst').value]=sg; } }
   // patient
   P.sex=$('sx').value; const ag=parseFloat($('ag').value); const unit=$('au').value;
   P.ageM=isNaN(ag)?0:Math.round(unit==='m'?ag:ag*12);
@@ -1531,11 +1550,13 @@ function detect(){
 }
 function compute(){
   const raw=$('tx').value.trim();
-  if(!raw && !Object.keys(ADDED).length && !analyse().S.length){ $('found').innerHTML=''; $('out').innerHTML=''; return; }
+  const vit=$('vw').value||$('vbp').value||$('vsg').value;
+  if(!raw && !vit && !Object.keys(ADDED).length && !analyse().S.length){ $('found').innerHTML=''; $('out').innerHTML=''; return; }
   const r=detect(); const ids=Object.keys(sel);
+  if(!ddAll && ids.length && document.activeElement!==$('tx')) $('dd').classList.add('hide');
   let h='';
   if($('ag').value.trim()===''){ $('found').innerHTML='<div class="alert org">'+L('Enter the age first — doses depend on age.','ముందుగా వయస్సు నమోదు చేయండి — మోతాదు వయస్సుపై ఆధారపడుతుంది.')+'</div>'+(ids.length?'<div class="hint">'+L('Selected: ','ఎంచుకున్నవి: ')+ids.map(id=>esc(dn(D.find(d=>d.id===id)))).join(', ')+'</div>':''); $('out').innerHTML=''; $('ag').focus(); return; }
-  const pt=(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?L(' (estimated — type e.g. "12 kg" to correct)',' (అంచనా — సరిచేయడానికి "12 kg" టైప్ చేయండి)'):'')+(preg()?L(' · Pregnant (',' · గర్భిణీ (')+(P.preg==='t1'?L('1st','1వ'):L('2nd/3rd','2/3వ'))+L(' trimester)',' త్రైమాసికం)'):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'');
+  const pt=(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?L(' (estimated — enter weight above)',' (అంచనా — పైన బరువు నమోదు చేయండి)'):'')+(preg()?L(' · Pregnant (',' · గర్భిణీ (')+(P.preg==='t1'?L('1st','1వ'):L('2nd/3rd','2/3వ'))+L(' trimester)',' త్రైమాసికం)'):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'');
   h+='<div class="pt" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>'+pt+'</span><button id="newPt" class="newpt">'+L('↺ New patient','↺ కొత్త రోగి')+'</button></div>';
   if(/pregnan|garbham|గర్భ/.test(r.T)&&P.sex==='M') h+='<div class="alert org">'+L('Pregnancy typed — select Female.','గర్భిణీ అని టైప్ చేశారు — స్త్రీ ఎంచుకోండి.')+'</div>';
   if(!ids.length){
@@ -1559,6 +1580,30 @@ function compute(){
 function lev(a,b){ if(Math.abs(a.length-b.length)>2) return 9; const m=[...Array(b.length+1).keys()]; for(let i=1;i<=a.length;i++){ let prev=m[0]; m[0]=i; for(let j=1;j<=b.length;j++){ const t=m[j]; m[j]=Math.min(m[j]+1,m[j-1]+1,prev+(a[i-1]===b[j-1]?0:1)); prev=t; } } return m[b.length]; }
 let ctT=null; function later(){ clearTimeout(ctT); ctT=setTimeout(compute,350); }
 function renderSel(){ compute(); }
+
+// ===== v8: brands, form icons =====
+const BRAND={paracetamol:'Calpol, Crocin, Dolo-650',ibuprofen:'Brufen, Ibugesic',amoxicillin:'Mox, Novamox',amoxclav:'Augmentin, Clavam, Moxikind-CV',azithromycin:'Azithral, Azee',cefixime:'Taxim-O, Zifi',cephalexin:'Sporidex, Phexin',ciprofloxacin:'Ciplox, Cifran',metronidazole:'Flagyl, Metrogyl',cetirizine:'Cetzine, Okacet, Alerid',ondansetron:'Emeset, Ondem',ors:'Electral (WHO-ORS)',zinc:'Zinconia, Z&D',pantoprazole:'Pan-40, Pantocid',omeprazole:'Omez',lactulose:'Duphalac, Looz',albendazole:'Zentel, Bandy',ifa:'Govt IFA (free); Livogen, Autrin',salbutamol:'Asthalin',budesonide:'Budecort',budform:'Foracort',prednisolone:'Wysolone, Omnacortil',mometasone:'Momate',nasalster:'Flomist / Metaspray',clotrimazole:'Candid',terbinafine:'Terbicip, Sebifin',griseofulvin:'Grisovin-FP',permethrin:'Permite, Scabper',permethrin1:'Permite lotion',calamine:'Lacto Calamine',mupirocin:'T-Bact, Bactroban',amlodipine:'Amlong, Stamlo, Amlokind',telmisartan:'Telma, Telmikind',metformin:'Glycomet, Glyciphage',glimepiride:'Amaryl, Glimestar',atorvastatin:'Atorva, Storvas',levothyroxine:'Thyronorm, Eltroxin',aspirin:'Ecosprin',acyclovir:'Acivir, Zovirax',doxycycline:'Doxy-1, Doxt',oseltamivir:'Fluvir, Tamiflu',ambroxol:'Mucolite, Ambrodil',tranexamic:'Pause, Trapic',mefenamic:'Meftal',doxylamine:'Doxinate',tamsulosin:'Urimax, Veltam',colchicine:'Zycolchi',allopurinol:'Zyloric',pregabalin:'Pregalin',betahistine:'Vertin',flunarizine:'Flunarin',domperidone:'Domstal',prochlorperazine:'Stemetil',diclogel:'Voveran Emulgel',diclo:'Voveran inj.',tiotropium:'Tiova',olopatadine:'Olopat',moxifloxacin:'Moxicip, Vigamox',bcomplex:'Becosules',vitd3:'Uprise-D3, Calcirol',calcium:'Shelcal',mecobal:'Nurokind, Methycobal',clindagel:'Clindac-A',bpo:'Benzac AC, Persol',adapalene:'Adaferin',zinccream:'Rashfree',ssd:'Silverex',povidone:'Betadine',lignocaine:'Xylocaine jelly',chlorhex:'Hexidine',triamcinolone:'Kenacort oral paste',ketoconazole:'Nizral',fluconazole:'Forcan, Zocon',nitrofurantoin:'Niftran, Martifur',naproxen:'Naprosyn',vitd3drops:'',hrze:'Govt NTEP (free)',hrz:'Govt NTEP (free)',chloroquine:'Govt (free)',primaquine:'Govt (free)',artesunate:'Govt ACT kit (free)',sp:'Govt ACT kit (free)',arv:'Govt (free)',dec:'Govt MDA (free)',isdn:'Sorbitrate',labetalol:'Labebet',levetiracetam:'Levipil'};
+
+const ICO={
+ syrup:'<svg viewBox="0 0 24 32"><rect x="8" y="1" width="8" height="5" rx="1" fill="#b3261e"/><path d="M6 8h12l1 3v18a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V11z" fill="#8a5a00"/><rect x="7" y="15" width="10" height="9" rx="1" fill="#fff"/></svg>',
+ tablet:'<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="#e8f0fb" stroke="#1d4f91" stroke-width="2"/><line x1="6" y1="16" x2="26" y2="16" stroke="#1d4f91" stroke-width="2"/></svg>',
+ capsule:'<svg viewBox="0 0 32 32"><g transform="rotate(-35 16 16)"><rect x="4" y="11" width="24" height="10" rx="5" fill="#fff" stroke="#0f6e5c" stroke-width="2"/><path d="M16 11h7a5 5 0 0 1 0 10h-7z" fill="#0f6e5c"/></g></svg>',
+ drops:'<svg viewBox="0 0 24 32"><rect x="9" y="1" width="6" height="7" rx="2" fill="#555"/><path d="M7 9h10v19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z" fill="#1d4f91"/><path d="M12 12c2 3 3 4 3 6a3 3 0 0 1-6 0c0-2 1-3 3-6z" fill="#fff"/></svg>',
+ cream:'<svg viewBox="0 0 32 32"><path d="M3 12h20l5 4-5 4H3z" fill="#0f6e5c"/><rect x="23" y="13" width="7" height="6" fill="#555"/><rect x="6" y="14" width="12" height="4" fill="#fff"/></svg>',
+ inhaler:'<svg viewBox="0 0 32 32"><rect x="9" y="2" width="10" height="20" rx="3" fill="#1d4f91"/><path d="M7 18h18v8a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z" fill="#6b9be0"/><rect x="21" y="21" width="9" height="5" rx="1" fill="#6b9be0"/></svg>',
+ inj:'<svg viewBox="0 0 32 32"><g transform="rotate(45 16 16)"><rect x="12" y="6" width="8" height="16" fill="#e8f0fb" stroke="#1d4f91" stroke-width="2"/><rect x="14" y="2" width="4" height="4" fill="#1d4f91"/><line x1="16" y1="22" x2="16" y2="30" stroke="#555" stroke-width="2"/></g></svg>',
+ sachet:'<svg viewBox="0 0 28 32"><path d="M4 3h20v26H4z" fill="#ffb300"/><path d="M4 3l3 3 3-3 4 3 3-3 4 3 3-3" stroke="#fff" fill="none"/><rect x="7" y="12" width="14" height="8" rx="1" fill="#fff"/></svg>',
+ other:'<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="#e6f3ef"/><path d="M16 9v14M9 16h14" stroke="#0f6e5c" stroke-width="3"/></svg>'};
+function formOf(r){ const t=(r.name+' '+r.dose).toLowerCase();
+  if(/\binj|vaccine|immunoglobulin|infiltration/.test(t)) return 'inj';
+  if(/inhaler|mdi|rotacap|nebul/.test(t)) return 'inhaler';
+  if(/cream|ointment|\bgel\b|lotion|jelly|paste|paint|shampoo|povidone/.test(t)) return 'cream';
+  if(/eye drops|ear drops|nasal|spray|drops/.test(t)) return 'drops';
+  if(/ors|sachet/.test(t)&&!/doses/.test(t)) return 'sachet';
+  if(/syrup|suspension|solution|\bml\b/.test(t)) return 'syrup';
+  if(/capsule/.test(t)) return 'capsule';
+  if(/tab|tablet|mg|mcg|kit/.test(t)) return 'tablet';
+  return 'other'; }
 
 // ===== v5: Telugu names, Rx table, share =====
 const TE={fever:'జ్వరం',cold:'జలుబు',cough:'దగ్గు (పొడి / కఫంతో)',throat:'గొంతు నొప్పి',otitis:'చెవి నొప్పి / చెవి ఇన్ఫెక్షన్',pneu:'న్యుమోనియా',typhoid:'టైఫాయిడ్',dengue:'డెంగ్యూ',malv:'మలేరియా (వైవాక్స్)',malf:'మలేరియా (ఫాల్సిపారం / మిశ్రమ)',uti:'మూత్రంలో మంట / మూత్ర ఇన్ఫెక్షన్',skin:'సెగ గడ్డలు / చర్మ ఇన్ఫెక్షన్',scab:'గజ్జి',conj:'కండ్ల కలక',worm:'నులి పురుగులు',tb:'క్షయ (టీబీ)',
@@ -1662,16 +1707,16 @@ function run(){
   if(order.length){
     h+='<div class="tw"><table class="rxt"><thead><tr><th>#</th><th>'+L('Medicine','మందు')+'</th><th>'+L('Dose','మోతాదు')+'</th><th>'+L('When','ఎప్పుడు')+'</th><th>'+L('Food','భోజనం')+'</th><th>'+L('Days','రోజులు')+'</th></tr></thead><tbody>';
     order.forEach((k,i)=>{ const {r}=byK[k]; const t=timing(r); const fl=flagsFor(r);
-      h+='<tr><td>'+(i+1)+'</td><td><b>'+esc(r.name)+'</b>'+(r.ab?' <span class="tag">antibiotic</span>':'')+(ids.length>1?'<div class="x">'+L('for ','')+esc([...new Set(byK[k].for.map(d=>dn(d)))].join(' + '))+L('','కు')+'</div>':'')+(r.note?'<div class="x">'+esc(r.note)+'</div>':'')+(fl.length?'<div class="xr">⚠ '+esc(fl.join('; '))+'</div>':'')+'</td>'
+      const br=BRAND[k]; h+='<tr><td>'+(i+1)+'</td><td><div class="mrow"><span class="ico">'+ICO[formOf(r)]+'</span><span class="mname">'+esc(r.name)+'</span></div>'+(br?'<div class="brand">'+L('Brands: ','బ్రాండ్లు: ')+esc(br)+'</div>':'')+(r.ab?' <span class="tag">antibiotic</span>':'')+(ids.length>1?'<div class="x">'+L('for ','')+esc([...new Set(byK[k].for.map(d=>dn(d)))].join(' + '))+L('','కు')+'</div>':'')+(r.note?'<div class="x">'+esc(r.note)+'</div>':'')+(fl.length?'<div class="xr">⚠ '+esc(fl.join('; '))+'</div>':'')+'</td>'
         +'<td>'+esc(r.dose)+'</td><td class="tm"><b>'+esc(LANG==='te'&&!/^[01]-/.test(t.en)?t.te:t.en.replace(/ \(if fever\)/,''))+'</b>'+(TIMING_TE[t.en.replace(/ \(if fever\)/,'')]?'<div class="x">'+(LANG==='te'?TIMING_TE[t.en.replace(/ \(if fever\)/,'')]:TIMING_EN[t.en.replace(/ \(if fever\)/,'')])+(/if fever/.test(t.en)?L(' (if fever)',' (జ్వరం ఉంటే)'):'')+'</div>':'')+'</td>'
         +'<td><span class="food '+(t.food==='Before food'||t.food==='Empty stomach'?'bf':t.food==='After food'?'af':'ot')+'">'+esc(L(t.food,t.foodTe))+'</span></td><td>'+esc(L(t.days,t.daysTe)||'—')+'</td></tr>'; });
-    h+='</tbody></table></div><div class="hint">'+L('1-0-1 = morning – afternoon – night. ','1-0-1 = ఉదయం – మధ్యాహ్నం – రాత్రి. ')+(P.est?L('*Weight estimated from age — type "12 kg" in the search box to correct.','*బరువు వయస్సు నుండి అంచనా — సరిచేయడానికి "12 kg" టైప్ చేయండి.'):'')+'</div>';
+    h+='</tbody></table></div><div class="hint">'+L('Brands are common Indian examples — any brand of the same medicine and strength is fine; Jan Aushadhi generics are cheaper. ','బ్రాండ్లు ఉదాహరణలు మాత్రమే — అదే మందు, అదే బలం ఉన్న ఏ బ్రాండ్ అయినా సరే; జన ఔషధి మందులు చౌక. ')+L('1-0-1 = morning – afternoon – night. ','1-0-1 = ఉదయం – మధ్యాహ్నం – రాత్రి. ')+(P.est?L('*Weight estimated from age — enter the real weight above for exact doses.','*బరువు వయస్సు నుండి అంచనా — సరైన మోతాదుకు పైన బరువు నమోదు చేయండి.'):'')+'</div>';
   } else h+='<div class="alert org">'+L('No medicine to start here — see referral / advice.','ఇక్కడ మందు ప్రారంభించవద్దు — రిఫరల్ / సలహా చూడండి.')+'</div>';
   if(abs.length>1) h+='<div class="alert org">'+CHILD_ONLY_AB_NOTE+' ('+abs.map(k=>byK[k].r.name).join(', ')+')</div>';
   rules.forEach(t=>h+='<div class="alert blu">🔗 '+esc(t)+'</div>');
   warns.forEach(w=>h+='<div class="alert org">'+esc(w)+'</div>');
   A.N.forEach(n=>h+='<div class="alert org">🧪 '+esc(n)+'</div>');
-  if(advice.length) h+='<h3>'+L('Advice','సలహాలు')+'</h3><ul class="adv">'+advice.map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>';
+  if(advice.length){ h+='<h3>'+L('Advice','సలహాలు')+'</h3><ul class="adv">'+advice.slice(0,5).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul>'; if(advice.length>5) h+='<details><summary class="hint">'+L('More advice ('+(advice.length-5)+')','మరిన్ని సలహాలు ('+(advice.length-5)+')')+'</summary><ul class="adv">'+advice.slice(5).map(a=>'<li>'+esc(a)+'</li>').join('')+'</ul></details>'; }
   h+='</div>';
   // share bar
   h+='<div class="card noprint share"><h3 style="margin-top:0">'+L('Send prescription','మందుల చీటీ పంపండి')+'</h3>'
@@ -1696,7 +1741,7 @@ function msgText(lang){
   L.push((te?'వ్యాధి: ':'Diagnosis: ')+res.map(o=>(te?(TE[o.d.id]||o.d.n)+' ('+SEVTE[o.sev]+')':both?o.d.n+' / '+(TE[o.d.id]||'')+' ('+SEVN[o.sev]+')':o.d.n+' ('+SEVN[o.sev]+')')).join(', '));
   L.push('');
   order.forEach((k,i)=>{ const r=byK[k].r, t=timing(r);
-    L.push((i+1)+'. '+r.name+' — '+r.dose);
+    L.push((i+1)+'. *'+r.name+'* — '+r.dose+(BRAND[k]?' ('+(te?'ఉదా: ':'e.g. ')+BRAND[k]+')':''));
     const tm=te?(TIMING_TE[t.en.replace(/ \(if fever\)/,'')]||t.te):both?t.en+(TIMING_TE[t.en.replace(/ \(if fever\)/,'')]?' ('+TIMING_TE[t.en.replace(/ \(if fever\)/,'')]+')':''):t.en;
     const fd=te?t.foodTe:both?t.food+' / '+t.foodTe:t.food;
     const dy=t.days?(te?t.daysTe:t.days):'';
@@ -1723,7 +1768,7 @@ function lastTok(){ const v=$('tx').value; const m=v.match(/([^\s,]+)\s*$/); ret
 function ddList(){
   if(ddAll) return D;
   const w=lastTok(); if(w.length<2) return [];
-  if($('tx').value.trim().split(/\s+/).length>2) return [];
+  if($('tx').value.trim().split(/\s+/).length>1) return [];
   return D.filter(d=>{ const hay=(d.n+' '+(TE[d.id]||'')+' '+(SYM[d.id]||[]).join(' ')+' '+(d.kw||'')).toLowerCase(); return hay.split(/[\s\/(),–-]+/).some(x=>x.startsWith(w)); }).slice(0,12);
 }
 function renderDD(){
@@ -1770,11 +1815,12 @@ function flagsFor(r){
 function ageTxt(){ const y=Math.floor(P.ageM/12), m=P.ageM%12; return (y?y+L(' yr ',' సం. '):'')+(m||!y?m+L(' mo',' నెలలు'):''); }
 function ageText(){ const y=Math.floor(P.ageM/12), m=P.ageM%12; return (y?y+' yr ':'')+(m||!y?m+' mo':''); }
 
-['sx','au'].forEach(i=>$(i).addEventListener('change',compute));
+['sx','au','vst'].forEach(i=>$(i).addEventListener('change',compute));
+['vw','vbp','vsg'].forEach(i=>$(i).addEventListener('input',later));
 ['ag','tx'].forEach(i=>$(i).addEventListener('input',later));
 $('tx').addEventListener('keydown',e=>{ if(e.key==='Enter'&&$('dd').classList.contains('hide')){ e.preventDefault(); compute(); $('tx').blur(); } });
 $('found').addEventListener('click',e=>{
-  if(e.target.id==='newPt'){ $('tx').value=''; $('ag').value=''; ADDED={}; OVR={}; REMOVED=new Set(); compute(); $('tx').focus(); return; }
+  if(e.target.id==='newPt'){ $('tx').value=''; $('ag').value=''; ['vw','vbp','vsg'].forEach(i=>$(i).value=''); ADDED={}; OVR={}; REMOVED=new Set(); compute(); $('tx').focus(); return; }
   const rm=e.target.closest('[data-rm]'); if(rm){ const id=rm.dataset.rm; REMOVED.add(id); delete ADDED[id]; compute(); return; }
   const ad=e.target.closest('[data-add]'); if(ad){ const id=ad.dataset.add; REMOVED.delete(id); ADDED[id]=1; compute(); return; }
   const c=e.target.closest('.sev .chip'); if(c){ OVR[c.parentElement.dataset.id]=+c.dataset.v; compute(); } });
