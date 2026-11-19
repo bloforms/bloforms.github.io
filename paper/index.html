@@ -92,6 +92,8 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
   td.nw{white-space:nowrap}
   thead{display:table-header-group}
   tr{page-break-inside:avoid}
+  tbody tr{height:4.9mm}
+  .pg{page-break-inside:avoid}
 }
 </style>
 </head>
@@ -488,9 +490,15 @@ $('xPrint').addEventListener('click',function(){
   var gs=exportGroups();if(!gs.length){toast('No stock entered yet');return;}
   var cols='<colgroup><col style="width:7%"><col style="width:13%"><col style="width:26%"><col style="width:10%"><col style="width:10%"><col style="width:7%"><col style="width:15%"><col style="width:12%"></colgroup>';
   var thead='<thead><tr><th rowspan="2">S.No.</th><th rowspan="2">Date</th><th rowspan="2">TRANSACTION NO</th><th rowspan="2">Opening Stock</th><th rowspan="2">Receipts No.s</th><th colspan="2">Issues</th><th rowspan="2">Closing Stock</th></tr><tr><th>No.s</th><th>Bond Serial No</th></tr></thead>';
-  $('printArea').innerHTML=gs.map(function(g,i){
-    return '<div'+(i?' style="page-break-before:always"':'')+'><h2>'+esc(db.office||'Secured Paper Stock Register')+'</h2><p>'+esc(batchLabel(g.batch))+' · received '+fd(g.batch.date)+'</p><table>'+cols+thead+'<tbody>'+g.rows.map(function(r){return'<tr>'+r.slice(0,8).map(function(c,i){return'<td'+(i===1?' class="nw"':i===2?' class="l"':'')+'>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
-  }).join('');
+  var PER=50,pages=[];
+  gs.forEach(function(g){
+    var n=Math.ceil(g.rows.length/PER);
+    for(var k=0;k<n;k++){
+      var part=g.rows.slice(k*PER,(k+1)*PER);
+      pages.push('<div class="pg"'+(pages.length?' style="page-break-before:always"':'')+'><h2>'+esc(db.office||'Secured Paper Stock Register')+'</h2><p>'+esc(batchLabel(g.batch))+' · received '+fd(g.batch.date)+' · Page '+(k+1)+' of '+n+'</p><table>'+cols+thead+'<tbody>'+part.map(function(r){return'<tr>'+r.slice(0,8).map(function(c,i){return'<td'+(i===1?' class="nw"':i===2?' class="l"':'')+'>'+esc(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>');
+    }
+  });
+  $('printArea').innerHTML=pages.join('');
   var de=document.documentElement,z=de.style.zoom;de.style.zoom='';
   setTimeout(function(){window.print();setTimeout(fitPhone,500);},50);
 });
