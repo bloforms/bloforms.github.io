@@ -155,6 +155,9 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 .brand{font-size:12px;color:#1d4f91;margin-top:3px;font-weight:600}
 .dx{font-weight:800!important;font-size:14px!important}
 #found .sel b{font-size:16px;font-weight:800;background:linear-gradient(transparent 60%,#ffe58a 60%)}
+#moreV{margin:-2px 0 8px}#moreV summary{font-size:13px;color:var(--g);cursor:pointer;padding:2px 0 6px}
+.row1 #vpreg{flex:1.2}
+.btn.wa{background:#25d366}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -201,13 +204,22 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <select id="sx" aria-label="Gender"><option value="M" data-te="పురుషుడు">Male</option><option value="F" data-te="స్త్రీ">Female</option></select>
 <input type="number" id="ag" min="0" max="110" step="any" placeholder="Age" data-te-ph="వయస్సు" aria-label="Age" inputmode="decimal">
 <select id="au" aria-label="Age unit"><option value="y" data-te="సంవత్సరాలు">years</option><option value="m" data-te="నెలలు">months</option></select>
+<select id="vpreg" class="hide" aria-label="Pregnancy"><option value="no" data-te="గర్భిణీ కాదు">Not pregnant</option><option value="t1" data-te="గర్భిణీ 1–3 నెలలు">Pregnant 1–3 mo</option><option value="t23" data-te="గర్భిణీ 4–9 నెలలు">Pregnant 4–9 mo</option><option value="lact" data-te="పాలిచ్చే తల్లి">Breastfeeding</option></select>
 </div>
 <div class="row1 vit">
 <input type="number" id="vw" step="any" min="1" max="200" placeholder="Weight kg" data-te-ph="బరువు కిలో" aria-label="Weight in kg" inputmode="decimal">
+<input type="number" id="vt" step="any" placeholder="Temp °F" data-te-ph="ఉష్ణోగ్రత °F" aria-label="Temperature (°F or °C)" inputmode="decimal">
 <input type="text" id="vbp" placeholder="BP 130/80" data-te-ph="బీపీ 130/80" aria-label="Blood pressure" inputmode="numeric">
 <input type="number" id="vsg" step="any" placeholder="Sugar mg/dL" data-te-ph="షుగర్ mg/dL" aria-label="Blood sugar" inputmode="decimal">
 <select id="vst" aria-label="Sugar type"><option value="rbs" data-te="రాండమ్">Random</option><option value="fbs" data-te="పరగడుపు">Fasting</option><option value="ppbs" data-te="భోజనం తర్వాత">After food</option></select>
 </div>
+<details id="moreV"><summary data-te="+ మరిన్ని వైటల్స్ (పల్స్, శ్వాస రేటు, SpO2, అలర్జీ)">+ More vitals (pulse, breathing rate, SpO2, allergy)</summary>
+<div class="row1 vit">
+<input type="number" id="vp" placeholder="Pulse /min" data-te-ph="పల్స్ /ని" aria-label="Pulse per minute" inputmode="numeric">
+<input type="number" id="vr" placeholder="Breaths /min" data-te-ph="శ్వాస /ని" aria-label="Respiratory rate per minute" inputmode="numeric">
+<input type="number" id="vo" placeholder="SpO2 %" aria-label="SpO2 percent" inputmode="numeric">
+<select id="val" aria-label="Drug allergy"><option value="" data-te="అలర్జీ లేదు">No allergy</option><option value="pen" data-te="పెన్సిలిన్ అలర్జీ">Penicillin allergy</option><option value="sulfa" data-te="సల్ఫా అలర్జీ">Sulfa allergy</option><option value="nsaid" data-te="నొప్పి మాత్రల అలర్జీ">NSAID/Aspirin allergy</option></select>
+</div></details>
 <div class="combo">
 <input type="search" id="tx" placeholder="Type symptoms or disease… e.g. fever 3 days vomiting" data-te-ph="లక్షణాలు లేదా వ్యాధి టైప్ చేయండి… ఉదా: జ్వరం 3 రోజులు వాంతులు" autocomplete="off" aria-label="Disease or symptoms">
 <button id="ddBtn" aria-label="Choose disease from list">▾</button>
@@ -1244,7 +1256,10 @@ function analyse(){
   if(sy!=null||di!=null){ const S1=sy||0,D1=di||0;
     if(S1>=180||D1>=110) add('htn',2,'BP '+S1+'/'+D1); else if(S1>=160||D1>=100) add('htn',1,'BP '+S1+'/'+D1); else if(S1>=140||D1>=90) add('htn',0,'BP '+S1+'/'+D1);
     if(S1&&S1<90) N.push('BP below 90 systolic — shock risk: refer urgently.'); }
-  const sp=v('spo2'); if(sp!=null&&sp<94) N.push('SpO2 '+sp+'% — low oxygen: treat as severe and refer.');
+  const sp=v('spo2'); if(sp!=null&&sp<90) N.push('SpO2 '+sp+'% — VERY LOW: oxygen and refer urgently.'); else if(sp!=null&&sp<94) N.push('SpO2 '+sp+'% — low oxygen: treat as severe and refer.');
+  const tF=v('temp'); if(tF!=null){ if(tF>=104) N.push('Temperature '+tF+' °F — very high: sponge, paracetamol, look for danger signs.'); else if(tF<95.9) N.push('Temperature '+tF+' °F — LOW (hypothermia): keep warm and refer'+(P.ageM<2?' (young infant = serious infection)':'')+'.'); }
+  const pv=v('pulse'); if(pv!=null){ const a=P.ageM, hi=a<12?160:a<60?140:a<144?120:100; if(pv>hi+20) N.push('Pulse '+pv+'/min — very fast: dehydration, fever, sepsis or heart problem; refer if with low BP / drowsy.'); else if(pv>hi) N.push('Pulse '+pv+'/min — fast for age (fever, dehydration, anaemia?).'); if(pv<(a<144?70:50)) N.push('Pulse '+pv+'/min — slow: check medicines (beta-blocker), heart block; refer if dizzy.'); }
+  const rr=v('rr'); if(rr!=null){ const a=P.ageM, cut=a<2?60:a<12?50:a<60?40:a<144?30:24; if(rr>=cut) N.push('Breathing '+rr+'/min — fast for age (cut-off '+cut+')'+(a>=144&&rr>=30?': severe — check SpO2 and refer.':': count again for full 1 minute; think pneumonia.')); }
   const t=v('tsh');
   if(t!=null){ if(preg()){ if(t>4) add('thyroid',1,'TSH '+t+' in pregnancy'); else if(t>2.5) N.push('TSH '+t+' in pregnancy — borderline; repeat with anti-TPO.'); }
     else if(t>10) add('thyroid',1,'TSH '+t); else if(t>4.5) add('thyroid',0,'TSH '+t+' (mildly raised — repeat with Free T4)'); else if(t<0.3) add('hyperthy',0,'TSH '+t+' (low)'); }
@@ -1510,24 +1525,33 @@ function sevFromText(d,T,info){
   if(d.id==='diar' && info.days>=14 && best<1){ best=1; why='diarrhoea '+info.days+' days (persistent)'; }
   return {s:best,why:why||'no severe signs typed'};
 }
-let OVR={}, REMOVED=new Set(), ADDED={}, lastT='';
+let OVR={}, REMOVED=new Set(), ADDED={}, lastT='', ALG='', VFLAG={};
 function detect(){
-  const raw=$('tx').value; const T=nrm(raw);
+  const raw=$('tx').value; const T=nrm(raw); VFLAG={};
   if(raw.trim()!==lastT){ if(!raw.trim()){ OVR={}; REMOVED=new Set(); } lastT=raw.trim(); }
   const R=readText(T); TXTV=R.v; TXTQ=R.q;
+  { const tv=parseFloat($('vt').value); if(tv>0){ const F=tv<46?tv*9/5+32:tv; R.info.tempF=Math.round(F*10)/10; TXTV.temp=R.info.tempF; }
+    const pv=parseFloat($('vp').value); if(pv>0) TXTV.pulse=pv; const rv=parseFloat($('vr').value); if(rv>0) TXTV.rr=rv; const ov=parseFloat($('vo').value); if(ov>0) TXTV.spo2=ov; }
   { const w=parseFloat($('vw').value); if(w>0) R.info.wt=w;
     const bp=($('vbp').value||'').match(/(\d{2,3})\s*[\/\-\s]\s*(\d{2,3})/); if(bp){ TXTV.sys=+bp[1]; TXTV.dia=+bp[2]; }
     const sg=parseFloat($('vsg').value); if(sg>0){ delete TXTV.rbs; delete TXTV.fbs; delete TXTV.ppbs; TXTV[$('vst').value]=sg; } }
   // patient
   P.sex=$('sx').value; const ag=parseFloat($('ag').value); const unit=$('au').value;
   P.ageM=isNaN(ag)?0:Math.round(unit==='m'?ag:ag*12);
-  P.preg = (P.sex==='F'&&P.ageM>=144&&P.ageM<=600&&R.info.preg)?R.info.preg:'no';
+  const eligP=P.sex==='F'&&P.ageM>=144&&P.ageM<=600; $('vpreg').classList.toggle('hide',!eligP);
+  const ps=$('vpreg').value; P.preg = eligP ? (ps!=='no'?ps:(R.info.preg||'no')) : 'no';
+  ALG=$('val').value;
   if(R.info.wt){ P.wt=R.info.wt; P.est=false; } else { P.wt=Math.round(estWt(P.ageM)*10)/10; P.est=true; }
   // match diseases
   const found={};
   const TM=T.replace(/cold (hands?|feet|foot|extremities|clammy|sweats?|skin|water|drinks?)/g,' ').replace(/(hands?|feet) (are |were )?cold/g,' ');
   for(const d of D){ const terms=(SYM[d.id]||[]).concat([d.n.toLowerCase().replace(/\s*\(.*?\)/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()]);
     const hit=terms.filter(t=>t.length>1&&hasTerm(TM,t)); if(hit.length) found[d.id]={hit}; }
+  { const F=R.info.tempF; const febrile=['fever','dengue','malv','malf','typhoid','chik','scrub','lepto','flu','measles','chickenpox','mumps','pneu','uti','otitis','throat','sinus','febseiz','hep','cough','cold'];
+    if(F>=100.4 && !Object.keys(found).some(k=>febrile.includes(k)&&k!=='cough'&&k!=='cold')) found.fever={hit:['temperature '+F+' °F']};
+    const rr=TXTV.rr, a=P.ageM; const fast = rr && ((a<2&&rr>=60)||(a>=2&&a<12&&rr>=50)||(a>=12&&a<60&&rr>=40)||(a>=60&&a<144&&rr>=30)||(a>=144&&rr>=24));
+    if(fast && (found.cough||found.cold||found.fever||R.info.tempF>=100.4) && !found.wheeze && !found.asthma) found.pneu={hit:['fast breathing '+rr+'/min']};
+    if(fast && a>=144 && rr>=30) VFLAG.pneuSev=true; }
   // fits with fever in young child -> febrile seizure
   if(found.epi && found.fever && P.ageM>=6 && P.ageM<=72){ delete found.epi; found.febseiz={hit:['fits with fever']}; }
   // 'malaria' without type
@@ -1543,6 +1567,10 @@ function detect(){
   for(const id in found){ const d=D.find(x=>x.id===id); const r=sevFromText(d,T,R.info); fin[id]=r.s; why[id]=L('matched "','గుర్తించిన పదం "')+found[id].hit[0]+L('" · severity: ','" · తీవ్రత: ')+r.why; }
   for(const s of A.S){ if(!(s.id in fin)||s.sev>fin[s.id]){ why[s.id]=(why[s.id]?why[s.id]+' · ':'')+'from values: '+s.why; } fin[s.id]=Math.max(fin[s.id]??-1,s.sev); }
   for(const id in ADDED){ if(!(id in fin)){ const d=D.find(x=>x.id===id); const r=sevFromText(d,T,R.info); fin[id]=Math.max(ADDED[id],r.s); why[id]='chosen from list · severity: '+r.why; } }
+  { const sp=TXTV.spo2; const resp=['pneu','wheeze','copd','flu','asthma','bronch','dengue','cough'];
+    for(const id in fin){ if(sp!=null&&sp<92&&resp.includes(id)){ fin[id]=2; why[id]=(why[id]||'')+' · SpO2 '+sp+'%'; }
+      if(VFLAG.pneuSev&&id==='pneu'){ fin[id]=2; why[id]+=' · breathing rate ≥30'; }
+      if(R.info.tempF>=105&&ACUTE_GROUPS.includes(D.find(d=>d.id===id).g)&&fin[id]<2){ fin[id]=2; why[id]+=' · temperature '+R.info.tempF+' °F'; } } }
   for(const id of REMOVED) delete fin[id];
   for(const id in OVR) if(id in fin){ fin[id]=OVR[id]; why[id]+=' · changed by you'; }
   for(const k in sel) delete sel[k]; Object.assign(sel,fin);
@@ -1550,10 +1578,10 @@ function detect(){
 }
 function compute(){
   const raw=$('tx').value.trim();
-  const vit=$('vw').value||$('vbp').value||$('vsg').value;
+  const vit=['vw','vt','vbp','vsg','vp','vr','vo'].some(i=>$(i).value);
   if(!raw && !vit && !Object.keys(ADDED).length && !analyse().S.length){ $('found').innerHTML=''; $('out').innerHTML=''; return; }
   const r=detect(); const ids=Object.keys(sel);
-  if(!ddAll && ids.length && document.activeElement!==$('tx')) $('dd').classList.add('hide');
+  if(!ddAll && ids.length) $('dd').classList.add('hide');
   let h='';
   if($('ag').value.trim()===''){ $('found').innerHTML='<div class="alert org">'+L('Enter the age first — doses depend on age.','ముందుగా వయస్సు నమోదు చేయండి — మోతాదు వయస్సుపై ఆధారపడుతుంది.')+'</div>'+(ids.length?'<div class="hint">'+L('Selected: ','ఎంచుకున్నవి: ')+ids.map(id=>esc(dn(D.find(d=>d.id===id)))).join(', ')+'</div>':''); $('out').innerHTML=''; $('ag').focus(); return; }
   const pt=(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?L(' (estimated — enter weight above)',' (అంచనా — పైన బరువు నమోదు చేయండి)'):'')+(preg()?L(' · Pregnant (',' · గర్భిణీ (')+(P.preg==='t1'?L('1st','1వ'):L('2nd/3rd','2/3వ'))+L(' trimester)',' త్రైమాసికం)'):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'');
@@ -1700,7 +1728,7 @@ function run(){
   const abs=order.filter(k=>byK[k].r.ab);
   const A=analyse();
   let h='<div class="card rxcard">';
-  h+='<div class="rxhead"><div><b>'+L('℞ Prescription','℞ మందుల చీటీ')+'</b><div class="x">'+new Date().toLocaleDateString('en-IN')+'</div></div><div class="pchip">'+(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?'*':'')+(preg()?' · 🤰 '+(P.preg==='t1'?L('1st trim.','1వ త్రైమాసికం'):L('2nd/3rd trim.','2/3వ త్రైమాసికం')):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'')+'</div></div>';
+  h+='<div class="rxhead"><div><b>'+L('℞ Prescription','℞ మందుల చీటీ')+'</b><div class="x">'+new Date().toLocaleDateString('en-IN')+'</div></div><div class="pchip">'+(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?'*':'')+(ALG?' · ⚠ '+L({pen:'Penicillin allergy',sulfa:'Sulfa allergy',nsaid:'NSAID allergy'}[ALG],{pen:'పెన్సిలిన్ అలర్జీ',sulfa:'సల్ఫా అలర్జీ',nsaid:'నొప్పి మాత్రల అలర్జీ'}[ALG]):'')+(preg()?' · 🤰 '+(P.preg==='t1'?L('1st trim.','1వ త్రైమాసికం'):L('2nd/3rd trim.','2/3వ త్రైమాసికం')):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'')+'</div></div>';
   h+='<div class="dxrow">'+res.map(o=>'<span class="dx s'+o.sev+'">'+esc(dn(o.d))+' · '+SV(o.sev)+'</span>').join('')+'</div>';
   if(P.ageM<2) h+='<div class="alert org">'+L('Young infant (0–2 months): most sick infants need referral.','2 నెలల లోపు శిశువు: ఎక్కువ మందిని రిఫర్ చేయాలి.')+'</div>';
   refers.forEach(o=>h+='<div class="alert red"><b>🚑 '+L('Refer','రిఫర్ చేయండి')+' — '+esc(dn(o.d))+':</b> '+esc(o.r.refer)+'</div>');
@@ -1722,7 +1750,8 @@ function run(){
   h+='<div class="card noprint share"><h3 style="margin-top:0">'+L('Send prescription','మందుల చీటీ పంపండి')+'</h3>'
    +'<div class="row1"><input id="shPh" type="tel" placeholder="'+L('Patient mobile (optional)','రోగి మొబైల్ (ఐచ్ఛికం)')+'" inputmode="tel"><select id="shLang"><option value="en"'+(LANG==='en'?' selected':'')+'>English</option><option value="te"'+(LANG==='te'?' selected':'')+'>తెలుగు</option><option value="both">English + తెలుగు</option></select></div>'
    +'<input id="shDr" placeholder="'+L('Doctor / clinic name (optional)','డాక్టర్ / క్లినిక్ పేరు (ఐచ్ఛికం)')+'" style="width:100%;margin-top:6px;padding:10px;border:1px solid var(--line);border-radius:8px">'
-   +'<div class="shb"><button id="shWa" class="wa">WhatsApp</button><button id="shSms">SMS</button><button id="shShare">'+L('Share','షేర్')+'</button><button id="shCopy">'+L('Copy','కాపీ')+'</button><button onclick="window.print()">'+L('Print','ప్రింట్')+'</button></div><div class="hint" id="shMsg"></div></div>';
+   +'<button id="shImg" class="btn wa" style="margin-top:8px">🖼 '+L('Send as image (WhatsApp)','చిత్రంగా పంపండి (WhatsApp)')+'</button>'
+   +'<div class="shb"><button id="shWa" class="wa">'+L('WhatsApp text','WhatsApp టెక్స్ట్')+'</button><button id="shSms">SMS</button><button id="shPrev">'+L('Preview image','చిత్రం చూడండి')+'</button><button id="shShare">'+L('Share','షేర్')+'</button><button id="shCopy">'+L('Copy','కాపీ')+'</button><button onclick="window.print()">'+L('Print','ప్రింట్')+'</button></div><div class="hint" id="shMsg"></div><div id="imgPrev" style="margin-top:8px"></div></div>';
   // details per disease
   h+='<details class="card noprint"><summary><b>'+L('Details by disease','వ్యాధి వారీగా వివరాలు')+'</b></summary>'+res.map(o=>'<h3>'+esc(dn(o.d))+' <span class="tag'+(o.sev===2?' red':'')+'">'+SV(o.sev)+'</span></h3><div class="sevtxt">'+esc(o.d.s[o.sev])+'</div>'+o.r.rx.map(r=>rxHTML(r,flagsFor(r))).join('')).join('')+'</details>';
   h+='<p class="hint" style="text-align:center">'+L('Reference aid based on national guidelines. Check product strength on the label. Final decision rests with the treating doctor.','జాతీయ మార్గదర్శకాల ఆధారిత సూచన మాత్రమే. లేబుల్‌పై మందు బలం చూసుకోండి. తుది నిర్ణయం వైద్యునిదే.')+'</p>';
@@ -1731,35 +1760,115 @@ function run(){
   try{ $('shDr').value=localStorage.getItem('mg_dr')||''; }catch(e){}
 }
 function msgText(lang){
-  const {res,order,byK,refers,advice}=LAST; const L=[]; const te=lang==='te', both=lang==='both';
+  const {res,order,byK,refers,advice}=LAST; const M=[]; const te=lang==='te', both=lang==='both';
+  const T=(e,t)=>te?t:both?e+' / '+t:e;
   const dr=($('shDr')||{}).value||'';
-  L.push(te?'*మందుల చీటీ*':both?'*Prescription / మందుల చీటీ*':'*Prescription*');
-  if(dr) L.push(dr);
-  L.push((te?'తేదీ: ':'Date: ')+new Date().toLocaleDateString('en-IN'));
-  const sx=P.sex==='M'?(te?'పురుషుడు':'Male'):(te?'స్త్రీ':'Female');
-  L.push((te?'రోగి: ':'Patient: ')+sx+', '+ageText().replace('yr',te?'సం.':'yr').replace('mo',te?'నెలలు':'mo')+', '+P.wt+(te?' కిలో':' kg')+(preg()?(te?', గర్భిణీ':', pregnant'):''));
-  L.push((te?'వ్యాధి: ':'Diagnosis: ')+res.map(o=>(te?(TE[o.d.id]||o.d.n)+' ('+SEVTE[o.sev]+')':both?o.d.n+' / '+(TE[o.d.id]||'')+' ('+SEVN[o.sev]+')':o.d.n+' ('+SEVN[o.sev]+')')).join(', '));
-  L.push('');
-  order.forEach((k,i)=>{ const r=byK[k].r, t=timing(r);
-    L.push((i+1)+'. *'+r.name+'* — '+r.dose+(BRAND[k]?' ('+(te?'ఉదా: ':'e.g. ')+BRAND[k]+')':''));
-    const tm=te?(TIMING_TE[t.en.replace(/ \(if fever\)/,'')]||t.te):both?t.en+(TIMING_TE[t.en.replace(/ \(if fever\)/,'')]?' ('+TIMING_TE[t.en.replace(/ \(if fever\)/,'')]+')':''):t.en;
-    const fd=te?t.foodTe:both?t.food+' / '+t.foodTe:t.food;
-    const dy=t.days?(te?t.daysTe:t.days):'';
-    L.push('   '+[tm,fd,dy].filter(Boolean).join(' · ')); });
-  if(refers.length){ L.push(''); refers.forEach(o=>L.push((te?'⚠ రిఫర్: ':'⚠ Refer: ')+o.r.refer)); }
-  if(advice.length){ L.push(''); L.push(te?'సలహాలు:':'Advice:'); advice.slice(0,6).forEach(a=>L.push('- '+a)); }
-  L.push(''); L.push(te?'జ్వరం తగ్గకపోతే / ఇబ్బంది పెరిగితే వెంటనే డాక్టర్‌ను కలవండి.':'Come back at once if not better or any danger sign.');
-  return L.join('\n');
+  const line='━━━━━━━━━━━━━━━━━━';
+  M.push('℞ *'+T('PRESCRIPTION','మందుల చీటీ')+'*'); if(dr) M.push('🏥 '+dr);
+  M.push('📅 '+new Date().toLocaleDateString('en-IN')); M.push(line);
+  const sx=P.sex==='M'?T('Male','పురుషుడు'):T('Female','స్త్రీ');
+  M.push('👤 *'+T('Patient','రోగి')+':* '+sx+', '+(te?ageTxt():ageText())+', '+P.wt+' kg'+(preg()?', 🤰 '+T('pregnant','గర్భిణీ'):''));
+  if(ALG) M.push('⚠️ *'+T('Allergy','అలర్జీ')+':* '+{pen:'Penicillin',sulfa:'Sulfa',nsaid:'NSAID / Aspirin'}[ALG]);
+  { const vt=[]; if(TXTV.temp) vt.push('🌡 '+TXTV.temp+'°F'); if(TXTV.sys) vt.push('BP '+TXTV.sys+'/'+TXTV.dia); ['rbs','fbs','ppbs'].forEach(k=>{ if(TXTV[k]) vt.push({rbs:'RBS',fbs:'FBS',ppbs:'PPBS'}[k]+' '+TXTV[k]); }); if(TXTV.pulse) vt.push('Pulse '+TXTV.pulse); if(TXTV.rr) vt.push('RR '+TXTV.rr); if(TXTV.spo2) vt.push('SpO2 '+TXTV.spo2+'%');
+    if(vt.length) M.push('🩺 '+vt.join(' | ')); }
+  M.push('🦠 *'+T('Diagnosis','వ్యాధి')+':*'); res.forEach(o=>M.push('   • '+(te?(TE[o.d.id]||o.d.n):both?o.d.n+' / '+(TE[o.d.id]||''):o.d.n)+' — '+(te?SEVTE[o.sev]:SEVN[o.sev])));
+  M.push(line);
+  M.push('💊 *'+T('MEDICINES','మందులు')+'*'); M.push('');
+  order.forEach((k,i)=>{ const r=byK[k].r, t=timing(r); const base=t.en.replace(/ \(if fever\)/,'');
+    const when=/^[01]-/.test(base)?base+'  ('+(te?TIMING_TE[base]:TIMING_EN[base])+')'+(/if fever/.test(t.en)?T(' if fever',' జ్వరం ఉంటే'):''):(te?t.te:t.en);
+    M.push('*'+(i+1)+'. '+r.name+'*');
+    M.push('   ▸ '+T('Dose','మోతాదు')+': '+r.dose);
+    M.push('   ▸ '+T('When','ఎప్పుడు')+': '+when);
+    M.push('   ▸ '+T('Food','భోజనం')+': '+(te?t.foodTe:both?t.food+' / '+t.foodTe:t.food));
+    if(t.days) M.push('   ▸ '+T('Days','రోజులు')+': '+(te?t.daysTe:t.days));
+    if(BRAND[k]) M.push('   ▸ '+T('Brand e.g.','బ్రాండ్ ఉదా')+': '+BRAND[k]);
+    M.push(''); });
+  if(refers.length){ M.push(line); refers.forEach(o=>M.push('🚑 *'+T('Refer','రిఫర్')+':* '+o.r.refer)); }
+  if(advice.length){ M.push(line); M.push('📝 *'+T('Advice','సలహాలు')+'*'); advice.slice(0,5).forEach(a=>M.push('   • '+a)); }
+  M.push(line); M.push(T('Come back at once if not better or any danger sign.','తగ్గకపోతే / ఇబ్బంది పెరిగితే వెంటనే డాక్టర్‌ను కలవండి.'));
+  return M.join('\n');
+}
+// ---- prescription as an image (canvas) ----
+function rxImage(lang){
+  const {res,order,byK,refers,advice}=LAST; const te=lang==='te', both=lang==='both';
+  const T=(e,t)=>te?t:both?e+' / '+t:e;
+  const W=1080, PAD=36, FONT='"Noto Sans Telugu","Nirmala UI","Gautami",system-ui,sans-serif';
+  const cv=document.createElement('canvas'); const ctx=cv.getContext('2d');
+  const cols=[{k:'#',w:44},{k:T('Medicine','మందు'),w:360},{k:T('Dose','మోతాదు'),w:200},{k:T('When','ఎప్పుడు'),w:170},{k:T('Food','భోజనం'),w:120},{k:T('Days','రోజులు'),w:114}];
+  function wrap(text,maxW,font){ ctx.font=font; const words=String(text).split(/\s+/); const lines=[]; let cur='';
+    for(const w of words){ const tst=cur?cur+' '+w:w; if(ctx.measureText(tst).width>maxW&&cur){ lines.push(cur); cur=w; } else cur=tst; } if(cur) lines.push(cur); return lines.length?lines:['']; }
+  const F={b:'700 26px '+FONT,n:'400 24px '+FONT,s:'400 20px '+FONT,h:'700 34px '+FONT,hb:'700 22px '+FONT};
+  // build rows
+  const rows=order.map((k,i)=>{ const r=byK[k].r,t=timing(r); const base=t.en.replace(/ \(if fever\)/,'');
+    const when=/^[01]-/.test(base)?[base,(te?TIMING_TE[base]:TIMING_EN[base])+(/if fever/.test(t.en)?T(' (if fever)',' (జ్వరం ఉంటే)'):'')]:[te?t.te:t.en,''];
+    return {i:i+1,name:r.name,brand:BRAND[k]||'',dose:r.dose,when,food:te?t.foodTe:t.food,fcls:t.food,days:(te?t.daysTe:t.days)||'—'}; });
+  function layout(draw){
+    let y=0; const put=(fn)=>{ if(draw) fn(); };
+    // header
+    put(()=>{ ctx.fillStyle='#0f6e5c'; ctx.fillRect(0,0,W,120); ctx.fillStyle='#fff'; ctx.font=F.h; ctx.fillText('℞ '+T('Prescription','మందుల చీటీ'),PAD,58); ctx.font=F.s; const dr=($('shDr')||{}).value||''; ctx.fillText((dr?dr+'  ·  ':'')+new Date().toLocaleDateString('en-IN'),PAD,96); });
+    y=150;
+    const pl=(P.sex==='M'?T('Male','పురుషుడు'):T('Female','స్త్రీ'))+' · '+(te?ageTxt():ageText())+' · '+P.wt+' kg'+(preg()?' · '+T('Pregnant','గర్భిణీ'):'')+(ALG?' · ⚠ '+T('Allergy','అలర్జీ')+': '+{pen:'Penicillin',sulfa:'Sulfa',nsaid:'NSAID'}[ALG]:'');
+    for(const ln of wrap(pl,W-2*PAD,F.b)){ put(()=>{ ctx.fillStyle='#1c2321'; ctx.font=F.b; ctx.fillText(ln,PAD,y); }); y+=36; }
+    const vt=[]; if(TXTV.temp) vt.push('Temp '+TXTV.temp+'°F'); if(TXTV.sys) vt.push('BP '+TXTV.sys+'/'+TXTV.dia); ['rbs','fbs','ppbs'].forEach(k=>{ if(TXTV[k]) vt.push({rbs:'RBS',fbs:'FBS',ppbs:'PPBS'}[k]+' '+TXTV[k]); }); if(TXTV.pulse) vt.push('Pulse '+TXTV.pulse); if(TXTV.rr) vt.push('RR '+TXTV.rr); if(TXTV.spo2) vt.push('SpO2 '+TXTV.spo2+'%');
+    if(vt.length){ for(const ln of wrap(vt.join('  |  '),W-2*PAD,F.n)){ put(()=>{ ctx.fillStyle='#5c6662'; ctx.font=F.n; ctx.fillText(ln,PAD,y); }); y+=32; } }
+    y+=8;
+    // diagnosis chips
+    let x=PAD; ctx.font=F.hb;
+    for(const o of res){ const txt=(te?(TE[o.d.id]||o.d.n):o.d.n)+' · '+(te?SEVTE[o.sev]:SEVN[o.sev]); const w=ctx.measureText(txt).width+28;
+      if(x+w>W-PAD){ x=PAD; y+=48; }
+      put(()=>{ ctx.fillStyle=['#e6f3ef','#fff4dc','#fdecea'][o.sev]; roundRect(x,y-4,w,40,20); ctx.fill(); ctx.fillStyle=['#0f6e5c','#8a5a00','#b3261e'][o.sev]; ctx.font=F.hb; ctx.fillText(txt,x+14,y+24); });
+      x+=w+10; }
+    y+=60;
+    // refer
+    for(const o of refers){ const ls=wrap('🚑 '+T('Refer','రిఫర్')+': '+o.r.refer,W-2*PAD-24,F.n); const h=ls.length*32+20;
+      put(()=>{ ctx.fillStyle='#fdecea'; roundRect(PAD,y,W-2*PAD,h,10); ctx.fill(); ctx.fillStyle='#b3261e'; ctx.font=F.n; ls.forEach((l,j)=>ctx.fillText(l,PAD+12,y+34+j*32)); }); y+=h+12; }
+    // table header
+    if(rows.length){
+      put(()=>{ ctx.fillStyle='#e6f3ef'; ctx.fillRect(PAD,y,W-2*PAD,48); ctx.fillStyle='#0f6e5c'; ctx.font=F.hb; let cx=PAD; cols.forEach(c=>{ ctx.fillText(c.k,cx+8,y+32); cx+=c.w; }); });
+      y+=48;
+      rows.forEach((r,ri)=>{
+        const cw=cols.map(c=>c.w-16);
+        const cells=[[[String(r.i),F.b,'#1c2321']],
+          [...wrap(r.name,cw[1],F.b).map(l=>[l,F.b,'#1c2321']),...(r.brand?wrap(T('e.g. ','ఉదా: ')+r.brand,cw[1],F.s).map(l=>[l,F.s,'#1d4f91']):[])],
+          wrap(r.dose,cw[2],F.n).map(l=>[l,F.n,'#1c2321']),
+          [...wrap(r.when[0],cw[3],F.b).map(l=>[l,F.b,'#1c2321']),...(r.when[1]?wrap(r.when[1],cw[3],F.s).map(l=>[l,F.s,'#5c6662']):[])],
+          wrap(r.food,cw[4],F.hb).map(l=>[l,F.hb,r.fcls==='Before food'||r.fcls==='Empty stomach'?'#1d4f91':r.fcls==='After food'?'#0f6e5c':'#444']),
+          wrap(r.days,cw[5],F.n).map(l=>[l,F.n,'#1c2321'])];
+        const lh=l=>l[1]===F.s?28:34; const h=Math.max(...cells.map(c=>c.reduce((a,l)=>a+lh(l),0)))+24;
+        put(()=>{ ctx.fillStyle=ri%2?'#fbfdfc':'#ffffff'; ctx.fillRect(PAD,y,W-2*PAD,h); ctx.strokeStyle='#d9e0dd'; ctx.lineWidth=1; ctx.strokeRect(PAD,y,W-2*PAD,h);
+          let cx=PAD; cells.forEach((c,ci)=>{ let cy=y+36; c.forEach(l=>{ ctx.font=l[1]; ctx.fillStyle=l[2]; ctx.fillText(l[0],cx+8,cy); cy+=lh(l); });
+            if(ci===1){ /* highlight name */ } cx+=cols[ci].w; if(ci<cells.length-1){ ctx.beginPath(); ctx.moveTo(cx,y); ctx.lineTo(cx,y+h); ctx.stroke(); } }); });
+        y+=h; });
+      y+=14;
+      put(()=>{ ctx.fillStyle='#5c6662'; ctx.font=F.s; ctx.fillText(T('1-0-1 = morning – afternoon – night','1-0-1 = ఉదయం – మధ్యాహ్నం – రాత్రి'),PAD,y+20); }); y+=40;
+    }
+    if(advice.length){ put(()=>{ ctx.fillStyle='#0f6e5c'; ctx.font=F.b; ctx.fillText(T('Advice','సలహాలు'),PAD,y+24); }); y+=40;
+      for(const a of advice.slice(0,5)){ for(const [j,ln] of wrap(a,W-2*PAD-30,F.n).entries()){ put(()=>{ ctx.fillStyle='#1c2321'; ctx.font=F.n; ctx.fillText((j?'   ':'•  ')+ln,PAD,y+24); }); y+=32; } } y+=10; }
+    put(()=>{ ctx.fillStyle='#f6f8f7'; ctx.fillRect(0,y,W,70); ctx.fillStyle='#5c6662'; ctx.font=F.s; ctx.fillText(T('Come back at once if not better or any danger sign.','తగ్గకపోతే వెంటనే డాక్టర్‌ను కలవండి.'),PAD,y+30); ctx.fillText(T('Reference aid — final decision by treating doctor.','సూచన మాత్రమే — తుది నిర్ణయం వైద్యునిదే.'),PAD,y+58); });
+    y+=80; return y; }
+  function roundRect(x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  cv.width=W; cv.height=10; const H=layout(false); cv.width=W; cv.height=H;
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H); ctx.textBaseline='alphabetic'; layout(true);
+  return cv;
 }
 function phoneNo(){ let n=(($('shPh')||{}).value||'').replace(/\D/g,''); if(n.length===10) n='91'+n; return n; }
+async function shareImage(){
+  const cv=rxImage($('shLang').value); const blob=await new Promise(r=>cv.toBlob(r,'image/png'));
+  const file=new File([blob],'prescription-'+Date.now()+'.png',{type:'image/png'});
+  if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file],title:'Prescription'}); $('shMsg').textContent=L('Choose WhatsApp in the share list.','షేర్ జాబితాలో WhatsApp ఎంచుకోండి.'); return; }catch(e){ if(e.name==='AbortError') return; } }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=file.name; document.body.appendChild(a); a.click(); a.remove();
+  $('shMsg').textContent=L('Image saved to your phone — open WhatsApp and attach it from Gallery/Downloads.','చిత్రం ఫోన్‌లో సేవ్ అయింది — WhatsAppలో గ్యాలరీ/డౌన్‌లోడ్స్ నుండి జత చేయండి.');
+}
 document.addEventListener('click',async e=>{
-  const id=e.target.id; if(!['shWa','shSms','shShare','shCopy'].includes(id)) return;
+  const id=e.target.id; if(!['shImg','shPrev','shWa','shSms','shShare','shCopy'].includes(id)) return;
   try{ localStorage.setItem('mg_dr',$('shDr').value); }catch(_){}
+  if(id==='shImg'){ await shareImage(); return; }
+  if(id==='shPrev'){ const cv=rxImage($('shLang').value); const w=$('imgPrev'); w.innerHTML=''; const im=new Image(); im.src=cv.toDataURL('image/png'); im.style.width='100%'; im.style.border='1px solid #d9e0dd'; im.style.borderRadius='8px'; w.appendChild(im); return; }
   const t=msgText($('shLang').value); const n=phoneNo();
   if(id==='shWa') window.open('https://wa.me/'+(n||'')+'?text='+encodeURIComponent(t),'_blank');
   if(id==='shSms') location.href='sms:'+(n?'+'+n:'')+'?body='+encodeURIComponent(t);
   if(id==='shShare'){ if(navigator.share){ try{ await navigator.share({text:t}); }catch(_){} } else $('shMsg').textContent='Share not supported here — use Copy.'; }
-  if(id==='shCopy'){ try{ await navigator.clipboard.writeText(t); $('shMsg').textContent='Copied — paste in any app.'; }catch(_){ $('shMsg').textContent=t; } }
+  if(id==='shCopy'){ try{ await navigator.clipboard.writeText(t); $('shMsg').textContent=L('Copied — paste in any app.','కాపీ అయింది — ఏ యాప్‌లోనైనా పేస్ట్ చేయండి.'); }catch(_){ $('shMsg').textContent=t; } }
 });
 
 // --- disease drop-down inside the search box ---
@@ -1805,8 +1914,9 @@ function rxHTML(r,flags){
   let f=''; (flags||[]).forEach(x=>f+='<div class="alert red">⚠ '+esc(x)+'</div>');
   return '<div class="rx"><div class="n">'+esc(r.name)+(r.ab?'<span class="tag">antibiotic</span>':'')+'</div><div class="d">'+esc(r.dose)+(r.freq?' · '+esc(r.freq):'')+(r.days?' · '+esc(r.days):'')+'</div>'+(r.note?'<div class="x">'+esc(r.note)+'</div>':'')+f+'</div>';
 }
+const ALLERGY={pen:{ks:['amoxicillin','amoxclav','bpg','kit3'],t:'PENICILLIN ALLERGY — do not give; use Azithromycin (or Cephalexin only if allergy was mild rash)'},sulfa:{ks:['sp','kit2'],t:'SULFA ALLERGY — avoid (contains sulfa); refer for alternative'},nsaid:{ks:['ibuprofen','naproxen','diclo','diclogel','mefenamic','aspirin'],t:'NSAID / ASPIRIN ALLERGY — do not give; use Paracetamol'}};
 function flagsFor(r){
-  const f=[];
+  const f=[]; if(typeof ALG!=='undefined'&&ALG&&ALLERGY[ALG]&&ALLERGY[ALG].ks.includes(r.k)) f.push(ALLERGY[ALG].t);
   if(preg() && PREG_AVOID[r.k]) f.push(r.name+': '+PREG_AVOID[r.k]);
   if(P.preg==='t1' && PREG_T1[r.k]) f.push(r.name+': '+PREG_T1[r.k]);
   if(elderly() && ELDER[r.k]) f.push(ELDER[r.k]);
@@ -1815,12 +1925,12 @@ function flagsFor(r){
 function ageTxt(){ const y=Math.floor(P.ageM/12), m=P.ageM%12; return (y?y+L(' yr ',' సం. '):'')+(m||!y?m+L(' mo',' నెలలు'):''); }
 function ageText(){ const y=Math.floor(P.ageM/12), m=P.ageM%12; return (y?y+' yr ':'')+(m||!y?m+' mo':''); }
 
-['sx','au','vst'].forEach(i=>$(i).addEventListener('change',compute));
-['vw','vbp','vsg'].forEach(i=>$(i).addEventListener('input',later));
+['sx','au','vst','vpreg','val'].forEach(i=>$(i).addEventListener('change',compute));
+['vw','vt','vbp','vsg','vp','vr','vo'].forEach(i=>$(i).addEventListener('input',later));
 ['ag','tx'].forEach(i=>$(i).addEventListener('input',later));
 $('tx').addEventListener('keydown',e=>{ if(e.key==='Enter'&&$('dd').classList.contains('hide')){ e.preventDefault(); compute(); $('tx').blur(); } });
 $('found').addEventListener('click',e=>{
-  if(e.target.id==='newPt'){ $('tx').value=''; $('ag').value=''; ['vw','vbp','vsg'].forEach(i=>$(i).value=''); ADDED={}; OVR={}; REMOVED=new Set(); compute(); $('tx').focus(); return; }
+  if(e.target.id==='newPt'){ $('tx').value=''; $('ag').value=''; ['vw','vt','vbp','vsg','vp','vr','vo'].forEach(i=>$(i).value=''); $('vpreg').value='no'; $('val').value=''; ADDED={}; OVR={}; REMOVED=new Set(); compute(); $('tx').focus(); return; }
   const rm=e.target.closest('[data-rm]'); if(rm){ const id=rm.dataset.rm; REMOVED.add(id); delete ADDED[id]; compute(); return; }
   const ad=e.target.closest('[data-add]'); if(ad){ const id=ad.dataset.add; REMOVED.delete(id); ADDED[id]=1; compute(); return; }
   const c=e.target.closest('.sev .chip'); if(c){ OVR[c.parentElement.dataset.id]=+c.dataset.v; compute(); } });
