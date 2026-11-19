@@ -186,6 +186,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 #dmenu a.mtile.on{background:var(--g2)}
 .infob{border:1px solid var(--line);background:#fff;color:var(--b);border-radius:50%;width:32px;height:32px;font-size:15px;flex:none;margin-right:4px}
 .lrow .lk{flex:1;cursor:pointer}
+.pname{width:100%;padding:11px 10px;font-size:15px;border:1px solid var(--line);border-radius:8px;margin-bottom:8px;font-weight:600}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -230,6 +231,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <!-- PRESCRIBE -->
 <section id="p-calc">
 <div class="card qbox">
+<input type="text" id="pn" class="pname" placeholder="Patient name" data-te-ph="రోగి పేరు" aria-label="Patient name" autocomplete="off">
 <div class="row1">
 <select id="sx" aria-label="Gender"><option value="M" data-te="పురుషుడు">Male</option><option value="F" data-te="స్త్రీ">Female</option></select>
 <input type="number" id="ag" min="0" max="110" step="any" placeholder="Age" data-te-ph="వయస్సు" aria-label="Age" inputmode="decimal">
@@ -1620,7 +1622,7 @@ function compute(){
   let h='';
   if($('ag').value.trim()===''){ $('found').innerHTML='<div class="alert org">'+L('Enter the age first — doses depend on age.','ముందుగా వయస్సు నమోదు చేయండి — మోతాదు వయస్సుపై ఆధారపడుతుంది.')+'</div>'+(ids.length?'<div class="hint">'+L('Selected: ','ఎంచుకున్నవి: ')+ids.map(id=>esc(dn(D.find(d=>d.id===id)))).join(', ')+'</div>':''); $('out').innerHTML=''; $('ag').focus(); return; }
   const pt=(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?L(' (estimated — enter weight above)',' (అంచనా — పైన బరువు నమోదు చేయండి)'):'')+(preg()?L(' · Pregnant (',' · గర్భిణీ (')+(P.preg==='t1'?L('1st','1వ'):L('2nd/3rd','2/3వ'))+L(' trimester)',' త్రైమాసికం)'):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'');
-  h+='<div class="pt" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>'+pt+'</span><button id="newPt" class="newpt">'+L('↺ New patient','↺ కొత్త రోగి')+'</button></div>';
+  h+='<div class="pt" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>'+(pName()?'<b>'+esc(pName())+'</b> · ':'')+pt+'</span><button id="newPt" class="newpt">'+L('↺ New patient','↺ కొత్త రోగి')+'</button></div>';
   if(/pregnan|garbham|గర్భ/.test(r.T)&&P.sex==='M') h+='<div class="alert org">'+L('Pregnancy typed — select Female.','గర్భిణీ అని టైప్ చేశారు — స్త్రీ ఎంచుకోండి.')+'</div>';
   if(!ids.length){
     const W=r.T.trim().split(' ').filter(w=>w.length>=3);
@@ -1763,7 +1765,7 @@ function run(){
   const abs=order.filter(k=>byK[k].r.ab);
   const A=analyse();
   let h='<div class="card rxcard">';
-  h+='<div class="rxhead"><div><b>'+L('℞ Prescription','℞ మందుల చీటీ')+'</b><div class="x">'+new Date().toLocaleDateString('en-IN')+'</div></div><div class="pchip">'+(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?'*':'')+(ALG?' · ⚠ '+L({pen:'Penicillin allergy',sulfa:'Sulfa allergy',nsaid:'NSAID allergy'}[ALG],{pen:'పెన్సిలిన్ అలర్జీ',sulfa:'సల్ఫా అలర్జీ',nsaid:'నొప్పి మాత్రల అలర్జీ'}[ALG]):'')+(preg()?' · 🤰 '+(P.preg==='t1'?L('1st trim.','1వ త్రైమాసికం'):L('2nd/3rd trim.','2/3వ త్రైమాసికం')):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'')+'</div></div>';
+  h+='<div class="rxhead"><div><b>'+L('℞ Prescription','℞ మందుల చీటీ')+'</b><div class="x">'+new Date().toLocaleDateString('en-IN')+'</div></div><div class="pchip">'+(pName()?'<b>'+esc(pName())+'</b> · ':'')+(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?'*':'')+(ALG?' · ⚠ '+L({pen:'Penicillin allergy',sulfa:'Sulfa allergy',nsaid:'NSAID allergy'}[ALG],{pen:'పెన్సిలిన్ అలర్జీ',sulfa:'సల్ఫా అలర్జీ',nsaid:'నొప్పి మాత్రల అలర్జీ'}[ALG]):'')+(preg()?' · 🤰 '+(P.preg==='t1'?L('1st trim.','1వ త్రైమాసికం'):L('2nd/3rd trim.','2/3వ త్రైమాసికం')):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'')+'</div></div>';
   h+='<div class="dxrow">'+res.map(o=>'<span class="dx s'+o.sev+'">'+((sysOf(o.d.id)[0]||{}).i||'')+' '+esc(dn(o.d))+' · '+SV(o.sev)+'</span>').join('')+'</div>';
   if(P.ageM<2) h+='<div class="alert org">'+L('Young infant (0–2 months): most sick infants need referral.','2 నెలల లోపు శిశువు: ఎక్కువ మందిని రిఫర్ చేయాలి.')+'</div>';
   refers.forEach(o=>h+='<div class="alert red"><b>🚑 '+L('Refer','రిఫర్ చేయండి')+' — '+esc(dn(o.d))+':</b> '+esc(o.r.refer)+'</div>');
@@ -1802,7 +1804,7 @@ function msgText(lang){
   M.push('℞ *'+T('PRESCRIPTION','మందుల చీటీ')+'*'); if(dr) M.push('🏥 '+dr);
   M.push('📅 '+new Date().toLocaleDateString('en-IN')); M.push(line);
   const sx=P.sex==='M'?T('Male','పురుషుడు'):T('Female','స్త్రీ');
-  M.push('👤 *'+T('Patient','రోగి')+':* '+sx+', '+(te?ageTxt():ageText())+', '+P.wt+' kg'+(preg()?', 🤰 '+T('pregnant','గర్భిణీ'):''));
+  M.push('👤 *'+T('Patient','రోగి')+':* '+(pName()?pName()+', ':'')+sx+', '+(te?ageTxt():ageText())+', '+P.wt+' kg'+(preg()?', 🤰 '+T('pregnant','గర్భిణీ'):''));
   if(ALG) M.push('⚠️ *'+T('Allergy','అలర్జీ')+':* '+{pen:'Penicillin',sulfa:'Sulfa',nsaid:'NSAID / Aspirin'}[ALG]);
   { const vt=[]; if(TXTV.temp) vt.push('🌡 '+TXTV.temp+'°F'); if(TXTV.sys) vt.push('BP '+TXTV.sys+'/'+TXTV.dia); ['rbs','fbs','ppbs'].forEach(k=>{ if(TXTV[k]) vt.push({rbs:'RBS',fbs:'FBS',ppbs:'PPBS'}[k]+' '+TXTV[k]); }); if(TXTV.pulse) vt.push('Pulse '+TXTV.pulse); if(TXTV.rr) vt.push('RR '+TXTV.rr); if(TXTV.spo2) vt.push('SpO2 '+TXTV.spo2+'%');
     if(vt.length) M.push('🩺 '+vt.join(' | ')); }
@@ -1843,7 +1845,7 @@ function rxImage(lang){
     // header
     put(()=>{ ctx.fillStyle='#0f6e5c'; ctx.fillRect(0,0,W,120); ctx.fillStyle='#fff'; ctx.font=F.h; ctx.fillText('℞ '+T('Prescription','మందుల చీటీ'),PAD,58); ctx.font=F.s; const dr=($('shDr')||{}).value||''; ctx.fillText((dr?dr+'  ·  ':'')+new Date().toLocaleDateString('en-IN'),PAD,96); });
     y=150;
-    const pl=(P.sex==='M'?T('Male','పురుషుడు'):T('Female','స్త్రీ'))+' · '+(te?ageTxt():ageText())+' · '+P.wt+' kg'+(preg()?' · '+T('Pregnant','గర్భిణీ'):'')+(ALG?' · ⚠ '+T('Allergy','అలర్జీ')+': '+{pen:'Penicillin',sulfa:'Sulfa',nsaid:'NSAID'}[ALG]:'');
+    const pl=(pName()?pName()+' · ':'')+(P.sex==='M'?T('Male','పురుషుడు'):T('Female','స్త్రీ'))+' · '+(te?ageTxt():ageText())+' · '+P.wt+' kg'+(preg()?' · '+T('Pregnant','గర్భిణీ'):'')+(ALG?' · ⚠ '+T('Allergy','అలర్జీ')+': '+{pen:'Penicillin',sulfa:'Sulfa',nsaid:'NSAID'}[ALG]:'');
     for(const ln of wrap(pl,W-2*PAD,F.b)){ put(()=>{ ctx.fillStyle='#1c2321'; ctx.font=F.b; ctx.fillText(ln,PAD,y); }); y+=36; }
     const vt=[]; if(TXTV.temp) vt.push('Temp '+TXTV.temp+'°F'); if(TXTV.sys) vt.push('BP '+TXTV.sys+'/'+TXTV.dia); ['rbs','fbs','ppbs'].forEach(k=>{ if(TXTV[k]) vt.push({rbs:'RBS',fbs:'FBS',ppbs:'PPBS'}[k]+' '+TXTV[k]); }); if(TXTV.pulse) vt.push('Pulse '+TXTV.pulse); if(TXTV.rr) vt.push('RR '+TXTV.rr); if(TXTV.spo2) vt.push('SpO2 '+TXTV.spo2+'%');
     if(vt.length){ for(const ln of wrap(vt.join('  |  '),W-2*PAD,F.n)){ put(()=>{ ctx.fillStyle='#5c6662'; ctx.font=F.n; ctx.fillText(ln,PAD,y); }); y+=32; } }
@@ -1918,10 +1920,10 @@ async function shareFile(blob,name,type){
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove();
   $('shMsg').textContent=L('Saved to your phone ('+name+') — in WhatsApp tap 📎 and attach it (Document / Gallery).','ఫోన్‌లో సేవ్ అయింది ('+name+') — WhatsAppలో 📎 నొక్కి జత చేయండి.');
 }
-async function sharePdf(){ const cv=rxImage($('shLang').value); await shareFile(canvasToPdf(cv),'prescription-'+new Date().toISOString().slice(0,10)+'.pdf','application/pdf'); }
+async function sharePdf(){ const cv=rxImage($('shLang').value); await shareFile(canvasToPdf(cv),'prescription-'+(pName()?pName().replace(/[^A-Za-z0-9\u0C00-\u0C7F]+/g,'_')+'-':'')+new Date().toISOString().slice(0,10)+'.pdf','application/pdf'); }
 
 function phoneNo(){ let n=(($('shPh')||{}).value||'').replace(/\D/g,''); if(n.length===10) n='91'+n; return n; }
-async function shareImage(){ const cv=rxImage($('shLang').value); const blob=await new Promise(r=>cv.toBlob(r,'image/png')); await shareFile(blob,'prescription-'+new Date().toISOString().slice(0,10)+'.png','image/png'); }
+async function shareImage(){ const cv=rxImage($('shLang').value); const blob=await new Promise(r=>cv.toBlob(r,'image/png')); await shareFile(blob,'prescription-'+(pName()?pName().replace(/[^A-Za-z0-9\u0C00-\u0C7F]+/g,'_')+'-':'')+new Date().toISOString().slice(0,10)+'.png','image/png'); }
 document.addEventListener('click',async e=>{
   const id=e.target.id; if(!['shImg','shPdf','shPrev','shWa','shSms','shShare','shCopy'].includes(id)) return;
   try{ localStorage.setItem('mg_dr',$('shDr').value); }catch(_){}
@@ -2217,15 +2219,16 @@ function flagsFor(r){
   if(elderly() && ELDER[r.k]) f.push(ELDER[r.k]);
   return f;
 }
+function pName(){ return ((document.getElementById('pn')||{}).value||'').trim(); }
 function ageTxt(){ const y=Math.floor(P.ageM/12), m=P.ageM%12; return (y?y+L(' yr ',' సం. '):'')+(m||!y?m+L(' mo',' నెలలు'):''); }
 function ageText(){ const y=Math.floor(P.ageM/12), m=P.ageM%12; return (y?y+' yr ':'')+(m||!y?m+' mo':''); }
 
 ['sx','au','vst','vpreg','val'].forEach(i=>$(i).addEventListener('change',compute));
-['vw','vt','vbp','vsg','vp','vr','vo'].forEach(i=>$(i).addEventListener('input',later));
+['pn','vw','vt','vbp','vsg','vp','vr','vo'].forEach(i=>$(i).addEventListener('input',later));
 ['ag','tx'].forEach(i=>$(i).addEventListener('input',later));
 $('tx').addEventListener('keydown',e=>{ if(e.key==='Enter'&&$('dd').classList.contains('hide')){ e.preventDefault(); compute(); $('tx').blur(); } });
 $('found').addEventListener('click',e=>{
-  if(e.target.id==='newPt'){ $('tx').value=''; $('ag').value=''; ['vw','vt','vbp','vsg','vp','vr','vo'].forEach(i=>$(i).value=''); $('vpreg').value='no'; $('val').value=''; ADDED={}; OVR={}; REMOVED=new Set(); compute(); $('tx').focus(); return; }
+  if(e.target.id==='newPt'){ $('tx').value=''; $('ag').value=''; ['pn','vw','vt','vbp','vsg','vp','vr','vo'].forEach(i=>$(i).value=''); $('vpreg').value='no'; $('val').value=''; ADDED={}; OVR={}; REMOVED=new Set(); compute(); $('pn').focus(); return; }
   const rm=e.target.closest('[data-rm]'); if(rm){ const id=rm.dataset.rm; REMOVED.add(id); delete ADDED[id]; compute(); return; }
   const ad=e.target.closest('[data-add]'); if(ad){ const id=ad.dataset.add; REMOVED.delete(id); ADDED[id]=1; compute(); return; }
   const c=e.target.closest('.sev .chip'); if(c){ OVR[c.parentElement.dataset.id]=+c.dataset.v; compute(); } });
