@@ -184,6 +184,8 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 #dmenu a.mtile .mn{flex:1}
 #dmenu a.mtile .mc{font-size:10px;color:var(--mut);font-weight:400}
 #dmenu a.mtile.on{background:var(--g2)}
+.infob{border:1px solid var(--line);background:#fff;color:var(--b);border-radius:50%;width:32px;height:32px;font-size:15px;flex:none;margin-right:4px}
+.lrow .lk{flex:1;cursor:pointer}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -2183,8 +2185,8 @@ function pickRegion(rid){ const r=BODY_REG.find(x=>x.id===rid); document.querySe
 function showSys(sid){
   const s=SYS.find(x=>x.id===sid); if(!s) return; const ds=s.ids.map(id=>D.find(d=>d.id===id)).filter(Boolean);
   let h='<div class="card syshead" style="--c:'+s.c+'"><div class="sysbig">'+s.i+'</div><div><h2 style="margin:0">'+esc(sysName(s))+'</h2><div class="hint">'+(LANG==='te'?s.n:s.te)+' · '+ds.length+L(' conditions',' వ్యాధులు')+'</div></div></div>';
-  h+='<div class="card"><div class="hint" style="margin-bottom:6px">'+L('Tap a name for medicines by age · + to prescribe for the current patient','పేరు నొక్కితే వయస్సు వారీగా మందులు · + నొక్కితే చీటీలో చేరుతుంది')+'</div>';
-  ds.forEach(d=>{ h+='<div class="lrow"><span class="lk" data-dis="'+d.id+'"><b>'+esc(dn(d))+'</b><small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="addb" data-use="'+d.id+'">+</button></div>'; });
+  h+='<div class="card"><div class="hint" style="margin-bottom:6px">'+L('Tap a name to show it on the main screen with medicines · ℹ = doses for all ages','పేరు నొక్కితే ప్రధాన స్క్రీన్‌లో మందులతో చూపిస్తుంది · ℹ = అన్ని వయస్సుల మోతాదులు')+'</div>';
+  ds.forEach(d=>{ h+='<div class="lrow"><span class="lk" data-use="'+d.id+'"><b>'+esc(dn(d))+'</b><small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="infob" data-dis="'+d.id+'" aria-label="Doses by age">ℹ</button><button class="addb" data-use="'+d.id+'">+</button></div>'; });
   h+='</div>';
   const cps=comboPairs().filter(c=>c.ids.some(id=>s.ids.includes(id)));
   if(cps.length){ h+='<div class="card"><h3 style="margin-top:0">🔗 '+L('Combinations in this group','ఈ విభాగంలో కలయికలు')+' ('+cps.length+')</h3>';
@@ -2349,7 +2351,7 @@ function gsearch(){
 }
 $('gq').addEventListener('input',gsearch);
 $('gres').addEventListener('click',e=>{ const a=e.target.closest('a'); if(!a) return; openSide(false); markMenu(null);
-  if(a.dataset.gd) showDisease(a.dataset.gd,1);
+  if(a.dataset.gd) useIds([a.dataset.gd]);
   else if(a.dataset.gm) showMed(a.dataset.gm);
   else if(a.dataset.gs){ goPage(a.dataset.pg); setTimeout(()=>flash($(a.dataset.gs)),60); } });
 
@@ -2359,11 +2361,11 @@ function listCounts(){ const n=D.length, c=comboPairs().length; if($('qlB')) $('
   $('qlS').textContent=L(n+' single diseases',n+' ఒకే వ్యాధులు'); $('qlC').textContent=L(c+' combined diseases',c+' కలిసిన వ్యాధులు');
   $('mSingle').textContent='🩺 '+L('Single diseases ('+n+')','ఒకే వ్యాధులు ('+n+')'); $('mCombo').textContent='🔗 '+L('Combined diseases ('+c+')','కలిసిన వ్యాధులు ('+c+')'); }
 function renderSingle(){
-  const q=(($('sgq')||{}).value||'').toLowerCase(); let h='<div class="card"><h2>'+L('Single diseases','ఒకే వ్యాధులు')+' ('+D.length+')</h2><input type="search" id="sgq" placeholder="'+L('Filter…','వెతకండి…')+'" value="'+esc(q)+'"><div class="hint" style="margin-top:6px">'+L('Tap a disease to see medicines for all ages, or + to prescribe.','వ్యాధిని నొక్కితే అన్ని వయస్సుల మందులు; + నొక్కితే మందుల చీటీలో చేరుతుంది.')+'</div></div>';
+  const q=(($('sgq')||{}).value||'').toLowerCase(); let h='<div class="card"><h2>'+L('Single diseases','ఒకే వ్యాధులు')+' ('+D.length+')</h2><input type="search" id="sgq" placeholder="'+L('Filter…','వెతకండి…')+'" value="'+esc(q)+'"><div class="hint" style="margin-top:6px">'+L('Tap a disease to show it on the main screen with medicines · ℹ = doses for all ages','వ్యాధిని నొక్కితే ప్రధాన స్క్రీన్‌లో మందులతో · ℹ = అన్ని వయస్సుల మోతాదులు')+'</div></div>';
   let cnt=0;
   for(const sy of SYS){ const ds=sy.ids.map(id=>D.find(d=>d.id===id)).filter(d=>d&&(!q||(d.n+' '+(TE[d.id]||'')+' '+(SYM[d.id]||[]).join(' ')).toLowerCase().includes(q))); if(!ds.length) continue;
     h+='<div class="card"><h3 style="margin-top:0;color:'+sy.c+'">'+sy.i+' '+esc(sysName(sy))+'</h3>';
-    ds.forEach(d=>{ cnt++; h+='<div class="lrow"><span class="lk" data-dis="'+d.id+'">'+esc(dn(d))+'<small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="addb" data-use="'+d.id+'">+</button></div>'; }); h+='</div>'; }
+    ds.forEach(d=>{ cnt++; h+='<div class="lrow"><span class="lk" data-use="'+d.id+'">'+esc(dn(d))+'<small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></span><button class="infob" data-dis="'+d.id+'" aria-label="Doses by age">ℹ</button><button class="addb" data-use="'+d.id+'">+</button></div>'; }); h+='</div>'; }
   if(!cnt) h+='<div class="card">'+L('No match.','సరిపోలేదు.')+'</div>';
   $('p-single').innerHTML=h; const i=$('sgq'); i.focus(); i.setSelectionRange(q.length,q.length);
 }
@@ -2377,7 +2379,7 @@ function renderCombo(){
   if(!cnt) h+=L('No match.','సరిపోలేదు.'); h+='</div>';
   $('p-combo').innerHTML=h; const i=$('cbq'); i.focus(); i.setSelectionRange(q.length,q.length);
 }
-function useIds(ids){ ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); compute(); setTimeout(()=>flash($('found')),60); }
+function useIds(ids){ ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); openSide(false); window.scrollTo(0,0); compute(); setTimeout(()=>{ flash($('found')); if(!$('ag').value) $('ag').focus(); },80); }
 ['p-single','p-combo'].forEach(pid=>{ $(pid).addEventListener('input',e=>{ if(e.target.id==='sgq') renderSingle(); if(e.target.id==='cbq') renderCombo(); });
   $(pid).addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); }); });
 document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; if(pg==='body'){ openSide(true); setTimeout(()=>$('dmenu').scrollIntoView({block:'start'}),50); return; } goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
