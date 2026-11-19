@@ -138,6 +138,14 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 .lang button{border:0;background:none;color:#fff;padding:6px 10px;border-radius:16px;font-size:13px;cursor:pointer}
 .lang button.on{background:#fff;color:var(--g);font-weight:700}
 @media(max-width:420px){header h1{font-size:15px}header p{display:none}}
+.qlinks{font-size:12px;margin-top:6px;color:var(--mut)}
+.qlinks a{color:var(--g);text-decoration:underline;cursor:pointer}
+.lrow,.crow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #eef2f0}
+.lrow small{display:block;color:var(--mut);font-size:12px;text-decoration:none}
+.crow .x{font-size:12px;color:var(--mut)}
+.addb{border:1px solid var(--g);background:#fff;color:var(--g);border-radius:50%;width:32px;height:32px;font-size:18px;flex:none}
+.addb.wide{border-radius:16px;width:auto;padding:4px 12px;font-size:13px}
+#sgq,#cbq{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;font-size:15px}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -163,6 +171,8 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <a data-p="rep" data-to="xrDet" data-act="open" class="sub" data-te="☑️ ఎక్స్-రే ఫలితాలు">☑️ X-ray findings</a>
 <a data-p="rep" data-to="sugBtn" class="sub" data-te="🔍 రిపోర్టుల నుండి వ్యాధి సూచించు">🔍 Suggest disease from reports</a>
 <div class="mgh" data-te="సమాచారం">Reference</div>
+<a data-p="single" id="mSingle">🩺 Single diseases</a>
+<a data-p="combo" id="mCombo">🔗 Combined diseases</a>
 <a data-p="ref" data-te="📋 వ్యాధుల జాబితా (అన్ని వయస్సులు)">📋 Disease list (all ages)</a>
 <a data-p="mal" data-te="🦟 మలేరియా">🦟 Malaria</a>
 <a data-p="tb" data-te="🫁 క్షయ (టీబీ)">🫁 TB</a>
@@ -188,6 +198,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <button id="ddBtn" aria-label="Choose disease from list">▾</button>
 <div id="dd" class="dd hide" role="listbox"></div>
 </div>
+<div class="qlinks"><a data-go="single" id="qlS"></a> · <a data-go="combo" id="qlC"></a></div>
 </div>
 <div id="found"></div>
 <div id="out"></div>
@@ -228,6 +239,8 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 </section>
 
 <section id="p-dis" class="hide"></section>
+<section id="p-single" class="hide"></section>
+<section id="p-combo" class="hide"></section>
 
 <!-- MALARIA -->
 <section id="p-mal" class="hide"><div class="card">
@@ -753,7 +766,7 @@ D.push(
   return out(rx,['No antibiotic in the first 10 days unless very ill']);}},
 {id:'bronch',g:'Breathing, allergy & skin',n:'Acute bronchitis / cough (adult)',kw:'cough chest cold',s:['Cough <2 weeks, no fever','Cough with wheeze','Cough >2 weeks, blood in sputum, weight loss, breathless'],
  f(s){ if(s===2) return out([],['Send 2 sputum samples for NAAT (CBNAAT/Truenat) and chest X-ray'],'Presumptive TB / other serious cause — test and refer.');
-  const rx=[para()];
+  const rx=[para(),R('ambroxol','Ambroxol tablet 30 mg (if phlegm)','30 mg','3 times a day after food','5 days'),R('dxm','Dextromethorphan syrup 10 mg/5 ml (if dry cough)','10 ml','3 times a day','5 days')];
   if(s===1) rx.push(R('salbutamol','Salbutamol MDI 100 mcg + spacer','2 puffs','when breathless (up to 4 times a day)','5–7 days'));
   return out(rx,['No antibiotics — viral in most adults','Honey with warm water / steam','Stop smoking']);}},
 {id:'copd',g:'Breathing, allergy & skin',n:'COPD (chronic bronchitis / emphysema)',kw:'smoker breathless chronic',s:['Breathless on exertion, stable','Daily symptoms, frequent cough','Flare-up: more breathless, more/coloured sputum'],
@@ -939,6 +952,29 @@ D.push(
 );
 function doxyChild(){ return R('doxycycline','Doxycycline',rmg(Math.min(2.2*P.wt,100))+' mg','twice daily','7 days','',true); }
 
+// ---- Cough (dry / with phlegm) ----
+let CTX={};
+D.splice(D.findIndex(d=>d.id==='cold')+1,0,{id:'cough',g:'Infections',n:'Cough (dry / with phlegm)',kw:'cough daggu kafam dry cough wet cough',
+ s:['Cough less than 2 weeks, eating well','Cough with fever, phlegm, night cough or disturbing sleep','Cough more than 2 weeks, blood in sputum, weight loss, fast breathing'],
+ f(s){
+  if(s===2) return out([],['Send 2 sputum samples for TB test (NAAT) and chest X-ray','Child with fast breathing / chest indrawing = pneumonia'],'Cough >2 weeks / blood / weight loss / fast breathing — test for TB or pneumonia and refer. Do not give cough syrup.');
+  if(P.ageM<12) return out([R('saline','Saline nasal drops','1–2 drops each nostril','before feeds','3–5 days')],['No cough syrups under 1 year','Continue breastfeeding; count breathing rate'],'');
+  const dry=CTX.dry, wet=CTX.wet, both=!dry&&!wet; const rx=[];
+  // dry cough
+  if(dry||both){
+    if(P.ageM<72) rx.push(R('honey','Honey (if dry cough)',P.ageM<36?'½ teaspoon':'1 teaspoon','at night (in warm water)','3–5 days','No cough suppressant syrup under 6 years'));
+    else if(P.ageM<144) rx.push(R('dxm','Dextromethorphan syrup 10 mg/5 ml'+(both?' (if dry cough)':''),'5 ml','3 times a day','3–5 days','Not with other cough/cold syrups'));
+    else rx.push(R('dxm','Dextromethorphan syrup 10 mg/5 ml'+(both?' (if dry cough)':''),'10 ml','3 times a day','5 days',preg()?'Use only if needed; honey & warm water first':'Not with antidepressants; may cause drowsiness'));
+  }
+  // cough with phlegm
+  if(wet||both){
+    if(P.ageM<24) rx.push(R('steam','Steam / warm fluids (if phlegm)','—','2–3 times a day','3–5 days','No mucolytic under 2 years'));
+    else if(P.ageM<72) rx.push(R('ambroxol','Ambroxol syrup 15 mg/5 ml'+(both?' (if phlegm)':''),'2.5 ml (7.5 mg)','3 times a day','5 days'));
+    else if(P.ageM<144) rx.push(R('ambroxol','Ambroxol syrup 15 mg/5 ml'+(both?' (if phlegm)':''),'5 ml (15 mg)','3 times a day','5 days'));
+    else if(P.preg!=='t1') rx.push(R('ambroxol','Ambroxol tablet 30 mg'+(both?' (if phlegm)':''),'30 mg','3 times a day after food','5 days'));
+  }
+  if(s===1){ const c=cet(); if(c){ c.freq='at night'; c.note='For night cough / runny nose'; rx.push(c); } }
+  return out(rx,['Warm water, steam inhalation, honey (above 1 year)','No antibiotics for cough without pneumonia signs','Cough/cold combination syrups not under 4 years','Cough >2 weeks — test for TB'],'');}});
 // keywords for older diseases (search)
 const KW={fever:'temperature jwaram',cold:'cough runny nose',throat:'tonsils tonsillitis',otitis:'ear pain',pneu:'fast breathing cough chest',typhoid:'enteric widal',dengue:'platelets ns1',malv:'malaria vivax',malf:'malaria falciparum',uti:'burning urine pus cells',skin:'boil pus impetigo',scab:'itching rash family',conj:'red eye',worm:'stomach worms pinworm deworm',tb:'tuberculosis cough sputum',diar:'loose motions ors',dys:'blood stool',vom:'vomiting',acid:'gas gastritis heartburn',const:'no motion',anaem:'hb haemoglobin low blood',ifaproph:'iron tablets',vita:'vitamin a',sam:'malnutrition muac',wheeze:'asthma breathless',asthma:'inhaler',rhin:'sneezing allergy',urt:'hives itching allergy',eczema:'dry skin',tinea:'fungal ringworm',tcap:'scalp fungus',thrush:'white patches mouth',lice:'lice',htn:'bp blood pressure',dm:'sugar diabetes',lipid:'cholesterol ldl',thyroid:'tsh thyroid',pain:'knee pain joint',epi:'fits seizure'};
 D.forEach(d=>{ if(!d.kw) d.kw=KW[d.id]||''; });
@@ -1254,13 +1290,15 @@ function applyLang(){
   document.querySelectorAll('[data-te-ph]').forEach(el=>{ if(el.dataset.enPh==null) el.dataset.enPh=el.placeholder; el.placeholder=LANG==='te'?el.dataset.tePh:el.dataset.enPh; });
   document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
   if(typeof buildDMenu==='function') buildDMenu();
+  if(typeof listCounts==='function') listCounts();
 }
 document.querySelector('.lang').addEventListener('click',e=>{ const b=e.target.closest('button[data-l]'); if(!b) return; LANG=b.dataset.l; try{ localStorage.setItem('mg_lang',LANG);}catch(_){} applyLang(); if(typeof compute==='function') compute(); });
 
 // ===== SYMPTOM ENGINE (v4): type anything -> diseases + severity =====
 const SYM={
 fever:['fever','temperature','temp','jwaram','jvaram','hot body','body heat','malaria'],
-cold:['cold','running nose','runny nose','cough','blocked nose','nose block','jalubu','daggu','padisam','sneezing and cold'],
+cold:['cold','running nose','runny nose','blocked nose','nose block','jalubu','padisam','sneezing and cold'],
+cough:['cough','coughing','daggu','dry cough','wet cough','cough with phlegm','khansi','kaasi'],
 throat:['sore throat','throat pain','throat','tonsil','gonthu','painful swallowing','pain on swallowing'],
 otitis:['ear pain','earache','ear discharge','ear infection','chevi noppi','pus from ear','otitis'],
 pneu:['pneumonia','fast breathing','chest indrawing','breathing fast','rapid breathing'],
@@ -1314,7 +1352,7 @@ hiv:['hiv','aids','art centre'],
 pud:['peptic ulcer','stomach ulcer','ulcer pain','h pylori','epigastric pain','duodenal ulcer'],
 piles:['piles','haemorrhoids','hemorrhoids','fissure','bleeding per rectum','moolalu','anal pain','pain while passing stool'],
 sinus:['sinusitis','sinus','facial pain','face heaviness','heaviness of face'],
-bronch:['bronchitis','chest cold','cough with sputum','phlegm','sputum','kafam'],
+bronch:['bronchitis','chest cold'],
 copd:['copd','chronic bronchitis','emphysema','smoker breathless'],
 aconj:['itchy eyes','watery eyes','allergic conjunctivitis','eye itching'],
 acne:['acne','pimples','motimalu','mogimalu'],
@@ -1353,7 +1391,8 @@ b12:['b12','vitamin b12','tingling','numbness of hands','numbness of feet','burn
 // generic disease is dropped when a more specific one is found
 const SUPPRESS={
  fever:['dengue','malv','malf','typhoid','chik','scrub','lepto','flu','measles','chickenpox','mumps','pneu','uti','otitis','throat','sinus','febseiz','heat','hep'],
- cold:['pneu','flu','measles','sinus','throat','wheeze','bronch','copd','tb'],
+ cold:['pneu','flu','measles','sinus','throat','wheeze','copd','tb'],
+ cough:['pneu','bronch','tb','wheeze','copd','asthma','flu','measles'],
  diar:['dys','cholera','amoeba'],
  vom:['nvp','cholera','hep'],
  pain:['gout','chik','back','dengue','flu','scrub','lepto','malv','malf','measles','typhoid','zoster'],
@@ -1371,6 +1410,7 @@ const DIFF={
  fever:{ids:['malv','malf','dengue','typhoid','scrub','chik','flu'],tip:'Fever: do malaria RDT; dengue NS1 (first 5 days) / IgM; typhoid test after 5 days; CBC.'},
  cold:{ids:['pneu','flu','throat','otitis','sinus'],tip:'Count breathing rate — fast breathing means pneumonia.'},
  diar:{ids:['dys','cholera','amoeba'],tip:'Check dehydration: eyes, thirst, skin pinch.'},
+ cough:{ids:['pneu','cold','throat','wheeze','tb'],tip:'Count breathing rate; cough >2 weeks = test for TB.'},
  vom:{ids:['diar','hep','acid'],tip:''},
  headache:{ids:['htn','sinus','vertigo'],tip:'Check BP.'},
  pain:{ids:['gout','chik','back'],tip:''},
@@ -1448,6 +1488,8 @@ function sevFromText(d,T,info){
     if(info.tempF>=105 && best<2){ best=2; why='temperature '+info.tempF+' °F'; }
     else if(info.tempF>=102 && best<1){ best=1; why='temperature '+info.tempF+' °F'; }
     if(info.days>=3 && best<1 && d.id==='fever'){ best=1; why='fever for '+info.days+' days'; } }
+  if(d.id==='cough' && best<1 && /fever|jwaram|జ్వర|phlegm|night/.test(T)){ best=1; why='cough with fever / phlegm / at night'; }
+  if(d.id==='cough' && info.days>=14){ best=2; why='cough for '+info.days+' days'; }
   if(d.id==='bronch' && info.days>=14){ best=2; why='cough for '+info.days+' days (TB must be tested)'; }
   if(d.id==='diar' && info.days>=14 && best<1){ best=1; why='diarrhoea '+info.days+' days (persistent)'; }
   return {s:best,why:why||'no severe signs typed'};
@@ -1472,7 +1514,8 @@ function detect(){
   // 'malaria' without type
   const malariaUntyped = /malaria/.test(T) && !found.malv && !found.malf;
   // cough > 2 weeks -> bronch/tb test
-  if(found.cold && R.info.days>=14 && P.ageM>=144){ found.bronch={hit:['cough '+R.info.days+' days']}; }
+  CTX={dry:/dry cough|dry|పొడి/.test(T), wet:/phlegm|sputum|kafam|wet cough|productive|mucus|కఫం|chest congestion/.test(T)};
+  if(found.cough && R.info.days>=14 && P.ageM>=144){ found.bronch={hit:['cough '+R.info.days+' days']}; }
   // suppress generic
   for(const g in SUPPRESS) if(found[g] && SUPPRESS[g].some(x=>found[x])) delete found[g];
   // reports + typed values
@@ -1491,6 +1534,7 @@ function compute(){
   if(!raw && !Object.keys(ADDED).length && !analyse().S.length){ $('found').innerHTML=''; $('out').innerHTML=''; return; }
   const r=detect(); const ids=Object.keys(sel);
   let h='';
+  if($('ag').value.trim()===''){ $('found').innerHTML='<div class="alert org">'+L('Enter the age first — doses depend on age.','ముందుగా వయస్సు నమోదు చేయండి — మోతాదు వయస్సుపై ఆధారపడుతుంది.')+'</div>'+(ids.length?'<div class="hint">'+L('Selected: ','ఎంచుకున్నవి: ')+ids.map(id=>esc(dn(D.find(d=>d.id===id)))).join(', ')+'</div>':''); $('out').innerHTML=''; $('ag').focus(); return; }
   const pt=(P.sex==='M'?L('Male','పురుషుడు'):L('Female','స్త్రీ'))+' · '+ageTxt()+' · '+P.wt+L(' kg',' కిలో')+(P.est?L(' (estimated — type e.g. "12 kg" to correct)',' (అంచనా — సరిచేయడానికి "12 kg" టైప్ చేయండి)'):'')+(preg()?L(' · Pregnant (',' · గర్భిణీ (')+(P.preg==='t1'?L('1st','1వ'):L('2nd/3rd','2/3వ'))+L(' trimester)',' త్రైమాసికం)'):P.preg==='lact'?L(' · Breastfeeding',' · పాలిచ్చే తల్లి'):'');
   h+='<div class="pt" style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span>'+pt+'</span><button id="newPt" class="newpt">'+L('↺ New patient','↺ కొత్త రోగి')+'</button></div>';
   if(/pregnan|garbham|గర్భ/.test(r.T)&&P.sex==='M') h+='<div class="alert org">'+L('Pregnancy typed — select Female.','గర్భిణీ అని టైప్ చేశారు — స్త్రీ ఎంచుకోండి.')+'</div>';
@@ -1517,7 +1561,7 @@ let ctT=null; function later(){ clearTimeout(ctT); ctT=setTimeout(compute,350); 
 function renderSel(){ compute(); }
 
 // ===== v5: Telugu names, Rx table, share =====
-const TE={fever:'జ్వరం',cold:'జలుబు / దగ్గు',throat:'గొంతు నొప్పి',otitis:'చెవి నొప్పి / చెవి ఇన్ఫెక్షన్',pneu:'న్యుమోనియా',typhoid:'టైఫాయిడ్',dengue:'డెంగ్యూ',malv:'మలేరియా (వైవాక్స్)',malf:'మలేరియా (ఫాల్సిపారం / మిశ్రమ)',uti:'మూత్రంలో మంట / మూత్ర ఇన్ఫెక్షన్',skin:'సెగ గడ్డలు / చర్మ ఇన్ఫెక్షన్',scab:'గజ్జి',conj:'కండ్ల కలక',worm:'నులి పురుగులు',tb:'క్షయ (టీబీ)',
+const TE={fever:'జ్వరం',cold:'జలుబు',cough:'దగ్గు (పొడి / కఫంతో)',throat:'గొంతు నొప్పి',otitis:'చెవి నొప్పి / చెవి ఇన్ఫెక్షన్',pneu:'న్యుమోనియా',typhoid:'టైఫాయిడ్',dengue:'డెంగ్యూ',malv:'మలేరియా (వైవాక్స్)',malf:'మలేరియా (ఫాల్సిపారం / మిశ్రమ)',uti:'మూత్రంలో మంట / మూత్ర ఇన్ఫెక్షన్',skin:'సెగ గడ్డలు / చర్మ ఇన్ఫెక్షన్',scab:'గజ్జి',conj:'కండ్ల కలక',worm:'నులి పురుగులు',tb:'క్షయ (టీబీ)',
 diar:'విరేచనాలు',dys:'రక్త విరేచనాలు',amoeba:'అమీబియాసిస్ / జియార్డియా',vom:'వాంతులు',acid:'ఎసిడిటీ / గ్యాస్ ట్రబుల్',const:'మలబద్ధకం',anaem:'రక్తహీనత',ifaproph:'రక్తహీనత నివారణ (ఐరన్ మాత్రలు)',vita:'విటమిన్ A',sam:'తీవ్ర పోషకాహార లోపం',
 wheeze:'ఆయాసం / ఆస్తమా ఎటాక్',asthma:'ఆస్తమా – దీర్ఘకాల నియంత్రణ',rhin:'తుమ్ములు / అలర్జీ జలుబు',urt:'దద్దుర్లు / అలర్జీ',eczema:'ఎగ్జిమా (పొడి దురద చర్మం)',tinea:'తామర (ఫంగస్)',tcap:'తలపై తామర',thrush:'నోటిలో తెల్లని మచ్చలు / డైపర్ ఫంగస్',lice:'పేలు',
 htn:'అధిక రక్తపోటు (బీపీ)',dm:'మధుమేహం (షుగర్)',lipid:'అధిక కొలెస్ట్రాల్',thyroid:'థైరాయిడ్ తక్కువ',pain:'కీళ్ల నొప్పులు / ఒళ్ళు నొప్పులు',epi:'మూర్ఛ (ఫిట్స్)',
@@ -1528,7 +1572,7 @@ dogbite:'కుక్క / జంతువు కాటు',snake:'పాము 
 headache:'తలనొప్పి / మైగ్రేన్',vertigo:'కళ్లు తిరగడం',back:'నడుము నొప్పి / బెణుకు / కండరాల నొప్పి',gout:'గౌట్ / యూరిక్ యాసిడ్',mouth:'నోటి పూత',tooth:'పంటి నొప్పి',earwax:'చెవిలో గులిమి',stye:'కంటి కురుపు',renal:'కిడ్నీ రాళ్ల నొప్పి',bph:'ప్రోస్టేట్ వాపు',mental:'ఆందోళన / డిప్రెషన్ / నిద్రలేమి',rhd:'రుమాటిక్ జ్వరం నివారణ',
 ckd:'దీర్ఘకాల కిడ్నీ వ్యాధి',hep:'పచ్చకామెర్లు',hyperthy:'థైరాయిడ్ ఎక్కువ',vitd:'విటమిన్ D లోపం',b12:'విటమిన్ B12 లోపం'};
 // extra Telugu symptom words
-const SYM_TE={fever:['జ్వరం','జ్వరము','ఒళ్ళు వేడి'],cold:['జలుబు','దగ్గు','ముక్కు కారడం'],throat:['గొంతు నొప్పి'],otitis:['చెవి నొప్పి','చెవిలో చీము'],diar:['విరేచనాలు','నీళ్ల విరేచనాలు'],dys:['రక్త విరేచనాలు'],vom:['వాంతులు','వాంతి','వికారం'],
+const SYM_TE={fever:['జ్వరం','జ్వరము','ఒళ్ళు వేడి'],cold:['జలుబు','ముక్కు కారడం'],cough:['దగ్గు','పొడి దగ్గు','కఫం'],throat:['గొంతు నొప్పి'],otitis:['చెవి నొప్పి','చెవిలో చీము'],diar:['విరేచనాలు','నీళ్ల విరేచనాలు'],dys:['రక్త విరేచనాలు'],vom:['వాంతులు','వాంతి','వికారం'],
  headache:['తలనొప్పి','తల నొప్పి'],pain:['కీళ్ల నొప్పులు','ఒళ్ళు నొప్పులు','మోకాలి నొప్పి'],back:['నడుము నొప్పి','మెడ నొప్పి','బెణుకు'],acid:['గ్యాస్','కడుపులో మంట','ఎసిడిటీ'],const:['మలబద్ధకం'],uti:['మూత్రంలో మంట'],
  wheeze:['ఆయాసం','ఊపిరి ఆడటం లేదు'],scab:['గజ్జి','దురద'],tinea:['తామర'],worm:['నులి పురుగులు'],anaem:['రక్తహీనత','రక్తం తక్కువ'],htn:['బీపీ','రక్తపోటు'],dm:['షుగర్','మధుమేహం','చక్కెర వ్యాధి'],
  hep:['పచ్చకామెర్లు','కామెర్లు'],epi:['ఫిట్స్','మూర్ఛ'],chickenpox:['ఆటలమ్మ','అమ్మవారు'],measles:['తట్టు'],mumps:['గవదలు','గవదబిళ్లలు'],dogbite:['కుక్క కాటు','కుక్క కరిచింది'],snake:['పాము కాటు','పాము'],scorpion:['తేలు','తేలు కుట్టింది'],
@@ -1543,7 +1587,7 @@ function SV(i){ return LANG==='te'?SEVTE[i]:SEVN[i]; }
 
 // --- timing & food rules ---
 const BEFORE=new Set(['pantoprazole','omeprazole','levothyroxine','glimepiride','domperidone','hrze','hrz']);
-const ANYTIME=new Set(['ors','zinc','vita','oseltamivir','azithromycin','amoxicillin','cetirizine','b12inj']);
+const ANYTIME=new Set(['honey','steam','ors','zinc','vita','oseltamivir','azithromycin','amoxicillin','cetirizine','b12inj']);
 const LOCAL_RE=/cream|ointment|\bgel\b|lotion|eye drops|ear drops|nasal|spray|\bmdi\b|inhaler|rotacap|\binj|vaccine|immunoglobulin|\bwash\b|shampoo|mouth paint|pessary|vaginal|oral paste|mouthwash|povidone|jelly|infiltration|troche/i;
 function timing(r){
   const f=(r.freq||'').toLowerCase(), nm=r.name.toLowerCase();
@@ -1684,7 +1728,7 @@ function ddList(){
 }
 function renderDD(){
   const items=ddList(); if(!items.length){ $('dd').classList.add('hide'); return; }
-  let h='',g='';
+  let h=ddAll?'<div class="it" data-go="combo">🔗 '+esc(L('Combined diseases ('+comboPairs().length+') — tap to see','కలిసిన వ్యాధులు ('+comboPairs().length+') — చూడండి'))+'</div>':'',g='';
   items.forEach((d,i)=>{ if(ddAll&&d.g!==g){g=d.g;h+='<div class="gh">'+esc(g)+'</div>';}
     h+='<div class="it'+(d.id in sel?' on':'')+(i===ddIdx?' act':'')+'" data-id="'+d.id+'">'+esc(LANG==='te'?(TE[d.id]||d.n):d.n)+'<small>'+esc(LANG==='te'?d.n:(TE[d.id]||''))+'</small></div>'; });
   $('dd').innerHTML=h; $('dd').classList.remove('hide');
@@ -1699,7 +1743,7 @@ $('tx').addEventListener('keydown',e=>{ const it=ddList(); if($('dd').classList.
   else if(e.key==='Enter'&&ddIdx>=0&&it[ddIdx]){ pickDD(it[ddIdx].id); e.preventDefault(); e.stopImmediatePropagation(); }
   else if(e.key==='Escape') $('dd').classList.add('hide'); });
 $('dd').addEventListener('mousedown',e=>e.preventDefault());
-$('dd').addEventListener('click',e=>{ const it=e.target.closest('.it[data-id]'); if(it) pickDD(it.dataset.id); });
+$('dd').addEventListener('click',e=>{ const gc=e.target.closest('[data-go]'); if(gc){ $('dd').classList.add('hide'); goPage('combo'); markMenu($('mCombo')); return; } const it=e.target.closest('.it[data-id]'); if(it) pickDD(it.dataset.id); });
 document.addEventListener('click',e=>{ if(!e.target.closest('.combo')) $('dd').classList.add('hide'); });
 
 // reports wiring
@@ -1759,6 +1803,7 @@ $('scrim').addEventListener('click',()=>openSide(false));
 function goPage(pg){
   document.querySelectorAll('main>section').forEach(x=>x.classList.toggle('hide',x.id!=='p-'+pg));
   if(pg==='ref' && !$('refOut').innerHTML) renderRef();
+  if(pg==='single') renderSingle(); if(pg==='combo') renderCombo();
 }
 function markMenu(el){ document.querySelectorAll('#menu a,#dmenu a').forEach(a=>a.classList.toggle('on',a===el)); }
 function flash(el){ if(!el) return; el.scrollIntoView({behavior:'smooth',block:'center'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
@@ -1858,7 +1903,37 @@ $('gres').addEventListener('click',e=>{ const a=e.target.closest('a'); if(!a) re
   else if(a.dataset.gm) showMed(a.dataset.gm);
   else if(a.dataset.gs){ goPage(a.dataset.pg); setTimeout(()=>flash($(a.dataset.gs)),60); } });
 
+// ===== Single & combined disease lists =====
+function comboPairs(){ const seen=new Set(), out=[]; for(const [pr,t] of COMBO){ if(!pr||pr.length<2||!t) continue; const k=[...pr].sort().join('+'); if(seen.has(k)) continue; seen.add(k); if(pr.every(id=>D.find(d=>d.id===id))) out.push({ids:pr,t}); } return out; }
+function listCounts(){ const n=D.length, c=comboPairs().length;
+  $('qlS').textContent=L(n+' single diseases',n+' ఒకే వ్యాధులు'); $('qlC').textContent=L(c+' combined diseases',c+' కలిసిన వ్యాధులు');
+  $('mSingle').textContent='🩺 '+L('Single diseases ('+n+')','ఒకే వ్యాధులు ('+n+')'); $('mCombo').textContent='🔗 '+L('Combined diseases ('+c+')','కలిసిన వ్యాధులు ('+c+')'); }
+function renderSingle(){
+  const q=(($('sgq')||{}).value||'').toLowerCase(); let h='<div class="card"><h2>'+L('Single diseases','ఒకే వ్యాధులు')+' ('+D.length+')</h2><input type="search" id="sgq" placeholder="'+L('Filter…','వెతకండి…')+'" value="'+esc(q)+'"><div class="hint" style="margin-top:6px">'+L('Tap a disease to see medicines for all ages, or + to prescribe.','వ్యాధిని నొక్కితే అన్ని వయస్సుల మందులు; + నొక్కితే మందుల చీటీలో చేరుతుంది.')+'</div></div>';
+  let g='', cnt=0;
+  for(const d of D){ const hay=(d.n+' '+(TE[d.id]||'')+' '+(SYM[d.id]||[]).join(' ')).toLowerCase(); if(q&&!hay.includes(q)) continue;
+    if(d.g!==g){ if(g) h+='</div>'; g=d.g; h+='<div class="card"><h3 style="margin-top:0">'+esc(L(g,GTE[g]||g))+'</h3>'; }
+    cnt++; h+='<div class="lrow"><span class="lk" data-dis="'+d.id+'">'+esc(d.n)+'<small>'+esc(TE[d.id]||'')+'</small></span><button class="addb" data-use="'+d.id+'">+</button></div>'; }
+  if(g) h+='</div>'; if(!cnt) h+='<div class="card">'+L('No match.','సరిపోలేదు.')+'</div>';
+  $('p-single').innerHTML=h; const i=$('sgq'); i.focus(); i.setSelectionRange(q.length,q.length);
+}
+function renderCombo(){
+  const q=(($('cbq')||{}).value||'').toLowerCase(); const P2=comboPairs();
+  let h='<div class="card"><h2>'+L('Combined diseases','కలిసిన వ్యాధులు')+' ('+P2.length+')</h2><input type="search" id="cbq" placeholder="'+L('Filter, e.g. diabetes…','వెతకండి, ఉదా: షుగర్…')+'" value="'+esc(q)+'"><div class="hint" style="margin-top:6px">'+L('When these come together, the app changes the medicines and shows this warning. Tap "Use" to prescribe both. Any other mix of diseases also works — medicines are merged and duplicates removed.','ఇవి కలిసి ఉంటే మందులు మార్చి ఈ హెచ్చరిక చూపిస్తుంది. "వాడు" నొక్కితే రెండూ చీటీలో చేరతాయి. ఇతర ఏ కలయిక అయినా పనిచేస్తుంది.')+'</div></div><div class="card">';
+  let cnt=0;
+  for(const c of P2){ const ds=c.ids.map(id=>D.find(d=>d.id===id)); const names=ds.map(d=>dn(d)).join(' + ');
+    const hay=(ds.map(d=>d.n+' '+(TE[d.id]||'')).join(' ')+' '+c.t).toLowerCase(); if(q&&!hay.includes(q)) continue; cnt++;
+    h+='<div class="crow"><div><b>'+esc(names)+'</b><div class="x">'+esc(c.t)+'</div></div><button class="addb wide" data-use="'+c.ids.join(',')+'">'+L('Use','వాడు')+'</button></div>'; }
+  if(!cnt) h+=L('No match.','సరిపోలేదు.'); h+='</div>';
+  $('p-combo').innerHTML=h; const i=$('cbq'); i.focus(); i.setSelectionRange(q.length,q.length);
+}
+function useIds(ids){ ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); compute(); setTimeout(()=>flash($('found')),60); }
+['p-single','p-combo'].forEach(pid=>{ $(pid).addEventListener('input',e=>{ if(e.target.id==='sgq') renderSingle(); if(e.target.id==='cbq') renderCombo(); });
+  $(pid).addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); }); });
+document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
+
 applyLang();
+listCounts();
 compute();
 /* install */
 (function(){var deferred=null,standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
