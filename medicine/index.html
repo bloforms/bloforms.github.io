@@ -177,6 +177,13 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 .sysbig{font-size:40px}
 .cnt{font-size:11px;color:var(--mut);font-weight:400}
 #dmenu a.allg{font-weight:700;color:var(--g)}
+.mtiles{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;padding:2px 4px 10px}
+#dmenu a.mtile{min-width:0}#dmenu a.mtile .mn{overflow-wrap:anywhere;min-width:0}
+#dmenu a.mtile{display:flex;align-items:center;gap:6px;padding:8px 6px;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:8px;background:#fff;font-size:12.5px;font-weight:600;line-height:1.2;position:relative}
+#dmenu a.mtile .mi{font-size:18px;flex:none}
+#dmenu a.mtile .mn{flex:1}
+#dmenu a.mtile .mc{font-size:10px;color:var(--mut);font-weight:400}
+#dmenu a.mtile.on{background:var(--g2)}
 @media print{header,nav,#side,.noprint{display:none}main{margin:0}body{background:#fff}.card{border:0}}
 </style>
 </head>
@@ -195,6 +202,9 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <div class="card mini" id="installCard" style="display:none"><b>📲 Install app</b><p class="hint" id="installText"></p><button class="btn" id="installBtn" style="margin-top:6px">Install</button></div>
 <div id="menu">
 <a data-p="calc" class="on" data-te="💊 మందులు సూచించు (లక్షణాలు టైప్ చేయండి)">💊 Prescribe (type symptoms)</a>
+<div class="mgh" data-te="శరీర భాగం వారీగా">By body part</div>
+<a data-p="body" data-te="🧍 శరీర చిత్రం (భాగాన్ని నొక్కండి)">🧍 Body picture (tap a part)</a>
+<div id="dmenu"></div>
 <div class="mgh" data-te="🧪 రిపోర్టులు">🧪 Reports</div>
 <a data-p="rep" data-to="repFile" data-act="upload" class="sub" data-te="📤 ల్యాబ్ రిపోర్ట్ అప్‌లోడ్ (ఫోటో / PDF)">📤 Upload lab report (photo / PDF)</a>
 <a data-p="rep" data-to="labDet" data-act="open" class="sub" data-te="✍️ ల్యాబ్ విలువలు టైప్ చేయండి">✍️ Type lab values</a>
@@ -210,8 +220,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <a data-p="chart" data-te="👶 పిల్లల మోతాదు పట్టిక">👶 Child dose chart</a>
 <a data-p="spec" data-te="🤰 నవజాత శిశువు / గర్భిణీ / వృద్ధులు">🤰 Newborn / Pregnancy / Elderly</a>
 <a data-p="danger" data-te="🚨 ప్రమాద సంకేతాలు">🚨 Danger signs</a>
-<div class="mgh" data-te="శరీర భాగం వారీగా">By body part</div>
-<div id="dmenu"></div>
+
 </div>
 </aside>
 <main>
@@ -248,7 +257,6 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 </div>
 <div id="found"></div>
 <div id="out"></div>
-<div id="browse"><h3 class="bh" data-te="శరీర భాగం వారీగా చూడండి">Browse by body part</h3><div id="tiles"></div><div class="card"><h3 style="margin-top:0" data-te="శరీర చిత్రం — భాగాన్ని నొక్కండి">Body picture — tap a part</h3><div id="bodyBox"></div></div></div>
 </section>
 
 <!-- REFERENCE -->
@@ -288,6 +296,7 @@ table.rxt .x{font-size:11px;color:var(--mut)}table.rxt .xr{font-size:11px;color:
 <section id="p-dis" class="hide"></section>
 <section id="p-single" class="hide"></section>
 <section id="p-sys" class="hide"></section>
+<section id="p-body" class="hide"><div id="browse"><div class="card"><h3 style="margin-top:0" data-te="శరీర చిత్రం — భాగాన్ని నొక్కండి">Body picture — tap a part</h3><div id="bodyBox"></div></div><div id="tiles" class="hide"></div></div></section>
 <section id="p-combo" class="hide"></section>
 
 <!-- MALARIA -->
@@ -2256,7 +2265,7 @@ $('menu').addEventListener('click',e=>{ const a=e.target.closest('a[data-p]'); i
   else window.scrollTo(0,0); });
 // disease list in menu
 const GTE={'Infections':'ఇన్ఫెక్షన్లు','More infections':'మరిన్ని ఇన్ఫెక్షన్లు','Stomach, gut & nutrition':'కడుపు, పేగులు & పోషణ','Breathing, allergy & skin':'శ్వాస, అలర్జీ & చర్మం','Long-term adult illnesses':'దీర్ఘకాల వ్యాధులు',"Women's health":'మహిళల ఆరోగ్యం','Injuries, bites & emergencies':'గాయాలు, కాట్లు & అత్యవసరాలు','Other common problems':'ఇతర సాధారణ సమస్యలు'};
-function buildDMenu(){ if(typeof SYS==='undefined') return; let h=''; SYS.forEach(sy=>{ h+='<details><summary>'+sy.i+' '+esc(sysName(sy))+' <span class="cnt">'+sy.ids.length+'</span></summary><a data-sysopen="'+sy.id+'" class="allg">'+L('Open group page →','విభాగం పేజీ →')+'</a>'+sy.ids.map(id=>{ const d=D.find(x=>x.id===id); return d?'<a data-dis="'+d.id+'">'+esc(dn(d))+'</a>':''; }).join('')+'</details>'; }); $('dmenu').innerHTML=h; }
+function buildDMenu(){ if(typeof SYS==='undefined') return; $('dmenu').innerHTML='<div class="mtiles">'+SYS.map(sy=>'<a class="mtile" data-sysopen="'+sy.id+'" style="--c:'+sy.c+'"><span class="mi">'+sy.i+'</span><span class="mn">'+esc(sysName(sy))+'</span><span class="mc">'+sy.ids.length+'</span></a>').join('')+'</div>'; }
 buildDMenu();
 
 $('dmenu').addEventListener('click',e=>{ const so=e.target.closest('a[data-sysopen]'); if(so){ markMenu(so); showSys(so.dataset.sysopen); openSide(false); return; } const a=e.target.closest('a[data-dis]'); if(!a) return; markMenu(a); showDisease(a.dataset.dis); openSide(false); });
@@ -2371,7 +2380,7 @@ function renderCombo(){
 function useIds(ids){ ids.forEach(id=>{ ADDED[id]=ADDED[id]??0; REMOVED.delete(id); }); goPage('calc'); markMenu(document.querySelector('#menu a[data-p=calc]')); compute(); setTimeout(()=>flash($('found')),60); }
 ['p-single','p-combo'].forEach(pid=>{ $(pid).addEventListener('input',e=>{ if(e.target.id==='sgq') renderSingle(); if(e.target.id==='cbq') renderCombo(); });
   $(pid).addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); }); });
-document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; if(pg==='body'){ $('browse').scrollIntoView({behavior:'smooth'}); return; } goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
+document.querySelector('.qlinks').addEventListener('click',e=>{ const a=e.target.closest('a[data-go]'); if(!a) return; const pg=a.dataset.go; if(pg==='body'){ openSide(true); setTimeout(()=>$('dmenu').scrollIntoView({block:'start'}),50); return; } goPage(pg); markMenu($(pg==='single'?'mSingle':'mCombo')); pg==='single'?renderSingle():renderCombo(); window.scrollTo(0,0); });
 
 $('browse').addEventListener('click',e=>{ const t=e.target.closest('[data-sys]'); if(t){ markMenu(null); showSys(t.dataset.sys); return; } const r=e.target.closest('[data-reg]'); if(r) pickRegion(r.dataset.reg); });
 $('p-sys').addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u){ useIds(u.dataset.use.split(',')); return; } const l=e.target.closest('[data-dis]'); if(l) showDisease(l.dataset.dis,1); });
