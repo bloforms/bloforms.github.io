@@ -77,16 +77,16 @@ nav button.on{color:var(--blue)}
 #toast.on{opacity:1}
 footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
 #printArea{display:none}
-@page{size:A4 portrait;margin:10mm}
+@page{size:A4 portrait;margin:8mm 10mm}
 @media print{
   html{zoom:1!important}
   body{background:#fff;padding:0;font-size:11px;margin:0}
   header,nav,main,#toast,#loginScr{display:none!important}
   #printArea{display:block;padding:0;width:100%}
-  #printArea h2{font-size:15px;margin:0;text-align:center}
-  #printArea p{margin:3px 0 8px;text-align:center}
+  #printArea h2{font-size:14px;margin:0;text-align:center}
+  #printArea p{margin:2px 0 5px;text-align:center}
   table{width:calc(100% - 4px);margin:0 auto;border-collapse:collapse;table-layout:fixed}
-  th,td{border:1px solid #000;padding:2px 4px;text-align:center;vertical-align:middle;font-size:10.5px;overflow-wrap:anywhere}
+  th,td{border:1px solid #000;padding:1px 4px;text-align:center;vertical-align:middle;font-size:10.5px;line-height:1.25;overflow-wrap:anywhere}
   td.l{text-align:left}
   th{background:#eee;font-size:10px}
   td.nw{white-space:nowrap}
