@@ -189,7 +189,7 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
 <!-- STOCK -->
 <section class="view" id="v-stock">
   <div class="card">
-    <h2>Receive new stock</h2>
+    <h2 id="stockTitle">Receive new stock</h2>
     <form id="stockForm" autocomplete="off">
       <div class="row">
         <div><label for="bPrefix">Series letters</label><input id="bPrefix" value="APSGSW AI"></div>
@@ -202,7 +202,9 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
       <div id="bPreview" style="font-size:13.5px;color:var(--mute);margin-top:8px"></div>
       <label for="bNote">Received from / remarks <em>(optional)</em></label>
       <input id="bNote" placeholder="e.g. Municipal office">
-      <button class="full" type="submit">Add to stock</button>
+      <div id="bUsedNote" class="warn" style="display:none;margin:12px 0 0"></div>
+      <button class="full" type="submit" id="bSave">Add to stock</button>
+      <button class="full sec" type="button" id="bCancel" style="display:none;margin-top:10px">Cancel</button>
     </form>
   </div>
   <div class="card">
@@ -284,7 +286,7 @@ function go(v){
   if(v==='home')renderHome();
   if(v==='entry'&&!editing)startEntry();
   if(v==='reg')renderReg();
-  if(v==='stock')renderStock();
+  if(v==='stock'){if(editBatch)endBatchEdit();else renderStock();}
   if(v==='more')renderMore();
   window.scrollTo(0,0);
 }
@@ -409,21 +411,54 @@ $('stockForm').addEventListener('submit',function(ev){
   if(!/^\d{1,12}$/.test(s)){toast('First number must be digits only');$('bStart').focus();return;}
   if(!(c>0&&c<=2000)){toast('Enter how many papers (1 to 2000)');$('bCount').focus();return;}
   var a=parseInt(s,10),z=a+c-1;
-  var clash=B().filter(function(b){var ba=parseInt(b.start,10),bz=ba+b.count-1;return b.prefix===prefix&&a<=bz&&ba<=z;})[0];
+  var clash=B().filter(function(b){if(editBatch&&b.id===editBatch.id)return false;var ba=parseInt(b.start,10),bz=ba+b.count-1;return b.prefix===prefix&&a<=bz&&ba<=z;})[0];
   if(clash){toast('These numbers are already in stock: '+batchLabel(clash));return;}
-  db.batches.push({id:Date.now(),u:Date.now(),prefix:prefix,start:s,count:c,date:$('bDate').value||today(),note:$('bNote').value.trim()});
+  var date=$('bDate').value||today(),note=$('bNote').value.trim();
+  if(editBatch){
+    var old=editBatch,oldPs=papersOf(old),lastUsed=-1;
+    oldPs.forEach(function(p,i){if(E(p.key))lastUsed=i;});
+    if(c<=lastUsed){toast('Paper '+oldPs[lastUsed].no+' is already used. Count must be at least '+(lastUsed+1)+'.');$('bCount').focus();return;}
+    var moved=prefix!==old.prefix||s!==old.start;
+    if(moved&&lastUsed>=0&&!confirm('The used papers will move to the new numbers in the same order (1st entry to '+s+', 2nd to the next, and so on). Continue?'))return;
+    var now=Date.now(),nb={id:old.id,u:now,prefix:prefix,start:s,count:c,date:date,note:note};
+    if(moved){
+      var recs=oldPs.map(function(p){return E(p.key);});
+      oldPs.forEach(function(p){if(db.entries[p.key])db.entries[p.key]={del:true,u:now};});
+      papersOf(nb).forEach(function(p,i){if(recs[i]){var r=Object.assign({},recs[i]);r.u=now+1;db.entries[p.key]=r;}});
+    }
+    db.batches=db.batches.map(function(x){return x.id===old.id?nb:x;});
+    save();toast('Stock entry updated');endBatchEdit();return;
+  }
+  db.batches.push({id:Date.now(),u:Date.now(),prefix:prefix,start:s,count:c,date:date,note:note});
   save();toast(c+' papers added to stock');
   $('bStart').value='';$('bNote').value='';previewBatch();renderStock();
 });
+var editBatch=null;
+function startBatchEdit(id){
+  var b=B().filter(function(x){return String(x.id)===String(id);})[0];if(!b)return;
+  editBatch=b;
+  $('stockTitle').textContent='Edit stock';
+  $('bPrefix').value=b.prefix;$('bDate').value=b.date||'';$('bStart').value=b.start;$('bCount').value=b.count;$('bNote').value=b.note||'';
+  var used=papersOf(b).filter(function(p){return E(p.key);}).length;
+  $('bUsedNote').textContent=used?used+' paper'+(used===1?' is':'s are')+' already entered from this stock. If you change the first number, those entries move to the new numbers in the same order.':'';
+  $('bUsedNote').style.display=used?'':'none';
+  $('bSave').textContent='Save changes';$('bCancel').style.display='';
+  previewBatch();window.scrollTo(0,0);
+}
+function endBatchEdit(){
+  editBatch=null;$('stockTitle').textContent='Receive new stock';$('bSave').textContent='Add to stock';$('bCancel').style.display='none';$('bUsedNote').style.display='none';
+  $('bStart').value='';$('bNote').value='';$('bCount').value='100';$('bDate').value=today();previewBatch();renderStock();
+}
+$('bCancel').addEventListener('click',endBatchEdit);
 function renderStock(){
   if(!$('bDate').value)$('bDate').value=today();
-  if(B().length){var last=B()[B().length-1];$('bPrefix').value=last.prefix;if(!$('bStart').value){$('bStart').placeholder='e.g. '+pad(parseInt(last.start,10)+last.count,last.start.length);}}
+  if(B().length&&!editBatch){var last=B()[B().length-1];$('bPrefix').value=last.prefix;if(!$('bStart').value){$('bStart').placeholder='e.g. '+pad(parseInt(last.start,10)+last.count,last.start.length);}}
   $('batchList').innerHTML=B().length?B().slice().reverse().map(function(b){
     var ps=papersOf(b),u=ps.filter(function(p){return E(p.key);}).length;
-    return '<div class="batch"><b>'+esc(batchLabel(b))+'</b><small>Received '+fd(b.date)+(b.note?' · '+esc(b.note):'')+' · '+b.count+' papers · '+u+' used · '+(b.count-u)+' blank</small><div class="bar"><i style="width:'+(u/b.count*100)+'%"></i></div>'+(u===0?'<button class="danger" style="margin-top:8px;padding:7px 12px;font-size:13px" data-del="'+b.id+'">Remove (entered by mistake)</button>':'')+'</div>';
+    return '<div class="batch"><b>'+esc(batchLabel(b))+'</b><small>Received '+fd(b.date)+(b.note?' · '+esc(b.note):'')+' · '+b.count+' papers · '+u+' used · '+(b.count-u)+' blank</small><div class="bar"><i style="width:'+(u/b.count*100)+'%"></i></div><div style="display:flex;gap:8px;margin-top:8px"><button class="sec" style="padding:7px 14px;font-size:13px" data-edit="'+b.id+'">✏️ Edit</button>'+(u===0?'<button class="danger" style="padding:7px 12px;font-size:13px" data-del="'+b.id+'">Remove (entered by mistake)</button>':'')+'</div></div>';
   }).join(''):'<div class="empty" style="padding:10px">No stock entered yet.</div>';
 }
-$('batchList').addEventListener('click',function(e){var b=e.target.closest('[data-del]');if(!b)return;if(!confirm('Remove this stock entry?'))return;db.batches.forEach(function(x){if(String(x.id)===b.dataset.del){x.del=true;x.u=Date.now();}});save();renderStock();});
+$('batchList').addEventListener('click',function(e){var ed=e.target.closest('[data-edit]');if(ed){startBatchEdit(ed.dataset.edit);return;}var b=e.target.closest('[data-del]');if(!b)return;if(!confirm('Remove this stock entry?'))return;db.batches.forEach(function(x){if(String(x.id)===b.dataset.del){x.del=true;x.u=Date.now();}});save();renderStock();});
 
 /* more: print, export, backup */
 function renderMore(){
