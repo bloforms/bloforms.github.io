@@ -40,6 +40,8 @@ label em{font-weight:400;color:var(--mute);font-style:normal}
 input,select,textarea{width:100%;font:inherit;padding:11px 12px;border:1px solid #b8c6cf;border-radius:9px;background:#fff;color:var(--ink)}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:1px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row>div{min-width:0}
+input[type=date]{min-width:0;max-width:100%;-webkit-appearance:none;appearance:none;min-height:46px}
 button{font:inherit;font-weight:600;border:0;border-radius:10px;padding:12px 16px;cursor:pointer;background:var(--blue);color:#fff}
 button.sec{background:#fff;color:var(--blue);border:1px solid var(--blue)}
 button.danger{background:#fff;color:var(--red);border:1px solid var(--red)}
@@ -75,13 +77,17 @@ nav button svg{display:block;margin:0 auto 2px;width:22px;height:22px;stroke:cur
 nav button.on{color:var(--blue)}
 #toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:#16242e;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90%;text-align:center}
 #toast.on{opacity:1}
+#snack{position:fixed;left:12px;right:12px;bottom:84px;max-width:520px;margin:0 auto;background:#16242e;color:#fff;border-radius:12px;padding:6px 6px 6px 16px;display:none;align-items:center;gap:10px;font-size:14.5px;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:5}
+#snack.on{display:flex}
+#snack span{flex:1}
+#snack button{background:none;color:#8fd0ff;font-weight:700;padding:10px 14px;letter-spacing:.5px}
 footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
 #printArea{display:none}
 @page{size:A4 portrait;margin:8mm 10mm}
 @media print{
   html{zoom:1!important}
   body{background:#fff;padding:0;font-size:11px;margin:0}
-  header,nav,main,#toast,#loginScr{display:none!important}
+  header,nav,main,#toast,#snack,#loginScr{display:none!important}
   #printArea{display:block;padding:0;width:100%}
   #printArea h2{font-size:14px;margin:0;text-align:center}
   #printArea p{margin:2px 0 5px;text-align:center}
@@ -258,6 +264,7 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
   <button data-go="more"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>More</button>
 </nav>
 <div id="toast"></div>
+<div id="snack"><span id="snackMsg"></span><button id="snackUndo">UNDO</button></div>
 <div id="printArea"></div>
 
 <script>
@@ -277,6 +284,20 @@ var $=function(id){return document.getElementById(id);};
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
 function fd(s){if(!s)return'';var p=s.split('-');return p.length===3?p[2]+'-'+p[1]+'-'+p[0]:s;}
+var undoSet=null,snT=null;
+function offerUndo(msg,changes){
+  undoSet=changes;$('snackMsg').textContent=msg;$('snack').classList.add('on');$('toast').classList.remove('on');
+  clearTimeout(snT);snT=setTimeout(function(){$('snack').classList.remove('on');undoSet=null;},10000);
+}
+function track(keys){return keys.map(function(k){var v=db.entries[k];return{key:k,prev:v?JSON.parse(JSON.stringify(v)):null};});}
+$('snackUndo').addEventListener('click',function(){
+  if(!undoSet)return;var now=Date.now();
+  undoSet.forEach(function(c){
+    if(!c.prev||c.prev.del){if(db.entries[c.key])db.entries[c.key]={del:true,u:now};}
+    else{var r=JSON.parse(JSON.stringify(c.prev));r.u=now;db.entries[c.key]=r;}
+  });
+  undoSet=null;$('snack').classList.remove('on');save();editing=null;refreshView();toast('Undone');
+});
 var tt;function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on');},2600);}
 function pad(n,w){var s=String(n);while(s.length<w)s='0'+s;return s;}
 function keyOf(prefix,no){return prefix+'|'+no;}
@@ -350,7 +371,7 @@ function openPaper(key){
   editing=key;
   $('entryTitle').textContent='Edit '+p.label;
   $('entryEmpty').style.display='none';$('entryForm').style.display='';
-  $('eNo').innerHTML='<option value="'+esc(key)+'">'+esc(p.label)+'</option>';$('eNo').disabled=true;
+  $('eNo').innerHTML='<option value="'+esc(key)+'">'+esc(p.label)+' (this paper)</option>'+blanks().slice(0,200).map(function(b){return'<option value="'+esc(b.key)+'">Move to '+esc(b.label)+'</option>';}).join('');$('eNo').disabled=false;$('eNo').value=key;
   document.querySelector('input[name=eStatus][value='+(e.status==='damaged'?'damaged':'printed')+']').checked=true;
   $('eService').value=e.service||'';$('eAppNo').value=e.appNo||'';$('eName').value=e.name||'';
   $('eAppDate').value=e.appDate||'';$('ePrintDate').value=e.printDate||today();$('eDamDate').value=e.damDate||today();
@@ -373,15 +394,20 @@ $('entryForm').addEventListener('submit',function(ev){
     var bl=blanks();
     if(bl.length&&bl[0].key!==key&&!confirm('Paper '+bl[0].label+' is still blank and comes before this one. Save this number anyway?'))return;
   }
-  rec.u=Date.now();db.entries[key]=rec;save();
-  toast('Saved '+key.split('|')[1]);
+  var now=Date.now(),from=editing,moving=from&&from!==key;
+  var changes=track(moving?[key,from]:[key]);
+  rec.u=now;db.entries[key]=rec;
+  if(moving)db.entries[from]={del:true,u:now};
+  save();
+  offerUndo(moving?'Moved '+from.split('|')[1]+' → '+key.split('|')[1]:'Saved '+key.split('|')[1],changes);
   if(editing){editing=null;go('reg');}else{startEntry();window.scrollTo(0,0);}
 });
 $('eCancel').addEventListener('click',function(){editing=null;go('reg');});
 $('eClear').addEventListener('click',function(){
   if(!editing)return;
   if(!confirm('Remove this entry and mark the paper as blank again?'))return;
-  db.entries[editing]={del:true,u:Date.now()};save();editing=null;toast('Marked blank');go('reg');
+  var changes=track([editing]);db.entries[editing]={del:true,u:Date.now()};save();
+  offerUndo('Marked '+editing.split('|')[1]+' blank',changes);editing=null;go('reg');
 });
 
 /* register */
