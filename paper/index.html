@@ -124,7 +124,7 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
     <div id="lMsg" class="warn" style="display:none;margin:12px 0 0;background:var(--redbg);color:var(--red)"></div>
     <div class="btns"><button id="lIn">Sign in</button><button class="sec" id="lNew">New account</button></div>
     <div style="text-align:center;margin-top:12px"><a href="#" id="lForgot" style="color:var(--blue);font-weight:600;font-size:14px">Forgot password?</a></div>
-    <div id="lForgotMsg" class="warn" style="display:none;margin:10px 0 0">Ask <b>Sivananda Pujari</b> (Paper Register owner) to reset your password. He will give you a new one. Your entries are safe.</div>
+    <div id="lForgotMsg" class="warn" style="display:none;margin:10px 0 0">Ask <b>Sivananda Pujari</b> (Paper Register owner) to reset it. After the reset, your password is <b>your own phone number</b>. Sign in with it, then change it in <b>More → Change password</b>. Your entries are safe.</div>
     <div style="font-size:13px;color:var(--mute);margin-top:12px">First time? Type your number and choose a password, then tap <b>New account</b>. Write the password down: it cannot be shown again.</div>
   </div>
   <footer>Designed by Sivananda Pujari</footer>
@@ -342,6 +342,7 @@ function renderHome(){
   else if(!bl.length){nb.innerHTML='<small>All papers are used</small><div style="margin:4px 0 10px">When the new bundle comes, add it to stock.</div><button data-go="stock">Receive stock</button>';}
   else{nb.innerHTML='<small>Next paper to use</small><div class="no"><i>'+esc(bl[0].prefix)+'</i>'+esc(bl[0].no)+'</div><button data-go="entry">Enter this certificate</button>';}
   $('lowWarn').innerHTML=(B().length&&bal>0&&bal<=10)?'<div class="warn">Only '+bal+' blank paper'+(bal===1?'':'s')+' left. Ask for new stock.</div>':'';
+  if(acct&&acct.pass===acct.phone)$('lowWarn').innerHTML+='<div class="warn">Your password is your phone number. Change it in <b>More → Change password</b>.</div>';
   if(acct&&!db.office)$('lowWarn').innerHTML+='<div class="warn">Add your secretariat name: tap <b>More</b> → Secretariat name.</div>';
   if(memOnly)$('lowWarn').innerHTML+='<div class="warn">This phone is not allowing the app to save. Entries will be lost when you close it.</div>';
   var t=today(),list=all.filter(function(p){var e=E(p.key);return e&&(e.printDate===t||e.damDate===t);});
@@ -620,8 +621,20 @@ function renderAcct(){
   var c=$('acctCard');if(!c)return;
   if(!acct){c.innerHTML='';return;}
   var t=0;try{t=+localStorage.getItem(KEY+'.synced')||0;}catch(e){}
-  c.innerHTML='<h2>☁️ Account</h2><div style="font-size:14px;color:var(--mute)">Signed in with mobile <b style="color:var(--ink)">'+esc(acct.phone)+'</b>.'+(t?' Last saved online: '+new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})+'.':'')+'<br>On any phone or computer, open this link and sign in with the same number and password to see all entries.</div><div class="btns"><button class="sec" id="syncNow">🔄 Save now</button><button class="danger" id="signOut">Sign out</button></div>';
+  c.innerHTML='<h2>☁️ Account</h2><div style="font-size:14px;color:var(--mute)">Signed in with mobile <b style="color:var(--ink)">'+esc(acct.phone)+'</b>.'+(t?' Last saved online: '+new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})+'.':'')+'<br>On any phone or computer, open this link and sign in with the same number and password to see all entries.</div><div class="btns"><button class="sec" id="syncNow">🔄 Save now</button><button class="sec" id="chgPass">🔑 Change password</button><button class="danger" id="signOut">Sign out</button></div><div id="chgBox" style="display:none"><label for="chgNew">New password (6 letters or more)</label><input id="chgNew" type="password" autocomplete="new-password"><label for="chgNew2">Type it again</label><input id="chgNew2" type="password" autocomplete="new-password"><button class="full" id="chgSave">Save new password</button></div>'+(acct.pass===acct.phone?'<div class="warn" style="margin:12px 0 0">Your password is your phone number. Please change it.</div>':'');
   $('syncNow').onclick=function(){sync().then(function(ok){toast(ok?'Saved online ✓':'Could not reach internet');});};
+  $('chgPass').onclick=function(){$('chgBox').style.display='';$('chgNew').focus();};
+  $('chgSave').onclick=function(){
+    var a=$('chgNew').value,b2=$('chgNew2').value;
+    if(a.length<6){toast('Password must have at least 6 letters or numbers');return;}
+    if(a!==b2){toast('The two passwords are not the same');return;}
+    $('chgSave').disabled=true;
+    rpc('paper_change_password',{p_phone:acct.phone,p_pass:acct.pass,p_new:a}).then(function(r){
+      if(!r.ok){toast(r.error==='wrong_pass'?'Sign in again':'Could not change the password');return;}
+      acct.pass=a;try{localStorage.setItem(LSA,JSON.stringify(acct));}catch(e){}
+      renderAcct();toast('Password changed ✓');
+    }).catch(function(){toast('No internet. Try again.');}).then(function(){if($('chgSave'))$('chgSave').disabled=false;});
+  };
   $('signOut').onclick=function(){
     if(!confirm('Sign out on this phone? Your entries stay saved online. They will be removed from this phone.'))return;
     sync().then(function(){signOutNow();db={batches:[],entries:{},office:'',ou:0,services:[]};store();try{localStorage.removeItem(KEY+'.synced');}catch(e){}chip('');showLogin(true);});
@@ -631,12 +644,11 @@ function renderAcct(){
 var OWNER='9347946239';
 $('adminBody').addEventListener('click',function(e){
   var b=e.target.closest('[data-reset]');if(!b||!acct)return;
-  var ph=b.dataset.reset,np=prompt('New password for '+ph+' (6 letters or more):','');
-  if(np===null)return;np=np.trim();
-  if(np.length<6){toast('Password must have at least 6 letters or numbers');return;}
+  var ph=b.dataset.reset,np=ph;
+  if(!confirm('Reset the password of '+ph+'?\nThe new password will be their phone number: '+ph))return;
   b.disabled=true;
   rpc('paper_admin_reset',{p_phone:acct.phone,p_pass:acct.pass,p_target:ph,p_new:np}).then(function(r){
-    if(r.ok){b.textContent='✓ New password: '+np;toast('Password reset. Tell '+ph+' the new password.');}
+    if(r.ok){b.textContent='✓ Password is now '+np;toast('Done. Tell them to sign in with their phone number as password.');}
     else{b.disabled=false;toast(r.error==='wrong_pass'?'Sign in again':'Could not reset');}
   }).catch(function(){b.disabled=false;toast('No internet. Try again.');});
 });
