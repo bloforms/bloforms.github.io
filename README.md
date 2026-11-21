@@ -58,6 +58,7 @@ Open the app: https://bloforms.github.io/medicine/
 
 # Jonna Idli Center – Online Order (test version)
 
-Order jowar idli with chutney online and collect it at the shop (Telugu / English). Sprint 1 test version; owner dashboard, UPI QR and install-as-app come in later sprints.
+Order jowar idli with chutney online and collect it at the shop (Telugu / English). Owner dashboard (separate login) for orders, rates, menu items with show/hide, shop details and photos. UPI QR and install-as-app come in later sprints.
 
 Open the app: https://bloforms.github.io/idli/
+Owner dashboard: https://bloforms.github.io/idli/admin.html
