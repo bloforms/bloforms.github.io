@@ -229,6 +229,15 @@ const TX={
  fileTitle:['Heading on top of the sheet (optional)','షీట్ పైన శీర్షిక (ఐచ్ఛికం)'], xlsxB:['⬇ Excel (.xlsx)','⬇ ఎక్సెల్ (.xlsx)'], csvB:['⬇ CSV','⬇ CSV'], copyB:['📋 Copy for Google Sheet','📋 గూగుల్ షీట్ కోసం కాపీ'],
  copyDone:['Copied. Open Google Sheets, tap cell A1 and paste.','కాపీ అయింది. గూగుల్ షీట్స్ తెరిచి A1 సెల్‌లో పేస్ట్ చేయండి.'], employeesN:['employees','ఉద్యోగులు'], colsN:['columns','కాలమ్‌లు'],
  onlyBlo:['Only BLOs','BLOలు మాత్రమే'], scopeAll:['All 35 secretariats','మొత్తం 35 సచివాలయాలు'],
+ loginId:['Phone number, mail ID or secretariat number (e.g. 21003001)','ఫోన్ నంబర్, మెయిల్ ఐడీ లేదా సచివాలయ నంబర్ (ఉదా: 21003001)'],
+ master:['Saved employee list','సేవ్ చేసిన ఉద్యోగుల జాబితా'], masterHelp:['Upload the Live Data sheet once (Google Sheets → File → Download → Microsoft Excel). Every employee and all their details are saved here. Secretariats then fill employees from this list, and Administrative Secretaries whose WhatsApp number is in it are approved automatically when they sign up.','లైవ్ డేటా షీట్‌ను ఒకసారి అప్‌లోడ్ చేయండి (Google Sheets → File → Download → Microsoft Excel). ప్రతి ఉద్యోగి మరియు వారి అన్ని వివరాలు ఇక్కడ సేవ్ అవుతాయి. సచివాలయాలు ఈ జాబితా నుండి ఉద్యోగులను నింపుతాయి; ఈ జాబితాలో వాట్సాప్ నంబర్ ఉన్న పరిపాలనా కార్యదర్శులు సైన్ అప్ చేయగానే ఆటోమేటిక్‌గా ఆమోదించబడతారు.'],
+ masterSave:['Save as the saved list','సేవ్ చేసిన జాబితాగా సేవ్ చేయండి'], masterCount:['employees in saved list','ఉద్యోగులు సేవ్ చేసిన జాబితాలో'], masterAdmins:['Administrative Secretaries with phone (auto-approved)','ఫోన్‌తో ఉన్న పరిపాలనా కార్యదర్శులు (ఆటో ఆమోదం)'],
+ masterReplace:['This replaces the whole saved list. Continue?','ఇది మొత్తం సేవ్ చేసిన జాబితాను మార్చేస్తుంది. కొనసాగించాలా?'],
+ fillSaved:['🔎 Fill from saved list','🔎 సేవ్ చేసిన జాబితా నుండి నింపండి'], fillHelp:['Type 2+ letters of the name, HRMS ID or phone, then tap the person. All their saved details fill in.','పేరు, HRMS ఐడీ లేదా ఫోన్‌లో 2+ అక్షరాలు టైప్ చేసి, ఆ వ్యక్తిని నొక్కండి. వారి సేవ్ చేసిన వివరాలు అన్నీ నిండుతాయి.'],
+ inWard:['already in','ఇప్పటికే ఉన్నారు'], fillQ:['Fill this employee\'s saved details?','ఈ ఉద్యోగి సేవ్ చేసిన వివరాలు నింపాలా?'], filled:['Details filled','వివరాలు నింపబడ్డాయి'],
+ noMaster:['The saved list is empty. The app admin uploads it under Admin → Saved employee list.','సేవ్ చేసిన జాబితా ఖాళీగా ఉంది. యాప్ అడ్మిన్ దానిని అడ్మిన్ → సేవ్ చేసిన ఉద్యోగుల జాబితాలో అప్‌లోడ్ చేస్తారు.'],
+ secLogin:['Secretariat login','సచివాలయ లాగిన్'], setPass:['Set password','పాస్‌వర్డ్ పెట్టండి'], secPassQ:['New password for secretariat number','సచివాలయ నంబర్ కోసం కొత్త పాస్‌వర్డ్'],
+ secPassDone:['Saved. This secretariat can now log in with its number and this password.','సేవ్ అయింది. ఈ సచివాలయం ఇప్పుడు తన నంబర్, ఈ పాస్‌వర్డ్‌తో లాగిన్ అవ్వవచ్చు.'],
  clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
@@ -521,7 +530,7 @@ function renderNav(){
     if(me.role==='super'||me.role==='admin'){
       const a=h[1]||S.atab||'requests';
       const ch=[it('📨',t('requests'),'#admin/requests',r==='admin'&&a==='requests'),it('👤',t('users'),'#admin/users',r==='admin'&&a==='users')];
-      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'));
+      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'),it('📋',t('master'),'#admin/master',r==='admin'&&a==='master'));
       out+=grp('admin','⚙️',t('admin'),ch,r==='admin');
     }
   }
@@ -602,7 +611,7 @@ function vAbout(){const app=curApp;
 
 function vLogin(){const app=curApp;
   app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('login')+'</h2><form id="f">'+
-   '<label>'+t('phoneOrMail')+'</label><input id="lg" autocomplete="username" inputmode="email" required>'+
+   '<label>'+t('loginId')+'</label><input id="lg" autocomplete="username" inputmode="email" required>'+
    '<label>'+t('password')+'</label><input id="pw" type="password" autocomplete="current-password" required>'+
    '<div id="m"></div><button class="btn" style="margin-top:12px;width:100%;justify-content:center">'+t('login')+'</button></form>'+
    '<p style="text-align:center"><a href="#signup">'+t('noAcc')+'</a></p></div>';
@@ -625,7 +634,7 @@ async function vSignup(){const app=curApp;
   $('rl').onchange=()=>{if($('rl').value==='admin')$('dg').value=DESIG[0][0]};
   $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
     try{const r=await rpc('wp_signup',{p_login:$('lg').value,p_pass:$('pw').value,p_name:$('nm').value,p_code:$('sc').value,p_role:$('rl').value,p_designation:$('dg').value});
-      if(r.token){setSession(r.token,r.me);location.hash='#home'}
+      if(r.token){setSession(r.token,r.me);if(r.auto)toast('✅');location.hash='#home'}
       else{$('f').innerHTML='<div class="msg ok">'+t('reqSent')+'</div><a class="btn" href="#login">'+t('login')+'</a>'}}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';b.disabled=false}};
 }
@@ -817,7 +826,9 @@ async function vStaff(code,id){const app=curApp;
   const s=id==='new'?{designation:DESIG[0][0]}:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||{}));
   const ph=s.photo?[s.photo]:[];const cls=(s.clusters||[]).slice();if(!cls.length)cls.push({no:'',households:null});const pv=s.private||{};
   const opts=DESIG.slice();if(s.designation&&!opts.find(x=>x[0]===s.designation))opts.push([s.designation,s.designation]);
-  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p><form id="f" class="card">'+
+  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p>'+
+   '<div class="card" style="background:#fff8ea;border-color:#f2d39b"><h3 style="margin-top:0">'+t('fillSaved')+'</h3><p class="mute">'+t('fillHelp')+'</p><input id="mq" placeholder="🔍 '+esc(t('search'))+'" value="'+esc(id==='new'?'':(s.name||''))+'"><div id="mres" class="list"></div></div>'+
+   '<form id="f" class="card">'+
    '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
    '<label>'+t('designation')+'</label><select id="dg">'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
    '<label>'+t('whatsapp')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
@@ -831,6 +842,17 @@ async function vStaff(code,id){const app=curApp;
     $('cl').querySelectorAll('[data-cx]').forEach(b=>b.onclick=()=>{readCl();cls.splice(+b.dataset.cx,1);drawCl()})};
   drawCl();$('addcl').onclick=()=>{readCl();cls.push({no:'',households:null});drawCl()};
   photoPicker('sph',ph,1,code);
+  const msearch=async()=>{const q=$('mq').value.trim();if(q.length<2){$('mres').innerHTML='';return}
+    try{const r=await rpc('wp_master_list',{p_token:S.token,p_q:q});
+      if(!r.total){$('mres').innerHTML='<p class="mute">'+t('noMaster')+'</p>';return}
+      $('mres').innerHTML=r.rows.slice(0,15).map(x=>'<button type="button" class="it" data-mid="'+x.id+'" style="width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid var(--line);cursor:pointer;font:inherit"><div class="grow"><div class="nm">'+esc(x.name)+'</div><div class="mute">'+esc(desigLabel(matchDesig(x.designation)))+(x.hrms?' · HRMS '+esc(x.hrms):'')+(x.phone?' · '+esc(x.phone):'')+'</div></div>'+(x.used_name?'<span class="pill o">'+t('inWard')+' '+esc(x.used_name)+'</span>':'')+'</button>').join('');
+      $('mres').querySelectorAll('[data-mid]').forEach(b=>b.onclick=async()=>{const x=r.rows.find(y=>String(y.id)===b.dataset.mid);if(!confirm(t('fillQ')+'\n\n'+x.name))return;
+        const old=id==='new'?null:JSON.parse(JSON.stringify(w.staff.find(y=>y.id===id)||null));
+        try{const nid=await rpc('wp_add_from_master',{p_token:S.token,p_code:code,p_master:+x.id,p_staff:id==='new'?null:id,p_name:titleCase(x.name),p_designation:matchDesig(x.designation)});
+          pushUndo(t('fillSaved')+' – '+x.name,old?()=>rpc('wp_save_staff',{p_token:S.token,s:old}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}));
+          toast(t('filled'));S.ward=null;if(location.hash==='#staff/'+code+'/'+nid)route();else location.hash='#staff/'+code+'/'+nid}catch(er){toast(errText(er))}})}catch(e){}};
+  let mt=null;$('mq').oninput=()=>{clearTimeout(mt);mt=setTimeout(msearch,300)};
+  if(id!=='new'&&Object.keys(pv).length<5)msearch();
   $('f').onsubmit=async e=>{e.preventDefault();readCl();
     const epv=readEmpForm(pv);const aa=epv.aadhaar||'';if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
     $('sv').disabled=true;
@@ -1047,7 +1069,7 @@ async function vAdmin(tab){const app=curApp;
   const me=S.me||{};
   if(!['super','admin'].includes(me.role)){location.hash='#home';return}
   S.atab=tab||S.atab||'requests';
-  const tabs=[['requests',t('requests')],['users',t('users')]].concat(me.role==='super'?[['wards',t('wards')],['compare',t('compare')]]:[]);
+  const tabs=[['requests',t('requests')],['users',t('users')]].concat(me.role==='super'?[['wards',t('wards')],['compare',t('compare')],['master',t('master')]]:[]);
   app.innerHTML='<h1>⚙️ '+t('admin')+' – '+((tabs.find(x=>x[0]===S.atab)||tabs[0])[1])+'</h1><div><div id="ab" class="card"><span class="spin"></span></div>';
   app.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>vAdmin(b.dataset.a));
   const ab=$('ab');
@@ -1064,12 +1086,33 @@ async function vAdmin(tab){const app=curApp;
     ab.querySelectorAll('[data-pw]').forEach(b=>b.onclick=()=>{const v=prompt(t('newPass')+' (6+)');if(v)act(b.dataset.pw,'password',v)});
     return;
   }
+  if(S.atab==='master'){
+    const info=await rpc('wp_master_list',{p_token:S.token,p_q:''});
+    ab.innerHTML='<p>'+t('masterHelp')+'</p><div class="grid"><div class="stat"><b>'+info.total+'</b><span>'+t('masterCount')+'</span></div><div class="stat"><b>'+info.admins+'</b><span>'+t('masterAdmins')+'</span></div></div>'+
+      '<label>'+t('chooseFile')+'</label><input type="file" id="mf" accept=".xlsx,.xls,.csv"><div id="mm"></div>'+
+      '<label>'+t('search')+'</label><input id="mq2" placeholder="🔍"><div id="ml" class="list"></div>';
+    const show=rows=>{$('ml').innerHTML=rows.map(x=>'<div class="it"><div class="grow"><div class="nm">'+esc(x.name)+'</div><div class="mute">'+esc(desigLabel(matchDesig(x.designation)))+(x.hrms?' · HRMS '+esc(x.hrms):'')+(x.phone?' · '+esc(x.phone):'')+'</div></div>'+(x.used_name?'<span class="pill">'+esc(x.used_name)+'</span>':'')+'</div>').join('')};
+    show(info.rows);
+    let tm=null;$('mq2').oninput=()=>{clearTimeout(tm);tm=setTimeout(async()=>{try{show((await rpc('wp_master_list',{p_token:S.token,p_q:$('mq2').value})).rows)}catch(e){}},300)};
+    $('mf').onchange=async()=>{const f=$('mf').files[0];if(!f)return;$('mm').innerHTML='<span class="spin"></span>';
+      try{let rows;if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:false,defval:''})}
+        if(!isLiveData(rows))throw new Error('fmt');
+        const list=liveRows(rows).map(r=>({name:titleCase(r.name),designation:r.designation,phone:r.phone,private:r.private}));
+        const nA=list.filter(r=>/administrative/i.test(r.designation)&&r.phone).length;
+        $('mm').innerHTML='<div class="msg ok">✅ '+t('liveFmt')+': <b>'+list.length+'</b> '+t('employeesN')+' · '+nA+' '+t('masterAdmins')+'</div><button class="btn" id="msv" type="button">💾 '+t('masterSave')+'</button>';
+        $('msv').onclick=async()=>{if(info.total&&!confirm(t('masterReplace')))return;$('msv').disabled=true;
+          try{const n=await rpc('wp_master_import',{p_token:S.token,p_rows:list});toast(n+' '+t('masterCount'));vAdmin('master')}catch(er){$('mm').innerHTML='<div class="msg err">'+errText(er)+'</div>'}}}
+      catch(e){$('mm').innerHTML='<div class="msg err">'+t('fileFail')+'</div>'}};
+    return;
+  }
   const ov=await rpc('wp_overview',{p_token:S.token});
   if(S.atab==='wards'){
-    ab.innerHTML='<div class="row"><button class="btn alt sm" id="csv">'+t('export')+'</button><button class="btn alt sm" id="expAll">'+t('dlEmp')+' – '+t('allWardsShort')+'</button></div><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('publicOn')+'</th></tr>'+
-     ov.map(o=>'<tr><td>'+o.sl+'</td><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a><div class="mute">'+o.code+'</div></td><td>'+completion(o)+'%</td><td>'+o.places+'</td><td>'+o.photos+'</td><td>'+o.staff+'</td><td>'+o.accounts+'</td><td><label class="chk"><input type="checkbox" data-pub="'+o.code+'"'+(o.public_on?' checked':'')+'>'+(o.public_on?t('on'):t('off'))+'</label>'+(o.public_on?'<button class="btn alt sm" data-sh="'+o.code+'">🔗</button>':'')+'</td></tr>').join('')+'</table></div>';
+    let secL=[];try{secL=await rpc('wp_sec_logins',{p_token:S.token})}catch(e){}
+    ab.innerHTML='<div class="row"><button class="btn alt sm" id="csv">'+t('export')+'</button><button class="btn alt sm" id="expAll">'+t('dlEmp')+' – '+t('allWardsShort')+'</button></div><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('secLogin')+'</th><th>'+t('publicOn')+'</th></tr>'+
+     ov.map(o=>'<tr><td>'+o.sl+'</td><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a><div class="mute">'+o.code+'</div></td><td>'+completion(o)+'%</td><td>'+o.places+'</td><td>'+o.photos+'</td><td>'+o.staff+'</td><td>'+o.accounts+'</td><td style="white-space:nowrap">'+(secL.includes(o.code)?'✅ ':'')+'<button class="btn alt sm" data-sp="'+o.code+'">🔑 '+t('setPass')+'</button></td><td><label class="chk"><input type="checkbox" data-pub="'+o.code+'"'+(o.public_on?' checked':'')+'>'+(o.public_on?t('on'):t('off'))+'</label>'+(o.public_on?'<button class="btn alt sm" data-sh="'+o.code+'">🔗</button>':'')+'</td></tr>').join('')+'</table></div>';
     ab.querySelectorAll('[data-pub]').forEach(c=>c.onchange=async()=>{const on=c.checked;try{await rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:on});pushUndo(t('publicOn')+' – '+secName(c.dataset.pub),()=>rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:!on}));vAdmin('wards')}catch(er){toast(errText(er))}});
     ab.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>copyLink(b.dataset.sh));
+    ab.querySelectorAll('[data-sp]').forEach(b=>b.onclick=async()=>{const c=b.dataset.sp;const v=prompt(t('secPassQ')+' '+c+' (6+)');if(!v)return;try{await rpc('wp_set_sec_password',{p_token:S.token,p_code:c,p_pass:v});alert(t('secPassDone')+'\n\n'+c+' / '+v);vAdmin('wards')}catch(er){toast(errText(er))}});
     $('csv').onclick=()=>csv(ov);
     $('expAll').onclick=()=>{location.hash='#export/all'};
     return;
