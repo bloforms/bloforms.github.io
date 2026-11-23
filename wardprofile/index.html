@@ -210,6 +210,24 @@ main{padding-bottom:96px}
 .stat{background:#f6fafa;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
 .stat b{display:block;font-size:24px;color:var(--c)}
 .stat span{font-size:13px;color:var(--mute)}
+a.stat.tap{text-decoration:none;color:inherit;cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s;display:block}
+a.stat.tap:hover{border-color:#9fd3d3;box-shadow:0 3px 10px rgba(15,92,92,.1)}
+a.stat.tap:active{transform:scale(.96)}
+.stat b.add{color:#d97706;font-size:22px}
+a.stat.empty{background:#fffaf0;border-style:dashed;border-color:#f3c98b}
+.grid.g4{grid-template-columns:repeat(4,1fr)}.grid.g5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:700px){.grid.g4,.grid.g5{grid-template-columns:repeat(2,1fr)}.grid.g5>:last-child:nth-child(odd){grid-column:1/-1}.stat b{font-size:21px}}
+.facs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.fac{display:flex;align-items:center;gap:8px;padding:10px 10px;border:1px solid var(--line);border-radius:12px;background:#fff;text-decoration:none;color:inherit;transition:transform .12s}
+.fac:active{transform:scale(.96)}.fac .fe{font-size:20px}.fac .fl{flex:1;font-size:14px}.fac b{color:var(--c);font-size:17px}
+.fac i{font-style:normal;color:#d97706;font-weight:800}.fac.zero{background:#fafcfc}.fac.zero .fl{color:var(--mute)}
+.btab th{width:38%;font-weight:600;color:#3d5450}
+tr.tapr{cursor:pointer}tr.tapr:active{background:#eef7f5}
+.addt{color:#d97706;font-weight:600}
+.todo{background:linear-gradient(120deg,#fff7e6,#f0fbf8)}
+.chip{display:inline-block;padding:6px 12px;border-radius:16px;background:#fff;border:1px solid #f3c98b;color:#92400e;text-decoration:none;font-size:13px;font-weight:600}
+.flashin{animation:flashin 2.2s ease}
+@keyframes flashin{0%,40%{background:#fff3cd;box-shadow:0 0 0 4px #fde68a;border-radius:10px}100%{background:transparent;box-shadow:none}}
 label{display:block;font-size:14px;font-weight:600;margin:10px 0 4px}
 input,select,textarea{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
 input:focus,select:focus,textarea:focus{outline:2px solid #9fd3d3;border-color:var(--c2)}
@@ -443,6 +461,7 @@ const TX={
  newChat:['New chat','కొత్త చాట్'], people:['People','వ్యక్తులు'], noPeople:['No one found with that name','ఆ పేరుతో ఎవరూ లేరు'], searchPeople2:['Search chats or people','చాట్‌లు లేదా వ్యక్తులు వెతకండి'], searchPeople:['Search name, post or ward','పేరు, పోస్టు లేదా వార్డు వెతకండి'], msgPrivately:['Message privately','వ్యక్తిగతంగా సందేశం'], personal:['Personal chat','వ్యక్తిగత చాట్'],
  today:['Today','ఈరోజు'], yesterday:['Yesterday','నిన్న'], membersN:['members','సభ్యులు'],
  homePage:['Home page','హోమ్ పేజీ'], others:['Others','ఇతరాలు'],
+ addIt:['Add','జోడించు'], todoShort:['Still to fill – tap to add','ఇంకా నింపాల్సినవి – జోడించడానికి నొక్కండి'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -1060,24 +1079,32 @@ function vWardTab(w){
   const byType={};w.places.forEach(x=>{byType[x.type]=(byType[x.type]||0)+1});
   const govt=w.places.filter(x=>x.ownership==='govt').length,priv=w.places.filter(x=>x.ownership==='private').length;
   const c=wardCounts(w);const todo=completionItems(c).filter(x=>!x[1]);
-  const st=(v,l)=>'<div class="stat"><b>'+fmt(v)+'</b><span>'+l+'</span></div>';
+  const ed=w.can_edit_profile,ce=w.can_edit;
+  const E=f=>ed?'#edit/'+code+'/'+f:'';
+  const empty=v=>v==null||v==='';
+  const st=(v,l,href)=>{const add=empty(v)&&href;const inner='<b'+(add?' class="add"':'')+'>'+(add?'＋':fmt(v))+'</b><span>'+l+'</span>';return href?'<a class="stat tap'+(add?' empty':'')+'" href="'+href+'">'+inner+'</a>':'<div class="stat">'+inner+'</div>'};
+  const hh=w.staff.reduce((a,x)=>a+(x.clusters||[]).reduce((b,c)=>b+(+c.households||0),0),0)||null;
+  const rowE=(lab,val,f)=>'<tr'+(ed?' class="tapr" data-go="'+E(f)+'"':'')+'><th>'+lab+'</th><td>'+(val?val:'<span class="addt">'+(ed?'＋ '+t('addIt'):t('notFilled'))+'</span>')+'</td></tr>';
+  const facs=typeList(d).filter(x=>typeCount(d,byType,x[0])||['school','anganwadi','hospital','toilet','park','temple','library','water_tank','shop'].includes(x[0]));
   body.innerHTML=
-   '<div class="card"><h2>'+t('population')+'</h2><div class="grid">'+st(p.total,t('total'))+st(p.households,t('households'))+st(p.men,t('men'))+st(p.women,t('women'))+st(p.above60,t('above60'))+st(p.children,t('children'))+st(d.clusters_total,t('clustersTotal'))+st(w.staff.reduce((a,x)=>a+(x.clusters||[]).reduce((b,c)=>b+(+c.households||0),0),0)||null,t('clusterHH'))+'</div><h3>'+t('welfare')+'</h3><div class="grid">'+st(p.pensions,t('pensions'))+st(p.ration_cards,t('rationCards'))+st(p.voters,t('voters'))+st(p.shgs,t('shgs'))+'</div>'+(p.as_on?'<p class="mute">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
-   (pr&&(pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>'+t('caste')+'</h3><div class="grid">'+st(pr.bc,'BC')+st(pr.sc,'SC')+st(pr.st,'ST')+st(pr.oc,'OC')+st(pr.minority,t('minority'))+'</div>':'')+'</div>'+
-   '<div class="card"><h2>'+t('places')+'</h2><div class="grid">'+st(w.places.length,t('all'))+st(govt,t('govtB'))+st(priv,t('privB'))+st(c.photos,t('photosCount'))+st(w.staff.length,t('staff'))+
-     '</div><h3>'+t('counts')+'</h3><div class="grid">'+typeList(d).filter(x=>typeCount(d,byType,x[0])||['school','toilet','hospital','park','museum','anganwadi','library','temple'].includes(x[0])).map(x=>st(typeCount(d,byType,x[0]),x[3]+' '+(te()?x[2]:x[1]))).join('')+'</div></div>'+
-   '<div class="card"><h2>'+t('boundaries')+'</h2><table>'+[['north','⬆'],['south','⬇'],['east','➡'],['west','⬅']].map(k=>'<tr><th style="width:40%">'+k[1]+' '+t(k[0])+'</th><td>'+(b[k[0]]?esc(b[k[0]]):'<span class="mute">'+t('notFilled')+'</span>')+'</td></tr>').join('')+
-     '<tr><th>'+t('doors')+'</th><td>'+(d.door_from||d.door_to?esc(d.door_from||'')+' → '+esc(d.door_to||''):'<span class="mute">'+t('notFilled')+'</span>')+'</td></tr>'+
-     (d.streets?'<tr><th>'+t('streets')+'</th><td style="white-space:pre-wrap">'+esc(d.streets)+'</td></tr>':'')+'</table></div>'+
-   '<div class="card"><h2>'+t('office')+'</h2>'+(safeUrl(d.office_photo)?'<img src="'+esc(safeUrl(d.office_photo))+'" data-full="'+esc(safeUrl(d.office_photo))+'" alt="" style="width:100%;max-height:260px;object-fit:cover;border-radius:10px">':'')+
-     '<p>'+(d.office_address?esc(d.office_address):'<span class="mute">'+t('notFilled')+'</span>')+(d.office_phone?'<br>☎ <a href="tel:'+esc(String(d.office_phone).replace(/[^0-9+]/g,''))+'">'+esc(d.office_phone)+'</a>':'')+'</p>'+
-     (w.sec.lat!=null?'<div class="mute">'+t('mapStatus')+': '+esc(w.sec.map_status||'')+(['Area only','Likely'].includes(w.sec.map_status)?' – '+t('areaOnly'):'')+'</div><div id="omap" class="map small"></div><a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(w.sec.lat,w.sec.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+'</div>'+
-   (todo.length?'<div class="card"><h2>'+t('todo')+'</h2><ul>'+todo.map(x=>'<li>'+t(x[0])+'</li>').join('')+'</ul></div>':'')+
+   (ed&&todo.length?'<div class="card todo"><b>✨ '+t('todoShort')+'</b><div class="row" style="margin-top:6px">'+todo.map(x=>{const go={c_loc:'olat',c_addr:'office_address',c_bound:'b_north',c_door:'door_from',c_pop:'p_total',c_ophoto:'oph'}[x[0]];
+      const href=go?E(go):x[0]==='c_staff'?'#ward/'+code+'/staff':'#ward/'+code+'/places';return '<a class="chip" href="'+href+'">'+t(x[0])+'</a>'}).join('')+'</div></div>':'')+
+   '<div class="card"><h2>👪 '+t('population')+'</h2><div class="grid g4">'+st(p.total,t('total'),E('p_total'))+st(p.households,t('households'),E('p_households'))+st(p.men,t('men'),E('p_men'))+st(p.women,t('women'),E('p_women'))+st(p.above60,t('above60'),E('p_above60'))+st(p.children,t('children'),E('p_children'))+st(d.clusters_total,t('clustersTotal'),E('clusters_total'))+st(hh,t('clusterHH'),ce?'#ward/'+code+'/staff':'')+'</div>'+
+     '<h3>🎫 '+t('welfare')+'</h3><div class="grid g4">'+st(p.pensions,t('pensions'),E('p_pensions'))+st(p.ration_cards,t('rationCards'),E('p_ration_cards'))+st(p.voters,t('voters'),E('p_voters'))+st(p.shgs,t('shgs'),E('p_shgs'))+'</div>'+(p.as_on?'<p class="mute" style="margin:8px 0 0">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
+     (pr&&(ed||pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>🔒 '+t('caste')+'</h3><div class="grid g5">'+st(pr.bc,'BC',E('c_bc'))+st(pr.sc,'SC',E('c_sc'))+st(pr.st,'ST',E('c_st'))+st(pr.oc,'OC',E('c_oc'))+st(pr.minority,t('minority'),E('c_min'))+'</div>':'')+'</div>'+
+   '<div class="card"><h2>📍 '+t('places')+'</h2><div class="grid g5">'+st(w.places.length,t('all'),'#ward/'+code+'/places')+st(govt,t('govtB'),'#ward/'+code+'/places')+st(priv,t('privB'),'#ward/'+code+'/places')+st(c.photos,t('photosCount'),'#ward/'+code+'/places')+st(w.staff.length,t('staff'),'#ward/'+code+'/staff')+'</div>'+
+     '<h3>🏫 '+t('counts')+'</h3><div class="facs">'+facs.map(x=>{const n=typeCount(d,byType,x[0]);return '<a class="fac'+(n?'':' zero')+'" href="'+(ce?'#place/'+code+'/new/'+x[0]:'#ward/'+code+'/places')+'"><span class="fe">'+x[3]+'</span><span class="fl">'+esc(te()?x[2]:x[1])+'</span><b>'+(n||'')+'</b>'+(ce?'<i>＋</i>':'')+'</a>'}).join('')+'</div></div>'+
+   '<div class="card"><h2>🧭 '+t('boundaries')+'</h2><table class="btab">'+[['north','⬆'],['south','⬇'],['east','➡'],['west','⬅']].map(k=>rowE(k[1]+' '+t(k[0]),b[k[0]]?esc(b[k[0]]):'','b_'+k[0])).join('')+
+     rowE(t('doors'),d.door_from||d.door_to?esc(d.door_from||'')+' → '+esc(d.door_to||''):'','door_from')+rowE(t('streets'),d.streets?'<span style="white-space:pre-wrap">'+esc(d.streets)+'</span>':'','streets')+'</table></div>'+
+   '<div class="card"><h2>🏢 '+t('office')+'</h2>'+(safeUrl(d.office_photo)?'<img src="'+esc(safeUrl(d.office_photo))+'" data-full="'+esc(safeUrl(d.office_photo))+'" alt="" style="width:100%;max-height:240px;object-fit:cover;border-radius:12px">':ed?'<a class="stat tap empty" style="display:block;margin-bottom:8px" href="'+E('oph')+'"><b class="add">＋</b><span>'+t('officePhoto')+'</span></a>':'')+
+     '<table class="btab">'+rowE(t('officeAddress'),d.office_address?esc(d.office_address):'','office_address')+rowE(t('officePhone'),d.office_phone?'<a href="tel:'+esc(String(d.office_phone).replace(/[^0-9+]/g,''))+'">'+esc(d.office_phone)+'</a>':'','office_phone')+'</table>'+
+     (w.sec.lat!=null?'<div class="mute" style="margin-top:8px">'+t('mapStatus')+': '+esc(w.sec.map_status||'')+(['Area only','Likely'].includes(w.sec.map_status)?' – <a href="'+(ed?E('olat'):'#')+'">'+t('areaOnly')+'</a>':'')+'</div><div id="omap" class="map small"></div><a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(w.sec.lat,w.sec.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+'</div>'+
    (w.updated_at?'<p class="mute">'+t('lastUpd')+': '+new Date(w.updated_at).toLocaleString('en-IN')+'</p>':'');
+  body.querySelectorAll('[data-go]').forEach(r=>r.onclick=e=>{if(e.target.closest('a'))return;location.hash=r.dataset.go});
   if(w.sec.lat!=null){const m=mkMap('omap',[w.sec.lat,w.sec.lng],17);if(m)L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m)}
 }
 
-async function vEdit(code){const app=curApp;
+async function vEdit(code,focus){const app=curApp;
   if(!S.token){location.hash='#login';return}
   await loadSecs();
   const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
@@ -1126,6 +1153,7 @@ async function vEdit(code){const app=curApp;
     try{await rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:nd,p_private:npr,p_lat:moved?la:null,p_lng:moved?ln:null});toast(t('saved'));
       pushUndo(t('edit')+' – '+w.sec.name,()=>rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:oldD,p_private:oldP,p_lat:moved?oLa:null,p_lng:moved?oLn:null}));S.tab='overview';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';bt.disabled=false}};
+  if(focus){setTimeout(()=>{const el=$(focus);if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});const box=el.closest('div')||el;box.classList.add('flashin');setTimeout(()=>box.classList.remove('flashin'),2200);if(el.focus&&/INPUT|TEXTAREA/.test(el.tagName))el.focus({preventScroll:true})},350)}
 }
 
 async function vPlace(code,id,preType){const app=curApp;
@@ -2038,7 +2066,7 @@ async function route(){
       case 'builder':return await vBuilder(h[1]||'all');
       case 'registers':return await vRegisters(h[1]||'all');
       case 'wards':return await vHome('wards');
-      case 'edit':return await vEdit(h[1]);
+      case 'edit':return await vEdit(h[1],h[2]);
       case 'place':return await vPlace(h[1],h[2]||'new',h[3]);
       case 'staff':return await vStaff(h[1],h[2]||'new');
       case 'import':return await vImport(h[1]);
