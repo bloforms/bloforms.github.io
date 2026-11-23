@@ -310,6 +310,8 @@ const TX={
  moreTitle:['➕ Your own fields','➕ మీ సొంత ఫీల్డ్‌లు'], moreHelp:['Anything more you know about this topic – type a heading and its details.','ఈ అంశం గురించి మీకు తెలిసిన మరేదైనా – శీర్షిక, దాని వివరాలు టైప్ చేయండి.'], mHead:['Heading (e.g. Borewells)','శీర్షిక (ఉదా: బోర్‌వెల్స్)'], mVal:['Details','వివరాలు'], addMore:['Add field','ఫీల్డ్ జోడించు'],
  delFieldQ:['Delete this question for all 35 wards? (You can restore it in Admin → Custom fields, or press Undo.)','ఈ ప్రశ్నను 35 వార్డులకూ తొలగించాలా? (అడ్మిన్ → కస్టమ్ ఫీల్డ్‌లలో తిరిగి తెచ్చుకోవచ్చు, లేదా Undo నొక్కండి.)'], fieldDeleted:['Question deleted','ప్రశ్న తొలగించబడింది'],
  toDesk:['Switch to desktop view','డెస్క్‌టాప్ వ్యూకి మార్చు'], toPhone:['Switch to phone view','ఫోన్ వ్యూకి మార్చు'],
+ addUser:['Add user','యూజర్‌ను జోడించు'], addUserHelp:['Add anyone directly – a new secretary, an in-charge, a commissioner office staff. They can log in at once with this phone / mail and password.','ఎవరినైనా నేరుగా జోడించండి – కొత్త సెక్రటరీ, ఇన్‌ఛార్జ్, కమిషనర్ కార్యాలయ సిబ్బంది. ఈ ఫోన్ / మెయిల్, పాస్‌వర్డ్‌తో వెంటనే లాగిన్ కావచ్చు.'],
+ role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
  builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
  pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
  fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
@@ -1493,13 +1495,27 @@ async function vAdmin(tab){const app=curApp;
   if(S.atab==='requests'||S.atab==='users'){
     const us=await rpc('wp_accounts_list',{p_token:S.token});
     const list=S.atab==='requests'?us.filter(u=>!u.approved):us.filter(u=>u.approved);
-    ab.innerHTML=(S.atab==='users'?'<input id="uf" placeholder="🔍 '+esc(t('filterUsers'))+'" style="margin-bottom:6px">':'')+(list.length?'<div class="list">'+list.map(u=>'<div class="it" data-u="'+esc((u.name+' '+loginLabel(u.login)+' '+(u.secretariat||'')).toLowerCase())+'"><div class="grow"><div class="nm">'+esc(u.name)+' <span class="pill">'+esc(u.role)+'</span>'+(u.must_change?' <span class="pill o">'+t('notChanged')+'</span>':'')+'</div><div class="mute">'+esc(loginLabel(u.login))+' · '+esc(desigLabel(u.designation))+'<br>'+esc(u.secretariat||'')+'</div></div><div class="row">'+
-      (u.role==='super'?'':(u.approved?'<button class="btn alt sm" data-pw="'+u.id+'">'+t('resetPass')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('remove')+'</button>':'<button class="btn sm" data-ap="'+u.id+'">'+t('approve')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('reject')+'</button>'))+'</div></div>').join('')+'</div>'
+    const isSup=(S.me||{}).role==='super';
+    ab.innerHTML=(S.atab==='users'&&isSup?'<details class="card" id="addU" style="background:#f6fafa;margin:0 0 10px"><summary style="cursor:pointer;font-weight:700;color:var(--c)">➕ '+t('addUser')+'</summary><p class="mute">'+t('addUserHelp')+'</p>'+
+      '<div class="two"><div><label>'+t('loginId')+'</label><input id="nu_l" placeholder="9876543210 / name@mail.com"></div><div><label>'+t('name')+'</label><input id="nu_n"></div>'+
+      '<div><label>'+t('role')+'</label><select id="nu_r"><option value="staff">'+t('roleStaff')+'</option><option value="admin">'+t('roleAdmin')+'</option><option value="super">'+t('roleSuper')+'</option></select></div>'+
+      '<div><label>'+t('pickSec')+'</label><select id="nu_c"><option value="">–</option>'+secOptions('')+'</select></div>'+
+      '<div><label>'+t('designation')+'</label><select id="nu_d"><option value="">–</option>'+DESIG.map(d=>'<option value="'+esc(d[0])+'">'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select></div>'+
+      '<div><label>'+t('password')+' (6+)</label><input id="nu_p" autocomplete="new-password"></div></div>'+
+      '<label class="chk"><input type="checkbox" id="nu_m" checked> '+t('mustChangeFirst')+'</label><div id="nu_msg"></div><button class="btn" type="button" id="nu_go" style="margin-top:8px">➕ '+t('addUser')+'</button></details>':'')+
+     (S.atab==='users'?'<input id="uf" placeholder="🔍 '+esc(t('filterUsers'))+'" style="margin-bottom:6px">':'')+(list.length?'<div class="list">'+list.map(u=>'<div class="it" data-u="'+esc((u.name+' '+loginLabel(u.login)+' '+(u.secretariat||'')).toLowerCase())+'"><div class="grow"><div class="nm">'+esc(u.name)+' <span class="pill">'+esc(u.role)+'</span>'+(u.must_change?' <span class="pill o">'+t('notChanged')+'</span>':'')+'</div><div class="mute">'+esc(loginLabel(u.login))+' · '+esc(desigLabel(u.designation))+'<br>'+esc(u.secretariat||'')+'</div></div><div class="row">'+
+      (u.role==='super'?'':(u.approved?(isSup?'<select data-rl="'+u.id+'" style="width:auto;padding:4px 6px;font-size:13px">'+[['staff',t('roleStaff')],['admin',t('roleAdmin')]].map(x=>'<option value="'+x[0]+'"'+(u.role===x[0]?' selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select>':'')+'<button class="btn alt sm" data-pw="'+u.id+'">'+t('resetPass')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('remove')+'</button>':'<button class="btn sm" data-ap="'+u.id+'">'+t('approve')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('reject')+'</button>'))+'</div></div>').join('')+'</div>'
       :'<p class="mute">'+t('noRequests')+'</p>');
     if($('uf'))$('uf').oninput=()=>{const q=$('uf').value.trim().toLowerCase();ab.querySelectorAll('[data-u]').forEach(el=>{el.style.display=!q||el.dataset.u.includes(q)?'':'none'})};
     const act=async(id,a,v)=>{try{await rpc('wp_manage_account',{p_token:S.token,p_id:id,p_action:a,p_value:v||null});toast(t('saved'));vAdmin(S.atab)}catch(er){toast(errText(er))}};
     ab.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>act(b.dataset.ap,'approve'));
     ab.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{if(confirm(t('confirmDel')))act(b.dataset.rm,'remove')});
+    ab.querySelectorAll('[data-rl]').forEach(b=>b.onchange=()=>act(b.dataset.rl,'role',b.value));
+    if($('nu_go')){$('nu_r').onchange=()=>{$('nu_c').disabled=$('nu_r').value==='super'};
+      $('nu_go').onclick=async()=>{const u={login:$('nu_l').value.trim(),name:$('nu_n').value.trim(),role:$('nu_r').value,code:$('nu_c').value,designation:$('nu_d').value,pass:$('nu_p').value,must_change:$('nu_m').checked};
+        if(!u.login||!u.name){$('nu_msg').innerHTML='<div class="msg err">'+t('e_name_required')+'</div>';return}
+        $('nu_go').disabled=true;try{const id=await rpc('wp_add_user',{p_token:S.token,u:u});pushUndo(t('addUser')+' – '+u.name,()=>rpc('wp_manage_account',{p_token:S.token,p_id:id,p_action:'remove',p_value:null}));
+          toast(t('userAdded'));alert(t('userAdded')+'\n\n'+t('loginId')+': '+u.login+'\n'+t('password')+': '+u.pass);vAdmin('users')}catch(er){$('nu_msg').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('nu_go').disabled=false}}}
     ab.querySelectorAll('[data-pw]').forEach(b=>b.onclick=()=>{const v=prompt(t('newPass')+' (6+)');if(v)act(b.dataset.pw,'password',v)});
     return;
   }
