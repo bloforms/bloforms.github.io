@@ -501,6 +501,7 @@ const TX={
  addIt:['Add','జోడించు'], todoShort:['Still to fill – tap to add','ఇంకా నింపాల్సినవి – జోడించడానికి నొక్కండి'],
  isBlo:['Are you a BLO?','మీరు BLO నా?'], yesW:['Yes','అవును'], noW:['No','కాదు'], boothNo:['Booth (part) number','బూత్ (పార్ట్) నంబర్'], needBooth:['Enter the booth number','బూత్ నంబర్ నమోదు చేయండి'],
  autoDel:['Photos and files shared in chat are deleted automatically after 3 days. Messages stay. Download anything you need to keep.','చాట్‌లో పంపిన ఫోటోలు, ఫైళ్లు 3 రోజుల తర్వాత ఆటోమేటిక్‌గా తొలగించబడతాయి. సందేశాలు అలాగే ఉంటాయి. అవసరమైనవి డౌన్‌లోడ్ చేసుకోండి.'], autoDelShort:['Photos & files auto-delete after 3 days','ఫోటోలు & ఫైళ్లు 3 రోజుల్లో ఆటో-డిలీట్'], fileExpired:['File deleted after 3 days','3 రోజుల తర్వాత ఫైల్ తొలగించబడింది'], photoExpired:['Photo deleted after 3 days','3 రోజుల తర్వాత ఫోటో తొలగించబడింది'],
+ papers:['High secured papers','హై సెక్యూర్డ్ పేపర్లు'], fullScreen:['Open full screen','పూర్తి స్క్రీన్‌లో తెరవండి'], papersHelp:['Enter bond papers received and issued (Paper Register). Log in once with your Paper Register login.','అందిన, జారీ చేసిన బాండ్ పేపర్లను నమోదు చేయండి (పేపర్ రిజిస్టర్). మీ పేపర్ రిజిస్టర్ లాగిన్‌తో ఒకసారి లాగిన్ అవ్వండి.'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -823,6 +824,7 @@ function renderNav(){
       out+=grp('ward','🏢',me.code===code?t('myWard'):nm,ch,isW);
       if(me.code&&me.code!==code)out+=it('🏡',t('myWard'),'#ward/'+me.code+'/overview',false);
     }
+    if(me.role==='super'||/education/i.test(me.designation||''))out+=it('🔐',t('papers'),'#paper',r==='paper');
     out+=it('💬',t('chat')+(S.chatUnread?' ('+S.chatUnread+')':''),'#chat',r==='chat').replace('class="ni','class="ni hot');
     if(['super','commissioner'].includes(me.role))out+=it('📈',t('abstract'),'#abstract',r==='abstract');
     out+=it('🗺️',t('allWardsShort'),'#wards',r==='wards');
@@ -930,7 +932,7 @@ function header(){
   $('lte').classList.toggle('on',te());$('len').classList.toggle('on',!te());
   $('acctBtn').innerHTML=S.token?'👤<span class="acnm"> '+esc(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account'))+'</span>':'🔑<span class="acnm"> '+t('login')+'</span>';
   const ph=document.documentElement.classList.contains('m-phone');const mb=$('modeBtn');mb.textContent=ph?'🖥️':'📱';mb.title=ph?t('toDesk'):t('toPhone');
-  const fab=$('chatFab');if(fab){const r0=(location.hash||'').slice(1).split('/')[0];fab.hidden=!S.token||r0==='chat'||r0==='login';fab.querySelector('b').textContent=S.chatUnread||'';fab.querySelector('b').hidden=!S.chatUnread;fab.classList.toggle('new',!!S.chatUnread)}
+  const fab=$('chatFab');if(fab){const r0=(location.hash||'').slice(1).split('/')[0];fab.hidden=!S.token||r0==='chat'||r0==='login'||r0==='paper';fab.querySelector('b').textContent=S.chatUnread||'';fab.querySelector('b').hidden=!S.chatUnread;fab.classList.toggle('new',!!S.chatUnread)}
   const ob=$('outBtn');ob.hidden=!S.token;ob.title=t('logout');ob.querySelector('.acnm').textContent=' '+t('logout');
   const u=$('undoBtn');u.disabled=!S.undo.length;u.title=t('undo')+(S.undo.length?': '+S.undo[S.undo.length-1].label:'');const n=$('undoN');n.hidden=!S.undo.length;n.textContent=S.undo.length;
   document.documentElement.style.setProperty('--hh',($('hdr').offsetHeight||58)+'px');
@@ -1678,6 +1680,14 @@ async function vBuilder(scope){const app=curApp;
 }
 
 /* ----- commissioner: abstract of all Guntakal ward secretariats ----- */
+/* high secured (bond) papers register – opens the Paper Register app inside */
+function vPaper(){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const me=S.me||{};if(!(me.role==='super'||/education/i.test(me.designation||''))){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  app.innerHTML='<div class="row" style="justify-content:space-between;margin-bottom:8px"><h1 style="margin:0">🔐 '+t('papers')+'</h1><a class="btn alt sm" href="../paper/" target="_blank" rel="noopener">↗ '+t('fullScreen')+'</a></div>'+
+    '<p class="mute" style="margin:0 0 8px">'+t('papersHelp')+'</p>'+
+    '<iframe src="../paper/" title="'+esc(t('papers'))+'" style="width:100%;height:calc(var(--vvh,100vh) - var(--hh,58px) - 130px);min-height:480px;border:1px solid var(--line);border-radius:14px;background:#fff"></iframe>';
+}
 async function vAbstract(){const app=curApp;
   if(!S.token){location.hash='#login';return}
   const me=S.me||{};if(!['super','commissioner'].includes(me.role)){location.hash='#home';return}
@@ -2111,6 +2121,7 @@ async function route(){
       case 'survey':return await vSurvey(h[1],h[2],h[3]);
       case 'me':return await vStaff(null,null,true);
       case 'abstract':return await vAbstract();
+      case 'paper':return vPaper();
       case 'chat':return await vChat(h[1]?decodeURIComponent(h[1]):'');
       case 'builder':return await vBuilder(h[1]||'all');
       case 'registers':return await vRegisters(h[1]||'all');
