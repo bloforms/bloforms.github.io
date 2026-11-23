@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Census 2027 Household Schedule – Draft Helper</title>
+<meta name="theme-color" content="#2f6b2f">
+<meta name="apple-mobile-web-app-title" content="Census 2027">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--g:#2f6b2f;--g2:#e6f0dc;--g3:#cfe5c0;--ink:#1d261d;--mut:#5f6b5f;--line:#d9e2d3;--bg:#f6f8f3;--red:#b3261e;--amb:#8a5a00;--card:#fff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--g);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 6px #0002}
+header .ttl{flex:1;min-width:0}
+header h1{font-size:17px;margin:0;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header small{opacity:.85;font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header button{background:#ffffff22;border:0;color:#fff;font-size:20px;width:38px;height:38px;border-radius:10px;cursor:pointer}
+#saved{font-size:12px;opacity:0;transition:opacity .3s}
+#saved.on{opacity:1}
+main{max-width:760px;margin:0 auto;padding:14px 12px 110px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.banner{background:#fff8e1;border:1px solid #f0d98a;color:#5d4500;font-size:14px;border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:10px;padding:11px 16px;font:600 15px system-ui,sans-serif;cursor:pointer;background:var(--g);color:#fff;text-decoration:none}
+.btn.ghost{background:var(--g2);color:var(--g)}
+.btn.danger{background:#fdecea;color:var(--red)}
+.btn.wide{width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>.btn{flex:1 1 140px}
+.list .item{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+.item .av{width:42px;height:42px;border-radius:50%;background:var(--g3);color:var(--g);display:grid;place-items:center;font-weight:700;flex:none}
+.item .tx{flex:1;min-width:0}
+.item b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item span{color:var(--mut);font-size:13px}
+.pct{font:700 13px system-ui;color:var(--g);background:var(--g2);border-radius:20px;padding:3px 9px;flex:none}
+.pct.low{color:var(--amb);background:#fff3d6}
+.warn{color:var(--amb);font-size:12px;display:block}
+h2{font-size:18px;margin:4px 0 10px}
+h3{font-size:15px;margin:0 0 8px;color:var(--g)}
+.muted{color:var(--mut);font-size:13px}
+.chips-nav{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin:0 -12px 6px;padding-left:12px;scrollbar-width:none}
+.chips-nav::-webkit-scrollbar{display:none}
+.chips-nav button{flex:none;border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font:600 13px system-ui;color:var(--ink);cursor:pointer}
+.chips-nav button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.chips-nav button em{font-style:normal;opacity:.7;font-weight:500;margin-left:4px}
+.sechead{background:var(--g3);border-radius:12px 12px 0 0;padding:10px 14px;font-weight:700;display:flex;justify-content:space-between}
+.secbody{background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 12px 12px;padding:4px 14px 10px}
+.fld{padding:12px 0;border-bottom:1px solid #eef2ea}
+.fld:last-child{border-bottom:0}
+.fld.sub{padding-top:0;margin-top:-4px}
+.lab{display:block;font-weight:600;margin-bottom:6px}
+.qn{display:inline-block;min-width:34px;background:var(--g2);color:var(--g);border-radius:6px;padding:0 6px;margin-right:8px;font-size:13px;text-align:center}
+.hint{color:var(--mut);font-size:13px;margin:-3px 0 7px}
+input[type=text],input:not([type]),input[type=number],input[type=date],input[type=search],select{width:100%;font:16px system-ui,sans-serif;padding:11px 12px;border:1px solid #c8d3c1;border-radius:10px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:2px solid #7fb06f;border-color:var(--g)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt span{display:inline-block;border:1px solid #c8d3c1;border-radius:10px;padding:9px 13px;background:#fff;cursor:pointer;font-size:15px}
+.opt input:checked+span{background:var(--g);border-color:var(--g);color:#fff}
+.opts.col{flex-direction:column}
+.opts.col .opt span{display:block}
+.chk{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.chk input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--g)}
+.ds{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+.ds label{font-size:13px;color:var(--mut)}
+.ds .tot{font-weight:700;color:var(--g);padding:0 4px 12px}
+.err{color:var(--red);font-size:13px;margin-top:5px}
+.err:empty{display:none}
+.note{background:var(--g2);border-radius:10px;padding:8px 12px;font-size:14px;color:#2b4a2b}
+.hide{display:none!important}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fffffff2;border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;justify-content:center;z-index:4;backdrop-filter:blur(6px)}
+.bar .btn{flex:1;max-width:360px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2 .full{grid-column:1/-1}
+.grid2 label{font-size:13px;color:var(--mut);display:block;margin-bottom:3px}
+#modal{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+#modal.on{display:flex}
+.mbox{background:#fff;border-radius:16px;padding:18px;max-width:380px;width:100%}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:30;max-width:90%}
+#toast.on{opacity:1}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:18px 0 4px}
+.sum h3{margin-top:4px}
+.sum table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:6px}
+.sum td{border:1px solid #cfd8c8;padding:6px 8px;vertical-align:top}
+.sum td:first-child{width:62px;color:var(--g);font-weight:700;white-space:nowrap}
+.sum td:nth-child(2){width:45%;color:#334}
+.sum .mhead{background:var(--g3);font-weight:700;padding:8px 10px;border-radius:8px 8px 0 0;margin-top:14px}
+.empty{color:var(--mut);text-align:center;padding:26px 10px}
+@media print{
+ header,.bar,.noprint,footer,.banner{display:none!important}
+ body{background:#fff}
+ main{padding:0;max-width:none}
+ .card{border:0;padding:0}
+ .sum .mblock{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<header>
+  <button id="back" aria-label="Back" class="hide">‹</button>
+  <div class="ttl"><h1 id="htitle">Census 2027 – Household Schedule</h1><small id="hsub">Draft helper · data stays on this phone</small></div>
+  <span id="saved">Saved ✓</span>
+</header>
+<main id="app"></main>
+<div id="modal"></div>
+<div id="toast"></div>
+
+<datalist id="dlS"></datalist><datalist id="dlD"></datalist><datalist id="dlL"></datalist><datalist id="dlC"></datalist>
+
+<script>
+/* ---------- lists (from the Census 2027 SE household schedule) ---------- */
+const YN=['Yes','No'];
+const REL=['Head','Wife/Husband','Son','Daughter','Son-in-law','Daughter-in-law','Grandson','Granddaughter','Father','Mother','Father-in-law','Mother-in-law','Brother','Sister','Brother-in-law','Sister-in-law','Nephew','Niece','Other relative','Non-relative'];
+const MAR=['Never Married','Currently Married','Widowed','Separated','Divorced'];
+const RELG=['Hindu','Muslim','Christian','Sikh','Buddhist','Jain','Other'];
+const SCR=['Hindu','Sikh','Buddhist'];
+const DIS=['In Seeing','In Hearing','In Speech','In Mobility','Intellectual disability','Mental illness','Due to acid attack','Due to chronic neurological disease','Due to blood disorder'];
+const ATT={'Attending':['School','College','Vocational','Professional','Special Institution for disabled','Literacy Centre','Other Institution'],'Not attending':['Attended before','Never attended']};
+const EDU=['Pre-primary','Class 1 – 12','I.T.I.','Diploma/certificate','Bachelor/ undergraduate','PG Diploma','Masters/ Post graduate','M. Phil','Doctorate & above'];
+const HIGHER=EDU.slice(2);
+const STREAM=['Arts/Social science','Science','Commerce','Engineering & Technology','IT & Computer','Language','Medical science','Education','Management','Law','Agriculture & allied activity','Other'];
+const WTYPE=['Main worker (6 months or more)','Marginal worker (3 to less than 6 months)','Semi-marginal worker (less than 3 months)'];
+const CAT=['Cultivator','Agricultural Labourer','Worker in household industry','Other worker – Plantation, livestock, forestry, fishing, hunting & allied activities','Other worker – Manufacturing activities','Other worker – Construction activities','Other worker – Services activities','Other worker – Other activities'];
+const CLASSW=['Employer','Employee','Single worker','Family worker'];
+const NONEC=['Student','Household duties','Dependent','Pensioner','Rentier','Other'];
+const SEEK=['Yes – Full time work','Yes – Part time work','No'];
+const MODE=['On foot','Bicycle','Moped/Scooter/Motor Cycle','Car/Jeep/Van','Tempo/Autorickshaw/Taxi','Bus','Train/Metro rail','Water Transport','Any other','No Travel'];
+const REASON=['Work/Employment','Business','Education','Marriage','Moved after birth','Moved with Household','Natural Calamities','Any Other'];
+const INOUT=['Within India','Outside India'];
+const STATES=['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Andaman and Nicobar Islands','Chandigarh','Dadra and Nagar Haveli and Daman and Diu','Delhi','Jammu and Kashmir','Ladakh','Lakshadweep','Puducherry'];
+const APD=['Anantapuramu','Sri Sathya Sai','Kurnool','Nandyal','YSR Kadapa','Annamayya','Chittoor','Tirupati','Sri Potti Sriramulu Nellore','Prakasam','Bapatla','Guntur','Palnadu','NTR','Krishna','Eluru','West Godavari','East Godavari','Dr. B.R. Ambedkar Konaseema','Kakinada','Alluri Sitharama Raju','Anakapalli','Visakhapatnam','Vizianagaram','Parvathipuram Manyam','Srikakulam'];
+const LANGS=['Telugu','Urdu','Hindi','Kannada','Tamil','English','Marathi','Odia','Malayalam','Bengali','Gujarati','Punjabi','Assamese','Konkani','Nepali','Sanskrit','Santali','Sindhi','Kashmiri','Maithili','Manipuri','Bodo','Dogri','Lambadi','Koya','Gondi','Savara','Tulu'];
+const CTRY=['Nepal','Bangladesh','Sri Lanka','Pakistan','Bhutan','Myanmar','China','United Arab Emirates','Saudi Arabia','Qatar','Kuwait','Oman','Bahrain','United States','United Kingdom','Canada','Australia','Singapore','Malaysia'];
+
+/* ---------- conditions ---------- */
+const ageN=m=>(m.age===''||m.age==null)?null:+m.age;
+const married=m=>m.mar&&m.mar!=='Never Married';
+const isSC=m=>SCR.includes(m.relg)&&m.sc==='Yes';
+const isWorker=m=>m.w18==='Yes';
+const isOther=m=>isWorker(m)&&/^Other worker/.test(m.w19||'');
+const hhOrOther=m=>isWorker(m)&&(m.w19==='Worker in household industry'||isOther(m));
+const margNon=m=>m.w18==='No'||(isWorker(m)&&!!m.w18t&&!/^Main/.test(m.w18t));
+const fert=m=>m.sex==='Female'&&['Currently Married','Widowed','Separated','Divorced'].includes(m.mar);
+const mig=m=>m.c27==='Yes';
+const p30o=m=>!m.p30a&&!(m.p30h&&m.rel!=='Head');
+const tot=(m,k)=>(+m[k+'D']||0)+(+m[k+'S']||0);
+const hasDS=(m,k)=>(m[k+'D']!==''&&m[k+'D']!=null)||(m[k+'S']!==''&&m[k+'S']!=null);
+const olderThan=(x,m)=>(ageN(m)!=null&&+x>ageN(m))?'This is more than the person’s age ('+m.age+')':'';
+
+/* ---------- Aadhaar Verhoeff check ---------- */
+const VD=[[0,1,2,3,4,5,6,7,8,9],[1,2,3,4,0,6,7,8,9,5],[2,3,4,0,1,7,8,9,5,6],[3,4,0,1,2,8,9,5,6,7],[4,0,1,2,3,9,5,6,7,8],[5,9,8,7,6,0,4,3,2,1],[6,5,9,8,7,1,0,4,3,2],[7,6,5,9,8,2,1,0,4,3],[8,7,6,5,9,3,2,1,0,4],[9,8,7,6,5,4,3,2,1,0]];
+const VP=[[0,1,2,3,4,5,6,7,8,9],[1,5,7,6,2,8,3,0,9,4],[5,8,0,3,7,9,6,1,4,2],[8,9,1,6,0,4,3,5,2,7],[9,4,5,3,1,2,6,8,7,0],[4,2,8,6,5,7,3,9,0,1],[2,7,9,3,8,0,6,4,1,5],[7,0,4,6,9,1,3,2,5,8]];
+function verhoeff(s){let c=0;const a=s.split('').reverse().map(Number);for(let i=0;i<a.length;i++)c=VD[c][VP[i%8][a[i]]];return c===0}
+
+/* ---------- the schedule: 40 questions in 8 sections ---------- */
+const S=[
+{id:'basic',t:'Basic details',r:'Q1–9',f:[
+ {k:'name',q:'1',t:'text',l:'Name of the person',h:'Start with Head of Household'},
+ {k:'rel',q:'2',t:'sel',l:'Relationship to head',o:REL},
+ {k:'sex',q:'3',t:'radio',l:'Sex',o:['Male','Female','Transgender person']},
+ {k:'dob',q:'4(a)',t:'date',l:'Date of Birth',h:'Day-Month-Year (English calendar). Age fills in automatically.'},
+ {k:'age',q:'4(b)',t:'num',l:'Age (in completed years)',h:'Age as on last birthday',max:125},
+ {k:'mar',q:'5',t:'sel',l:'Current Marital Status',o:MAR},
+ {k:'agemar',q:'6',t:'num',l:'Age at Marriage (in completed years)',max:125,show:married,v:olderThan},
+ {k:'spouse',q:'7',t:'mem',l:'Spouse Name',h:'Select if the spouse is a member of this household',other:'Not in this household – write name',show:married},
+ {k:'spouseN',t:'text',l:'Spouse name',sub:1,show:m=>married(m)&&m.spouse==='__out'},
+ {k:'nat',q:'8',t:'sel',l:'Nationality as declared',o:['India','Any other Country (Please specify)']},
+ {k:'natC',t:'text',l:'Country name',dl:'dlC',sub:1,show:m=>m.nat&&m.nat!=='India'},
+ {k:'relg',q:'9',t:'sel',l:'Religion',o:RELG},
+ {k:'relgO',t:'text',l:'Name of the Religion in full',sub:1,show:m=>m.relg==='Other'}
+]},
+{id:'caste',t:'SC / ST / Caste',r:'Q10',f:[
+ {k:'n10',t:'note',l:'SC can be only among Hindus, Sikhs and Buddhists, whereas ST can be from any religion. Select Religion (Q9) first.'},
+ {k:'sc',q:'10(a)',t:'radio',l:'Is this person Scheduled Caste (SC)?',o:YN,show:m=>SCR.includes(m.relg)},
+ {k:'scN',t:'text',l:'Name of the Scheduled Caste',sub:1,show:isSC},
+ {k:'st',q:'10(b)',t:'radio',l:'Is this person Scheduled Tribe (ST)?',o:YN,show:m=>!!m.relg&&!isSC(m)},
+ {k:'stN',t:'text',l:'Name of the Scheduled Tribe',sub:1,show:m=>!isSC(m)&&m.st==='Yes'},
+ {k:'cs',q:'10(c)',t:'radio',l:'If not SC/ST in this State/UT',o:['Enter Name of the Caste','Does not want to declare Caste','No Caste'],col:1,show:m=>!isSC(m)&&m.st==='No'},
+ {k:'csN',t:'text',l:'Name of the Caste',sub:1,show:m=>!isSC(m)&&m.st==='No'&&m.cs==='Enter Name of the Caste'}
+]},
+{id:'par',t:'Father & Mother',r:'Q11–12',f:[
+ {k:'fa',q:'11',t:'mem',l:'Father’s particulars',h:'If the father is a member of this household, select his name',other:'Not in this household – enter particulars'},
+ {k:'faN',q:'11(a)',t:'text',l:'Father – Name',show:m=>m.fa==='__out'},
+ {k:'faD',q:'11(b)',t:'date',l:'Father – Date of Birth',show:m=>m.fa==='__out'},
+ {k:'faP',q:'11(c)',t:'text',l:'Father – Place of Birth',h:'State / District / Village or Town with locality. If outside India, Country name.',show:m=>m.fa==='__out'},
+ {k:'faR',q:'11(d)',t:'sel',l:'Father – Religion',o:RELG,show:m=>m.fa==='__out'},
+ {k:'mo',q:'12',t:'mem',l:'Mother’s particulars',h:'If the mother is a member of this household, select her name',other:'Not in this household – enter particulars'},
+ {k:'moN',q:'12(a)',t:'text',l:'Mother – Name',show:m=>m.mo==='__out'},
+ {k:'moD',q:'12(b)',t:'date',l:'Mother – Date of Birth',show:m=>m.mo==='__out'},
+ {k:'moP',q:'12(c)',t:'text',l:'Mother – Place of Birth',h:'State / District / Village or Town with locality. If outside India, Country name.',show:m=>m.mo==='__out'},
+ {k:'moR',q:'12(d)',t:'sel',l:'Mother – Religion',o:RELG,show:m=>m.mo==='__out'}
+]},
+{id:'dis',t:'Disability',r:'Q13',f:[
+ {k:'d13',q:'13(a)',t:'radio',l:'Does this person have any disability?',o:YN},
+ {k:'d13t',q:'13(b)',t:'checks',l:'Type of disability (maximum 3)',o:DIS,max:3,show:m=>m.d13==='Yes'}
+]},
+{id:'edu',t:'Language & Education',r:'Q14–17',f:[
+ {k:'mt',q:'14(a)',t:'text',l:'Mother tongue',dl:'dlL'},
+ {k:'l1',q:'14(b)',t:'text',l:'Other language known – 1st (excluding mother tongue)',h:'Two languages in order of proficiency',dl:'dlL'},
+ {k:'l2',q:'14(c)',t:'text',l:'Other language known – 2nd',dl:'dlL'},
+ {k:'lit',q:'15(a)',t:'radio',l:'Literacy status (7 years of age & above)',o:['Literate','Illiterate'],show:m=>ageN(m)==null||ageN(m)>=7},
+ {k:'dig',q:'15(b)',t:'radio',l:'Whether digitally literate?',o:YN,show:m=>(ageN(m)==null||ageN(m)>=7)&&m.lit==='Literate'},
+ {k:'att',q:'16',t:'sel',l:'Status of attendance in educational institution',g:ATT},
+ {k:'edl',q:'17(a)',t:'sel',l:'Highest educational level attained',o:EDU},
+ {k:'cls',t:'num',l:'Which class? (1 to 12)',min:1,max:12,sub:1,show:m=>m.edl==='Class 1 – 12'},
+ {k:'str',q:'17(b)',t:'sel',l:'Stream / Discipline (for Class 11 or higher)',o:STREAM,show:m=>(m.edl==='Class 1 – 12'&&+m.cls>=11)||HIGHER.includes(m.edl)}
+]},
+{id:'work',t:'Work',r:'Q18–25',f:[
+ {k:'w18',q:'18',t:'radio',l:'Worked any time during last year?',o:YN},
+ {k:'w18t',t:'sel',l:'Type of worker',o:WTYPE,sub:1,show:isWorker},
+ {k:'n18',t:'note',l:'Non-worker (did not work at all). Fill Q23 and Q24.',show:m=>m.w18==='No'},
+ {k:'w19',q:'19',t:'sel',l:'Category of economic activity',h:'For Main, Marginal or Semi-marginal worker',o:CAT,show:isWorker},
+ {k:'w20',q:'20',t:'text',l:'Occupation',h:'Description of the actual work',show:hhOrOther},
+ {k:'w21',q:'21',t:'text',l:'Nature of industry, trade or service',h:'Where the person works/worked or is self-employed',show:hhOrOther},
+ {k:'w22',q:'22',t:'sel',l:'Class of worker',o:CLASSW,show:hhOrOther},
+ {k:'w23',q:'23',t:'sel',l:'Non-economic activity',h:'For marginal, semi-marginal and non-worker',o:NONEC,show:margNon},
+ {k:'w24',q:'24',t:'radio',l:'Seeking or available for work',o:SEEK,show:margNon},
+ {k:'w25d',q:'25(a)(i)',t:'num',l:'One-way distance from residence to place of work (Km)',step:'0.1',max:999,show:isOther},
+ {k:'w25h',q:'25(a)(ii)',t:'num',l:'Travel time – hours',max:24,show:isOther},
+ {k:'w25m',t:'num',l:'Travel time – minutes',max:59,sub:1,show:isOther},
+ {k:'w25b',q:'25(b)',t:'sel',l:'Mode of travel to place of work',o:MODE,show:isOther}
+]},
+{id:'mig',t:'Migration & Address',r:'Q26–30',f:[
+ {k:'b26',q:'26',t:'radio',l:'Birth place',o:['This village/town','Elsewhere in India','Outside India']},
+ {k:'b26s',t:'text',l:'State',dl:'dlS',sub:1,show:m=>m.b26==='Elsewhere in India'},
+ {k:'b26d',t:'text',l:'District',dl:'dlD',sub:1,show:m=>m.b26==='Elsewhere in India'},
+ {k:'b26t',t:'text',l:'Village / Town (with locality)',sub:1,show:m=>m.b26==='Elsewhere in India'},
+ {k:'b26c',t:'text',l:'Country',dl:'dlC',sub:1,show:m=>m.b26==='Outside India'},
+ {k:'c27',q:'27',t:'radio',l:'Has this person come to this village/town from elsewhere?',h:'Q27–29 are only for such persons',o:YN},
+ {k:'w27',q:'27(a)',t:'radio',l:'Place of last residence',o:INOUT,show:mig},
+ {k:'s27',t:'text',l:'State',dl:'dlS',sub:1,show:m=>mig(m)&&m.w27==='Within India'},
+ {k:'d27',t:'text',l:'District',dl:'dlD',sub:1,show:m=>mig(m)&&m.w27==='Within India'},
+ {k:'t27',t:'text',l:'Village / Town (with locality)',sub:1,show:m=>mig(m)&&m.w27==='Within India'},
+ {k:'k27',t:'text',l:'Country',dl:'dlC',sub:1,show:m=>mig(m)&&m.w27==='Outside India'},
+ {k:'r27',q:'27(b)',t:'radio',l:'At the time of migration, place of last residence was',o:['Rural','Urban'],show:mig},
+ {k:'q28',q:'28',t:'sel',l:'Reason for migration',o:REASON,show:mig},
+ {k:'q29',q:'29',t:'num',l:'Duration of stay in this village/town since last migration (years)',h:'Enter 0 if less than a year',max:125,show:mig,v:olderThan},
+ {k:'p30a',q:'30',t:'check',l:'Permanent address is same as present address',hf:hh=>'Present address: '+(addr(hh)||'not entered yet')},
+ {k:'p30h',t:'check',l:'Permanent address is same as Head of Household',sub:1,show:m=>!m.p30a&&m.rel!=='Head'},
+ {k:'p30w',t:'radio',l:'Permanent residential address is',o:INOUT,show:p30o},
+ {k:'p30s',t:'text',l:'a. State',dl:'dlS',sub:1,show:m=>p30o(m)&&m.p30w!=='Outside India'},
+ {k:'p30d',t:'text',l:'b. District',dl:'dlD',sub:1,show:m=>p30o(m)&&m.p30w!=='Outside India'},
+ {k:'p30t',t:'text',l:'c. Town / Village',sub:1,show:p30o},
+ {k:'p30n',t:'text',l:'d. House Number & Locality',sub:1,show:p30o},
+ {k:'p30c',t:'text',l:'Country',dl:'dlC',sub:1,show:m=>p30o(m)&&m.p30w==='Outside India'}
+]},
+{id:'fer',t:'Fertility',r:'Q31–33',show:fert,f:[
+ {k:'n31',t:'note',l:'Only for currently married, widowed, divorced and separated women. Q33 only for currently married women.'},
+ {k:'f31',q:'31',t:'ds',l:'Number of children surviving at present'},
+ {k:'f32',q:'32',t:'ds',l:'Number of children ever born alive',v:(x,m)=>tot(m,'f31')>tot(m,'f32')?'Children surviving (Q31) cannot be more than ever born (Q32)':''},
+ {k:'f33',q:'33',t:'ds',l:'Number of children born alive during last one year',h:'Within one year before the last day of enumeration',show:m=>m.mar==='Currently Married',v:(x,m)=>tot(m,'f33')>tot(m,'f32')?'Cannot be more than children ever born (Q32)':''}
+]},
+{id:'oth',t:'Other particulars',r:'Q34–40',f:[
+ {k:'v34',q:'34',t:'radio',l:'Whether vaccination for Covid-19 taken?',o:YN},
+ {k:'w34',t:'radio',l:'Place of Covid-19 vaccination',o:INOUT,sub:1,show:m=>m.v34==='Yes'},
+ {k:'s34',t:'text',l:'State',dl:'dlS',sub:1,show:m=>m.v34==='Yes'&&m.w34==='Within India'},
+ {k:'d34',t:'text',l:'District',dl:'dlD',sub:1,show:m=>m.v34==='Yes'&&m.w34==='Within India'},
+ {k:'c34',t:'text',l:'Country',dl:'dlC',sub:1,show:m=>m.v34==='Yes'&&m.w34==='Outside India'},
+ {k:'q35',q:'35',t:'num',l:'Total number of Bank Accounts',h:'Single digit: 0, 1, 2, 3…',max:9},
+ {k:'m36',q:'36',t:'radio',l:'Whether Mobile Number available?',o:YN},
+ {k:'m36n',t:'text',l:'Mobile number',im:'numeric',ml:10,sub:1,show:m=>m.m36==='Yes',v:x=>/^[6-9]\d{9}$/.test(x)?'':'Should be 10 digits starting with 6, 7, 8 or 9'},
+ {k:'a37',q:'37',t:'radio',l:'Whether Aadhaar Number available?',o:YN},
+ {k:'a37n',t:'text',l:'Aadhaar number',im:'numeric',ml:12,sub:1,show:m=>m.a37==='Yes',v:x=>!/^\d{12}$/.test(x)?'Should be 12 digits':(/^[01]/.test(x)||!verhoeff(x))?'This is not a valid Aadhaar number – please re-check':''},
+ {k:'e38',q:'38',t:'radio',l:'Whether Voter ID Number available?',o:YN},
+ {k:'e38n',t:'text',l:'Voter ID (EPIC) number',ml:12,up:1,sub:1,show:m=>m.e38==='Yes',v:x=>/^[A-Z]{3}\d{7}$/i.test(x)?'':'Usually 3 letters + 7 digits – please re-check'},
+ {k:'p39',q:'39',t:'radio',l:'Whether Indian Passport holder?',o:YN},
+ {k:'p39n',t:'text',l:'Passport number',ml:9,up:1,sub:1,show:m=>m.p39==='Yes',v:x=>/^[A-Z]\d{7}$/i.test(x)?'':'Usually 1 letter + 7 digits – please re-check'},
+ {k:'dl40',q:'40',t:'radio',l:'Whether Driving License available?',o:YN}
+]}
+];
+const FIELDS=[];S.forEach(s=>s.f.forEach(f=>{f.sec=s;FIELDS.push(f)}));
+const FK=Object.fromEntries(FIELDS.map(f=>[f.k,f]));
+
+/* ---------- storage ---------- */
+const KEY='census2027_draft_v1';
+let DB={households:[]};
+try{const s=localStorage.getItem(KEY);if(s)DB=JSON.parse(s)}catch(e){}
+if(!DB.households)DB.households=[];
+let saveT;
+function save(now){clearTimeout(saveT);const go=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB));flash()}catch(e){toast('Could not save on this device – please take a Backup')}};now?go():saveT=setTimeout(go,350)}
+function flash(){const s=$('#saved');s.classList.add('on');clearTimeout(flash.t);flash.t=setTimeout(()=>s.classList.remove('on'),1200)}
+
+/* ---------- helpers ---------- */
+const $=q=>document.querySelector(q);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+const fmtD=d=>d&&/^\d{4}-\d{2}-\d{2}$/.test(d)?d.split('-').reverse().join('-'):(d||'');
+function calcAge(dob){const d=new Date(dob+'T00:00');if(isNaN(d))return'';const t=new Date();let a=t.getFullYear()-d.getFullYear();if(t.getMonth()<d.getMonth()||(t.getMonth()===d.getMonth()&&t.getDate()<d.getDate()))a--;return a<0?'':String(a)}
+function addr(hh){return[hh.no&&('H.No. '+hh.no),hh.loc,hh.town,hh.dist,hh.state,hh.pin].filter(Boolean).join(', ')}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2600)}
+function ask(msg,okText,fn){const d=$('#modal');d.innerHTML=`<div class="mbox"><p style="margin-top:0">${esc(msg)}</p><div class="row"><button class="btn ghost" id="mNo">Cancel</button><button class="btn danger" id="mYes">${esc(okText)}</button></div></div>`;d.classList.add('on');$('#mNo').onclick=()=>d.classList.remove('on');$('#mYes').onclick=()=>{d.classList.remove('on');fn()}}
+const getHH=id=>DB.households.find(h=>h.id===id);
+const ordered=hh=>[...hh.members].sort((a,b)=>(b.rel==='Head')-(a.rel==='Head'));
+const head=hh=>hh.members.find(m=>m.rel==='Head');
+const memName=(hh,id)=>{const x=hh.members.find(m=>m.id===id);return x?(x.name||'(no name)'):''};
+
+function secShown(s,m){return !s.show||s.show(m)}
+function shown(f,m){return secShown(f.sec,m)&&(!f.show||f.show(m))}
+function counts(f){return!['note','check'].includes(f.t)}
+function filled(f,m){if(f.t==='ds')return hasDS(m,f.k);if(f.t==='checks')return(m[f.k]||[]).length>0;const v=m[f.k];return v!==''&&v!=null&&v!==false}
+function errOf(f,m){if(!f.v||!shown(f,m))return'';if(f.t==='ds'){return hasDS(m,f.k)?f.v(null,m):''}const v=m[f.k];return(v===''||v==null)?'':f.v(String(v),m)}
+function prog(m,sec){const fs=(sec?sec.f:FIELDS).filter(f=>counts(f)&&shown(f,m));const done=fs.filter(f=>filled(f,m)).length;return{done,all:fs.length,pct:fs.length?Math.round(done*100/fs.length):0}}
+function issues(m){return FIELDS.filter(f=>errOf(f,m)).length}
+function disp(f,m,hh){const v=m[f.k];
+ switch(f.t){
+  case 'date':return fmtD(v);
+  case 'mem':return v==='__out'?'Not in this household':memName(hh,v);
+  case 'checks':return(v||[]).join(', ');
+  case 'check':return v?'Yes':'';
+  case 'ds':return hasDS(m,f.k)?`Daughters ${m[f.k+'D']||0}, Sons ${m[f.k+'S']||0} (Total ${tot(m,f.k)})`:'';
+  default:return v??''}}
+
+/* ---------- field HTML ---------- */
+function fieldHTML(f,m,hh){
+ const v=m[f.k]??'';const k=f.k;
+ if(f.t==='note')return`<div class="fld" data-f="${k}"><div class="note">${esc(f.l)}</div></div>`;
+ const hint=f.hf?f.hf(hh):f.h;
+ let lab=f.t==='check'?'':`<label class="lab" for="i_${k}">${f.q?`<span class="qn">${f.q}</span>`:''}${esc(f.l)}</label>${hint?`<div class="hint">${esc(hint)}</div>`:''}`;
+ let x='';
+ switch(f.t){
+ case 'text':x=`<input id="i_${k}" data-k="${k}" value="${esc(v)}" ${f.dl?`list="${f.dl}"`:''} ${f.im?`inputmode="${f.im}"`:''} ${f.ml?`maxlength="${f.ml}"`:''} ${f.up?'style="text-transform:uppercase"':''} autocomplete="off">`;break;
+ case 'num':x=`<input id="i_${k}" type="number" inputmode="${f.step?'decimal':'numeric'}" data-k="${k}" value="${esc(v)}" min="${f.min??0}" ${f.max!=null?`max="${f.max}"`:''} ${f.step?`step="${f.step}"`:''}>`;break;
+ case 'date':x=`<input id="i_${k}" type="date" data-k="${k}" value="${esc(v)}" max="${today()}">`;break;
+ case 'sel':{let o='<option value="">— Select —</option>';
+   if(f.g){for(const[g,arr]of Object.entries(f.g)){o+=`<optgroup label="${esc(g)}">`+arr.map(a=>{const val=g+' – '+a;return`<option value="${esc(val)}" ${v===val?'selected':''}>${esc(a)}</option>`}).join('')+'</optgroup>'}}
+   else o+=f.o.map(a=>`<option ${v===a?'selected':''}>${esc(a)}</option>`).join('');
+   x=`<select id="i_${k}" data-k="${k}">${o}</select>`;break}
+ case 'radio':x=`<div class="opts ${f.col||f.o.some(a=>a.length>22)?'col':''}">`+f.o.map(a=>`<label class="opt"><input type="radio" name="r_${k}" data-k="${k}" value="${esc(a)}" ${v===a?'checked':''}><span>${esc(a)}</span></label>`).join('')+`</div>`;break;
+ case 'checks':{const arr=m[k]||[];x=`<div class="opts col">`+f.o.map(a=>`<label class="chk"><input type="checkbox" data-k="${k}" data-multi="1" value="${esc(a)}" ${arr.includes(a)?'checked':''}><span>${esc(a)}</span></label>`).join('')+`</div>`;break}
+ case 'check':x=`<label class="chk">${f.q?`<span class="qn">${f.q}</span>`:''}<input type="checkbox" data-k="${k}" ${v?'checked':''}><span><b>${esc(f.l)}</b>${hint?`<div class="hint" style="margin:2px 0 0">${esc(hint)}</div>`:''}</span></label>`;break;
+ case 'mem':{const others=ordered(hh).filter(o=>o.id!==m.id);
+   x=`<select id="i_${k}" data-k="${k}"><option value="">— Select —</option>`+others.map(o=>`<option value="${o.id}" ${v===o.id?'selected':''}>${esc(o.name||'(no name)')} – ${esc(o.rel||'')}</option>`).join('')+`<option value="__out" ${v==='__out'?'selected':''}>${esc(f.other)}</option></select>`;break}
+ case 'ds':x=`<div class="ds"><div><label>Daughters</label><input type="number" inputmode="numeric" min="0" max="30" data-k="${k}D" value="${esc(m[k+'D']??'')}"></div><div><label>Sons</label><input type="number" inputmode="numeric" min="0" max="30" data-k="${k}S" value="${esc(m[k+'S']??'')}"></div><div class="tot" data-tot="${k}">= ${tot(m,k)}</div></div>`;break;
+ }
+ return`<div class="fld ${f.sub?'sub':''}" data-f="${k}">${lab}${x}<div class="err" data-err="${k}"></div></div>`;
+}
+
+/* ---------- routing ---------- */
+let cur={};
+window.addEventListener('hashchange',route);
+function go(h){if(location.hash===h)route();else location.hash=h}
+function route(){
+ const p=location.hash.replace(/^#\/?/,'').split('/');
+ window.scrollTo(0,0);
+ if(p[0]==='h'&&getHH(p[1])){
+  const hh=getHH(p[1]);
+  if(p[2]==='m'&&hh.members.find(m=>m.id===p[3]))return viewMember(hh,p[3],+p[4]||0);
+  if(p[2]==='sum')return viewSummary(hh);
+  return viewHH(hh);
+ }
+ viewHome();
+}
+function setHead(title,sub,backTo){$('#htitle').textContent=title;$('#hsub').textContent=sub;const b=$('#back');b.classList.toggle('hide',backTo==null);b.onclick=()=>go(backTo)}
+function setBar(html){let b=$('#bar');if(!html){b&&b.remove();return}if(!b){b=document.createElement('div');b.id='bar';b.className='bar';document.body.appendChild(b)}b.innerHTML=html}
+const footer='<footer>Designed by Sivananda Pujari</footer>';
+
+/* ---------- Home ---------- */
+function viewHome(){
+ setHead('Census 2027 – Household Schedule','Draft helper · data stays on this phone',null);
+ setBar('<button class="btn" id="newHH">＋ New household</button>');
+ const app=$('#app');
+ const totalM=DB.households.reduce((a,h)=>a+h.members.length,0);
+ app.innerHTML=`
+ <div class="banner">Unofficial helper – <b>not</b> the Census Self-Enumeration (SE) portal. Use it to collect and check each person’s answers, then enter them on the official portal or give them to the enumerator.</div>
+ <div class="card noprint" id="installCard" style="display:none"><h3>📲 Install app</h3><div id="installText" class="muted" style="margin-bottom:8px">Add this app to your home screen. It works without internet.</div><button class="btn wide" id="installBtn">Install</button></div>
+ <div class="card"><div class="row" style="align-items:center"><div style="flex:1"><b>${DB.households.length}</b> households · <b>${totalM}</b> persons</div></div>
+ ${DB.households.length>3?'<input type="search" id="q" placeholder="Search by name, house no, locality, mobile" style="margin-top:10px">':''}</div>
+ <div class="list" id="hl"></div>
+ <div class="card noprint"><h3>Backup & export</h3><p class="muted" style="margin-top:0">Data is kept only in this browser. Take a backup file regularly.</p>
+ <div class="row"><button class="btn ghost" id="bk">⬇ Backup file</button><button class="btn ghost" id="rs">⬆ Restore backup</button><button class="btn ghost" id="csvAll">⬇ Excel (CSV) – all</button></div>
+ <input type="file" id="rf" accept=".json,application/json" class="hide"></div>${footer}`;
+ const draw=(q='')=>{q=q.toLowerCase();
+  const list=DB.households.filter(h=>!q||JSON.stringify([h.no,h.loc,h.town,h.members.map(m=>[m.name,m.m36n])]).toLowerCase().includes(q));
+  $('#hl').innerHTML=list.length?list.map(h=>{const hd=head(h);const pc=h.members.length?Math.round(h.members.reduce((a,m)=>a+prog(m).pct,0)/h.members.length):0;
+   return`<div class="item" data-h="${h.id}"><div class="av">🏠</div><div class="tx"><b>${esc(hd?.name||h.members[0]?.name||'New household')}</b><span>${esc(addr(h)||'Address not entered')} · ${h.members.length} person${h.members.length==1?'':'s'}</span></div><span class="pct ${pc<100?'low':''}">${pc}%</span></div>`}).join('')
+   :`<div class="empty">${q?'No match.':'No households yet.<br>Tap <b>＋ New household</b> to start.'}</div>`;
+  document.querySelectorAll('[data-h]').forEach(e=>e.onclick=()=>go('#/h/'+e.dataset.h));
+ };
+ draw();
+ $('#q')&&($('#q').oninput=e=>draw(e.target.value));
+ setupInstall();
+ $('#newHH').onclick=()=>{const last=DB.households[DB.households.length-1]||{};const h={id:uid(),created:Date.now(),no:'',loc:last.loc||'',town:last.town||'',dist:last.dist||'',state:last.state||'Andhra Pradesh',pin:last.pin||'',members:[]};DB.households.push(h);save(1);go('#/h/'+h.id)};
+ $('#bk').onclick=()=>download(`census2027-backup-${today()}.json`,JSON.stringify(DB,null,1),'application/json');
+ $('#rs').onclick=()=>$('#rf').click();
+ $('#rf').onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.households))throw 0;let add=0;d.households.forEach(h=>{const i=DB.households.findIndex(x=>x.id===h.id);if(i>=0)DB.households[i]=h;else{DB.households.push(h);add++}});save(1);toast(`Restored ${d.households.length} households (${add} new)`);viewHome()}catch(_){toast('This is not a valid backup file')}};r.readAsText(file)};
+ $('#csvAll').onclick=()=>DB.households.length?exportCSV(DB.households,`census2027-all-${today()}.csv`):toast('Nothing to export yet');
+}
+
+/* ---------- Household ---------- */
+function viewHH(hh){
+ const hd=head(hh);
+ setHead(hd?.name?hd.name+' – household':'Household',addr(hh)||'Enter present address','#/');
+ setBar('<button class="btn" id="addM">＋ Add person</button>');
+ const heads=hh.members.filter(m=>m.rel==='Head').length;
+ const af=(k,l,ph,dl,full)=>`<div class="${full?'full':''}"><label>${l}</label><input data-hk="${k}" value="${esc(hh[k])}" placeholder="${ph||''}" ${dl?`list="${dl}"`:''} autocomplete="off"></div>`;
+ $('#app').innerHTML=`
+ <div class="card"><h3>Present address of household</h3><div class="grid2">
+ ${af('no','House number','e.g. 12-3-45')}${af('pin','PIN code','515801')}
+ ${af('loc','Locality / Street / Ward','',null,1)}
+ ${af('town','Village / Town','Guntakal')}${af('dist','District','','dlD')}
+ ${af('state','State','','dlS',1)}</div></div>
+ <h2>Persons (${hh.members.length})</h2>
+ ${hh.members.length&&heads!==1?`<div class="banner">${heads?'More than one person is marked as Head.':'No one is marked as Head of Household yet (Q2).'}</div>`:''}
+ <div class="list">${hh.members.length?ordered(hh).map((m,i)=>{const p=prog(m),is=issues(m);
+  return`<div class="item" data-m="${m.id}"><div class="av">${esc((m.name||'?').trim().charAt(0).toUpperCase()||'?')}</div><div class="tx"><b>${i+1}. ${esc(m.name||'(no name)')}</b><span>${esc([m.rel,m.sex,m.age!==''&&m.age!=null?m.age+' yrs':''].filter(Boolean).join(' · ')||'Not filled')}</span>${is?`<span class="warn">⚠ ${is} answer${is>1?'s':''} to re-check</span>`:''}</div><span class="pct ${p.pct<100?'low':''}">${p.pct}%</span></div>`}).join('')
+  :'<div class="empty">Add the Head of Household first.</div>'}</div>
+ <div class="card noprint"><div class="row">
+ <button class="btn ghost" id="sum">📄 View / Print summary</button><button class="btn ghost" id="csv">⬇ Excel (CSV)</button></div>
+ <div class="row" style="margin-top:8px"><button class="btn danger" id="delH">Delete this household</button></div></div>${footer}`;
+ document.querySelectorAll('[data-hk]').forEach(i=>i.oninput=()=>{hh[i.dataset.hk]=i.value.trim();save();$('#hsub').textContent=addr(hh)||'Enter present address'});
+ document.querySelectorAll('[data-m]').forEach(e=>e.onclick=()=>go(`#/h/${hh.id}/m/${e.dataset.m}/0`));
+ $('#addM').onclick=()=>{const m={id:uid(),rel:hh.members.length?'':'Head',nat:'India'};
+  const hd=head(hh);if(hd&&hd.relg){m.relg=hd.relg}
+  hh.members.push(m);save(1);go(`#/h/${hh.id}/m/${m.id}/0`)};
+ $('#sum').onclick=()=>go(`#/h/${hh.id}/sum`);
+ $('#csv').onclick=()=>hh.members.length?exportCSV([hh],`census2027-${(hd?.name||'household').replace(/\W+/g,'_')}.csv`):toast('Add a person first');
+ $('#delH').onclick=()=>ask(`Delete this household and all ${hh.members.length} person(s)? This cannot be undone.`,'Delete',()=>{DB.households=DB.households.filter(h=>h!==hh);save(1);go('#/')});
+}
+
+/* ---------- Member form ---------- */
+function viewMember(hh,mid,si){
+ const m=hh.members.find(x=>x.id===mid);
+ const secs=S.filter(s=>secShown(s,m));
+ si=Math.min(Math.max(si,0),secs.length-1);
+ const sec=secs[si];
+ const idx=ordered(hh).indexOf(m)+1;
+ setHead(m.name||'New person',`Person ${idx} of ${hh.members.length} · ${sec.t}`,'#/h/'+hh.id);
+ const chips=()=>secs.map((s,i)=>{const p=prog(m,s);return`<button data-s="${i}" class="${i===si?'on':''}">${esc(s.t)}<em>${p.done}/${p.all}</em></button>`}).join('');
+ $('#app').innerHTML=`<nav class="chips-nav" id="chips">${chips()}</nav>
+ <div class="sechead"><span>${esc(sec.t)}</span><span class="muted">${sec.r}</span></div>
+ <div class="secbody" id="form">${sec.f.map(f=>fieldHTML(f,m,hh)).join('')}</div>
+ ${si===secs.length-1?`<div class="card noprint" style="margin-top:14px"><button class="btn danger wide" id="delM">Delete this person</button></div>`:''}${footer}`;
+ const last=si===secs.length-1;
+ setBar(`<button class="btn ghost" id="prev" ${si===0?'disabled style="opacity:.4"':''}>‹ Back</button><button class="btn" id="next">${last?'Done ✓':'Next ›'}</button>`);
+ const bindChips=()=>document.querySelectorAll('#chips [data-s]').forEach(b=>b.onclick=()=>go(`#/h/${hh.id}/m/${m.id}/${b.dataset.s}`));
+ bindChips();
+ $('#chips .on')?.scrollIntoView({inline:'center',block:'nearest'});
+ $('#prev').onclick=()=>si>0&&go(`#/h/${hh.id}/m/${m.id}/${si-1}`);
+ $('#next').onclick=()=>last?go('#/h/'+hh.id):go(`#/h/${hh.id}/m/${m.id}/${si+1}`);
+ $('#delM')&&($('#delM').onclick=()=>ask(`Delete ${m.name||'this person'}?`,'Delete',()=>{hh.members=hh.members.filter(x=>x!==m);hh.members.forEach(o=>['spouse','fa','mo'].forEach(k=>{if(o[k]===m.id)o[k]=''}));save(1);go('#/h/'+hh.id)}));
+
+ const refresh=()=>{
+  sec.f.forEach(f=>{const el=document.querySelector(`[data-f="${f.k}"]`);if(el)el.classList.toggle('hide',!shown(f,m));const er=document.querySelector(`[data-err="${f.k}"]`);if(er)er.textContent=errOf(f,m);if(f.t==='ds'){const t=document.querySelector(`[data-tot="${f.k}"]`);if(t)t.textContent='= '+tot(m,f.k)}});
+  // if fertility section appears/disappears, chips list changes – redraw
+  const nowSecs=S.filter(s=>secShown(s,m));
+  if(nowSecs.length!==secs.length){secs.splice(0,secs.length,...nowSecs)}
+  $('#chips').innerHTML=chips();bindChips();
+ };
+ const form=$('#form');
+ const onCh=e=>{const el=e.target,k=el.dataset.k;if(!k)return;
+  if(el.dataset.multi){const f=FK[k];let arr=[...form.querySelectorAll(`[data-k="${k}"]:checked`)].map(i=>i.value);if(f.max&&arr.length>f.max){el.checked=false;arr=arr.filter(a=>a!==el.value);toast(`Maximum ${f.max} can be selected`)}m[k]=arr}
+  else if(el.type==='checkbox')m[k]=el.checked;
+  else{let v=el.value;if(FK[k]?.up)v=v.toUpperCase();if(FK[k]?.im==='numeric')v=v.replace(/\D/g,'');if(v!==el.value&&e.type==='change')el.value=v;m[k]=typeof v==='string'?v.trim()===''?'':v:v}
+  if(k==='dob'){const a=calcAge(m.dob);if(a!==''){m.age=a;const ai=$('#i_age');if(ai)ai.value=a}}
+  if(k==='name'){$('#htitle').textContent=m.name||'New person'}
+  save();refresh();
+ };
+ form.addEventListener('input',onCh);form.addEventListener('change',onCh);
+ refresh();
+}
+
+/* ---------- Summary (print / save as PDF) ---------- */
+function viewSummary(hh){
+ const hd=head(hh);
+ setHead('Summary',hd?.name||'Household','#/h/'+hh.id);
+ setBar('<button class="btn" id="pr">🖨 Print / Save as PDF</button>');
+ const blocks=ordered(hh).map((m,i)=>{
+  const rows=FIELDS.filter(f=>f.t!=='note'&&shown(f,m)).map(f=>{let val=disp(f,m,hh);if(f.k==='p30a'){if(!m.p30a)return'';val='Same as present address – '+addr(hh)}if(f.k==='p30h'&&!m.p30h)return'';
+   const e=errOf(f,m);return`<tr><td>${f.q||''}</td><td>${esc(f.l)}</td><td>${val===''?'<span class="muted">—</span>':esc(val)}${e?`<div class="err">⚠ ${esc(e)}</div>`:''}</td></tr>`}).join('');
+  return`<div class="mblock"><div class="mhead">${i+1}. ${esc(m.name||'(no name)')} <span class="muted">· ${esc(m.rel||'')}</span></div><table>${rows}</table></div>`}).join('');
+ $('#app').innerHTML=`<div class="card sum"><h2 style="margin-bottom:2px">Census 2027 – Household Schedule (draft)</h2>
+ <div class="muted">Present address: ${esc(addr(hh)||'—')} · Persons: ${hh.members.length} · Printed ${fmtD(today())}</div>${blocks||'<div class="empty">No persons added.</div>'}
+ <p class="muted" style="margin-top:14px">Unofficial draft prepared for entry into the Census 2027 Self-Enumeration portal. Designed by Sivananda Pujari</p></div>`;
+ $('#pr').onclick=()=>{try{window.print()}catch(e){toast('Printing is not available here – use the browser menu')}};
+}
+
+/* ---------- export ---------- */
+function download(name,text,type){const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('Downloaded '+name)}
+function exportCSV(hhs,name){
+ const cols=FIELDS.filter(f=>f.t!=='note');
+ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+ const head=['Household','House No','Locality','Village/Town','District','State','PIN','Person No',...cols.map(f=>(f.q?'Q'+f.q+' ':'')+f.l)];
+ const rows=[head.map(q).join(',')];
+ hhs.forEach((hh,hi)=>ordered(hh).forEach((m,i)=>{
+  const r=[hi+1,hh.no,hh.loc,hh.town,hh.dist,hh.state,hh.pin,i+1,...cols.map(f=>{if(!shown(f,m))return'';let v=disp(f,m,hh);if(f.k==='a37n'||f.k==='m36n')v=v?'\t'+v:'';return v})];
+  rows.push(r.map(q).join(','))}));
+ download(name,'﻿'+rows.join('\r\n'),'text/csv;charset=utf-8');
+}
+
+/* ---------- datalists ---------- */
+const fillDL=(id,arr)=>$('#'+id).innerHTML=arr.map(a=>`<option value="${esc(a)}">`).join('');
+fillDL('dlS',STATES);fillDL('dlD',APD);fillDL('dlL',LANGS);fillDL('dlC',CTRY);
+
+/* ---------- install & offline ---------- */
+let deferred=null;
+const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e});
+window.addEventListener('appinstalled',()=>{const c=$('#installCard');c&&(c.style.display='none')});
+function setupInstall(){const c=$('#installCard');if(!c||standalone)return;c.style.display='';
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+ if(ios){$('#installText').textContent='On iPhone: tap Share, then “Add to Home Screen”.';$('#installBtn').style.display='none'}
+ $('#installBtn').onclick=()=>{if(deferred){deferred.prompt();deferred=null}else $('#installText').textContent='Open the Chrome menu (⋮) and tap “Add to Home screen” or “Install app”.'}}
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+route();
+</script>
+</body>
+</html>

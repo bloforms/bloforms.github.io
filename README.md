@@ -62,3 +62,9 @@ Order jowar idli with chutney online and collect it at the shop (Telugu / Englis
 
 Open the app: https://bloforms.github.io/idli/
 Owner dashboard: https://bloforms.github.io/idli/admin.html
+
+# Census 2027 – Household Schedule (draft helper)
+
+Unofficial helper for the Census of India 2027 household schedule (Self-Enumeration, Q1–Q40): add households and persons, fill each person's answers section by section with the schedule's skip rules, checks for Aadhaar/mobile numbers, printable summary, Excel (CSV) export and backup. Data stays on the phone; works offline.
+
+Open the app: https://bloforms.github.io/census/
