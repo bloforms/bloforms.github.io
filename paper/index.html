@@ -125,6 +125,15 @@ footer{text-align:center;color:var(--mute);font-size:12.5px;padding:8px 0 4px}
     <div class="btns"><button id="lIn">Sign in</button><button class="sec" id="lNew">New account</button></div>
     <div style="text-align:center;margin-top:12px"><a href="#" id="lForgot" style="color:var(--blue);font-weight:600;font-size:14px">Forgot password?</a></div>
     <div id="lForgotMsg" class="warn" style="display:none;margin:10px 0 0">Ask <b>Sivananda Pujari</b> (Paper Register owner) to reset it. After the reset, your password is <b>your own phone number</b>. Sign in with it, then change it in <b>More → Change password</b>. Your entries are safe.</div>
+    <div style="text-align:center;margin:16px 0 4px;color:var(--mute);font-size:13px">— or —</div>
+    <div style="background:#eefaf6;border:1px solid #bfe5d8;border-radius:12px;padding:12px">
+      <b style="color:#0f5c5c">🏛️ Sign in with GTL Ward Sarathi ID</b>
+      <div style="font-size:13px;color:var(--mute)">Use the same login as GTL Ward Sarathi (e.g. 21003008-WEDS or your phone).</div>
+      <label for="wsId">GTL Ward Sarathi login ID</label><input id="wsId" autocapitalize="characters" placeholder="21003008-WEDS" autocomplete="off">
+      <label for="wsPass">Password</label><input id="wsPass" type="password" autocomplete="off">
+      <div id="wsMsg" class="warn" style="display:none;margin:10px 0 0;background:var(--redbg);color:var(--red)"></div>
+      <button class="full" id="wsIn" style="margin-top:10px;background:#0f5c5c">🏛️ Sign in with GTL Ward Sarathi</button>
+    </div>
     <div style="font-size:13px;color:var(--mute);margin-top:12px">First time? Type your number and choose a password, then tap <b>New account</b>. Write the password down: it cannot be shown again.</div>
   </div>
   <footer>Designed by Sivananda Pujari</footer>
@@ -342,7 +351,7 @@ function renderHome(){
   else if(!bl.length){nb.innerHTML='<small>All papers are used</small><div style="margin:4px 0 10px">When the new bundle comes, add it to stock.</div><button data-go="stock">Receive stock</button>';}
   else{nb.innerHTML='<small>Next paper to use</small><div class="no"><i>'+esc(bl[0].prefix)+'</i>'+esc(bl[0].no)+'</div><button data-go="entry">Enter this certificate</button>';}
   $('lowWarn').innerHTML=(B().length&&bal>0&&bal<=10)?'<div class="warn">Only '+bal+' blank paper'+(bal===1?'':'s')+' left. Ask for new stock.</div>':'';
-  if(acct&&acct.pass===acct.phone)$('lowWarn').innerHTML+='<div class="warn">Your password is your phone number. Change it in <b>More → Change password</b>.</div>';
+  if(acct&&!acct.ws&&acct.pass===acct.phone)$('lowWarn').innerHTML+='<div class="warn">Your password is your phone number. Change it in <b>More → Change password</b>.</div>';
   if(acct&&!db.office)$('lowWarn').innerHTML+='<div class="warn">Add your secretariat name: tap <b>More</b> → Secretariat name.</div>';
   if(memOnly)$('lowWarn').innerHTML+='<div class="warn">This phone is not allowing the app to save. Entries will be lost when you close it.</div>';
   var t=today(),list=all.filter(function(p){var e=E(p.key);return e&&(e.printDate===t||e.damDate===t);});
@@ -510,7 +519,7 @@ $('batchList').addEventListener('click',function(e){var ed=e.target.closest('[da
 function renderMore(){
   $('xBatch').innerHTML='<option value="all">All stock</option>'+B().slice().reverse().map(function(b){return'<option value="'+b.id+'">'+esc(batchLabel(b))+'</option>';}).join('');
   $('office').value=db.office||'';renderAcct();
-  $('adminCard').style.display=(acct&&acct.phone===OWNER)?'':'none';
+  $('adminCard').style.display=isOwner()?'':'none';
 }
 function exportGroups(){
   var id=$('xBatch').value,out=[];
@@ -566,6 +575,13 @@ $('bkFile').addEventListener('change',function(){
 var API='https://rdtnikmsxyejimvudzvc.supabase.co/rest/v1/rpc/',AKEY='sb_publishable_Qy84k0vqQTGupexO6HHlQQ_cDqrgYc0',LSA='paperRegister.acct';
 var acct=null,syncing=false,pendingSync=false,syncT=null;
 try{acct=JSON.parse(localStorage.getItem(LSA));}catch(e){}
+/* GTL Ward Sarathi single sign-on: same website, so its login is visible here */
+function wsTok(){try{return localStorage.getItem('wp_token')||'';}catch(e){return '';}}
+function wsMe(){try{return JSON.parse(localStorage.getItem('wp_me')||'null')||{};}catch(e){return {};}}
+function wsNoSSO(){try{return localStorage.getItem('paperRegister.noSSO')==='1';}catch(e){return false;}}
+if(!acct&&wsTok()&&!wsNoSSO()){var _m=wsMe();acct={ws:true,token:wsTok(),name:_m.name||'',login:_m.login||''};}
+function isOwner(){return !!acct&&(acct.ws?acct.login===OWNER:acct.phone===OWNER);}
+function syncCall(data){return acct.ws?rpc('paper_ws_sync',{p_token:acct.token,p_data:data||null}):rpc('paper_sync',data?{p_phone:acct.phone,p_pass:acct.pass,p_data:data}:{p_phone:acct.phone,p_pass:acct.pass});}
 function rpc(fn,body){return fetch(API+fn,{method:'POST',headers:{apikey:AKEY,Authorization:'Bearer '+AKEY,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){if(!r.ok)throw new Error('net');return r.json();});}
 function merge(a,b){
   a=a||{};b=b||{};
@@ -584,12 +600,13 @@ function sync(){
   if(!acct){chip('');return Promise.resolve(false);}
   if(syncing){pendingSync=true;return Promise.resolve(false);}
   syncing=true;chip('☁️ Saving…');
-  return rpc('paper_sync',{p_phone:acct.phone,p_pass:acct.pass}).then(function(r){
-    if(!r.ok){if(r.error==='wrong_pass'||r.error==='no_account'){signOutNow();}chip('⚠️ Sign in again');return false;}
+  return syncCall(null).then(function(r){
+    if(!r.ok){if(r.error==='wrong_pass'||r.error==='no_account'||r.error==='not_signed_in'){signOutNow();showLogin(true);}chip('⚠️ Sign in again');return false;}
+    if(acct.ws&&r.name){acct.name=r.name;acct.login=r.login||acct.login;}
     var remote=(r.data&&Array.isArray(r.data.batches))?r.data:{batches:[],entries:{}};
     var merged=merge(db,remote),changedHere=sig(merged)!==sig(db);
     db=merged;store();
-    var w=sig(merged)!==sig(remote)?rpc('paper_sync',{p_phone:acct.phone,p_pass:acct.pass,p_data:db}):Promise.resolve({ok:true});
+    var w=sig(merged)!==sig(remote)?syncCall(db):Promise.resolve({ok:true});
     return w.then(function(x){if(!x.ok)throw new Error(x.error);
       try{localStorage.setItem(KEY+'.synced',String(Date.now()));}catch(e){}
       if(changedHere)refreshView();
@@ -620,6 +637,12 @@ function signOutNow(){acct=null;try{localStorage.removeItem(LSA);}catch(e){}}
 function renderAcct(){
   var c=$('acctCard');if(!c)return;
   if(!acct){c.innerHTML='';return;}
+  if(acct.ws){var t2=0;try{t2=+localStorage.getItem(KEY+'.synced')||0;}catch(e){}
+    c.innerHTML='<h2>☁️ Account</h2><div style="font-size:14px;color:var(--mute)">Signed in through <b style="color:var(--ink)">GTL Ward Sarathi</b> as <b style="color:var(--ink)">'+esc(acct.name||'')+'</b> ('+esc(String(acct.login||'').toUpperCase())+').'+(t2?' Last saved online: '+new Date(t2).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})+'.':'')+'</div><div class="btns"><button class="sec" id="syncNow">🔄 Save now</button><button class="danger" id="signOut">Sign out</button></div>';
+    $('syncNow').onclick=function(){sync().then(function(ok){toast(ok?'Saved online ✓':'Could not reach internet');});};
+    $('signOut').onclick=function(){if(!confirm('Sign out of Paper Register on this phone? Your entries stay saved online.'))return;
+      sync().then(function(){signOutNow();try{localStorage.setItem('paperRegister.noSSO','1');}catch(e){}db={batches:[],entries:{},office:'',ou:0,services:[]};store();try{localStorage.removeItem(KEY+'.synced');}catch(e){}chip('');showLogin(true);});};
+    return;}
   var t=0;try{t=+localStorage.getItem(KEY+'.synced')||0;}catch(e){}
   c.innerHTML='<h2>☁️ Account</h2><div style="font-size:14px;color:var(--mute)">Signed in with mobile <b style="color:var(--ink)">'+esc(acct.phone)+'</b>.'+(t?' Last saved online: '+new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})+'.':'')+'<br>On any phone or computer, open this link and sign in with the same number and password to see all entries.</div><div class="btns"><button class="sec" id="syncNow">🔄 Save now</button><button class="sec" id="chgPass">🔑 Change password</button><button class="danger" id="signOut">Sign out</button></div><div id="chgBox" style="display:none"><label for="chgNew">New password (6 letters or more)</label><input id="chgNew" type="password" autocomplete="new-password"><label for="chgNew2">Type it again</label><input id="chgNew2" type="password" autocomplete="new-password"><button class="full" id="chgSave">Save new password</button></div>'+(acct.pass===acct.phone?'<div class="warn" style="margin:12px 0 0">Your password is your phone number. Please change it.</div>':'');
   $('syncNow').onclick=function(){sync().then(function(ok){toast(ok?'Saved online ✓':'Could not reach internet');});};
@@ -647,15 +670,15 @@ $('adminBody').addEventListener('click',function(e){
   var ph=b.dataset.reset,np=ph;
   if(!confirm('Reset the password of '+ph+'?\nThe new password will be their phone number: '+ph))return;
   b.disabled=true;
-  rpc('paper_admin_reset',{p_phone:acct.phone,p_pass:acct.pass,p_target:ph,p_new:np}).then(function(r){
+  (acct.ws?rpc('paper_ws_admin_reset',{p_token:acct.token,p_target:ph,p_new:np}):rpc('paper_admin_reset',{p_phone:acct.phone,p_pass:acct.pass,p_target:ph,p_new:np})).then(function(r){
     if(r.ok){b.textContent='✓ Password is now '+np;toast('Done. Tell them to sign in with their phone number as password.');}
     else{b.disabled=false;toast(r.error==='wrong_pass'?'Sign in again':'Could not reset');}
   }).catch(function(){b.disabled=false;toast('No internet. Try again.');});
 });
 $('adminLoad').addEventListener('click',function(){
-  if(!acct||acct.phone!==OWNER)return;
+  if(!isOwner())return;
   var btn=$('adminLoad');btn.disabled=true;$('adminBody').textContent='Loading…';
-  rpc('paper_admin_users',{p_phone:acct.phone,p_pass:acct.pass}).then(function(r){
+  (acct.ws?rpc('paper_ws_admin_users',{p_token:acct.token}):rpc('paper_admin_users',{p_phone:acct.phone,p_pass:acct.pass})).then(function(r){
     if(!r.ok){$('adminBody').textContent=r.error==='wrong_pass'?'Sign in again.':'Could not load the list.';return;}
     var u=r.users||[],fmt=function(t){return t?new Date(t).toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'numeric',minute:'2-digit'}):'';};
     $('adminBody').innerHTML='<div class="ucount">'+u.length+'</div><div style="margin:2px 0 10px">user'+(u.length===1?'':'s')+' signed up</div>'+u.map(function(x,i){
@@ -666,6 +689,18 @@ $('adminLoad').addEventListener('click',function(){
 });
 $('lForgot').addEventListener('click',function(e){e.preventDefault();$('lForgotMsg').style.display='';});
 $('lIn').addEventListener('click',function(){doLogin(false);});
+$('wsIn').addEventListener('click',function(){
+  var id=$('wsId').value.trim(),pw=$('wsPass').value,m=$('wsMsg');m.style.display='none';
+  if(!id||!pw){m.textContent='Type your GTL Ward Sarathi login ID and password.';m.style.display='';return;}
+  $('wsIn').disabled=true;
+  fetch(API+'wp_login',{method:'POST',headers:{apikey:AKEY,Authorization:'Bearer '+AKEY,'Content-Type':'application/json'},body:JSON.stringify({p_login:id,p_pass:pw})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok)throw{msg:({wrong_login:'Wrong login ID or password.',pending:'Your GTL Ward Sarathi access is waiting for approval.',locked:'Too many wrong tries. Wait and try again.',bad_login:'Check the login ID.'})[j&&j.message]||'Could not sign in.'};return j;});})
+  .then(function(j){try{localStorage.setItem('wp_token',j.token);localStorage.setItem('wp_me',JSON.stringify(j.me));localStorage.removeItem('paperRegister.noSSO');}catch(e){}
+    acct={ws:true,token:j.token,name:j.me.name||'',login:j.me.login||''};showLogin(false);go('home');return sync();})
+  .then(function(){toast('Signed in with GTL Ward Sarathi. Your entries are loaded.');})
+  .catch(function(e){m.textContent=e&&e.msg?e.msg:'No internet. Connect and try again.';m.style.display='';})
+  .then(function(){$('wsIn').disabled=false;});
+});
 $('lNew').addEventListener('click',function(){doLogin(true);});
 $('lPass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin(false);});
 window.addEventListener('online',function(){if(acct)sync();});
