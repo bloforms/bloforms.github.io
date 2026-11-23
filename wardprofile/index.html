@@ -381,7 +381,14 @@ function empForm(pv){
         return '<div>'+lab+'<input id="'+id+'"'+ty+' value="'+esc(v)+'"></div>'}).join('')+'</div></details>'}).join('');
 }
 function readEmpForm(old){const o=Object.assign({},old||{});EMPF.forEach(f=>{const el=$('ef_'+f[1]);if(el){let v=el.value.trim();if(f[5]==='aadhaar')v=v.replace(/\D/g,'');o[f[1]]=v}});return o}
-function cleanCell(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function fullNum(x){return Number(x).toLocaleString('fullwide',{useGrouping:false,maximumFractionDigits:0})}
+function cleanCell(v){v=String(v==null?'':v).replace(/\s+/g,' ').trim();if(/^\d+(\.\d+)?e\+?\d+$/i.test(v))v=fullNum(v);return v}
+function sheetRows(ws){
+  const f=XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:''}),r=XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''});
+  return f.map((row,i)=>row.map((v,j)=>{const x=(r[i]||[])[j];
+    if(typeof x==='number'&&Number.isInteger(x)&&(Math.abs(x)>=1e7||/e\+/i.test(String(v))))return fullNum(x);
+    if(typeof x==='number'&&/e\+/i.test(String(v)))return fullNum(x);return v}));
+}
 function isLiveData(rows){return rows.slice(0,4).some(r=>/department name/i.test(String(r[1]||''))&&r.some(c=>/epic/i.test(String(c))))}
 function liveRows(rows){
   const hi=rows.findIndex(r=>/department name/i.test(String(r[1]||'')));
@@ -952,7 +959,7 @@ async function vImport(code){const app=curApp;
   $('xf').onchange=async()=>{const f=$('xf').files[0];if(!f)return;$('ures').innerHTML='<span class="spin"></span>';
     try{let rows;
       if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());
-      else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:false,defval:''})}
+      else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=sheetRows(wb.Sheets[sn])}
       if(isLiveData(rows))preview('ures',liveRows(rows),true);else preview('ures',rowsToStaff(rows))}
     catch(e){$('ures').innerHTML='<div class="msg err">'+t('fileFail')+'</div>'}};
   $('gsb').onclick=async()=>{const u=$('gs').value.trim();const m=u.match(/\/d\/([\w-]{20,})/);if(!m){$('ures').innerHTML='<div class="msg err">'+t('sheetFail')+'</div>';return}
@@ -1056,7 +1063,7 @@ async function vReport(code){const app=curApp;
      w.places.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(typeInfo(x.type,d).label)+'</td><td>'+esc(x.name)+'</td><td>'+(x.ownership?t(x.ownership==='govt'?'govt':'private'):'')+'</td><td>'+esc(x.address||'')+'</td><td>'+(x.lat!=null?(+x.lat).toFixed(5)+', '+(+x.lng).toFixed(5):'')+'</td></tr>').join('')+'</table>':'<p class="mute">'+t('noPlaces')+'</p>')+'</div>'+
    '<div class="card"><h2>👥 '+t('staff')+' ('+w.staff.length+')</h2>'+(w.staff.length?'<table><tr><th>#</th><th>'+t('name')+'</th><th>'+t('designation')+'</th><th>'+t('phone')+'</th><th>'+t('clusters')+'</th>'+(own?'<th>'+t('hrms')+'</th><th>'+t('cfms')+'</th><th>'+t('aadhaar')+'</th>':'')+'</tr>'+
      w.staff.map((x,i)=>{const pv=x.private||{};return '<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'</td><td>'+esc(desigLabel(x.designation))+'</td><td>'+esc(x.phone||'')+'</td><td>'+(x.clusters||[]).map(c=>esc(c.no)+(c.households!=null&&c.households!==''?' ('+fmt(c.households)+')':'')).join(' + ')+'</td>'+
-       (own?'<td>'+esc(pv.hrms||'')+'</td><td>'+esc(pv.cfms||'')+'</td><td>'+esc(maskA(pv.aadhaar))+'</td>':'')+'</tr>'}).join('')+'</table>':'<p class="mute">'+t('noStaff')+'</p>')+'</div>'+
+       (own?'<td>'+esc(pv.hrms||'')+'</td><td>'+esc(pv.cfms||'')+'</td><td>'+esc(pv.aadhaar||'')+'</td>':'')+'</tr>'}).join('')+'</table>':'<p class="mute">'+t('noStaff')+'</p>')+'</div>'+
    '<div class="card"><h2>🗳️ '+t('blos')+' ('+blos.length+')</h2>'+(blos.length?'<table><tr><th>'+t('booth')+'</th><th>'+t('name')+'</th><th>'+t('designation')+'</th><th>'+t('phone')+'</th></tr>'+
      blos.map(x=>'<tr><td>'+esc(x.blo_booth)+'</td><td>'+esc(x.name)+'</td><td>'+esc(desigLabel(x.designation))+'</td><td>'+esc(x.phone||'')+'</td></tr>').join('')+'</table>':'<p class="mute">'+t('noBlos')+'</p>')+'</div></div>';
   const doPrint=()=>{const old=document.title;document.title='Ward Profile - '+sec.name;window.print();setTimeout(()=>{document.title=old},1500)};
@@ -1095,7 +1102,7 @@ async function vAdmin(tab){const app=curApp;
     show(info.rows);
     let tm=null;$('mq2').oninput=()=>{clearTimeout(tm);tm=setTimeout(async()=>{try{show((await rpc('wp_master_list',{p_token:S.token,p_q:$('mq2').value})).rows)}catch(e){}},300)};
     $('mf').onchange=async()=>{const f=$('mf').files[0];if(!f)return;$('mm').innerHTML='<span class="spin"></span>';
-      try{let rows;if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:false,defval:''})}
+      try{let rows;if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=sheetRows(wb.Sheets[sn])}
         if(!isLiveData(rows))throw new Error('fmt');
         const list=liveRows(rows).map(r=>({name:titleCase(r.name),designation:r.designation,phone:r.phone,private:r.private}));
         const nA=list.filter(r=>/administrative/i.test(r.designation)&&r.phone).length;
