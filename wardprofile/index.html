@@ -260,6 +260,11 @@ const TX={
  addTo:['Add to','ఎక్కడ జోడించాలి'], fLabel:['Question / field name','ప్రశ్న / ఫీల్డ్ పేరు'], fKind:['Answer type','జవాబు రకం'], fOptions:['Choices (separate with commas)','ఎంపికలు (కామాలతో వేరు చేయండి)'],
  kText:['Text','టెక్స్ట్'], kNum:['Number','సంఖ్య'], kYn:['Yes / No','అవును / కాదు'], kDate:['Date','తేదీ'], kChoice:['Choice list','ఎంపికల జాబితా'], addField:['+ Add field','+ ఫీల్డ్ జోడించండి'], noFields:['No custom fields yet.','ఇంకా అదనపు ఫీల్డ్‌లు లేవు.'],
  licensedP:['Licensed','లైసెన్స్ ఉంది'], unlicensedP:['No licence','లైసెన్స్ లేదు'],
+ builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
+ pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
+ fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
+ gGeneral:['General','సాధారణ'], gSec:['Secretariat details','సచివాలయ వివరాలు'], gPop:['Population & welfare','జనాభా & సంక్షేమం'], gCounts:['Facility counts','సౌకర్యాల సంఖ్య'], gPlace:['Place details','ప్రదేశ వివరాలు'], gEmp:['Employee details','ఉద్యోగి వివరాలు'], gReg:['Register','రిజిస్టర్'],
+ pickSection:['Section','విభాగం'], builtIn:['built-in','అంతర్నిర్మిత'], custom:['added by you','మీరు జోడించినది'], hiddenF:['Deleted built-in fields (can be restored)','తొలగించిన అంతర్నిర్మిత ఫీల్డ్‌లు (తిరిగి తెచ్చుకోవచ్చు)'], restore:['Restore','తిరిగి తెచ్చు'],
  clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
@@ -534,7 +539,7 @@ function pickMap(mapId,latId,lngId,center){
 S.undo=[];S.navOpen={};
 function pushUndo(label,inv){S.undo.push({label:label,inv:inv});if(S.undo.length>30)S.undo.shift();header()}
 /* ---------- side menu ---------- */
-const WARD_ROUTES=['ward','edit','place','staff','import','report','export','survey','registers'];
+const WARD_ROUTES=['ward','edit','place','staff','import','report','export','survey','registers','builder'];
 function curWardCode(){const h=(location.hash||'').slice(1).split('/');if(WARD_ROUTES.includes(h[0])&&h[1]&&h[1]!=='all')return h[1];return S.lastCode||(S.me&&S.me.code)||''}
 function canEditProfile(code){const m=S.me||{};return m.role==='super'||(m.role==='admin'&&m.code===code)}
 function renderNav(){
@@ -554,6 +559,7 @@ function renderNav(){
         it('🗳️',t('blos'),'#ward/'+code+'/blos',r==='ward'&&tab==='blos'),
         it('📝',t('surveys'),'#survey/'+code,r==='survey'),
         it('📥',t('registers'),'#registers/'+code,r==='registers'&&h[1]!=='all'),
+        ...(canEditProfile(code)?[it('📊',t('builder'),'#builder/'+code,r==='builder'&&h[1]!=='all')]:[]),
         it('📄',t('report'),'#report/'+code,r==='report')];
       if(canEditProfile(code))ch.push(it('✏️',t('editShort'),'#edit/'+code,r==='edit'));
       const nm=secName(code);
@@ -564,7 +570,7 @@ function renderNav(){
     if(me.role==='super'||me.role==='admin'){
       const a=h[1]||S.atab||'requests';
       const ch=[it('📨',t('requests'),'#admin/requests',r==='admin'&&a==='requests'),it('👤',t('users'),'#admin/users',r==='admin'&&a==='users')];
-      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'),it('📋',t('master'),'#admin/master',r==='admin'&&a==='master'),it('🧩',t('fieldsT'),'#admin/fields',r==='admin'&&a==='fields'),it('📥',t('registers')+' – '+t('allWardsShort'),'#registers/all',r==='registers'&&h[1]==='all'));
+      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'),it('📋',t('master'),'#admin/master',r==='admin'&&a==='master'),it('🧩',t('fieldsT'),'#admin/fields',r==='admin'&&a==='fields'),it('📥',t('registers')+' – '+t('allWardsShort'),'#registers/all',r==='registers'&&h[1]==='all'),it('📊',t('builder')+' – '+t('allWardsShort'),'#builder/all',r==='builder'&&h[1]==='all'));
       out+=grp('admin','⚙️',t('admin'),ch,r==='admin');
     }
   }
@@ -625,10 +631,10 @@ const DEPT_RX={health:/health/i,education:/education/i,welfare:/welfare/i,revenu
 function canDept(dept,w){const m=S.me||{};if(!w||!w.can_edit)return false;if(m.role==='super'||m.role==='admin')return true;const d=m.designation||'';
   if(/administrative|amenities|planning|sanitation/i.test(d))return true;return !!(DEPT_RX[dept]&&DEPT_RX[dept].test(d))}
 /* custom fields added by the app admin */
-function customDefs(scope){return (S.fields||[]).filter(f=>f.scope===scope).map(f=>['f'+f.id,f.label,f.label,f.kind==='number'?'num':f.kind==='yesno'?'yn':f.kind==='date'?'date':f.kind==='choice'?(f.options||[]):'text'])}
+function customDefs(scope){return (S.fields||[]).filter(f=>f.scope===scope&&f.kind!=='hide').map(f=>['f'+f.id,f.label,f.label,f.kind==='number'?'num':f.kind==='yesno'?'yn':f.kind==='date'?'date':f.kind==='choice'?(f.options||[]):'text'])}
 async function loadFields(force){if(S.fields&&!force)return S.fields;try{S.fields=await rpc('wp_fields_list',{p_token:S.token})}catch(e){S.fields=[]}return S.fields}
-function regDefs(type){return (REG[type]||[]).concat(customDefs('place:'+type))}
-function deptDefs(key){const d=DEPTS.find(x=>x[0]===key);return (d?d[4]:[]).concat(customDefs('dept:'+key))}
+function regDefs(type){const h=(S.fields||[]).filter(f=>f.scope==='place:'+type&&f.kind==='hide').map(f=>f.label);return (REG[type]||[]).filter(f=>!h.includes(f[0])).concat(customDefs('place:'+type))}
+function deptDefs(key){const d=DEPTS.find(x=>x[0]===key);const h=(S.fields||[]).filter(f=>f.scope==='dept:'+key&&f.kind==='hide').map(f=>f.label);return (d?d[4]:[]).filter(f=>!h.includes(f[0])).concat(customDefs('dept:'+key))}
 function qLabel(f){return te()?f[2]:f[1]}
 function qInputs(defs,vals,prefix,disabled){
   vals=vals||{};const dis=disabled?' disabled':'';
@@ -1199,6 +1205,99 @@ async function vRegisters(scope){const app=curApp;
   if($('sAll'))$('sAll').onclick=async()=>{try{surveyTable(await rpc('wp_depts_all',{p_token:S.token}),'Guntakal – Department surveys – all 35 secretariats')}catch(er){toast(errText(er))}};
 }
 
+/* ----- report builder: pick any fields from any section, arrange, save format, download ----- */
+function hiddenKeys(scope){return (S.fields||[]).filter(f=>f.scope===scope&&f.kind==='hide').map(f=>f.label)}
+function bCatalog(mode){
+  const G=[],add=(g,items)=>{if(items.length)G.push([g,items])};
+  const P=c=>(c.data&&c.data.population)||{},B=c=>(c.data&&c.data.boundary)||{};
+  const ws=c=>(c.staff||[]).find(x=>/administrative/i.test(x.designation||''))||{};
+  add(t('gGeneral'),[['n','S.No',(c,i)=>i+1]]);
+  add('🏢 '+t('gSec'),[
+    ['s.sl','Secretariat Sl. No',c=>c.sec.sl],['s.name','Secretariat name',c=>c.sec.name],['s.code','SGSW code',c=>c.sec.code],['s.ward','Ward number',c=>(c.data||{}).ward_no||''],
+    ['s.addr','Office address',c=>(c.data||{}).office_address||''],['s.phone','Office phone',c=>(c.data||{}).office_phone||''],['s.lat','Office latitude',c=>c.sec.lat==null?'':c.sec.lat],['s.lng','Office longitude',c=>c.sec.lng==null?'':c.sec.lng],
+    ['s.map','Office Google Maps link',c=>c.sec.lat==null?'':gmaps(c.sec.lat,c.sec.lng)],['s.dfrom','Door numbers from',c=>(c.data||{}).door_from||''],['s.dto','Door numbers to',c=>(c.data||{}).door_to||''],
+    ['s.clus','Number of clusters',c=>(c.data||{}).clusters_total==null?'':c.data.clusters_total],['s.n','North boundary',c=>B(c).north||''],['s.s','South boundary',c=>B(c).south||''],['s.e','East boundary',c=>B(c).east||''],['s.w','West boundary',c=>B(c).west||''],
+    ['s.streets','Streets / colonies',c=>(c.data||{}).streets||''],['s.ws','Administrative Secretary (WS) name',c=>ws(c).name||''],['s.wsph','Administrative Secretary phone',c=>ws(c).phone||''],
+    ['s.staffn','Employees (count)',c=>(c.staff||[]).length],['s.vac','Vacant posts (count)',c=>(c.vacant||[]).length],['s.vacl','Vacant posts',c=>(c.vacant||[]).join(', ')],
+    ['s.blon','BLOs (count)',c=>(c.staff||[]).filter(x=>x.blo_booth).length],['s.pct','Profile complete %',c=>completion({lat:c.sec.lat,map_status:c.sec.map_status,data:c.data||{},places:(c.places||[]).length,photos:(c.places||[]).reduce((a,p)=>a+(p.photos||[]).length,0),staff:(c.staff||[]).length})]]);
+  add('👪 '+t('gPop'),[['total',t('total')],['households',t('households')],['men',t('men')],['women',t('women')],['above60',t('above60')],['children',t('children')],['pensions',t('pensions')],['ration_cards',t('rationCards')],['voters',t('voters')],['shgs',t('shgs')],['as_on',t('asOn')]]
+    .map(x=>['p.'+x[0],x[1],c=>P(c)[x[0]]==null?'':P(c)[x[0]]]).concat([['bc','BC'],['sc','SC'],['st','ST'],['oc','OC'],['minority','Minorities']].map(x=>['c.'+x[0],x[1]+' (office only)',c=>((c.private||{})[x[0]])==null?'':c.private[x[0]]])));
+  DEPTS.forEach(d=>add(d[1]+' '+d[2],deptDefs(d[0]).map(f=>['d.'+d[0]+'.'+f[0],f[1],c=>{const v=(((c.data||{}).dept||{})[d[0]]||{})[f[0]];return v==null?'':v}])));
+  add('🏫 '+t('gCounts'),typeList({}).map(x=>['k.'+x[0],x[1]+' (count)',c=>{const by={};(c.places||[]).forEach(p=>{by[p.type]=(by[p.type]||0)+1});return typeCount(c.data,by,x[0])}]));
+  if(mode==='place'){
+    add('📍 '+t('gPlace'),[['pl.type','Place type',(c,i,p)=>typeInfo(p.type,c.data).label],['pl.name','Place name',(c,i,p)=>p.name],['pl.own','Govt / Private',(c,i,p)=>p.ownership==='govt'?'Government':p.ownership==='private'?'Private':''],
+      ['pl.addr','Address / landmark',(c,i,p)=>p.address||''],['pl.contact','Contact',(c,i,p)=>p.contact||''],['pl.lat','Latitude',(c,i,p)=>p.lat==null?'':p.lat],['pl.lng','Longitude',(c,i,p)=>p.lng==null?'':p.lng],
+      ['pl.map','Google Maps link',(c,i,p)=>p.lat==null?'':gmaps(p.lat,p.lng)],['pl.notes','Notes',(c,i,p)=>p.notes||''],['pl.photos','Photo links',(c,i,p)=>(p.photos||[]).join(' ')]]);
+    TYPES.forEach(x=>{const defs=regDefs(x[0]);add(x[3]+' '+t('gReg')+' – '+x[1],defs.map(f=>['x.'+x[0]+'.'+f[0],x[1]+' – '+f[1],(c,i,p)=>p.type===x[0]&&(p.extra||{})[f[0]]!=null?p.extra[f[0]]:'']))});
+  }
+  if(mode==='emp'){
+    add('👥 '+t('gEmp'),[['e.name','Employee name',(c,i,e)=>e.name],['e.des','Designation',(c,i,e)=>e.designation||''],['e.phone','WhatsApp mobile',(c,i,e)=>e.phone||''],
+      ['e.clus','Clusters',(c,i,e)=>(e.clusters||[]).map(k=>k.no+(k.households!=null&&k.households!==''?' ('+k.households+')':'')).join(' + ')],
+      ['e.hh','Households in clusters',(c,i,e)=>(e.clusters||[]).reduce((a,k)=>a+(+k.households||0),0)||''],['e.blo','BLO booth no.',(c,i,e)=>e.blo_booth||''],['e.joined','Joining date',(c,i,e)=>e.joined||'']]
+      .concat(EMPF.map(f=>['e.'+f[1],f[2],(c,i,e)=>((e.private||{})[f[1]])||''])));
+  }
+  return G;
+}
+async function vBuilder(scope){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const me=S.me||{};
+  if(scope==='all'?me.role!=='super':!canEditProfile(scope)){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  await loadSecs();await loadFields();
+  let wards=[];
+  if(scope==='all'){for(const sc of S.secs){app.innerHTML='<div class="card"><span class="spin"></span> '+sc.sl+' / '+S.secs.length+'</div>';const w=await rpc('wp_ward',{p_token:S.token,p_code:sc.code});wards.push(w)}}
+  else{const w=await loadWard(scope);S.lastCode=scope;renderNav();wards=[w]}
+  wards=wards.map(w=>({sec:w.sec,data:w.data||{},private:w.private||{},staff:w.staff||[],places:w.places||[],vacant:w.vacant||[]}));
+  let fmts=[];try{fmts=await rpc('wp_formats_list',{p_token:S.token})}catch(e){}
+  let spec;try{spec=JSON.parse(localStorage.getItem('wp_bspec')||'null')}catch(e){}
+  if(!spec||!spec.mode)spec={mode:'sec',cols:[{id:'n'},{id:'s.name'},{id:'s.code'}],types:[],onlyBlo:false,title:''};
+  const title0=()=>(scope==='all'?'Guntakal – all 35 secretariats':secName(scope))+' – '+(spec.mode==='sec'?t('rSec'):spec.mode==='place'?t('rPlace'):t('rEmp'));
+  const usedTypes=TYPES.filter(x=>wards.some(c=>c.places.some(p=>p.type===x[0])));
+  const draw=()=>{
+    localStorage.setItem('wp_bspec',JSON.stringify(spec));
+    const G=bCatalog(spec.mode),all={};G.forEach(g=>g[1].forEach(it=>{all[it[0]]=it}));
+    spec.cols=spec.cols.filter(c=>all[c.id]);
+    const on=new Set(spec.cols.map(c=>c.id));
+    app.innerHTML='<div class="secttl"><span style="font-size:26px">📊</span><h1>'+t('builder')+'</h1></div><p class="mute">'+esc(scope==='all'?t('scopeAll'):secName(scope))+'</p>'+
+     '<div class="card"><label>'+t('savedFmts')+'</label><div class="row" style="flex-wrap:nowrap"><select id="bf" style="flex:1"><option value="">–</option>'+fmts.map(f=>'<option value="'+f.id+'">'+esc(f.name)+'</option>').join('')+'</select><button class="btn alt sm" type="button" id="bfl">'+t('load')+'</button><button class="btn red sm" type="button" id="bfd">'+t('del')+'</button></div></div>'+
+     '<div class="card"><label>'+t('rowsAre')+'</label><div class="tabs">'+[['sec','🏢 '+t('rSec')],['place','📍 '+t('rPlace')],['emp','👥 '+t('rEmp')]].map(x=>'<button type="button" data-bm="'+x[0]+'" class="'+(spec.mode===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div>'+
+     (spec.mode==='place'?'<div class="row">'+usedTypes.map(x=>'<label class="chk"><input type="checkbox" data-bt="'+x[0]+'"'+(!spec.types.length||spec.types.includes(x[0])?' checked':'')+'>'+x[3]+' '+esc(te()?x[2]:x[1])+'</label>').join('')+'</div>':'')+
+     (spec.mode==='emp'?'<label class="chk"><input type="checkbox" id="bob"'+(spec.onlyBlo?' checked':'')+'> '+t('onlyBlo')+'</label>':'')+'</div>'+
+     '<div class="card"><h3 style="margin-top:0">'+t('pickFields')+'</h3>'+G.map(g=>{const n=g[1].filter(it=>on.has(it[0])).length;
+       return '<details style="border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0"'+(n?' open':'')+'><summary style="cursor:pointer;font-weight:700">'+esc(g[0])+(n?' <span class="pill g">'+n+'</span>':'')+'</summary><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-top:6px">'+
+         g[1].map(it=>'<label class="chk" style="margin:0"><input type="checkbox" data-bc="'+esc(it[0])+'"'+(on.has(it[0])?' checked':'')+'> '+esc(it[1])+'</label>').join('')+'</div></details>'}).join('')+'</div>'+
+     '<div class="card"><h3 style="margin-top:0">'+t('chosenCols')+' ('+spec.cols.length+')</h3><div class="list">'+spec.cols.map((c,k)=>'<div class="it" style="padding:6px 0"><b style="width:28px">'+(k+1)+'</b><input data-bh="'+k+'" value="'+esc(c.h||all[c.id][1])+'" style="flex:1"><button class="btn alt sm" type="button" data-bu="'+k+'">↑</button><button class="btn alt sm" type="button" data-bd="'+k+'">↓</button><button class="btn red sm" type="button" data-bx="'+k+'">✕</button></div>').join('')+'</div>'+
+     '<label>'+t('fileTitle')+'</label><input id="bti" value="'+esc(spec.title||title0())+'">'+
+     '<div class="row" style="margin-top:12px"><button class="btn" type="button" id="bx">'+t('xlsxB')+'</button><button class="btn alt" type="button" id="bc2">'+t('csvB')+'</button><button class="btn alt" type="button" id="bp2">'+t('copyB')+'</button></div>'+
+     '<label>'+t('fmtName')+'</label><div class="row" style="flex-wrap:nowrap"><input id="bfn" style="flex:1" placeholder="e.g. Collector – shops format"><button class="btn sm" type="button" id="bfs">💾 '+t('save')+'</button></div><div id="bm"></div></div>'+
+     '<div class="card"><div class="tw" id="bpv" style="max-height:50vh"></div></div>';
+    const rows=()=>{const out=[];let i=0;
+      wards.forEach(c=>{
+        if(spec.mode==='sec')out.push([c,null]);
+        else if(spec.mode==='place')c.places.filter(p=>!spec.types.length||spec.types.includes(p.type)).forEach(p=>out.push([c,p]));
+        else (spec.onlyBlo?c.staff.filter(x=>x.blo_booth):c.staff).forEach(e=>out.push([c,e]))});
+      return out};
+    const table=()=>{const R=rows();return [spec.cols.map(c=>c.h||all[c.id][1])].concat(R.map((r,i)=>spec.cols.map(c=>{const v=all[c.id][2](r[0],i,r[1]);return v==null?'':v})))};
+    const tb=table();$('bpv').innerHTML='<table><tr>'+tb[0].map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+tb.slice(1,16).map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</table><p class="mute" style="padding:6px">'+(tb.length-1)+' '+t('rows')+'</p>';
+    app.querySelectorAll('[data-bm]').forEach(b=>b.onclick=()=>{spec.mode=b.dataset.bm;spec.title='';draw()});
+    app.querySelectorAll('[data-bt]').forEach(b=>b.onchange=()=>{spec.types=[...app.querySelectorAll('[data-bt]')].filter(x=>x.checked).map(x=>x.dataset.bt);if(spec.types.length===usedTypes.length)spec.types=[];draw()});
+    if($('bob'))$('bob').onchange=()=>{spec.onlyBlo=$('bob').checked;draw()};
+    app.querySelectorAll('[data-bc]').forEach(b=>b.onchange=()=>{const id=b.dataset.bc;if(b.checked)spec.cols.push({id:id});else spec.cols=spec.cols.filter(c=>c.id!==id);draw()});
+    app.querySelectorAll('[data-bh]').forEach(b=>b.onchange=()=>{spec.cols[+b.dataset.bh].h=b.value.trim();draw()});
+    app.querySelectorAll('[data-bu]').forEach(b=>b.onclick=()=>{const k=+b.dataset.bu;if(k>0){[spec.cols[k-1],spec.cols[k]]=[spec.cols[k],spec.cols[k-1]];draw()}});
+    app.querySelectorAll('[data-bd]').forEach(b=>b.onclick=()=>{const k=+b.dataset.bd;if(k<spec.cols.length-1){[spec.cols[k+1],spec.cols[k]]=[spec.cols[k],spec.cols[k+1]];draw()}});
+    app.querySelectorAll('[data-bx]').forEach(b=>b.onclick=()=>{spec.cols.splice(+b.dataset.bx,1);draw()});
+    $('bti').onchange=()=>{spec.title=$('bti').value.trim();localStorage.setItem('wp_bspec',JSON.stringify(spec))};
+    const ttl=()=>$('bti').value.trim()||title0();
+    $('bx').onclick=()=>spec.cols.length&&saveTable(table(),ttl(),ttl());
+    $('bc2').onclick=()=>spec.cols.length&&saveTable(table(),ttl(),ttl(),'csv');
+    $('bp2').onclick=async()=>{const txt=table().map(r=>r.map(v=>String(v).replace(/[\t\n]/g,' ')).join('\t')).join('\n');try{await navigator.clipboard.writeText(txt);$('bm').innerHTML='<div class="msg ok">'+t('copyDone')+'</div>'}catch(e){prompt('',txt)}};
+    $('bfs').onclick=async()=>{const nm=$('bfn').value.trim();if(!nm)return;try{await rpc('wp_format_save',{p_token:S.token,p_name:nm,p_spec:spec});fmts=await rpc('wp_formats_list',{p_token:S.token});toast(t('saved'));draw()}catch(er){toast(errText(er))}};
+    $('bfl').onclick=()=>{const f=fmts.find(x=>String(x.id)===$('bf').value);if(f){spec=JSON.parse(JSON.stringify(f.spec));draw()}};
+    $('bfd').onclick=async()=>{const id=$('bf').value;if(!id||!confirm(t('confirmDel')))return;try{await rpc('wp_format_remove',{p_token:S.token,p_id:+id});fmts=fmts.filter(x=>String(x.id)!==id);draw()}catch(er){toast(errText(er))}};
+  };
+  draw();
+}
+
 /* ----- report (view / download) ----- */
 async function vReport(code){const app=curApp;
   if(!S.token){location.hash='#login';return}
@@ -1262,14 +1361,21 @@ async function vAdmin(tab){const app=curApp;
   }
   if(S.atab==='fields'){
     const fl=await loadFields(true);
-    const scopes=TYPES.map(x=>['place:'+x[0],x[3]+' '+(te()?x[2]:x[1])]).concat(DEPTS.map(d=>['dept:'+d[0],'📝 '+(te()?d[3]:d[2])]));
-    ab.innerHTML='<p class="mute">'+t('fieldsHelp')+'</p><div class="two"><div><label>'+t('addTo')+'</label><select id="fs">'+scopes.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('')+'</select></div>'+
-      '<div><label>'+t('fLabel')+'</label><input id="fl"></div><div><label>'+t('fKind')+'</label><select id="fk"><option value="text">'+t('kText')+'</option><option value="number">'+t('kNum')+'</option><option value="yesno">'+t('kYn')+'</option><option value="date">'+t('kDate')+'</option><option value="choice">'+t('kChoice')+'</option></select></div>'+
-      '<div><label>'+t('fOptions')+'</label><input id="fo" placeholder="A, B, C"></div></div><button class="btn" type="button" id="fa" style="margin-top:10px">'+t('addField')+'</button>'+
-      '<div class="list" style="margin-top:12px">'+(fl.length?fl.map(f=>{const sc=scopes.find(x=>x[0]===f.scope);return '<div class="it"><div class="grow"><div class="nm">'+esc(f.label)+'</div><div class="mute">'+esc(sc?sc[1]:f.scope)+' · '+esc(f.kind)+(f.options&&f.options.length?' · '+esc(f.options.join(', ')):'')+'</div></div><button class="btn red sm" type="button" data-fd="'+f.id+'">'+t('del')+'</button></div>'}).join(''):'<p class="mute">'+t('noFields')+'</p>')+'</div>';
+    const scopes=TYPES.map(x=>['place:'+x[0],x[3]+' '+(te()?x[2]:x[1]),REG[x[0]]||[]]).concat(DEPTS.map(d=>['dept:'+d[0],'📝 '+(te()?d[3]:d[2]),d[4]]));
+    S.fscope=S.fscope||scopes[0][0];const sc=scopes.find(x=>x[0]===S.fscope)||scopes[0];
+    const hid=fl.filter(f=>f.scope===sc[0]&&f.kind==='hide');const cus=fl.filter(f=>f.scope===sc[0]&&f.kind!=='hide');
+    ab.innerHTML='<p class="mute">'+t('fieldsHelp')+'</p><label>'+t('pickSection')+'</label><select id="fs">'+scopes.map(x=>'<option value="'+x[0]+'"'+(x[0]===sc[0]?' selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select>'+
+      '<div class="list" style="margin-top:10px">'+sc[2].filter(f=>!hid.some(h=>h.label===f[0])).map(f=>'<div class="it"><div class="grow"><div class="nm">'+esc(qLabel(f))+'</div><div class="mute">'+t('builtIn')+'</div></div><button class="btn red sm" type="button" data-fh="'+esc(f[0])+'">'+t('del')+'</button></div>').join('')+
+        cus.map(f=>'<div class="it"><div class="grow"><div class="nm">'+esc(f.label)+'</div><div class="mute">'+t('custom')+' · '+esc(f.kind)+(f.options&&f.options.length?' · '+esc(f.options.join(', ')):'')+'</div></div><button class="btn red sm" type="button" data-fd="'+f.id+'">'+t('del')+'</button></div>').join('')+'</div>'+
+      (hid.length?'<h3>'+t('hiddenF')+'</h3><div class="list">'+hid.map(h=>{const f=sc[2].find(x=>x[0]===h.label);return '<div class="it"><div class="grow mute">'+esc(f?qLabel(f):h.label)+'</div><button class="btn alt sm" type="button" data-fr="'+h.id+'">'+t('restore')+'</button></div>'}).join('')+'</div>':'')+
+      '<div class="card" style="margin-top:12px;background:#f6fafa"><b>'+t('addField')+'</b><div class="two"><div><label>'+t('fLabel')+'</label><input id="fl"></div><div><label>'+t('fKind')+'</label><select id="fk"><option value="text">'+t('kText')+'</option><option value="number">'+t('kNum')+'</option><option value="yesno">'+t('kYn')+'</option><option value="date">'+t('kDate')+'</option><option value="choice">'+t('kChoice')+'</option></select></div>'+
+      '<div style="grid-column:1/-1"><label>'+t('fOptions')+'</label><input id="fo" placeholder="A, B, C"></div></div><button class="btn" type="button" id="fa" style="margin-top:10px">'+t('addField')+'</button></div>';
+    $('fs').onchange=()=>{S.fscope=$('fs').value;vAdmin('fields')};
     $('fa').onclick=async()=>{const lab=$('fl').value.trim();if(!lab)return;const kind=$('fk').value;
-      try{await rpc('wp_field_save',{p_token:S.token,f:{scope:$('fs').value,label:lab,kind:kind,options:kind==='choice'?$('fo').value.split(',').map(x=>x.trim()).filter(Boolean):[]}});toast(t('saved'));vAdmin('fields')}catch(er){toast(errText(er))}};
-    ab.querySelectorAll('[data-fd]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fd});S.fields=null;vAdmin('fields')}catch(er){toast(errText(er))}});
+      try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:lab,kind:kind,options:kind==='choice'?$('fo').value.split(',').map(x=>x.trim()).filter(Boolean):[]}});toast(t('saved'));vAdmin('fields')}catch(er){toast(errText(er))}};
+    ab.querySelectorAll('[data-fh]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:b.dataset.fh,kind:'hide',options:[]}});vAdmin('fields')}catch(er){toast(errText(er))}});
+    ab.querySelectorAll('[data-fd]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fd});vAdmin('fields')}catch(er){toast(errText(er))}});
+    ab.querySelectorAll('[data-fr]').forEach(b=>b.onclick=async()=>{try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fr});vAdmin('fields')}catch(er){toast(errText(er))}});
     return;
   }
   if(S.atab==='master'){
@@ -1367,6 +1473,7 @@ async function route(){
       case 'report':return await vReport(h[1]);
       case 'export':return await vExport(h[1]);
       case 'survey':return await vSurvey(h[1]);
+      case 'builder':return await vBuilder(h[1]||'all');
       case 'registers':return await vRegisters(h[1]||'all');
       case 'wards':return await vHome('wards');
       case 'edit':return await vEdit(h[1]);
