@@ -238,6 +238,12 @@ const TX={
  noMaster:['The saved list is empty. The app admin uploads it under Admin → Saved employee list.','సేవ్ చేసిన జాబితా ఖాళీగా ఉంది. యాప్ అడ్మిన్ దానిని అడ్మిన్ → సేవ్ చేసిన ఉద్యోగుల జాబితాలో అప్‌లోడ్ చేస్తారు.'],
  secLogin:['Secretariat login','సచివాలయ లాగిన్'], setPass:['Set password','పాస్‌వర్డ్ పెట్టండి'], secPassQ:['New password for secretariat number','సచివాలయ నంబర్ కోసం కొత్త పాస్‌వర్డ్'],
  secPassDone:['Saved. This secretariat can now log in with its number and this password.','సేవ్ అయింది. ఈ సచివాలయం ఇప్పుడు తన నంబర్, ఈ పాస్‌వర్డ్‌తో లాగిన్ అవ్వవచ్చు.'],
+ fillAll:['⚡ Fill all details from saved list','⚡ సేవ్ చేసిన జాబితా నుండి అన్ని వివరాలు నింపండి'],
+ fillAllWards:['⚡ Fill details of employees in all wards','⚡ అన్ని వార్డుల ఉద్యోగుల వివరాలు నింపండి'],
+ placeAll:['⚡ Place all employees into their secretariats','⚡ అందరు ఉద్యోగులను వారి సచివాలయాల్లో ఉంచండి'],
+ placeHelp:['Needs a "Secretariat" column (name or SGSW number, e.g. 21003001) at the end of the Live Data sheet. Then upload the sheet again and tap this.','లైవ్ డేటా షీట్ చివర "Secretariat" కాలమ్ (పేరు లేదా SGSW నంబర్, ఉదా: 21003001) ఉండాలి. తర్వాత షీట్‌ను మళ్లీ అప్‌లోడ్ చేసి దీన్ని నొక్కండి.'],
+ filledN:['filled','నింపబడ్డాయి'], noMatchN:['not found in saved list','సేవ్ చేసిన జాబితాలో దొరకలేదు'], placedN:['placed','ఉంచబడ్డారు'], skippedN:['already there','ఇప్పటికే ఉన్నారు'], unknownN:['without a secretariat','సచివాలయం లేకుండా'],
+ withSec:['with Secretariat column','సచివాలయ కాలమ్‌తో'],
  clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
@@ -435,6 +441,8 @@ function pctPill(p){return '<span class="pill '+(p>=80?'g':p>=40?'o':'r')+'">'+p
 function secOptions(sel){return S.secs.map(s=>'<option value="'+s.code+'"'+(s.code===sel?' selected':'')+'>'+s.sl+'. '+esc(s.name)+'</option>').join('')}
 async function loadSecs(force){if(S.secs.length&&!force)return;S.secs=await rpc('wp_secretariats')}
 function lightbox(src){const d=document.createElement('div');d.className='lb';d.innerHTML='<img src="'+esc(src)+'" alt="">';d.onclick=()=>d.remove();document.body.appendChild(d)}
+document.addEventListener('click',async e=>{if(!(e.target&&e.target.id==='fillWard'&&S.ward))return;const b=e.target;b.disabled=true;
+  try{const r=await rpc('wp_fill_from_master',{p_token:S.token,p_code:S.ward.sec.code});toast(r.filled+' '+t('filledN')+(r.nomatch?' · '+r.nomatch+' '+t('noMatchN'):''));route()}catch(er){toast(errText(er));b.disabled=false}});
 document.addEventListener('click',e=>{if(e.target&&e.target.id==='expE'&&S.ward)exportEmployees(S.ward.staff,'employees-'+S.ward.sec.name+'.csv')});
 document.addEventListener('click',e=>{const im=e.target.closest('img[data-full]');if(im)lightbox(im.getAttribute('data-full'))});
 
@@ -713,7 +721,7 @@ function vWardTab(w){
     return;
   }
   if(S.tab==='staff'){
-    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a><a class="btn alt" href="#export/'+code+'">'+t('dlEmp')+'</a></div>':'')+'<div class="list">'+
+    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a><a class="btn alt" href="#export/'+code+'">'+t('dlEmp')+'</a><button type="button" class="btn orange" id="fillWard">'+t('fillAll')+'</button></div>':'')+'<div class="list">'+
      (w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+
        '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+clusterLine(s)+privLine(s)+'</div>'+
        '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>';
@@ -953,7 +961,8 @@ async function vImport(code){const app=curApp;
           const before=ex?JSON.parse(JSON.stringify(ex)):null;const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});n++;
           invs.push(before?()=>rpc('wp_save_staff',{p_token:S.token,s:before}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}))}
         pushUndo(t('uploadT')+' – '+n,async()=>{for(const f of invs.slice().reverse())await f()});
-        toast(n+' '+t('added'));S.tab='staff';location.hash='#ward/'+code}
+        let fm='';try{const fr=await rpc('wp_fill_from_master',{p_token:S.token,p_code:code});fm=' · '+fr.filled+' '+t('filledN')}catch(e){}
+        toast(n+' '+t('added')+fm);S.tab='staff';location.hash='#ward/'+code}
       catch(er){$(box).querySelector('[data-m]').innerHTML='<div class="msg err">'+n+' '+t('added')+'. '+errText(er)+'</div>';bt.disabled=false}};
   };
   $('xf').onchange=async()=>{const f=$('xf').files[0];if(!f)return;$('ures').innerHTML='<span class="spin"></span>';
@@ -1097,14 +1106,18 @@ async function vAdmin(tab){const app=curApp;
     const info=await rpc('wp_master_list',{p_token:S.token,p_q:''});
     ab.innerHTML='<p>'+t('masterHelp')+'</p><div class="grid"><div class="stat"><b>'+info.total+'</b><span>'+t('masterCount')+'</span></div><div class="stat"><b>'+info.admins+'</b><span>'+t('masterAdmins')+'</span></div></div>'+
       '<label>'+t('chooseFile')+'</label><input type="file" id="mf" accept=".xlsx,.xls,.csv"><div id="mm"></div>'+
+      (info.total?'<div class="card" style="margin-top:12px;background:#f6fafa"><button class="btn" type="button" id="fillW">'+t('fillAllWards')+'</button><hr style="border:0;border-top:1px solid var(--line);margin:12px 0"><button class="btn orange" type="button" id="plA">'+t('placeAll')+'</button><p class="mute">'+t('placeHelp')+'</p><div id="pm2"></div></div>':'')+
       '<label>'+t('search')+'</label><input id="mq2" placeholder="🔍"><div id="ml" class="list"></div>';
     const show=rows=>{$('ml').innerHTML=rows.map(x=>'<div class="it"><div class="grow"><div class="nm">'+esc(x.name)+'</div><div class="mute">'+esc(desigLabel(matchDesig(x.designation)))+(x.hrms?' · HRMS '+esc(x.hrms):'')+(x.phone?' · '+esc(x.phone):'')+'</div></div>'+(x.used_name?'<span class="pill">'+esc(x.used_name)+'</span>':'')+'</div>').join('')};
     show(info.rows);
+    if($('fillW'))$('fillW').onclick=async()=>{$('fillW').disabled=true;try{const r=await rpc('wp_fill_from_master',{p_token:S.token,p_code:null});$('pm2').innerHTML='<div class="msg ok">'+r.filled+' '+t('filledN')+' · '+r.nomatch+' '+t('noMatchN')+'</div>'}catch(er){$('pm2').innerHTML='<div class="msg err">'+errText(er)+'</div>'}$('fillW').disabled=false};
+    if($('plA'))$('plA').onclick=async()=>{$('plA').disabled=true;try{const r=await rpc('wp_master_place_all',{p_token:S.token});
+      $('pm2').innerHTML='<div class="msg '+(r.with_sec?'ok':'err')+'">'+r.placed+' '+t('placedN')+' · '+r.skipped+' '+t('skippedN')+' · '+r.unknown+' '+t('unknownN')+(r.with_sec?'':'<br>'+t('placeHelp'))+'</div>'}catch(er){$('pm2').innerHTML='<div class="msg err">'+errText(er)+'</div>'}$('plA').disabled=false};
     let tm=null;$('mq2').oninput=()=>{clearTimeout(tm);tm=setTimeout(async()=>{try{show((await rpc('wp_master_list',{p_token:S.token,p_q:$('mq2').value})).rows)}catch(e){}},300)};
     $('mf').onchange=async()=>{const f=$('mf').files[0];if(!f)return;$('mm').innerHTML='<span class="spin"></span>';
       try{let rows;if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=sheetRows(wb.Sheets[sn])}
         if(!isLiveData(rows))throw new Error('fmt');
-        const list=liveRows(rows).map(r=>({name:titleCase(r.name),designation:r.designation,phone:r.phone,private:r.private}));
+        const list=liveRows(rows).map(r=>({name:titleCase(r.name),designation:r.designation,phone:r.phone,private:r.private,sec:r.sec||''}));
         const nA=list.filter(r=>/administrative/i.test(r.designation)&&r.phone).length;
         $('mm').innerHTML='<div class="msg ok">✅ '+t('liveFmt')+': <b>'+list.length+'</b> '+t('employeesN')+' · '+nA+' '+t('masterAdmins')+'</div><button class="btn" id="msv" type="button">💾 '+t('masterSave')+'</button>';
         $('msv').onclick=async()=>{if(info.total&&!confirm(t('masterReplace')))return;$('msv').disabled=true;
