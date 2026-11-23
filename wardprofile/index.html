@@ -122,7 +122,9 @@ const TX={
  noBlos:['No BLOs assigned yet.','ఇంకా BLOలు నియమించలేదు.'], bloHelp:['Pick an employee of this secretariat and enter the booth number. Add employees first in the Employees tab.','ఈ సచివాలయ ఉద్యోగిని ఎంచుకుని బూత్ నంబర్ ఇవ్వండి. ముందుగా ఉద్యోగులు ట్యాబ్‌లో ఉద్యోగులను జోడించండి.'],
  unassign:['Remove BLO','BLO తీసివేయండి'], boothNeeded:['Enter the booth number.','బూత్ నంబర్ ఇవ్వండి.'], edit:['Edit ward details','వార్డు వివరాలు మార్చండి'],
  population:['Population','జనాభా'], total:['Total','మొత్తం'], households:['Households','కుటుంబాలు'], men:['Men','పురుషులు'], women:['Women','స్త్రీలు'],
- above60:['Above 60','60 ఏళ్లు పైబడినవారు'], children:['Children','పిల్లలు'], asOn:['As on date','తేదీ నాటికి'],
+ above60:['Above 60','60 ఏళ్లు పైబడినవారు'], pensions:['Pensioners','పెన్షనర్లు'], rationCards:['Ration cards','రేషన్ కార్డులు'], voters:['Voters','ఓటర్లు'], shgs:['Self-help groups (SHGs)','స్వయం సహాయక సంఘాలు (SHG)'],
+ welfare:['Welfare & cards','సంక్షేమం & కార్డులు'], counts:['Number of facilities','సౌకర్యాల సంఖ్య'],
+ countsHelp:['Type how many of each the ward has (for example 6 temples, 1 library). You can also add each one with location and photos under Places.','వార్డులో ఒక్కొక్కటి ఎన్ని ఉన్నాయో నమోదు చేయండి (ఉదా: 6 దేవాలయాలు, 1 గ్రంథాలయం). ప్రతిదానిని లొకేషన్, ఫోటోలతో ప్రదేశాలలో కూడా జోడించవచ్చు.'], children:['Children','పిల్లలు'], asOn:['As on date','తేదీ నాటికి'],
  boundaries:['Boundaries','సరిహద్దులు'], north:['North','ఉత్తరం'], south:['South','దక్షిణం'], east:['East','తూర్పు'], west:['West','పడమర'],
  doorFrom:['Door numbers from','డోర్ నంబర్లు నుండి'], doorTo:['Door numbers to','డోర్ నంబర్లు వరకు'], doors:['Door numbers','డోర్ నంబర్లు'],
  streets:['Streets / colonies','వీధులు / కాలనీలు'], wardNo:['Ward number','వార్డు నంబర్'],
@@ -209,6 +211,8 @@ const TYPES=[
  ['temple','Temple','దేవాలయం','🛕'],['mosque','Mosque','మసీదు','🕌'],['church','Church','చర్చి','⛪'],
  ['water_tank','Water tank','నీటి ట్యాంకు','💧'],['ration_shop','Ration shop','రేషన్ షాపు','🍚'],['bank','Bank / ATM','బ్యాంకు / ATM','🏦'],
  ['police','Police station','పోలీస్ స్టేషన్','🚓'],['community_hall','Community hall','కమ్యూనిటీ హాల్','🏠'],['market','Market','మార్కెట్','🛒'],
+ ['library','Library','గ్రంథాలయం','📚'],['hostel','Hostel','హాస్టల్','🛏️'],['playground','Playground','ఆట స్థలం','⚽'],['function_hall','Function hall','ఫంక్షన్ హాల్','🎉'],
+ ['bus_stop','Bus stop','బస్ స్టాప్','🚌'],['petrol_bunk','Petrol bunk','పెట్రోల్ బంక్','⛽'],['burial_ground','Burial ground','శ్మశాన వాటిక','🪦'],
  ['main_building','Main private building','ముఖ్యమైన ప్రైవేట్ భవనం','🏢'],['other','Other','ఇతర','📍']
 ];
 const DESIG=[
@@ -258,6 +262,7 @@ function typeInfo(key,data){
   const d=TYPES.find(x=>x[0]===key);if(d)return {label:te()?d[2]:d[1],emo:d[3]};
   const c=((data&&data.types)||[]).find(x=>x.key===key);return {label:c?c.label:key,emo:'📌'};
 }
+function typeCount(d,byType,k){const c=(d&&d.counts||{})[k];return c!=null?c:((byType||{})[k]||0)}
 function desigLabel(en){const d=DESIG.find(x=>x[0]===en);return d?(te()?d[1]:d[0]):(en||'')}
 function gmaps(lat,lng){return 'https://www.google.com/maps?q='+lat+','+lng}
 function completionItems(o){
@@ -512,10 +517,10 @@ function vWardTab(w){
   const c=wardCounts(w);const todo=completionItems(c).filter(x=>!x[1]);
   const st=(v,l)=>'<div class="stat"><b>'+fmt(v)+'</b><span>'+l+'</span></div>';
   body.innerHTML=
-   '<div class="card"><h2>'+t('population')+'</h2><div class="grid">'+st(p.total,t('total'))+st(p.households,t('households'))+st(p.men,t('men'))+st(p.women,t('women'))+st(p.above60,t('above60'))+st(p.children,t('children'))+'</div>'+(p.as_on?'<p class="mute">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
+   '<div class="card"><h2>'+t('population')+'</h2><div class="grid">'+st(p.total,t('total'))+st(p.households,t('households'))+st(p.men,t('men'))+st(p.women,t('women'))+st(p.above60,t('above60'))+st(p.children,t('children'))+'</div><h3>'+t('welfare')+'</h3><div class="grid">'+st(p.pensions,t('pensions'))+st(p.ration_cards,t('rationCards'))+st(p.voters,t('voters'))+st(p.shgs,t('shgs'))+'</div>'+(p.as_on?'<p class="mute">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
    (pr&&(pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>'+t('caste')+'</h3><div class="grid">'+st(pr.bc,'BC')+st(pr.sc,'SC')+st(pr.st,'ST')+st(pr.oc,'OC')+st(pr.minority,t('minority'))+'</div>':'')+'</div>'+
    '<div class="card"><h2>'+t('places')+'</h2><div class="grid">'+st(w.places.length,t('all'))+st(govt,t('govtB'))+st(priv,t('privB'))+st(c.photos,t('photosCount'))+st(w.staff.length,t('staff'))+
-     typeList(d).filter(x=>byType[x[0]]||['school','toilet','hospital','park','museum','anganwadi'].includes(x[0])).map(x=>st(byType[x[0]]||0,x[3]+' '+(te()?x[2]:x[1]))).join('')+'</div></div>'+
+     '</div><h3>'+t('counts')+'</h3><div class="grid">'+typeList(d).filter(x=>typeCount(d,byType,x[0])||['school','toilet','hospital','park','museum','anganwadi','library','temple'].includes(x[0])).map(x=>st(typeCount(d,byType,x[0]),x[3]+' '+(te()?x[2]:x[1]))).join('')+'</div></div>'+
    '<div class="card"><h2>'+t('boundaries')+'</h2><table>'+[['north','⬆'],['south','⬇'],['east','➡'],['west','⬅']].map(k=>'<tr><th style="width:40%">'+k[1]+' '+t(k[0])+'</th><td>'+(b[k[0]]?esc(b[k[0]]):'<span class="mute">'+t('notFilled')+'</span>')+'</td></tr>').join('')+
      '<tr><th>'+t('doors')+'</th><td>'+(d.door_from||d.door_to?esc(d.door_from||'')+' → '+esc(d.door_to||''):'<span class="mute">'+t('notFilled')+'</span>')+'</td></tr>'+
      (d.streets?'<tr><th>'+t('streets')+'</th><td style="white-space:pre-wrap">'+esc(d.streets)+'</td></tr>':'')+'</table></div>'+
@@ -546,7 +551,9 @@ async function vEdit(code){const app=curApp;
     inp('door_from',t('doorFrom'),d.door_from)+inp('door_to',t('doorTo'),d.door_to)+'</div><label>'+t('streets')+'</label><textarea id="streets">'+esc(d.streets||'')+'</textarea></div>'+
    '<div class="card"><h2>'+t('population')+'</h2><div class="two">'+inp('p_total',t('total'),p.total,'number')+inp('p_households',t('households'),p.households,'number')+inp('p_men',t('men'),p.men,'number')+inp('p_women',t('women'),p.women,'number')+
     inp('p_above60',t('above60'),p.above60,'number')+inp('p_children',t('children'),p.children,'number')+inp('p_as_on',t('asOn'),p.as_on,'date')+'</div>'+
+    '<h3>'+t('welfare')+'</h3><div class="two">'+inp('p_pensions',t('pensions'),p.pensions,'number')+inp('p_ration_cards',t('rationCards'),p.ration_cards,'number')+inp('p_voters',t('voters'),p.voters,'number')+inp('p_shgs',t('shgs'),p.shgs,'number')+'</div>'+
     '<h3>'+t('caste')+'</h3><p class="mute">'+t('casteNote')+'</p><div class="two">'+inp('c_bc','BC',pr.bc,'number')+inp('c_sc','SC',pr.sc,'number')+inp('c_st','ST',pr.st,'number')+inp('c_oc','OC',pr.oc,'number')+inp('c_min',t('minority'),pr.minority,'number')+'</div></div>'+
+   '<div class="card"><h2>'+t('counts')+'</h2><p class="mute">'+t('countsHelp')+'</p><div class="two">'+typeList(d).map(x=>inp('cnt_'+x[0],x[3]+' '+(te()?x[2]:x[1]),(d.counts||{})[x[0]],'number')).join('')+'</div></div>'+
    '<div class="card"><h2>'+t('placeTypes')+'</h2><p class="mute">'+t('hideTypes')+'</p><div class="row" id="tyl"></div>'+
     '<label>'+t('addType')+'</label><div class="row"><input id="nty" placeholder="'+esc(t('typeName'))+'" style="flex:1"><button type="button" class="btn sm" id="ntyb">+</button></div></div>'+
    '<div id="m"></div><button class="btn" style="width:100%;justify-content:center;padding:14px">💾 '+t('save')+'</button></form>';
@@ -565,7 +572,8 @@ async function vEdit(code){const app=curApp;
     const v=id=>$(id).value.trim();
     const nd=Object.assign({},d,{ward_no:v('ward_no'),office_phone:v('office_phone'),office_address:v('office_address'),office_photo:ophoto[0]||'',
       boundary:{north:v('b_north'),south:v('b_south'),east:v('b_east'),west:v('b_west')},door_from:v('door_from'),door_to:v('door_to'),streets:v('streets'),
-      population:{total:num(v('p_total')),households:num(v('p_households')),men:num(v('p_men')),women:num(v('p_women')),above60:num(v('p_above60')),children:num(v('p_children')),as_on:v('p_as_on')}});
+      population:{total:num(v('p_total')),households:num(v('p_households')),men:num(v('p_men')),women:num(v('p_women')),above60:num(v('p_above60')),children:num(v('p_children')),as_on:v('p_as_on'),pensions:num(v('p_pensions')),ration_cards:num(v('p_ration_cards')),voters:num(v('p_voters')),shgs:num(v('p_shgs'))}});
+    const cn={};typeList(d).forEach(x=>{const el=$('cnt_'+x[0]);if(el&&num(el.value)!=null)cn[x[0]]=num(el.value)});nd.counts=cn;
     const npr={bc:num(v('c_bc')),sc:num(v('c_sc')),st:num(v('c_st')),oc:num(v('c_oc')),minority:num(v('c_min'))};
     const la=num(v('olat')),ln=num(v('olng'));
     const moved=la!=null&&ln!=null&&(la!==w.sec.lat||ln!==w.sec.lng);
@@ -709,17 +717,17 @@ async function vAdmin(tab){const app=curApp;
   /* compare */
   const keys=TYPES.map(x=>x[0]);
   const P=o=>(o.data&&o.data.population)||{};
-  ab.innerHTML='<button class="btn alt sm" id="csv">'+t('export')+'</button><div class="tw" style="margin-top:8px"><table><tr><th>'+t('wards')+'</th><th>'+t('total')+'</th><th>'+t('men')+'</th><th>'+t('women')+'</th><th>'+t('above60')+'</th><th>'+t('children')+'</th>'+TYPES.map(x=>'<th title="'+esc(te()?x[2]:x[1])+'">'+x[3]+'</th>').join('')+'</tr>'+
-   ov.map(o=>'<tr><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a></td><td>'+fmt(P(o).total)+'</td><td>'+fmt(P(o).men)+'</td><td>'+fmt(P(o).women)+'</td><td>'+fmt(P(o).above60)+'</td><td>'+fmt(P(o).children)+'</td>'+keys.map(k=>'<td>'+((o.types||{})[k]||'')+'</td>').join('')+'</tr>').join('')+
-   '<tr><th>'+t('total')+'</th>'+['total','men','women','above60','children'].map(k=>'<th>'+fmt(ov.reduce((a,o)=>a+(+P(o)[k]||0),0))+'</th>').join('')+keys.map(k=>'<th>'+(ov.reduce((a,o)=>a+((o.types||{})[k]||0),0)||'')+'</th>').join('')+'</tr></table></div>';
+  ab.innerHTML='<button class="btn alt sm" id="csv">'+t('export')+'</button><div class="tw" style="margin-top:8px"><table><tr><th>'+t('wards')+'</th><th>'+t('total')+'</th><th>'+t('men')+'</th><th>'+t('women')+'</th><th>'+t('above60')+'</th><th>'+t('children')+'</th><th>'+t('pensions')+'</th><th>'+t('rationCards')+'</th>'+TYPES.map(x=>'<th title="'+esc(te()?x[2]:x[1])+'">'+x[3]+'</th>').join('')+'</tr>'+
+   ov.map(o=>'<tr><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a></td><td>'+fmt(P(o).total)+'</td><td>'+fmt(P(o).men)+'</td><td>'+fmt(P(o).women)+'</td><td>'+fmt(P(o).above60)+'</td><td>'+fmt(P(o).children)+'</td><td>'+fmt(P(o).pensions)+'</td><td>'+fmt(P(o).ration_cards)+'</td>'+keys.map(k=>'<td>'+(typeCount(o.data,o.types,k)||'')+'</td>').join('')+'</tr>').join('')+
+   '<tr><th>'+t('total')+'</th>'+['total','men','women','above60','children','pensions','ration_cards'].map(k=>'<th>'+fmt(ov.reduce((a,o)=>a+(+P(o)[k]||0),0))+'</th>').join('')+keys.map(k=>'<th>'+(ov.reduce((a,o)=>a+(+typeCount(o.data,o.types,k)||0),0)||'')+'</th>').join('')+'</tr></table></div>';
   $('csv').onclick=()=>csv(ov);
   }catch(er){ab.innerHTML='<div class="msg err">'+errText(er)+'</div>'}
 }
 function csv(ov){
   const keys=TYPES.map(x=>x[0]);
-  const head=['Sl','Secretariat','Code','Complete %','Total population','Households','Men','Women','Above 60','Children','Places','Photos','Staff','Logins','Office latitude','Office longitude'].concat(TYPES.map(x=>x[1]));
+  const head=['Sl','Secretariat','Code','Complete %','Total population','Households','Men','Women','Above 60','Children','Pensioners','Ration cards','Voters','SHGs','Places','Photos','Staff','Logins','Office latitude','Office longitude'].concat(TYPES.map(x=>x[1]));
   const q=v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-  const rows=ov.map(o=>{const p=(o.data&&o.data.population)||{};return [o.sl,o.name,o.code,completion(o),p.total,p.households,p.men,p.women,p.above60,p.children,o.places,o.photos,o.staff,o.accounts,o.lat,o.lng].concat(keys.map(k=>(o.types||{})[k]||0))});
+  const rows=ov.map(o=>{const p=(o.data&&o.data.population)||{};return [o.sl,o.name,o.code,completion(o),p.total,p.households,p.men,p.women,p.above60,p.children,p.pensions,p.ration_cards,p.voters,p.shgs,o.places,o.photos,o.staff,o.accounts,o.lat,o.lng].concat(keys.map(k=>typeCount(o.data,o.types,k)))});
   const blob=new Blob(['﻿'+[head].concat(rows).map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ward-profile-guntakal.csv';a.click();
 }
