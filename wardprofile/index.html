@@ -41,6 +41,19 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 .btn.red{background:var(--bad)}
 .btn.orange{background:var(--acc);color:#222}
 .btn:disabled{opacity:.5}
+/* chat highlight */
+#side .ni.hot{background:linear-gradient(90deg,rgba(22,160,133,.55),rgba(242,163,58,.35),rgba(232,86,108,.4),rgba(22,160,133,.55));background-size:300% 100%;animation:bgmove 5s ease infinite;color:#fff;font-weight:800}
+#side .ni.hot .ic{animation:wig 2.6s ease-in-out infinite}
+@keyframes wig{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-14deg) scale(1.15)}90%{transform:rotate(12deg) scale(1.15)}95%{transform:rotate(-6deg)}}
+#chatFab{position:fixed;right:16px;bottom:22px;z-index:1000;display:flex;align-items:center;gap:6px;padding:12px 18px 12px 14px;border-radius:30px;color:#fff;text-decoration:none;font-weight:800;
+  background:linear-gradient(110deg,#0e6b6b,#16a085,#f2a33a,#e8566c,#0e6b6b);background-size:300% 100%;animation:bgmove 6s ease infinite;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#chatFab[hidden]{display:none}
+#chatFab span{font-size:22px}#chatFab em{font-style:normal}
+#chatFab::before{content:'';position:absolute;inset:0;border-radius:30px;box-shadow:0 0 0 0 rgba(22,160,133,.6);animation:ring 2.2s infinite}
+#chatFab.new::before{box-shadow:0 0 0 0 rgba(232,86,108,.75)}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(22,160,133,.55)}70%{box-shadow:0 0 0 16px rgba(22,160,133,0)}100%{box-shadow:0 0 0 0 rgba(22,160,133,0)}}
+#chatFab b{background:#fff;color:#e8566c;border-radius:12px;padding:0 7px;font-size:13px;min-width:20px;text-align:center}
+@media print{#chatFab{display:none!important}}
 .qdel{border:0;background:#fde8ec;color:#c0392b;border-radius:6px;padding:0 5px;margin-left:4px;cursor:pointer;font-size:12px;vertical-align:middle}
 .btn.big{width:100%;justify-content:center;font-size:19px;letter-spacing:.3px;padding:15px 18px;border-radius:14px;margin-top:16px;position:relative;overflow:hidden;
   background:linear-gradient(110deg,#0e6b6b,#16a085,#f2a33a,#e8566c,#0e6b6b);background-size:300% 100%;animation:bgmove 6s ease infinite;box-shadow:0 6px 18px rgba(14,107,107,.35);transition:transform .15s,box-shadow .15s}
@@ -185,7 +198,7 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
   <button class="hbtn ic" id="modeBtn" type="button"></button>
   <button class="hbtn out" id="outBtn" type="button" hidden>🚪<span class="acnm"></span></button>
 </div></header>
-<div id="scrim"></div><div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
+<div id="scrim"></div><a id="chatFab" href="#chat" hidden title="Chat"><span>💬</span><em>Chat</em><b hidden></b></a><div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
 <footer>Designed by Sivananda Pujari</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -319,6 +332,8 @@ const TX={
  turnOn:['Turn on','ఆన్ చేయి'], turnOff:['Turn off','ఆఫ్ చేయి'], mute:['Mute this room','ఈ గదిని మ్యూట్ చేయి'], unmute:['Unmute this room','మ్యూట్ తీసివేయి'], muted:['Room muted – no alerts','మ్యూట్ – అలర్ట్‌లు రావు'], unmuted:['Alerts on for this room','ఈ గదికి అలర్ట్‌లు ఆన్'],
  attach:['Photo / file','ఫోటో / ఫైల్'], voice:['Voice message','వాయిస్ సందేశం'], uploading:['Sending…','పంపుతోంది…'], recording:['Recording','రికార్డింగ్'], tapStop:['tap ⏹ to send','పంపడానికి ⏹ నొక్కండి'], noMic:['Microphone not available – allow mic for this app','మైక్ అందుబాటులో లేదు – ఈ యాప్‌కు మైక్ అనుమతించండి'],
  badFile:['This file type cannot be sent. Send photos, PDF, Excel, Word or text files.','ఈ ఫైల్ రకం పంపలేము. ఫోటోలు, PDF, Excel, Word, టెక్స్ట్ ఫైల్స్ పంపండి.'], e_too_big:['File is too big (max 8 MB)','ఫైల్ చాలా పెద్దది (గరిష్ఠం 8 MB)'], file:['File','ఫైల్'], open:['open','తెరవండి'],
+ dictate:['Speak to type','మాట్లాడి టైప్ చేయండి'], noDictate:['Speak-to-type works in Chrome on Android / computer','మాట్లాడి టైప్ Chrome లో పనిచేస్తుంది'], listening:['Listening','వింటోంది'], tapStopDic:['speak now, tap ⏹ when done','ఇప్పుడు మాట్లాడండి, అయ్యాక ⏹ నొక్కండి'],
+ videoCall:['Video call','వీడియో కాల్'], videoCallS:['Call','కాల్'], joinCall:['Join call','కాల్‌లో చేరండి'], startCallQ:['Start a video call for everyone in this room? A "Join call" button will be posted here and members get an alert.','ఈ గదిలోని అందరికీ వీడియో కాల్ ప్రారంభించాలా? ఇక్కడ "కాల్‌లో చేరండి" బటన్ వస్తుంది, సభ్యులకు అలర్ట్ వెళ్తుంది.'],
  abstract:['Guntakal abstract','గుంతకల్ సారాంశం'], absSub:['All 35 ward secretariats – live totals','35 వార్డు సచివాలయాలు – ప్రత్యక్ష మొత్తాలు'], roleComm:['Commissioner (view all, abstract reports)','కమిషనర్ (అన్నీ చూడటం, సారాంశ నివేదికలు)'],
  secretariatsN:['Secretariats','సచివాలయాలు'], activeLogins:['Secretaries using the app','యాప్ వాడుతున్న సెక్రటరీలు'], avgComplete:['Average profile complete','సగటు ప్రొఫైల్ పూర్తి'], wardWise:['Ward-wise abstract','వార్డు వారీ సారాంశం'], tapHead:['Tap a heading to sort; tap a name to open that ward.','క్రమం కోసం శీర్షిక నొక్కండి; వార్డు తెరవడానికి పేరు నొక్కండి.'],
  totalAll:['Total','మొత్తం'], deptTotals:['Department totals','శాఖల వారీ మొత్తాలు'], dept:['Department','శాఖ'], item:['Item','అంశం'], wardsReported:['wards reported','నివేదించిన వార్డులు'], placesByType:['Places by type','రకం వారీ ప్రదేశాలు'], placeType:['Type','రకం'], secretariat1:['Secretariat','సచివాలయం'], print:['Print','ప్రింట్'],
@@ -448,7 +463,7 @@ async function rpc(fn,args){
   }
   return j;
 }
-function setSession(tok,me){S.token=tok;S.me=me;localStorage.setItem('wp_token',tok);localStorage.setItem('wp_me',JSON.stringify(me))}
+function setSession(tok,me){S.token=tok;S.me=me;localStorage.setItem('wp_token',tok);localStorage.setItem('wp_me',JSON.stringify(me));setTimeout(()=>chatPoll(),800)}
 function logoutLocal(){S.token='';S.me=null;localStorage.removeItem('wp_token');localStorage.removeItem('wp_me')}
 const typeList=data=>{
   const hidden=(data&&data.hidden_types)||[];
@@ -630,7 +645,7 @@ function renderNav(){
       out+=grp('ward','🏢',me.code===code?t('myWard'):nm,ch,isW);
       if(me.code&&me.code!==code)out+=it('🏡',t('myWard'),'#ward/'+me.code+'/overview',false);
     }
-    out+=it('💬',t('chat')+(S.chatUnread?' ('+S.chatUnread+')':''),'#chat',r==='chat');
+    out+=it('💬',t('chat')+(S.chatUnread?' ('+S.chatUnread+')':''),'#chat',r==='chat').replace('class="ni','class="ni hot');
     if(['super','commissioner'].includes(me.role))out+=it('📈',t('abstract'),'#abstract',r==='abstract');
     out+=it('🗺️',t('allWardsShort'),'#wards',r==='wards');
     if(me.role==='super'||me.role==='admin'){
@@ -738,6 +753,7 @@ function header(){
   $('lte').classList.toggle('on',te());$('len').classList.toggle('on',!te());
   $('acctBtn').innerHTML=S.token?'👤<span class="acnm"> '+esc(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account'))+'</span>':'🔑<span class="acnm"> '+t('login')+'</span>';
   const ph=document.documentElement.classList.contains('m-phone');const mb=$('modeBtn');mb.textContent=ph?'🖥️':'📱';mb.title=ph?t('toDesk'):t('toPhone');
+  const fab=$('chatFab');if(fab){const r0=(location.hash||'').slice(1).split('/')[0];fab.hidden=!S.token||r0==='chat'||r0==='login';fab.querySelector('b').textContent=S.chatUnread||'';fab.querySelector('b').hidden=!S.chatUnread;fab.classList.toggle('new',!!S.chatUnread)}
   const ob=$('outBtn');ob.hidden=!S.token;ob.title=t('logout');ob.querySelector('.acnm').textContent=' '+t('logout');
   const u=$('undoBtn');u.disabled=!S.undo.length;u.title=t('undo')+(S.undo.length?': '+S.undo[S.undo.length-1].label:'');const n=$('undoN');n.hidden=!S.undo.length;n.textContent=S.undo.length;
   document.documentElement.style.setProperty('--hh',($('hdr').offsetHeight||58)+'px');
@@ -1507,7 +1523,7 @@ function chatSeen(){try{return JSON.parse(localStorage.getItem('wp_chat_seen')||
 function chatMark(room,id){const s=chatSeen();if(id&&(!s[room]||s[room]<id)){s[room]=id;localStorage.setItem('wp_chat_seen',JSON.stringify(s))}}
 function roomName(r){if(r.room==='all')return '🌐 '+t('roomAll');if(r.room==='admins')return '🏛️ '+t('roomAdmins');return '🏢 '+(r.title||secName(r.room.slice(5)))}
 async function chatPoll(){if(!S.token)return;try{const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];const seen=chatSeen();
-  const n=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;if(n!==S.chatUnread){S.chatUnread=n;renderNav()}S.chatRooms=rs}catch(e){}}
+  const n=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;if(n!==S.chatUnread){S.chatUnread=n;header()}S.chatRooms=rs}catch(e){}}
 setInterval(()=>{if(document.visibilityState==='visible'&&!(location.hash||'').startsWith('#chat/'))chatPoll()},45000);
 const chatTime=a=>{const d=new Date(a),n=new Date();return d.toDateString()===n.toDateString()?d.toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'}):d.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})};
 
@@ -1547,13 +1563,14 @@ async function vChat(room){const app=curApp;
     if($('cf'))$('cf').oninput=()=>{const q=$('cf').value.toLowerCase();app.querySelectorAll('[data-cr]').forEach(a=>{a.style.display=!q||a.dataset.cr.includes(q)?'':'none'})};
     S.chatUnread=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;renderNav();return}
   const info=(S.chatRooms||[]).find(x=>x.room===room)||{room:room,title:room.startsWith('ward:')?secName(room.slice(5)):''};
-  app.innerHTML='<div style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><button type="button" class="btn alt sm" id="mu" hidden></button></div>'+
+  app.innerHTML='<div style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" id="cvc" title="'+esc(t('videoCall'))+'" style="background:#16a085">📹 '+t('videoCallS')+'</button><button type="button" class="btn alt sm" id="mu" hidden></button></span></div>'+
     '<div id="cm" style="flex:1;overflow-y:auto;padding:8px 2px;margin:6px 0;background:#eef4f3;border-radius:12px"></div>'+
-    '<div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cmic" title="'+esc(t('voice'))+'" style="height:44px;padding:0 10px">🎤</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsg'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
+    '<div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cdic" title="'+esc(t('dictate'))+'" style="height:44px;padding:0 10px">🎙️</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsg'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
   let last=0,msgs=[];const box=$('cm');
   const bubble=m=>'<div style="display:flex;justify-content:'+(m.mine?'flex-end':'flex-start')+';margin:4px 6px"><div style="max-width:80%;background:'+(m.mine?'#d4f2e4':'#fff')+';border-radius:12px;padding:7px 10px;box-shadow:0 1px 2px rgba(0,0,0,.12)">'+
     (m.mine?'':'<div style="font-size:12px;font-weight:700;color:var(--c)">'+esc(m.name||'')+' <span class="mute" style="font-weight:400">'+esc(m.desig?desigLabel(m.desig):'')+(m.code&&room==='all'||m.code&&room==='admins'?' · '+esc(secName(m.code)):'')+'</span></div>')+
     (m.deleted?'':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener"><img src="'+esc(m.url)+'" loading="lazy" style="max-width:100%;max-height:260px;border-radius:8px;display:block;margin:2px 0"></a>':
+      m.kind==='call'&&m.url?'<div style="display:flex;gap:10px;align-items:center;padding:4px 0"><span style="font-size:28px">📹</span><div><b>'+t('videoCall')+'</b><br><a class="btn sm" style="margin-top:4px;background:#16a085" href="'+esc(m.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false" target="_blank" rel="noopener">'+t('joinCall')+'</a></div></div>':
       m.kind==='audio'&&m.url?'<audio controls preload="none" src="'+esc(m.url)+'" style="max-width:240px;height:40px"></audio>':
       m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" style="display:flex;gap:8px;align-items:center;background:#f2f6f6;border-radius:8px;padding:8px;text-decoration:none"><span style="font-size:24px">📄</span><span><b>'+esc(m.fname||t('file'))+'</b><br><span class="mute" style="font-size:12px">'+(m.fsize?fsize(m.fsize):'')+' · '+t('open')+'</span></span></a>':'')+
     (m.deleted?'<i class="mute">'+t('msgDeleted')+'</i>':!m.body?'':'<div style="white-space:pre-wrap;word-break:break-word">'+esc(m.body).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')+'</div>')+
@@ -1579,23 +1596,25 @@ async function vChat(room){const app=curApp;
       else j=await chatUpload(room,f,f.name,mime||'application/octet-stream');
       await send({url:j.url,kind:kind,name:f.name,size:j.size,mime:mime})}catch(er){toast(t(er.message==='bad_file'?'badFile':er.message==='too_big'?'e_too_big':'e_error'))}
     $('up').innerHTML=''};
-  // voice: tap 🎤 to start, tap ⏹ to send
-  let rec=null,chunks=[],t0=0,tick=null;
-  $('cmic').onclick=async()=>{
-    if(rec){rec.stop();return}
-    if(!navigator.mediaDevices||!window.MediaRecorder){toast(t('noMic'));return}
-    let stream;try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){toast(t('noMic'));return}
-    const mt=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'].find(x=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(x))||'';
-    rec=new MediaRecorder(stream,mt?{mimeType:mt,audioBitsPerSecond:32000}:{});chunks=[];
-    rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
-    rec.onstop=async()=>{clearInterval(tick);stream.getTracks().forEach(x=>x.stop());const mime=(rec.mimeType||mt||'audio/webm').split(';')[0];rec=null;
-      $('cmic').textContent='🎤';$('cmic').classList.remove('red');$('up').innerHTML='';
-      if(Date.now()-t0<800||!chunks.length)return;
-      const blob=new Blob(chunks,{type:mime});$('up').innerHTML='<span class="spin"></span> '+t('uploading');
-      try{const j=await chatUpload(room,blob,'voice.'+(mime.includes('mp4')?'m4a':mime.split('/')[1]),mime);await send({url:j.url,kind:'audio',name:'Voice message',size:j.size,mime:mime})}catch(er){toast(errText(er))}
-      $('up').innerHTML=''};
-    rec.start();t0=Date.now();$('cmic').textContent='⏹';$('cmic').classList.add('red');
-    tick=setInterval(()=>{const sec=Math.round((Date.now()-t0)/1000);$('up').innerHTML='🔴 '+t('recording')+' '+Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')+' – '+t('tapStop');if(sec>=180&&rec)rec.stop()},500)};
+  // speak to type (speech → text in the message box)
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let sr=null;
+  $('cdic').onclick=()=>{
+    if(!SR){toast(t('noDictate'));return}
+    if(sr){sr.stop();return}
+    sr=new SR();sr.lang=te()?'te-IN':'en-IN';sr.interimResults=true;sr.continuous=true;
+    const base=ta.value?ta.value.replace(/\s*$/,' '):'';let fin='';
+    sr.onresult=e=>{let inter='';for(let k=e.resultIndex;k<e.results.length;k++){const r=e.results[k];if(r.isFinal)fin+=r[0].transcript+' ';else inter+=r[0].transcript}
+      ta.value=base+fin+inter;ta.oninput()};
+    sr.onerror=e=>{if(e.error==='not-allowed')toast(t('noMic'))};
+    sr.onend=()=>{sr=null;$('cdic').classList.remove('red');$('cdic').textContent='🎙️';$('up').innerHTML='';ta.focus()};
+    try{sr.start();$('cdic').classList.add('red');$('cdic').textContent='⏹';$('up').innerHTML='🔴 '+t('listening')+' ('+(te()?'తెలుగు':'English')+') – '+t('tapStopDic')}catch(e){sr=null}};
+  // video call: posts a join link in this room and opens the call
+  $('cvc').onclick=async()=>{if(!confirm(t('startCallQ')))return;
+    const id='WardProfile-'+room.replace(/[^0-9a-z]/gi,'')+'-'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+    const url='https://meet.jit.si/'+id;const w=window.open('about:blank','_blank');
+    try{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:'',p_att:{url:url,kind:'call',name:'Video call'}});await pull();box.scrollTop=box.scrollHeight}catch(er){toast(errText(er))}
+    const full=url+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false';
+    if(w)w.location.href=full;else location.href=full};
   // mute this room's notifications
   pushSub().then(async sub=>{if(!sub)return;let st=null;try{st=await rpc('wp_push_status',{p_token:S.token,p_endpoint:sub.endpoint})}catch(e){}if(!st)return;
     let muted=(st.muted||[]).includes(room);const mb=$('mu');if(!mb)return;const paintM=()=>{mb.textContent=muted?'🔕':'🔔';mb.title=muted?t('unmute'):t('mute')};paintM();mb.hidden=false;
