@@ -312,6 +312,9 @@ const TX={
  toDesk:['Switch to desktop view','డెస్క్‌టాప్ వ్యూకి మార్చు'], toPhone:['Switch to phone view','ఫోన్ వ్యూకి మార్చు'],
  addUser:['Add user','యూజర్‌ను జోడించు'], addUserHelp:['Add anyone directly – a new secretary, an in-charge, a commissioner office staff. They can log in at once with this phone / mail and password.','ఎవరినైనా నేరుగా జోడించండి – కొత్త సెక్రటరీ, ఇన్‌ఛార్జ్, కమిషనర్ కార్యాలయ సిబ్బంది. ఈ ఫోన్ / మెయిల్, పాస్‌వర్డ్‌తో వెంటనే లాగిన్ కావచ్చు.'],
  role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
+ popn:['Population','జనాభా'], photosN:['Photos','ఫోటోలు'], abstract:['Guntakal abstract','గుంతకల్ సారాంశం'], absSub:['All 35 ward secretariats – live totals','35 వార్డు సచివాలయాలు – ప్రత్యక్ష మొత్తాలు'], roleComm:['Commissioner (view all, abstract reports)','కమిషనర్ (అన్నీ చూడటం, సారాంశ నివేదికలు)'],
+ secretariatsN:['Secretariats','సచివాలయాలు'], activeLogins:['Secretaries using the app','యాప్ వాడుతున్న సెక్రటరీలు'], avgComplete:['Average profile complete','సగటు ప్రొఫైల్ పూర్తి'], wardWise:['Ward-wise abstract','వార్డు వారీ సారాంశం'], tapHead:['Tap a heading to sort; tap a name to open that ward.','క్రమం కోసం శీర్షిక నొక్కండి; వార్డు తెరవడానికి పేరు నొక్కండి.'],
+ totalAll:['Total','మొత్తం'], deptTotals:['Department totals','శాఖల వారీ మొత్తాలు'], dept:['Department','శాఖ'], item:['Item','అంశం'], wardsReported:['wards reported','నివేదించిన వార్డులు'], placesByType:['Places by type','రకం వారీ ప్రదేశాలు'], placeType:['Type','రకం'], secretariat1:['Secretariat','సచివాలయం'], print:['Print','ప్రింట్'],
  builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
  pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
  fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
@@ -620,6 +623,7 @@ function renderNav(){
       out+=grp('ward','🏢',me.code===code?t('myWard'):nm,ch,isW);
       if(me.code&&me.code!==code)out+=it('🏡',t('myWard'),'#ward/'+me.code+'/overview',false);
     }
+    if(['super','commissioner'].includes(me.role))out+=it('📈',t('abstract'),'#abstract',r==='abstract');
     out+=it('🗺️',t('allWardsShort'),'#wards',r==='wards');
     if(me.role==='super'||me.role==='admin'){
       const a=h[1]||S.atab||'requests';
@@ -1329,7 +1333,7 @@ async function vRegisters(scope){const app=curApp;
   await loadSecs();app.innerHTML='<div class="card"><span class="spin"></span></div>';
   await loadFields();
   let places=[],title;
-  if(scope==='all'){if((S.me||{}).role!=='super'){location.hash='#home';return}places=await rpc('wp_places_all',{p_token:S.token});title='Guntakal – all 35 secretariats'}
+  if(scope==='all'){if(!['super','commissioner'].includes((S.me||{}).role)){location.hash='#home';return}places=await rpc('wp_places_all',{p_token:S.token});title='Guntakal – all 35 secretariats'}
   else{const w=await loadWard(scope);S.lastCode=scope;renderNav();places=w.places.map(p=>Object.assign({},p,{secretariat:w.sec.name}));title=w.sec.name}
   const used=TYPES.filter(x=>places.some(p=>p.type===x[0])).concat(((S.ward&&S.ward.data&&S.ward.data.types)||[]).map(x=>[x.key,x.label,x.label,'📌']).filter(x=>places.some(p=>p.type===x[0])));
   app.innerHTML='<div class="secttl"><span style="font-size:26px">📥</span><h1>'+t('registers')+'</h1></div><p class="mute">'+esc(title)+' · '+places.length+' '+t('places')+'</p>'+
@@ -1387,7 +1391,7 @@ function bCatalog(mode){
 async function vBuilder(scope){const app=curApp;
   if(!S.token){location.hash='#login';return}
   const me=S.me||{};
-  if(scope==='all'?me.role!=='super':!canEditProfile(scope)){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  if(scope==='all'?!['super','commissioner'].includes(me.role):!canEditProfile(scope)){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
   await loadSecs();await loadFields();
   let wards=[];
   if(scope==='all'){for(const sc of S.secs){app.innerHTML='<div class="card"><span class="spin"></span> '+sc.sl+' / '+S.secs.length+'</div>';const w=await rpc('wp_ward',{p_token:S.token,p_code:sc.code});wards.push(w)}}
@@ -1440,6 +1444,52 @@ async function vBuilder(scope){const app=curApp;
     $('bfs').onclick=async()=>{const nm=$('bfn').value.trim();if(!nm)return;try{await rpc('wp_format_save',{p_token:S.token,p_name:nm,p_spec:spec});fmts=await rpc('wp_formats_list',{p_token:S.token});toast(t('saved'));draw()}catch(er){toast(errText(er))}};
     $('bfl').onclick=()=>{const f=fmts.find(x=>String(x.id)===$('bf').value);if(f){spec=JSON.parse(JSON.stringify(f.spec));draw()}};
     $('bfd').onclick=async()=>{const id=$('bf').value;if(!id||!confirm(t('confirmDel')))return;try{await rpc('wp_format_remove',{p_token:S.token,p_id:+id});fmts=fmts.filter(x=>String(x.id)!==id);draw()}catch(er){toast(errText(er))}};
+  };
+  draw();
+}
+
+/* ----- commissioner: abstract of all Guntakal ward secretariats ----- */
+async function vAbstract(){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const me=S.me||{};if(!['super','commissioner'].includes(me.role)){location.hash='#home';return}
+  app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';
+  await loadSecs();await loadFields();
+  const W=await rpc('wp_abstract',{p_token:S.token});renderNav();
+  const P=w=>(w.data&&w.data.population)||{},nz=v=>v==null||v===''?0:(+v||0),fmt=n=>Number(n||0).toLocaleString('en-IN');
+  const pct=w=>completion({lat:w.lat,map_status:w.map_status,data:w.data||{},places:w.places,photos:w.photos,staff:w.staff});
+  const sum=f=>W.reduce((a,w)=>a+f(w),0);
+  const popK=[['total',t('total')],['households',t('households')],['men',t('men')],['women',t('women')],['above60',t('above60')],['children',t('children')],['pensions',t('pensions')],['ration_cards',t('rationCards')],['voters',t('voters')],['shgs',t('shgs')]];
+  const tiles=[['🏢',t('secretariatsN'),W.length],['👪',t('popn'),sum(w=>nz(P(w).total))],['🏠',t('households'),sum(w=>nz(P(w).households))],['🗳️',t('voters'),sum(w=>nz(P(w).voters))],
+    ['👵',t('pensions'),sum(w=>nz(P(w).pensions))],['🍚',t('rationCards'),sum(w=>nz(P(w).ration_cards))],['👩‍👩‍👧',t('shgs'),sum(w=>nz(P(w).shgs))],
+    ['👥',t('staff'),sum(w=>w.staff)+' / '+fmt(sum(w=>w.posts))],['⚠️',t('vacantPosts'),sum(w=>w.vacant)],['🗳️',t('blos'),sum(w=>w.blos)],
+    ['📍',t('places'),sum(w=>w.places)],['📷',t('photosN'),sum(w=>w.photos)],['🔐',t('activeLogins'),sum(w=>w.active)],['📊',t('avgComplete'),Math.round(sum(pct)/W.length)+'%']];
+  // department totals (numbers summed, how many wards reported)
+  const deptRows=[];DEPTS.forEach(d=>deptDefs(d[0]).forEach(f=>{const vals=W.map(w=>(((w.data||{}).dept||{})[d[0]]||{})[f[0]]).filter(v=>v!=null&&v!=='');
+    if(f[3]==='num'||vals.every(v=>!isNaN(+v)))deptRows.push([d[1]+' '+(te()?d[3]:d[2]),qLabel(f),vals.length?vals.reduce((a,v)=>a+(+v||0),0):'',vals.length]);
+    else deptRows.push([d[1]+' '+(te()?d[3]:d[2]),qLabel(f),vals.length?vals.length+' '+t('wardsReported'):'',vals.length])}));
+  const typeTot={};W.forEach(w=>Object.entries(w.types||{}).forEach(([k,n])=>{typeTot[k]=(typeTot[k]||0)+n}));
+  const typeRows=typeList({}).map(x=>[x[3]||'',te()?x[2]:x[1],typeTot[x[0]]||0,W.filter(w=>(w.types||{})[x[0]]).length]).filter(r=>r[2]);
+  let sortK=S.absSort||'sl';
+  const wardRows=()=>{const rows=W.map(w=>({w,sl:w.sl,name:w.name,pop:nz(P(w).total),hh:nz(P(w).households),pen:nz(P(w).pensions),rc:nz(P(w).ration_cards),vot:nz(P(w).voters),staff:w.staff,vac:w.vacant,blo:w.blos,pl:w.places,act:w.active,pct:pct(w)}));
+    return rows.sort((a,b)=>sortK==='sl'||sortK==='name'?(a[sortK]>b[sortK]?1:-1):b[sortK]-a[sortK])};
+  const cols=[['sl','#'],['name',t('secretariat1')],['pop',t('popn')],['hh',t('households')],['pen',t('pensions')],['rc',t('rationCards')],['vot',t('voters')],['staff',t('staff')],['vac',t('vacantPosts')],['blo','BLOs'],['pl',t('places')],['act',t('activeLogins')],['pct','%']];
+  const draw=()=>{
+    app.innerHTML='<div class="secttl"><span style="font-size:28px">📈</span><h1>'+t('abstract')+'</h1></div><p class="mute">'+t('absSub')+' · '+new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})+'</p>'+
+     '<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">'+tiles.map(x=>'<div class="card" style="margin:0;padding:12px"><div style="font-size:22px">'+x[0]+'</div><div style="font-size:22px;font-weight:800;color:var(--c)">'+(typeof x[2]==='number'?fmt(x[2]):esc(x[2]))+'</div><div class="mute" style="font-size:13px">'+esc(x[1])+'</div></div>').join('')+'</div>'+
+     '<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">🏢 '+t('wardWise')+'</h3><button class="btn alt sm" type="button" id="ax1">'+t('xlsxB')+'</button></div><p class="mute">'+t('tapHead')+'</p><div class="tw" style="max-height:60vh"><table><tr>'+cols.map(c=>'<th data-sk="'+c[0]+'" style="cursor:pointer;white-space:nowrap">'+esc(c[1])+(sortK===c[0]?' ▾':'')+'</th>').join('')+'</tr>'+
+       wardRows().map(r=>'<tr>'+cols.map(c=>c[0]==='name'?'<td><a href="#ward/'+r.w.code+'/overview">'+esc(r.name)+'</a><div class="mute" style="font-size:12px">'+esc(((r.w.ws||{}).name||''))+(r.w.ws&&r.w.ws.phone?' · <a href="tel:'+esc(r.w.ws.phone)+'">'+esc(r.w.ws.phone)+'</a>':'')+'</div></td>':c[0]==='pct'?'<td style="min-width:80px"><b>'+r.pct+'%</b><div class="bar2" style="margin:2px 0 0"><i style="width:'+r.pct+'%"></i></div></td>':'<td style="text-align:right">'+(c[0]==='sl'?r.sl:r[c[0]]?fmt(r[c[0]]):'<span class="mute">–</span>')+'</td>').join('')+'</tr>').join('')+
+       '<tr style="font-weight:800;background:#eef6f6"><td></td><td>'+t('totalAll')+'</td>'+cols.slice(2,-1).map(c=>'<td style="text-align:right">'+fmt(wardRows().reduce((a,r)=>a+r[c[0]],0))+'</td>').join('')+'<td>'+tiles[13][2]+'</td></tr></table></div></div>'+
+     '<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">📝 '+t('deptTotals')+'</h3><button class="btn alt sm" type="button" id="ax2">'+t('xlsxB')+'</button></div><div class="tw" style="max-height:60vh"><table><tr><th>'+t('dept')+'</th><th>'+t('item')+'</th><th>'+t('totalAll')+'</th><th>'+t('wardsReported')+'</th></tr>'+
+       deptRows.map(r=>'<tr><td class="mute" style="font-size:12px">'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td style="text-align:right;font-weight:700">'+(r[2]===''?'<span class="mute">–</span>':typeof r[2]==='number'?fmt(r[2]):esc(r[2]))+'</td><td style="text-align:right">'+r[3]+' / '+W.length+'</td></tr>').join('')+'</table></div></div>'+
+     '<div class="card"><div class="row" style="justify-content:space-between"><h3 style="margin:0">📍 '+t('placesByType')+'</h3><button class="btn alt sm" type="button" id="ax3">'+t('xlsxB')+'</button></div><div class="tw"><table><tr><th>'+t('placeType')+'</th><th>'+t('totalAll')+'</th><th>'+t('wardsReported')+'</th></tr>'+
+       (typeRows.length?typeRows.map(r=>'<tr><td>'+esc(r[0]+' '+r[1])+'</td><td style="text-align:right;font-weight:700">'+fmt(r[2])+'</td><td style="text-align:right">'+r[3]+' / '+W.length+'</td></tr>').join(''):'<tr><td colspan="3" class="mute">–</td></tr>')+'</table></div></div>'+
+     '<div class="card row"><a class="btn" href="#builder/all">📊 '+t('builder')+'</a><a class="btn alt" href="#registers/all">📥 '+t('registers')+'</a><a class="btn alt" href="#wards">🗺️ '+t('allWardsShort')+'</a><button class="btn alt" type="button" id="apr">🖨️ '+t('print')+'</button></div>';
+    app.querySelectorAll('[data-sk]').forEach(th=>th.onclick=()=>{sortK=S.absSort=th.dataset.sk;draw()});
+    const ttl='Guntakal – abstract of ward secretariats';
+    $('ax1').onclick=()=>saveTable([cols.map(c=>c[1]).concat(['WS name','WS phone'])].concat(wardRows().map(r=>cols.map(c=>c[0]==='name'?r.name:r[c[0]]).concat([(r.w.ws||{}).name||'',(r.w.ws||{}).phone||'']))),ttl+' – ward-wise',ttl+' ward-wise');
+    $('ax2').onclick=()=>saveTable([['Department','Item','Total','Wards reported']].concat(deptRows),ttl+' – department totals',ttl+' departments');
+    $('ax3').onclick=()=>saveTable([['Place type','Total','Wards reported']].concat(typeRows.map(r=>[r[1],r[2],r[3]])),ttl+' – places by type',ttl+' places');
+    $('apr').onclick=()=>window.print();
   };
   draw();
 }
@@ -1498,20 +1548,20 @@ async function vAdmin(tab){const app=curApp;
     const isSup=(S.me||{}).role==='super';
     ab.innerHTML=(S.atab==='users'&&isSup?'<details class="card" id="addU" style="background:#f6fafa;margin:0 0 10px"><summary style="cursor:pointer;font-weight:700;color:var(--c)">➕ '+t('addUser')+'</summary><p class="mute">'+t('addUserHelp')+'</p>'+
       '<div class="two"><div><label>'+t('loginId')+'</label><input id="nu_l" placeholder="9876543210 / name@mail.com"></div><div><label>'+t('name')+'</label><input id="nu_n"></div>'+
-      '<div><label>'+t('role')+'</label><select id="nu_r"><option value="staff">'+t('roleStaff')+'</option><option value="admin">'+t('roleAdmin')+'</option><option value="super">'+t('roleSuper')+'</option></select></div>'+
+      '<div><label>'+t('role')+'</label><select id="nu_r"><option value="staff">'+t('roleStaff')+'</option><option value="admin">'+t('roleAdmin')+'</option><option value="commissioner">'+t('roleComm')+'</option><option value="super">'+t('roleSuper')+'</option></select></div>'+
       '<div><label>'+t('pickSec')+'</label><select id="nu_c"><option value="">–</option>'+secOptions('')+'</select></div>'+
       '<div><label>'+t('designation')+'</label><select id="nu_d"><option value="">–</option>'+DESIG.map(d=>'<option value="'+esc(d[0])+'">'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select></div>'+
       '<div><label>'+t('password')+' (6+)</label><input id="nu_p" autocomplete="new-password"></div></div>'+
       '<label class="chk"><input type="checkbox" id="nu_m" checked> '+t('mustChangeFirst')+'</label><div id="nu_msg"></div><button class="btn" type="button" id="nu_go" style="margin-top:8px">➕ '+t('addUser')+'</button></details>':'')+
      (S.atab==='users'?'<input id="uf" placeholder="🔍 '+esc(t('filterUsers'))+'" style="margin-bottom:6px">':'')+(list.length?'<div class="list">'+list.map(u=>'<div class="it" data-u="'+esc((u.name+' '+loginLabel(u.login)+' '+(u.secretariat||'')).toLowerCase())+'"><div class="grow"><div class="nm">'+esc(u.name)+' <span class="pill">'+esc(u.role)+'</span>'+(u.must_change?' <span class="pill o">'+t('notChanged')+'</span>':'')+'</div><div class="mute">'+esc(loginLabel(u.login))+' · '+esc(desigLabel(u.designation))+'<br>'+esc(u.secretariat||'')+'</div></div><div class="row">'+
-      (u.role==='super'?'':(u.approved?(isSup?'<select data-rl="'+u.id+'" style="width:auto;padding:4px 6px;font-size:13px">'+[['staff',t('roleStaff')],['admin',t('roleAdmin')]].map(x=>'<option value="'+x[0]+'"'+(u.role===x[0]?' selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select>':'')+'<button class="btn alt sm" data-pw="'+u.id+'">'+t('resetPass')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('remove')+'</button>':'<button class="btn sm" data-ap="'+u.id+'">'+t('approve')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('reject')+'</button>'))+'</div></div>').join('')+'</div>'
+      (u.role==='super'?'':(u.approved?(isSup?'<select data-rl="'+u.id+'" style="width:auto;padding:4px 6px;font-size:13px">'+[['staff',t('roleStaff')],['admin',t('roleAdmin')],['commissioner',t('roleComm')]].map(x=>'<option value="'+x[0]+'"'+(u.role===x[0]?' selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select>':'')+'<button class="btn alt sm" data-pw="'+u.id+'">'+t('resetPass')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('remove')+'</button>':'<button class="btn sm" data-ap="'+u.id+'">'+t('approve')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('reject')+'</button>'))+'</div></div>').join('')+'</div>'
       :'<p class="mute">'+t('noRequests')+'</p>');
     if($('uf'))$('uf').oninput=()=>{const q=$('uf').value.trim().toLowerCase();ab.querySelectorAll('[data-u]').forEach(el=>{el.style.display=!q||el.dataset.u.includes(q)?'':'none'})};
     const act=async(id,a,v)=>{try{await rpc('wp_manage_account',{p_token:S.token,p_id:id,p_action:a,p_value:v||null});toast(t('saved'));vAdmin(S.atab)}catch(er){toast(errText(er))}};
     ab.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>act(b.dataset.ap,'approve'));
     ab.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{if(confirm(t('confirmDel')))act(b.dataset.rm,'remove')});
     ab.querySelectorAll('[data-rl]').forEach(b=>b.onchange=()=>act(b.dataset.rl,'role',b.value));
-    if($('nu_go')){$('nu_r').onchange=()=>{$('nu_c').disabled=$('nu_r').value==='super'};
+    if($('nu_go')){$('nu_r').onchange=()=>{$('nu_c').disabled=['super','commissioner'].includes($('nu_r').value)};
       $('nu_go').onclick=async()=>{const u={login:$('nu_l').value.trim(),name:$('nu_n').value.trim(),role:$('nu_r').value,code:$('nu_c').value,designation:$('nu_d').value,pass:$('nu_p').value,must_change:$('nu_m').checked};
         if(!u.login||!u.name){$('nu_msg').innerHTML='<div class="msg err">'+t('e_name_required')+'</div>';return}
         $('nu_go').disabled=true;try{const id=await rpc('wp_add_user',{p_token:S.token,u:u});pushUndo(t('addUser')+' – '+u.name,()=>rpc('wp_manage_account',{p_token:S.token,p_id:id,p_action:'remove',p_value:null}));
@@ -1634,6 +1684,7 @@ async function route(){
       case 'export':return await vExport(h[1]);
       case 'survey':return await vSurvey(h[1],h[2],h[3]);
       case 'me':return await vStaff(null,null,true);
+      case 'abstract':return await vAbstract();
       case 'builder':return await vBuilder(h[1]||'all');
       case 'registers':return await vRegisters(h[1]||'all');
       case 'wards':return await vHome('wards');
@@ -1643,7 +1694,7 @@ async function route(){
       case 'import':return await vImport(h[1]);
       case 'admin':return await vAdmin(h[1]);
       case 'public':return h[1]?await vPublic(h[1]):await vPublicList();
-      default:return await vHome();
+      default:if(S.me&&S.me.role==='commissioner'&&S.token)return await vAbstract();return await vHome();
     }
   }catch(er){app.innerHTML='<div class="msg err">'+errText(er)+'</div><a class="btn" href="#home">'+t('back')+'</a>'}
 }
