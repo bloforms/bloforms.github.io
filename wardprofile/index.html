@@ -343,6 +343,7 @@ const TX={
  role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
  popn:['Population','జనాభా'], photosN:['Photos','ఫోటోలు'], chat:['Chat','చాట్'], chatHelp:['Talk with all secretariats and the commissioner. Messages are seen only by people logged in to this app.','అన్ని సచివాలయాలు, కమిషనర్‌తో మాట్లాడండి. ఈ యాప్‌లో లాగిన్ అయినవారికి మాత్రమే సందేశాలు కనిపిస్తాయి.'],
  chatPhoto:['Chat photo','చాట్ ఫోటో'], chatPhotoHelp:['Shown beside your messages. If you do not set one, your employee photo is used.','మీ సందేశాల పక్కన కనిపిస్తుంది. సెట్ చేయకపోతే మీ ఉద్యోగి ఫోటో వాడబడుతుంది.'], changePhoto:['Change photo','ఫోటో మార్చు'],
+ newChat:['New chat','కొత్త చాట్'], searchPeople:['Search name, post or ward','పేరు, పోస్టు లేదా వార్డు వెతకండి'], msgPrivately:['Message privately','వ్యక్తిగతంగా సందేశం'], personal:['Personal chat','వ్యక్తిగత చాట్'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['Commissioner','కమిషనర్'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -1545,7 +1546,7 @@ async function vAbstract(){const app=curApp;
 /* ----- chat: all Guntakal / WS + commissioner / each ward ----- */
 function chatSeen(){try{return JSON.parse(localStorage.getItem('wp_chat_seen')||'{}')}catch(e){return {}}}
 function chatMark(room,id){const s=chatSeen();if(id&&(!s[room]||s[room]<id)){s[room]=id;localStorage.setItem('wp_chat_seen',JSON.stringify(s))}}
-function roomName(r){if(r.room==='all')return '🌐 '+t('roomAll');if(r.room==='admins')return '🏛️ '+t('roomAdmins');if(r.room.startsWith('dept:')){const d=DEPTS.find(x=>x[0]===r.room.slice(5));return (d?d[1]+' '+(te()?d[3]:d[2]):r.room.slice(5))+' + '+t('commShort')}return '🏢 '+(r.title||secName(r.room.slice(5)))}
+function roomName(r){if(r.room.startsWith('dm:'))return '👤 '+(r.title||(S.dmNames||{})[r.room]||t('personal'));if(r.room==='all')return '🌐 '+t('roomAll');if(r.room==='admins')return '🏛️ '+t('roomAdmins');if(r.room.startsWith('dept:')){const d=DEPTS.find(x=>x[0]===r.room.slice(5));return (d?d[1]+' '+(te()?d[3]:d[2]):r.room.slice(5))+' + '+t('commShort')}return '🏢 '+(r.title||secName(r.room.slice(5)))}
 async function chatPoll(){if(!S.token)return;try{const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];const seen=chatSeen();
   const n=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;if(n!==S.chatUnread){S.chatUnread=n;header()}S.chatRooms=rs}catch(e){}}
 setInterval(()=>{if(document.visibilityState==='visible'&&!(location.hash||'').startsWith('#chat/'))chatPoll()},45000);
@@ -1593,24 +1594,34 @@ const AVC=['#0e6b6b','#c0392b','#8e44ad','#d35400','#2c7be5','#16a085','#b7950b'
 function avatar(name,photo,size){size=size||38;const n=String(name||'?').trim();const ini=n.split(/\s+/).filter(w=>w.length>1||n.length<3).slice(0,2).map(w=>w[0]).join('').toUpperCase()||n[0]||'?';
   let h=0;for(const ch of n)h=(h*31+ch.charCodeAt(0))>>>0;
   return '<span class="hexav" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*.36)+'px;background:'+AVC[h%AVC.length]+'">'+(photo?'<img src="'+esc(photo)+'" alt="" loading="lazy" onerror="this.remove()">':'')+esc(ini)+'</span>'}
+function dmRoom(uid){const me=(S.me||{}).id||'';return 'dm:'+[String(me),String(uid)].sort().join(':')}
+function openDm(uid,name){const r=dmRoom(uid);S.dmNames=S.dmNames||{};S.dmNames[r]=name;location.hash='#chat/'+encodeURIComponent(r)}
+async function pickPerson(){const d=document.createElement('div');d.className='csheet';d.innerHTML='<div class="cs-in"><h3 style="margin:4px 0 8px">➕ '+t('newChat')+'</h3><input id="pp" placeholder="🔍 '+esc(t('searchPeople'))+'"><div id="pl" class="list" style="max-height:60vh;overflow:auto;margin-top:6px"><span class="spin"></span></div></div>';
+  document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.remove()};
+  let ppl=[];try{ppl=await rpc('wp_chat_people',{p_token:S.token})||[]}catch(er){d.remove();toast(errText(er));return}
+  const draw=()=>{const q=$('pp').value.trim().toLowerCase();const L=ppl.filter(x=>!q||(x.name+' '+(x.desig||'')+' '+(x.code?secName(x.code):'')).toLowerCase().includes(q)).slice(0,80);
+    $('pl').innerHTML=L.map(x=>'<button type="button" class="it" data-pu="'+x.id+'" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);cursor:pointer;font:inherit;gap:10px">'+avatar(x.name,x.photo,40)+'<div class="grow"><b>'+esc(x.name)+'</b><div class="mute" style="font-size:12px">'+esc(desigLabel(x.desig||''))+(x.code?' · '+esc(secName(x.code)):'')+'</div></div></button>').join('')||'<p class="mute">–</p>';
+    $('pl').querySelectorAll('[data-pu]').forEach(b=>b.onclick=()=>{const x=ppl.find(y=>y.id===b.dataset.pu);d.remove();openDm(x.id,x.name)})};
+  $('pp').oninput=draw;draw();$('pp').focus()}
 async function vChat(room){const app=curApp;
   if(!S.token){location.hash='#login';return}
   await loadSecs();
   if(!room){app.innerHTML='<div class="card"><span class="spin"></span></div>';
     const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];S.chatRooms=rs;const seen=chatSeen();
-    const me=S.me||{};const rank=x=>x.room==='ward:'+me.code?0:x.room==='all'?1:x.room==='admins'?2:x.room.startsWith('dept:')?3:4;const ordered=rs.slice().sort((a,b)=>rank(a)-rank(b));
+    const me=S.me||{};const rank=x=>x.room==='ward:'+me.code?0:x.room==='all'?1:x.room==='admins'?2:x.room.startsWith('dept:')?3:4;const ordered=rs.slice().sort((a,b)=>(b.last_id||0)-(a.last_id||0)||rank(a)-rank(b));
     const sub=await pushSub().catch(()=>null);
     app.innerHTML='<div class="secttl"><span style="font-size:26px">💬</span><h1>'+t('chat')+'</h1></div><p class="mute">'+t('chatHelp')+'</p>'+
       '<div class="card row" style="justify-content:space-between;background:'+(sub?'#eaf7ef':'#fff8ea')+'"><div class="grow"><b>'+(sub?'🔔 '+t('notifOn'):'🔕 '+t('notifOff'))+'</b><div class="mute" style="font-size:13px">'+t(pushOK()?'notifHelp':'notifNo')+'</div></div>'+
         (pushOK()?'<button class="btn '+(sub?'alt ':'')+'sm" type="button" id="pn">'+(sub?t('turnOff'):t('turnOn'))+'</button>':'')+'</div>'+
-      (rs.length>4?'<input id="cf" placeholder="🔍 '+esc(t('search'))+'" style="margin-bottom:8px">':'')+
+      '<div class="row" style="gap:8px;flex-wrap:nowrap;margin-bottom:8px"><input id="cf" placeholder="🔍 '+esc(t('search'))+'" style="flex:1"><button class="btn" type="button" id="nc" style="white-space:nowrap">➕ '+t('newChat')+'</button></div>'+
       '<div class="list card">'+ordered.map(r=>{const un=r.last_id&&r.last_id>(seen[r.room]||0);
-        return '<a class="it" data-cr="'+esc(roomName(r).toLowerCase())+'" href="#chat/'+encodeURIComponent(r.room)+'" style="text-decoration:none;color:inherit"><div class="grow"><div class="nm">'+esc(roomName(r))+'</div><div class="mute" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw">'+(r.last?esc(r.last.name+': '+r.last.body):t('noMsgs'))+'</div></div>'+
+        return '<a class="it" data-cr="'+esc(roomName(r).toLowerCase())+'" href="#chat/'+encodeURIComponent(r.room)+'" style="text-decoration:none;color:inherit;gap:10px">'+(r.room.startsWith('dm:')?avatar(r.title,r.photo,40):'')+'<div class="grow"><div class="nm">'+esc(r.room.startsWith('dm:')?(r.title||''):roomName(r))+'</div><div class="mute" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw">'+(r.last?esc(r.last.name+': '+r.last.body):t('noMsgs'))+'</div></div>'+
           (r.last?'<span class="mute" style="font-size:12px">'+esc(chatTime(r.last.at))+'</span>':'')+(un?' <span class="pill g">●</span>':'')+'</a>'}).join('')+'</div>';
     if($('pn'))$('pn').onclick=async()=>{$('pn').disabled=true;try{if(sub)await pushOff();else{await pushOn();toast(t('notifOn'))}}catch(er){alert(t(er.message==='push_denied'?'pushDenied':'notifNo'))}route()};
+    $('nc').onclick=pickPerson;
     if($('cf'))$('cf').oninput=()=>{const q=$('cf').value.toLowerCase();app.querySelectorAll('[data-cr]').forEach(a=>{a.style.display=!q||a.dataset.cr.includes(q)?'':'none'})};
     S.chatUnread=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;renderNav();return}
-  const info=(S.chatRooms||[]).find(x=>x.room===room)||{room:room,title:room.startsWith('ward:')?secName(room.slice(5)):''};
+  const info=(S.chatRooms||[]).find(x=>x.room===room)||{room:room,title:room.startsWith('ward:')?secName(room.slice(5)):room.startsWith('dm:')?(S.dmNames||{})[room]:''};
   app.innerHTML='<div style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" id="cvc" title="'+esc(t('videoCall'))+'" style="background:#16a085">📹 '+t('videoCallS')+'</button><button type="button" class="btn alt sm" id="mu" hidden></button></span></div>'+
     '<div id="cm" style="flex:1;overflow-y:auto;padding:8px 2px;margin:6px 0;background:#eef4f3;border-radius:12px"></div>'+
     '<div id="rp" hidden style="display:flex;gap:8px;align-items:center;background:#fff;border-radius:10px;padding:6px 8px;margin-bottom:6px;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.15)"></div><div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cdic" title="'+esc(t('dictate'))+'" style="height:44px;padding:0 10px">🎙️</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsg'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
@@ -1632,7 +1643,7 @@ async function vChat(room){const app=curApp;
   const paint=(stick)=>{const atEnd=box.scrollHeight-box.scrollTop-box.clientHeight<80;box.innerHTML=msgs.length?msgs.map((m,k)=>bubble(m,k)).join(''):'<p class="mute" style="text-align:center;margin-top:30px">'+t('noMsgs')+'</p>';
     if(stick||atEnd)box.scrollTop=box.scrollHeight;
     box.querySelectorAll('[data-av]').forEach(a=>a.onclick=()=>{const m=msgs.find(x=>x.id===+a.dataset.av);if(!m)return;
-      const d=sheet('<div style="text-align:center;padding:10px 0">'+avatar(m.name,m.photo,150)+'<h2 style="margin:12px 0 2px">'+esc(m.name||'')+'</h2><div class="mute">'+esc(m.desig?desigLabel(m.desig):'')+(m.code?' · '+esc(secName(m.code)):'')+'</div></div><button type="button" class="btn alt" style="width:100%;justify-content:center" id="avc">'+t('close')+'</button>');d.querySelector('#avc').onclick=()=>d.remove()});
+      const d=sheet('<div style="text-align:center;padding:10px 0">'+avatar(m.name,m.photo,150)+'<h2 style="margin:12px 0 2px">'+esc(m.name||'')+'</h2><div class="mute">'+esc(m.desig?desigLabel(m.desig):'')+(m.code?' · '+esc(secName(m.code)):'')+'</div></div>'+(m.uid&&!room.startsWith('dm:')?'<button type="button" class="btn" style="width:100%;justify-content:center;margin-bottom:8px" id="avm">💬 '+t('msgPrivately')+'</button>':'')+'<button type="button" class="btn alt" style="width:100%;justify-content:center" id="avc">'+t('close')+'</button>');d.querySelector('#avc').onclick=()=>d.remove();const am=d.querySelector('#avm');if(am)am.onclick=()=>{d.remove();openDm(m.uid,m.name)}});
     box.querySelectorAll('[data-goto]').forEach(q=>q.onclick=e=>{e.stopPropagation();const el=box.querySelector('[data-mid="'+q.dataset.goto+'"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500)}})};
   const pull=async(first)=>{try{const r=await rpc('wp_chat_sync',{p_token:S.token,p_room:room,p_after:last})||{};const nw=r.msgs||[];
     const rk=JSON.stringify(r.reads||[])+'/'+r.members;const changed=rk!==readKey;reads=r.reads||[];members=r.members||0;readKey=rk;
@@ -1641,10 +1652,11 @@ async function vChat(room){const app=curApp;
   const sheet=(html)=>{const d=document.createElement('div');d.className='csheet';d.innerHTML='<div class="cs-in">'+html+'</div>';document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.remove()};return d};
   const openMenu=id=>{const m=msgs.find(x=>x.id===id);if(!m||m.deleted)return;try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}
     const el=box.querySelector('[data-mid="'+id+'"]');el&&el.classList.add('sel');
-    const items=[['re','↩️ '+t('reply')]].concat(m.body?[['cp','📋 '+t('copy')]]:[]).concat(m.mine||isBoss?[['in','ℹ️ '+t('msgInfo')]]:[]).concat(m.mine||(S.me||{}).role==='super'?[['dl','🗑️ '+t('del')]]:[]);
+    const items=[['re','↩️ '+t('reply')]].concat(!m.mine&&m.uid&&!room.startsWith('dm:')?[['pm','💬 '+t('msgPrivately')+' '+(m.name||'')]]:[]).concat(m.body?[['cp','📋 '+t('copy')]]:[]).concat(m.mine||isBoss?[['in','ℹ️ '+t('msgInfo')]]:[]).concat(m.mine||(S.me||{}).role==='super'?[['dl','🗑️ '+t('del')]]:[]);
     const d=sheet('<div class="mute" style="padding:4px 6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc((m.mine?t('you'):m.name)+': '+(m.body||m.fname||''))+'</div>'+items.map(x=>'<button type="button" data-a="'+x[0]+'">'+x[1]+'</button>').join(''));
     const close=()=>{d.remove();el&&el.classList.remove('sel')};d.onclick=e=>{if(e.target===d)close()};
     d.querySelectorAll('[data-a]').forEach(b=>b.onclick=async()=>{const a=b.dataset.a;close();
+      if(a==='pm'){openDm(m.uid,m.name);return}
       if(a==='re'){replyTo={id:m.id,name:m.mine?t('you'):m.name,body:m.body||(m.kind==='image'?'📷 Photo':m.kind==='call'?'📹 Video call':'📎 '+(m.fname||''))};drawReply();ta.focus()}
       else if(a==='cp'){try{await navigator.clipboard.writeText(m.body);toast(t('copyDone'))}catch(e){prompt('',m.body)}}
       else if(a==='dl'){if(!confirm(t('confirmDel')))return;try{await rpc('wp_chat_delete',{p_token:S.token,p_id:m.id});m.deleted=true;m.body=null;paint()}catch(er){toast(errText(er))}}
@@ -1694,7 +1706,7 @@ async function vChat(room){const app=curApp;
     try{sr.start();$('cdic').classList.add('red');$('cdic').textContent='⏹';$('up').innerHTML='🔴 '+t('listening')+' ('+(te()?'తెలుగు':'English')+') – '+t('tapStopDic')}catch(e){sr=null}};
   // video call: posts a join link in this room and opens the call
   $('cvc').onclick=async()=>{if(!confirm(t('startCallQ')))return;
-    const id='WardProfile-'+room.replace(/[^0-9a-z]/gi,'')+'-'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+    const id='WardProfile-'+room.replace(/[^0-9a-z]/gi,'').slice(0,24)+'-'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
     const url='https://meet.jit.si/'+id;const w=window.open('about:blank','_blank');
     try{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:'',p_att:{url:url,kind:'call',name:'Video call'}});await pull();box.scrollTop=box.scrollHeight}catch(er){toast(errText(er))}
     const full=url+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false';
