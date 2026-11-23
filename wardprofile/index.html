@@ -442,6 +442,7 @@ const TX={
  chatPhoto:['Chat photo','చాట్ ఫోటో'], chatPhotoHelp:['Shown beside your messages. If you do not set one, your employee photo is used.','మీ సందేశాల పక్కన కనిపిస్తుంది. సెట్ చేయకపోతే మీ ఉద్యోగి ఫోటో వాడబడుతుంది.'], changePhoto:['Change photo','ఫోటో మార్చు'],
  newChat:['New chat','కొత్త చాట్'], people:['People','వ్యక్తులు'], noPeople:['No one found with that name','ఆ పేరుతో ఎవరూ లేరు'], searchPeople2:['Search chats or people','చాట్‌లు లేదా వ్యక్తులు వెతకండి'], searchPeople:['Search name, post or ward','పేరు, పోస్టు లేదా వార్డు వెతకండి'], msgPrivately:['Message privately','వ్యక్తిగతంగా సందేశం'], personal:['Personal chat','వ్యక్తిగత చాట్'],
  today:['Today','ఈరోజు'], yesterday:['Yesterday','నిన్న'], membersN:['members','సభ్యులు'],
+ homePage:['Home page','హోమ్ పేజీ'], others:['Others','ఇతరాలు'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -743,7 +744,7 @@ function renderNav(){
   const it=(icon,label,href,on)=>'<a class="ni'+(on?' on':'')+'" href="'+href+'"><span class="ic">'+icon+'</span><span>'+esc(label)+'</span></a>';
   const grp=(key,icon,label,children,on)=>{const open=S.navOpen[key]!==undefined?S.navOpen[key]:on;
     return '<div class="grp'+(open?' open':'')+'"><button type="button" class="ni'+(on?' on':'')+'" data-grp="'+key+'"><span class="ic">'+icon+'</span><span>'+esc(label)+' '+(open?'▾':'▸')+'</span></button><div class="sub">'+children.join('')+'</div></div>'};
-  let out=it('🏠',t('home'),'#home',r==='home');
+  let out=S.token?grp('home','🏠',t('home'),[it('🏡',t('homePage'),'#home',r==='home'),...(S.me&&S.me.code?[it('🪪',t('myDetails'),'#me',r==='me')]:[]),it('👤',t('account'),'#account',r==='account')],['home','me','account'].includes(r)):it('🏠',t('home'),'#home',r==='home');
   if(S.token){
     const me=S.me||{};const code=curWardCode();
     if(code){
@@ -772,9 +773,8 @@ function renderNav(){
       out+=grp('admin','⚙️',t('admin'),ch,r==='admin');
     }
   }
-  out+=it('🌐',t('publicShort'),'#public',r==='public');
-  out+=it('ℹ️',t('aboutShort'),'#about',r==='about');
-  out+=S.token?(S.me&&S.me.code?it('🪪',t('myDetails'),'#me',r==='me'):'')+it('👤',t('account'),'#account',r==='account'):it('🔑',t('login'),'#login',r==='login')+it('📝',t('request'),'#signup',r==='signup');
+  if(!S.token)out+=it('🔑',t('login'),'#login',r==='login')+it('📝',t('request'),'#signup',r==='signup');
+  out+=grp('others','📂',t('others'),[it('🌐',t('publicShort'),'#public',r==='public'),it('ℹ️',t('aboutShort'),'#about',r==='about')],['public','about'].includes(r));
   nav.innerHTML=out;
   nav.querySelectorAll('[data-grp]').forEach(b=>b.onclick=()=>{const k=b.dataset.grp;const g=b.parentElement;S.navOpen[k]=!g.classList.contains('open');renderNav()});
 }
