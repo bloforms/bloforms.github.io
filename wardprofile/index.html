@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" id="vp" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>/* phone / desktop mode – chosen before the page draws */
+(function(){var m=localStorage.getItem('wp_mode');if(!m)m=Math.min(screen.width,screen.height)<700?'phone':'desk';
+ if(m==='desk'){var fit=function(){var w=window.innerWidth||screen.width;var z=w<1000?(w/1000).toFixed(3):'';document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z||1)};fit();window.addEventListener('resize',fit)}
+ document.documentElement.className+=' m-'+m;})();</script>
 <title>Ward Profile – Guntakal</title>
 <meta name="description" content="Ward Profile: one place for everything about each Guntakal ward secretariat – boundaries, population, places with photos and staff.">
 <meta name="theme-color" content="#0f5c5c">
@@ -48,7 +52,33 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 @keyframes shine{0%{left:-60%}60%,100%{left:130%}}
 @media (prefers-reduced-motion:reduce){.btn.big,.btn.big::after{animation:none}}
 .hbtn.out{background:#e8566c;border-color:#ffb3bf;font-weight:700}
-@media (max-width:520px){.hbtn.out .acnm{display:none}}
+/* undo – strong colour */
+#undoBtn{background:#f2c14e;border-color:#ffe39a;color:#3a2a00;font-weight:900;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#undoBtn:disabled{opacity:.85;background:#e0b347;color:#5a4300}
+#modeBtn{background:#fff;color:var(--c);border-color:#fff}
+#navBtn,#scrim{display:none}
+/* phone mode: menu becomes a slide-in drawer, page uses full width */
+.m-phone #navBtn{display:inline-block;background:#fff;color:var(--c);font-weight:900}
+.m-phone .hbtn.out .acnm,.m-phone #acctBtn,.m-phone .brand small{display:none}
+.m-phone .brand{font-size:15px}
+.m-phone .bar{gap:6px;padding:8px}
+.m-phone .hbtn.ic{padding:3px 8px}
+.m-phone .lang button{padding:4px 7px}
+.m-phone #side{position:fixed;left:0;top:var(--hh,58px);width:270px;max-width:82vw;transform:translateX(-105%);transition:transform .25s ease;z-index:1200}
+.m-phone.navopen #side{transform:none}
+.m-phone.navopen #scrim{display:block;position:fixed;inset:var(--hh,58px) 0 0 0;background:rgba(0,0,0,.45);z-index:1100}
+.m-phone #side .ni{flex-direction:row;gap:12px;font-size:15px;text-align:left;padding:12px 16px}
+.m-phone #side .ni .ic{font-size:20px;width:26px;text-align:center}
+.m-phone #side .sub .ni{font-size:14px;padding:9px 16px 9px 30px}
+.m-phone #side .cap{text-align:left;padding:12px 18px 4px;font-size:11px}
+.m-desk .hbtn.out .acnm{display:inline}
+.m-desk #side{width:236px;height:calc((100vh / var(--z,1)) - var(--hh,58px))}
+.m-desk #side .ni{flex-direction:row;gap:12px;font-size:15px;text-align:left;padding:12px 16px}
+.m-desk #side .ni .ic{font-size:20px;width:26px;text-align:center}
+.m-desk #side .sub .ni{font-size:14px;padding:9px 16px 9px 30px}
+.m-desk #side .sub .ni .ic{font-size:17px}
+.m-desk #side .cap{text-align:left;padding:12px 18px 4px;font-size:11px}
+.m-desk .brand small{display:block}.m-desk .brand{font-size:18px}.m-desk .acnm{display:inline}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .stat{background:#f6fafa;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
@@ -147,13 +177,15 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
 <body>
 <header id="hdr"><div class="bar">
   <button class="hbtn ic" id="backBtn" type="button" title="Back">←</button>
+  <button class="hbtn ic" id="navBtn" type="button" title="Menu">☰</button>
   <a class="brand" href="#home"><span id="appName">Ward Profile</span><small id="appSub">Guntakal ward secretariats</small></a>
   <button class="hbtn ic" id="undoBtn" type="button" title="Undo">↶<sup id="undoN" hidden></sup></button>
   <div class="lang"><button id="lte" type="button">తెలుగు</button><button id="len" type="button">EN</button></div>
   <button class="hbtn" id="acctBtn" type="button"></button>
-  <button class="hbtn out" id="outBtn" type="button" hidden>⏻<span class="acnm"></span></button>
+  <button class="hbtn ic" id="modeBtn" type="button"></button>
+  <button class="hbtn out" id="outBtn" type="button" hidden>🚪<span class="acnm"></span></button>
 </div></header>
-<div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
+<div id="scrim"></div><div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
 <footer>Designed by Sivananda Pujari</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -277,6 +309,7 @@ const TX={
  topics:['topics','అంశాలు'], pickDept:['Choose your department, then a topic. Fill what you know and press Save.','మీ శాఖను ఎంచుకోండి, తర్వాత అంశాన్ని ఎంచుకోండి. తెలిసినవి నింపి సేవ్ నొక్కండి.'], surveyView:['Departments of this ward (view only)','ఈ వార్డు శాఖలు (చూడటానికి మాత్రమే)'],
  moreTitle:['➕ Your own fields','➕ మీ సొంత ఫీల్డ్‌లు'], moreHelp:['Anything more you know about this topic – type a heading and its details.','ఈ అంశం గురించి మీకు తెలిసిన మరేదైనా – శీర్షిక, దాని వివరాలు టైప్ చేయండి.'], mHead:['Heading (e.g. Borewells)','శీర్షిక (ఉదా: బోర్‌వెల్స్)'], mVal:['Details','వివరాలు'], addMore:['Add field','ఫీల్డ్ జోడించు'],
  delFieldQ:['Delete this question for all 35 wards? (You can restore it in Admin → Custom fields, or press Undo.)','ఈ ప్రశ్నను 35 వార్డులకూ తొలగించాలా? (అడ్మిన్ → కస్టమ్ ఫీల్డ్‌లలో తిరిగి తెచ్చుకోవచ్చు, లేదా Undo నొక్కండి.)'], fieldDeleted:['Question deleted','ప్రశ్న తొలగించబడింది'],
+ toDesk:['Switch to desktop view','డెస్క్‌టాప్ వ్యూకి మార్చు'], toPhone:['Switch to phone view','ఫోన్ వ్యూకి మార్చు'],
  builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
  pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
  fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
@@ -690,6 +723,7 @@ function header(){
   $('appName').textContent=t('appName');$('appSub').textContent=t('appSub');
   $('lte').classList.toggle('on',te());$('len').classList.toggle('on',!te());
   $('acctBtn').innerHTML=S.token?'👤<span class="acnm"> '+esc(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account'))+'</span>':'🔑<span class="acnm"> '+t('login')+'</span>';
+  const ph=document.documentElement.classList.contains('m-phone');const mb=$('modeBtn');mb.textContent=ph?'🖥️':'📱';mb.title=ph?t('toDesk'):t('toPhone');
   const ob=$('outBtn');ob.hidden=!S.token;ob.title=t('logout');ob.querySelector('.acnm').textContent=' '+t('logout');
   const u=$('undoBtn');u.disabled=!S.undo.length;u.title=t('undo')+(S.undo.length?': '+S.undo[S.undo.length-1].label:'');const n=$('undoN');n.hidden=!S.undo.length;n.textContent=S.undo.length;
   document.documentElement.style.setProperty('--hh',($('hdr').offsetHeight||58)+'px');
@@ -702,6 +736,9 @@ $('backBtn').onclick=()=>{if(history.length>1)history.back();else location.hash=
 $('undoBtn').onclick=async()=>{const u=S.undo[S.undo.length-1];if(!u){toast(t('nothingUndo'));return}
   if(!confirm(t('undoQ')+'\n\n'+u.label))return;
   try{await u.inv();S.undo.pop();toast(t('undone'));route()}catch(er){toast(errText(er))}};
+$('modeBtn').onclick=()=>{const ph=document.documentElement.classList.contains('m-phone');localStorage.setItem('wp_mode',ph?'desk':'phone');location.reload()};
+$('navBtn').onclick=()=>document.documentElement.classList.toggle('navopen');
+$('scrim').onclick=()=>document.documentElement.classList.remove('navopen');
 $('acctBtn').onclick=()=>{location.hash=S.token?'#account':'#login'};
 $('outBtn').onclick=async()=>{if(!confirm(t('logout')+'?'))return;try{await rpc('wp_logout',{p_token:S.token})}catch(e){}logoutLocal();S.ward=null;S.undo=[];location.hash='#login';route()};
 
@@ -1594,7 +1631,7 @@ async function route(){
     }
   }catch(er){app.innerHTML='<div class="msg err">'+errText(er)+'</div><a class="btn" href="#home">'+t('back')+'</a>'}
 }
-window.addEventListener('hashchange',route);
+window.addEventListener('hashchange',()=>{document.documentElement.classList.remove('navopen');route()});
 route();
 if(S.token)rpc('wp_me',{p_token:S.token}).then(me=>{S.me=me;localStorage.setItem('wp_me',JSON.stringify(me));header()}).catch(()=>{});
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
