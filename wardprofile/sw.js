@@ -1,4 +1,4 @@
-const CACHE='ward-profile-v28';
+const CACHE='ward-profile-v29';
 const FILES=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 const LIBS=['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES).then(()=>Promise.all(LIBS.map(u=>c.add(u).catch(()=>{})))) ).then(()=>self.skipWaiting()));});
