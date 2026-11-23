@@ -37,6 +37,17 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 .btn.red{background:var(--bad)}
 .btn.orange{background:var(--acc);color:#222}
 .btn:disabled{opacity:.5}
+.btn.big{width:100%;justify-content:center;font-size:19px;letter-spacing:.3px;padding:15px 18px;border-radius:14px;margin-top:16px;position:relative;overflow:hidden;
+  background:linear-gradient(110deg,#0e6b6b,#16a085,#f2a33a,#e8566c,#0e6b6b);background-size:300% 100%;animation:bgmove 6s ease infinite;box-shadow:0 6px 18px rgba(14,107,107,.35);transition:transform .15s,box-shadow .15s}
+.btn.big::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:shine 2.8s ease-in-out infinite}
+.btn.big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(14,107,107,.45)}
+.btn.big:active{transform:scale(.97)}
+.btn.big:disabled{animation:none;opacity:.7}
+@keyframes bgmove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+@media (prefers-reduced-motion:reduce){.btn.big,.btn.big::after{animation:none}}
+.hbtn.out{background:#e8566c;border-color:#ffb3bf;font-weight:700}
+@media (max-width:520px){.hbtn.out .acnm{display:none}}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .stat{background:#f6fafa;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
@@ -139,6 +150,7 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
   <button class="hbtn ic" id="undoBtn" type="button" title="Undo">↶<sup id="undoN" hidden></sup></button>
   <div class="lang"><button id="lte" type="button">తెలుగు</button><button id="len" type="button">EN</button></div>
   <button class="hbtn" id="acctBtn" type="button"></button>
+  <button class="hbtn out" id="outBtn" type="button" hidden>⏻<span class="acnm"></span></button>
 </div></header>
 <div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
 <footer>Designed by Sivananda Pujari</footer>
@@ -154,7 +166,7 @@ const CENTER=[15.166,77.379];
 const TX={
  appName:['Ward Profile','వార్డు ప్రొఫైల్'],
  appSub:['Guntakal ward secretariats','గుంతకల్ వార్డు సచివాలయాలు'],
- login:['Login','లాగిన్'], logout:['Logout','లాగౌట్'], account:['My account','నా ఖాతా'],
+ login:['Login','లాగిన్'], logout:['Sign out','సైన్ అవుట్'], account:['My account','నా ఖాతా'],
  request:['Request access','యాక్సెస్ కోరండి'], about:['About this app','ఈ యాప్ గురించి'],
  publicPages:['Public ward pages','ప్రజల కోసం వార్డు పేజీలు'],
  heroTitle:['One place for everything about your ward','మీ వార్డు గురించి అంతా ఒకే చోట'],
@@ -669,6 +681,7 @@ function header(){
   $('appName').textContent=t('appName');$('appSub').textContent=t('appSub');
   $('lte').classList.toggle('on',te());$('len').classList.toggle('on',!te());
   $('acctBtn').innerHTML=S.token?'👤<span class="acnm"> '+esc(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account'))+'</span>':'🔑<span class="acnm"> '+t('login')+'</span>';
+  const ob=$('outBtn');ob.hidden=!S.token;ob.title=t('logout');ob.querySelector('.acnm').textContent=' '+t('logout');
   const u=$('undoBtn');u.disabled=!S.undo.length;u.title=t('undo')+(S.undo.length?': '+S.undo[S.undo.length-1].label:'');const n=$('undoN');n.hidden=!S.undo.length;n.textContent=S.undo.length;
   document.documentElement.style.setProperty('--hh',($('hdr').offsetHeight||58)+'px');
   renderNav();
@@ -681,6 +694,7 @@ $('undoBtn').onclick=async()=>{const u=S.undo[S.undo.length-1];if(!u){toast(t('n
   if(!confirm(t('undoQ')+'\n\n'+u.label))return;
   try{await u.inv();S.undo.pop();toast(t('undone'));route()}catch(er){toast(errText(er))}};
 $('acctBtn').onclick=()=>{location.hash=S.token?'#account':'#login'};
+$('outBtn').onclick=async()=>{if(!confirm(t('logout')+'?'))return;try{await rpc('wp_logout',{p_token:S.token})}catch(e){}logoutLocal();S.ward=null;S.undo=[];location.hash='#login';route()};
 
 /* ---------- install ---------- */
 let deferredInstall=null;
@@ -736,7 +750,7 @@ function vLogin(){const app=curApp;
   app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('login')+'</h2><form id="f">'+
    '<label>'+t('loginId')+'</label><input id="lg" autocomplete="username" autocapitalize="characters" placeholder="21003001-WS" required>'+
    '<label>'+t('password')+'</label><input id="pw" type="password" autocomplete="current-password" required>'+
-   '<div id="m"></div><button class="btn" style="margin-top:12px;width:100%;justify-content:center">'+t('login')+'</button></form>'+
+   '<div id="m"></div><button class="btn big">🔓 '+t('login')+'</button></form>'+
    '<p style="text-align:center"><a href="#signup">'+t('noAcc')+'</a></p>'+
    '<details style="margin-top:8px"><summary style="cursor:pointer;color:var(--c);font-weight:600">'+t('postIds')+'</summary><p class="mute">'+t('postIdsHelp')+'</p><table>'+POSTS.map(x=>'<tr><td><b>21003001-'+x[0]+'</b></td><td>'+esc(desigLabel(x[1]))+'</td></tr>').join('')+'</table></details></div>';
   $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
@@ -753,7 +767,7 @@ async function vSignup(){const app=curApp;
    '<label>'+t('yourSec')+'</label><select id="sc" required><option value="">'+t('pickSec')+'</option>'+secOptions('')+'</select>'+
    '<label>'+t('role')+'</label><select id="rl"><option value="admin">'+t('roleAdmin')+'</option><option value="staff">'+t('roleStaff')+'</option></select>'+
    '<label>'+t('designation')+'</label><select id="dg">'+DESIG.map(d=>'<option value="'+esc(d[0])+'">'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
-   '<div id="m"></div><button class="btn" style="margin-top:12px;width:100%;justify-content:center">'+t('sendReq')+'</button></form>'+
+   '<div id="m"></div><button class="btn big">📝 '+t('sendReq')+'</button></form>'+
    '<p style="text-align:center"><a href="#login">'+t('haveAcc')+'</a></p></div>';
   $('rl').onchange=()=>{if($('rl').value==='admin')$('dg').value=DESIG[0][0]};
   $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
