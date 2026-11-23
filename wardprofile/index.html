@@ -975,10 +975,16 @@ function vAccount(){const app=curApp;
   const me=S.me||{};
   app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('account')+'</h2>'+(me.must_change?'<div class="msg err">🔑 '+t('mustChange')+'</div>':'')+'<p><b>'+esc(me.name)+'</b><br><span class="mute">'+esc(loginLabel(me.login))+'<br>'+esc(desigLabel(me.designation))+'<br>'+esc(me.secretariat||'')+'</span></p>'+
    '<div class="card" style="background:#f6fafa;display:flex;gap:14px;align-items:center"><span id="myav">'+avatar(me.name,'',64)+'</span><div class="grow"><b>'+t('chatPhoto')+'</b><div class="mute" style="font-size:13px">'+t('chatPhotoHelp')+'</div><div class="row" style="margin-top:6px"><label class="btn sm" style="cursor:pointer">📷 '+t('changePhoto')+'<input type="file" id="avf" accept="image/*" hidden></label><button type="button" class="btn alt sm" id="avr" hidden>'+t('remove')+'</button></div></div></div>'+
+   '<div class="card" id="nfc" style="background:#f6fafa"></div>'+
    (me.code?'<a class="btn alt" href="#me" style="margin-bottom:8px">🪪 '+t('myDetails')+'</a>':'')+'<h3>'+t('changePass')+'</h3><form id="f"><label>'+t('oldPass')+'</label><input id="op" type="password" required><label>'+t('newPass')+'</label><input id="np" type="password" minlength="6" required><div id="m"></div><button class="btn" style="margin-top:10px">'+t('save')+'</button></form>'+
    '<hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><button class="btn red" id="lo">'+t('logout')+'</button></div>';
   $('f').onsubmit=async e=>{e.preventDefault();try{await rpc('wp_change_password',{p_token:S.token,p_old:$('op').value,p_new:$('np').value});const was=S.me&&S.me.must_change;if(S.me){S.me.must_change=false;localStorage.setItem('wp_me',JSON.stringify(S.me))}$('m').innerHTML='<div class="msg ok">'+t('saved')+'</div>';e.target.reset();if(was)setTimeout(()=>{location.hash='#home'},800)}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
   rpc('wp_my_photo',{p_token:S.token}).then(r=>{if(r&&r.photo)$('myav').innerHTML=avatar(me.name,r.photo,64);if(r&&r.own)$('avr').hidden=false}).catch(()=>{});
+  const drawNf=async()=>{const sub=await pushSub().catch(()=>null);const el=$('nfc');if(!el)return;
+    el.innerHTML='<div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div class="grow"><b>'+(sub?t('notifOn'):t('notifOff'))+'</b><div class="mute" style="font-size:13px">'+t(pushOK()?'notifHelp':'notifNo')+'</div></div>'+
+      (pushOK()?'<button class="btn '+(sub?'alt ':'')+'sm" type="button" id="pn">'+(sub?t('turnOff'):t('turnOn'))+'</button>':'')+'</div>';
+    if($('pn'))$('pn').onclick=async()=>{$('pn').disabled=true;try{if(sub)await pushOff();else{await pushOn();toast(t('notifOn'))}}catch(er){alert(t(er.message==='push_denied'?'pushDenied':'notifNo'))}drawNf()}};
+  drawNf();
   $('avf').onchange=async()=>{const f=$('avf').files[0];if(!f)return;$('myav').innerHTML='<span class="spin"></span>';
     try{const d=await compress(f);const j=await chatUpload('all',d,'photo.jpg','image/jpeg');await rpc('wp_set_my_photo',{p_token:S.token,p_url:j.url});$('myav').innerHTML=avatar(me.name,j.url,64);$('avr').hidden=false;toast(t('saved'))}
     catch(er){$('myav').innerHTML=avatar(me.name,'',64);toast(errText(er))}};
@@ -1707,15 +1713,11 @@ async function vChat(room){const app=curApp;
   if(!room){app.innerHTML='<div class="card"><span class="spin"></span></div>';
     const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];S.chatRooms=rs;const seen=chatSeen();
     const me=S.me||{};const rank=x=>x.room==='ward:'+me.code?0:x.room==='all'?1:x.room==='admins'?2:x.room.startsWith('dept:')?3:4;const ordered=rs.slice().sort((a,b)=>(b.last_id||0)-(a.last_id||0)||rank(a)-rank(b));
-    const sub=await pushSub().catch(()=>null);
-    app.innerHTML='<div class="secttl"><span style="font-size:26px">💬</span><h1>'+t('chat')+'</h1></div><p class="mute">'+t('chatHelp')+'</p>'+
-      '<div class="card row" style="justify-content:space-between;background:'+(sub?'#eaf7ef':'#fff8ea')+'"><div class="grow"><b>'+(sub?'🔔 '+t('notifOn'):'🔕 '+t('notifOff'))+'</b><div class="mute" style="font-size:13px">'+t(pushOK()?'notifHelp':'notifNo')+'</div></div>'+
-        (pushOK()?'<button class="btn '+(sub?'alt ':'')+'sm" type="button" id="pn">'+(sub?t('turnOff'):t('turnOn'))+'</button>':'')+'</div>'+
+    app.innerHTML='<div class="secttl"><h1>'+t('chat')+'</h1></div><p class="mute">'+t('chatHelp')+'</p>'+
       '<div class="row" style="gap:8px;flex-wrap:nowrap;margin-bottom:8px"><input id="cf" placeholder="🔍 '+esc(t('searchPeople2'))+'" style="flex:1;min-width:0"><button class="btn" type="button" id="nc" style="white-space:nowrap">➕ '+t('newChat')+'</button></div>'+
       '<div class="list card">'+ordered.map(r=>{const un=r.last_id&&r.last_id>(seen[r.room]||0);
         return '<a class="it" data-cr="'+esc(roomName(r).toLowerCase())+'" href="#chat/'+encodeURIComponent(r.room)+'" style="text-decoration:none;color:inherit;gap:10px">'+(r.room.startsWith('dm:')?avatar(r.title,r.photo,40):'')+'<div class="grow"><div class="nm">'+esc(r.room.startsWith('dm:')?(r.title||''):roomName(r))+'</div><div class="mute" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw">'+(r.last?esc(r.last.name+': '+r.last.body):t('noMsgs'))+'</div></div>'+
           (r.last?'<span class="mute" style="font-size:12px">'+esc(chatTime(r.last.at))+'</span>':'')+(un?' <span class="pill g">●</span>':'')+'</a>'}).join('')+'</div>';
-    if($('pn'))$('pn').onclick=async()=>{$('pn').disabled=true;try{if(sub)await pushOff();else{await pushOn();toast(t('notifOn'))}}catch(er){alert(t(er.message==='push_denied'?'pushDenied':'notifNo'))}route()};
     $('nc').onclick=pickPerson;
     if($('cf')){$('cf').insertAdjacentHTML('afterend','');app.querySelector('.list.card').insertAdjacentHTML('afterend','<div id="cpp"></div>');
       $('cf').oninput=async()=>{const q=$('cf').value.trim().toLowerCase();let shown=0;app.querySelectorAll('[data-cr]').forEach(a=>{const ok=!q||a.dataset.cr.includes(q);a.style.display=ok?'':'none';if(ok)shown++});
