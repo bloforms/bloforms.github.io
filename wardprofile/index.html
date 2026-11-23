@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" id="vp" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" id="vp" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <script>/* phone / desktop mode – chosen before the page draws */
 (function(){var m=localStorage.getItem('wp_mode');if(!m)m=Math.min(screen.width,screen.height)<700?'phone':'desk';
  if(m==='desk'){var fit=function(){var w=window.innerWidth||screen.width;var z=w<1000?(w/1000).toFixed(3):'';document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z||1)};fit();window.addEventListener('resize',fit)}
@@ -91,6 +91,14 @@ main{padding-bottom:96px}
 .csheet{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center}
 .csheet .cs-in{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:12px 14px 18px;box-shadow:0 -6px 20px rgba(0,0,0,.25);max-height:88vh;overflow:auto;animation:sheetup .18s ease-out}
 .csheet button[data-a]{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 8px;font-size:17px;cursor:pointer;font-family:inherit}
+/* chat room fills the screen like WhatsApp: top bar stays, box sits on the keyboard */
+.inchat footer,.inchat #chatFab{display:none!important}
+.m-phone.inchat body{overflow:hidden}
+.m-phone.inchat #chatroom{position:fixed;left:0;right:0;top:calc(var(--hh,58px) + var(--vvt,0px));height:calc(var(--vvh,100dvh) - var(--hh,58px))!important;padding:6px 8px 8px;background:var(--bg,#f2f6f6);z-index:50;box-sizing:border-box}
+.m-phone.inchat #chatroom #cm{margin:4px 0!important}
+#cm{display:flex;flex-direction:column}
+#cm>:first-child{margin-top:auto!important}
+.m-phone.inchat header{position:fixed;left:0;right:0;top:var(--vvt,0px)}
 /* search sheets open from the top so the keyboard never hides the results */
 .csheet.top{align-items:flex-start}
 .csheet.top .cs-in{border-radius:0 0 18px 18px;display:flex;flex-direction:column;max-height:calc(var(--vvh,100vh) - 8px);animation:sheetdown .18s ease-out}
@@ -1663,10 +1671,12 @@ async function vChat(room){const app=curApp;
         box2.querySelectorAll('[data-pu]').forEach(b=>b.onclick=()=>{const x=S.people.find(y=>y.id===b.dataset.pu);openDm(x.id,x.name)})}}
     S.chatUnread=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;renderNav();return}
   const info=(S.chatRooms||[]).find(x=>x.room===room)||{room:room,title:room.startsWith('ward:')?secName(room.slice(5)):room.startsWith('dm:')?(S.dmNames||{})[room]:''};
-  app.innerHTML='<div style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" id="cvc" title="'+esc(t('videoCall'))+'" style="background:#16a085">📹 '+t('videoCallS')+'</button><button type="button" class="btn alt sm" id="mu" hidden></button></span></div>'+
+  document.documentElement.classList.add('inchat');
+  app.innerHTML='<div id="chatroom" style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" id="cvc" title="'+esc(t('videoCall'))+'" style="background:#16a085">📹 '+t('videoCallS')+'</button><button type="button" class="btn alt sm" id="mu" hidden></button></span></div>'+
     '<div id="cm" style="flex:1;overflow-y:auto;padding:8px 2px;margin:6px 0;background:#eef4f3;border-radius:12px"></div>'+
     '<div id="rp" hidden style="display:flex;gap:8px;align-items:center;background:#fff;border-radius:10px;padding:6px 8px;margin-bottom:6px;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.15)"></div><div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cdic" title="'+esc(t('dictate'))+'" style="height:44px;padding:0 10px">🎙️</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsgS'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
   let last=0,msgs=[],reads=[],members=0,readKey='',replyTo=null;const box=$('cm');
+  box.addEventListener('scroll',()=>{box.dataset.stick=box.scrollHeight-box.scrollTop-box.clientHeight<80?'1':'0'},{passive:true});
   const isBoss=['super','commissioner'].includes((S.me||{}).role);
   const ticks=m=>{if(!m.mine||m.deleted)return '';const n=reads.filter(x=>x>=m.id).length;
     return ' <span title="'+esc(n+' / '+members+' '+t('seenBy'))+'" style="font-weight:800;letter-spacing:-3px;color:'+(n&&n>=members?'#2f9bf0':'#8a9a99')+'">'+(n?'✓✓':'✓')+'</span>'};
@@ -1718,7 +1728,7 @@ async function vChat(room){const app=curApp;
     $('rpx').onclick=()=>{replyTo=null;drawReply()}};
   await pull(true);
   const timer=setInterval(()=>{if(curApp!==app||!document.body.contains(box)||location.hash!=='#chat/'+encodeURIComponent(room)){clearInterval(timer);return}if(document.visibilityState==='visible')pull()},5000);
-  const ta=$('ct');ta.oninput=()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,130)+'px'};
+  const ta=$('ct');ta.addEventListener('focus',()=>{box.dataset.stick='1';setTimeout(()=>{box.scrollTop=box.scrollHeight;if(window.scrollY&&document.documentElement.classList.contains('m-phone'))window.scrollTo(0,0)},250)});ta.oninput=()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,130)+'px'};
   ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!/Android|iPhone|iPad/i.test(navigator.userAgent)){e.preventDefault();$('cs').requestSubmit()}};
   $('cs').onsubmit=async e=>{e.preventDefault();const b=ta.value.trim();if(!b)return;$('cb').disabled=true;
     try{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:b,p_reply:replyTo?replyTo.id:null});replyTo=null;drawReply();ta.value='';ta.style.height='auto';await pull();box.scrollTop=box.scrollHeight}catch(er){toast(errText(er))}$('cb').disabled=false;ta.focus()};
@@ -1964,9 +1974,12 @@ async function route(){
     }
   }catch(er){app.innerHTML='<div class="msg err">'+errText(er)+'</div><a class="btn" href="#home">'+t('back')+'</a>'}
 }
-(function(){const vv=window.visualViewport;if(!vv)return;const f=()=>document.documentElement.style.setProperty('--vvh',vv.height+'px');vv.addEventListener('resize',f);f()})();
+(function(){const vv=window.visualViewport;if(!vv)return;const de=document.documentElement;
+  const f=()=>{de.style.setProperty('--vvh',vv.height+'px');de.style.setProperty('--vvt',vv.offsetTop+'px');
+    if(de.classList.contains('inchat')&&de.classList.contains('m-phone')){if(window.scrollY)window.scrollTo(0,0);const cm=document.getElementById('cm');if(cm&&cm.dataset.stick!=='0')cm.scrollTop=cm.scrollHeight}};
+  vv.addEventListener('resize',f);vv.addEventListener('scroll',f);f()})();
 document.addEventListener('focusin',e=>{if(e.target&&e.target.id==='cf')setTimeout(()=>e.target.scrollIntoView({block:'start',behavior:'smooth'}),300)});
-window.addEventListener('hashchange',()=>{document.documentElement.classList.remove('navopen');route()});
+window.addEventListener('hashchange',()=>{document.documentElement.classList.remove('navopen');if(!(location.hash||'').startsWith('#chat/'))document.documentElement.classList.remove('inchat');route()});
 route();
 if(S.token)rpc('wp_me',{p_token:S.token}).then(me=>{S.me=me;localStorage.setItem('wp_me',JSON.stringify(me));header();chatPoll()}).catch(()=>{});
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
