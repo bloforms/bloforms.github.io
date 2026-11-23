@@ -10,6 +10,7 @@
 <title>GTL Ward Sarathi – Guntakal</title>
 <meta name="description" content="GTL Ward Sarathi: one place for everything about each Guntakal ward secretariat – boundaries, population, places with photos and staff.">
 <meta name="theme-color" content="#0f5c5c">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&display=swap">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -91,6 +92,61 @@ main{padding-bottom:96px}
 .csheet{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center}
 .csheet .cs-in{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:12px 14px 18px;box-shadow:0 -6px 20px rgba(0,0,0,.25);max-height:88vh;overflow:auto;animation:sheetup .18s ease-out}
 .csheet button[data-a]{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 8px;font-size:17px;cursor:pointer;font-family:inherit}
+
+/* ===== chat design ===== */
+#chatroom{font-family:Inter,'Noto Sans Telugu',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+.ch-top{display:flex;align-items:center;gap:10px;flex:none;padding:8px 10px;margin:0 0 6px;border-radius:16px;background:linear-gradient(120deg,#ffffff,#f0fbf8);box-shadow:0 2px 10px rgba(15,92,92,.12)}
+.ch-ib{width:40px;height:40px;border-radius:12px;border:0;background:#eef7f5;color:var(--c);font-size:20px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;flex:none;transition:transform .15s}
+.ch-ib:active{transform:scale(.92)}
+.ch-ib.call{background:linear-gradient(135deg,#10b981,#0d9488);color:#fff;box-shadow:0 3px 10px rgba(16,185,129,.4)}
+.ch-ib.off{background:#fde8ec}
+.ch-ico{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;font-size:22px;background:linear-gradient(135deg,#ccfbf1,#fef3c7);clip-path:polygon(25% 4%,75% 4%,100% 50%,75% 96%,25% 96%,0 50%);flex:none}
+.ch-tt{flex:1;min-width:0;line-height:1.2}
+.ch-tt b{display:block;font-size:16px;font-weight:700;color:#0f2e2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-tt small{display:block;font-size:12px;color:#5f7f7a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-bg{flex:1;overflow-y:auto;padding:10px 6px;margin:0 0 6px;border-radius:18px;display:flex;flex-direction:column;
+  background-color:#e9f4f1;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%230f766e' stroke-opacity='.07' stroke-width='2'%3E%3Cpath d='M14 30l10-8 10 8v12H14z'/%3E%3Ccircle cx='86' cy='22' r='7'/%3E%3Cpath d='M60 70c6-10 18-10 24 0'/%3E%3Cpath d='M18 92h20M28 82v20'/%3E%3Cpath d='M92 88l8 8-8 8-8-8z'/%3E%3Cpath d='M50 18l4 4 8-8'/%3E%3C/g%3E%3C/svg%3E"),linear-gradient(170deg,#e6f6f2,#f6f1e7)}
+.ch-day{text-align:center;margin:12px 0 6px}
+.ch-day span{display:inline-block;background:rgba(255,255,255,.92);color:#3d5c58;font-size:12px;font-weight:600;padding:4px 12px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.ch-row{display:flex;gap:6px;align-items:flex-start;margin:2px 4px}
+.ch-row.first{margin-top:9px}
+.ch-row.me{justify-content:flex-end}
+.ch-row .avbtn{cursor:pointer;flex:none}
+.ch-sp{width:34px;flex:none}
+.bub{max-width:78%;padding:7px 11px 5px;border-radius:18px;font-size:15.5px;line-height:1.45;position:relative}
+.bub.them{background:#fff;color:#1d2a2a;box-shadow:0 1px 2px rgba(0,0,0,.08),0 4px 14px rgba(15,92,92,.06)}
+.bub.me{background:linear-gradient(135deg,#0f766e,#14b8a6);color:#fff;box-shadow:0 4px 14px rgba(13,148,136,.28)}
+.bub.them.first{border-top-left-radius:6px}.bub.me.first{border-top-right-radius:6px}
+.bub.pic{padding:4px}
+.bub a{color:inherit}.bub.them a{color:#0d9488}
+.ch-nm{font-size:12.5px;font-weight:700;margin-bottom:2px}
+.ch-nm span{font-weight:500;color:#7a8f8c;margin-left:6px;font-size:11.5px}
+.ch-tx{white-space:pre-wrap;word-break:break-word}
+.ch-tm{font-size:10.5px;text-align:right;margin-top:2px;opacity:.75;white-space:nowrap}
+.bub.me .ch-tm{opacity:.85}
+.ch-tick{font-weight:800;letter-spacing:-3px;margin-left:4px;color:rgba(255,255,255,.75)}
+.ch-tick.all{color:#a5f3fc;text-shadow:0 0 6px rgba(165,243,252,.7)}
+.ch-del{opacity:.7;font-size:14px}
+.cq{border-left:4px solid #14b8a6;background:rgba(15,118,110,.07);border-radius:8px;padding:4px 8px;margin:2px 0 6px;font-size:13px;cursor:pointer}
+.cq b{color:#0f766e}.cq div{opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58vw}
+.bub.me .cq{border-left-color:#fff;background:rgba(255,255,255,.18)}.bub.me .cq b{color:#fff}
+.ch-img img{display:block;max-width:100%;max-height:280px;border-radius:14px}
+.ch-file{display:flex;gap:10px;align-items:center;background:rgba(15,118,110,.07);border-radius:12px;padding:9px;text-decoration:none!important}
+.bub.me .ch-file{background:rgba(255,255,255,.18)}
+.ch-file span:first-child{font-size:26px}.ch-file small{display:block;font-size:11.5px;opacity:.8}
+.ch-call{display:flex;gap:10px;align-items:center;padding:4px 2px}.ch-call>span{font-size:30px}
+.ch-call a{display:table;margin-top:6px;background:#10b981;color:#fff!important;text-decoration:none;padding:6px 14px;border-radius:20px;font-weight:700;font-size:14px}
+.ch-row.pop .bub{animation:pop .28s cubic-bezier(.2,1.4,.5,1)}
+@keyframes pop{from{transform:scale(.85) translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.ch-reply{display:flex;gap:8px;align-items:center;background:#fff;border-radius:14px;padding:7px 10px;margin:0 0 6px;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.ch-bar{display:flex;gap:8px;align-items:flex-end;flex:none}
+.ch-pill{flex:1;min-width:0;display:flex;align-items:flex-end;background:#fff;border-radius:26px;padding:4px 6px;box-shadow:0 2px 10px rgba(15,92,92,.12);border:1.5px solid transparent;transition:border-color .2s}
+.ch-pill:focus-within{border-color:#14b8a6}
+.ch-pill textarea,.ch-pill textarea:focus{flex:1;min-width:0;border:0!important;outline:0!important;box-shadow:none!important;background:transparent;resize:none;min-height:40px;max-height:130px;padding:9px 6px;font:inherit;font-size:16px}
+.ch-pb{width:38px;height:40px;border:0;background:none;font-size:20px;cursor:pointer;flex:none;border-radius:50%}
+.ch-pb.rec{background:#fde8ec;animation:ring 1.4s infinite}
+.ch-send{width:50px;height:50px;border-radius:50%;border:0;color:#fff;font-size:20px;cursor:pointer;flex:none;background:linear-gradient(135deg,#0f766e,#10b981);box-shadow:0 4px 14px rgba(16,185,129,.45);transition:transform .15s}
+.ch-send:active{transform:scale(.9)}.ch-send:disabled{opacity:.6}
 /* chat room fills the screen like WhatsApp: top bar stays, box sits on the keyboard */
 .inchat footer,.inchat #chatFab{display:none!important}
 .m-phone.inchat body{overflow:hidden}
@@ -385,6 +441,7 @@ const TX={
  popn:['Population','జనాభా'], photosN:['Photos','ఫోటోలు'], chat:['Chat','చాట్'], chatHelp:['Talk with all secretariats and the commissioner. Messages are seen only by people logged in to this app.','అన్ని సచివాలయాలు, కమిషనర్‌తో మాట్లాడండి. ఈ యాప్‌లో లాగిన్ అయినవారికి మాత్రమే సందేశాలు కనిపిస్తాయి.'],
  chatPhoto:['Chat photo','చాట్ ఫోటో'], chatPhotoHelp:['Shown beside your messages. If you do not set one, your employee photo is used.','మీ సందేశాల పక్కన కనిపిస్తుంది. సెట్ చేయకపోతే మీ ఉద్యోగి ఫోటో వాడబడుతుంది.'], changePhoto:['Change photo','ఫోటో మార్చు'],
  newChat:['New chat','కొత్త చాట్'], people:['People','వ్యక్తులు'], noPeople:['No one found with that name','ఆ పేరుతో ఎవరూ లేరు'], searchPeople2:['Search chats or people','చాట్‌లు లేదా వ్యక్తులు వెతకండి'], searchPeople:['Search name, post or ward','పేరు, పోస్టు లేదా వార్డు వెతకండి'], msgPrivately:['Message privately','వ్యక్తిగతంగా సందేశం'], personal:['Personal chat','వ్యక్తిగత చాట్'],
+ today:['Today','ఈరోజు'], yesterday:['Yesterday','నిన్న'], membersN:['members','సభ్యులు'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['Commissioner','కమిషనర్'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -1672,33 +1729,48 @@ async function vChat(room){const app=curApp;
     S.chatUnread=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;renderNav();return}
   const info=(S.chatRooms||[]).find(x=>x.room===room)||{room:room,title:room.startsWith('ward:')?secName(room.slice(5)):room.startsWith('dm:')?(S.dmNames||{})[room]:''};
   document.documentElement.classList.add('inchat');
-  app.innerHTML='<div id="chatroom" style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" id="cvc" title="'+esc(t('videoCall'))+'" style="background:#16a085">📹 '+t('videoCallS')+'</button><button type="button" class="btn alt sm" id="mu" hidden></button></span></div>'+
-    '<div id="cm" style="flex:1;overflow-y:auto;padding:8px 2px;margin:6px 0;background:#eef4f3;border-radius:12px"></div>'+
-    '<div id="rp" hidden style="display:flex;gap:8px;align-items:center;background:#fff;border-radius:10px;padding:6px 8px;margin-bottom:6px;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.15)"></div><div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cdic" title="'+esc(t('dictate'))+'" style="height:44px;padding:0 10px">🎙️</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsgS'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
+  const isDm=room.startsWith('dm:');
+  const roomIcon=isDm?avatar(info.title||'',info.photo,40):'<span class="ch-ico">'+(room==='all'?'🌐':room==='admins'?'🏛️':room.startsWith('dept:')?((DEPTS.find(x=>x[0]===room.slice(5))||[])[1]||'💬'):'🏢')+'</span>';
+  const roomTitle=isDm?(info.title||(S.dmNames||{})[room]||t('personal')):roomName(info).replace(/^\S+\s/,'');
+  app.innerHTML='<div id="chatroom" style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)">'+
+    '<div class="ch-top"><a href="#chat" class="ch-ib" title="'+esc(t('back'))+'">←</a>'+roomIcon+'<div class="ch-tt"><b>'+esc(roomTitle)+'</b><small id="csub">'+(isDm?esc(desigLabel(info.peer_desig||'')+(info.peer_code?' · '+secName(info.peer_code):'')):'&nbsp;')+'</small></div>'+
+      '<button type="button" class="ch-ib call" id="cvc" title="'+esc(t('videoCall'))+'">📹</button><button type="button" class="ch-ib" id="mu" hidden></button></div>'+
+    '<div id="cm" class="ch-bg"></div>'+
+    '<div id="rp" hidden class="ch-reply"></div><div id="up" class="mute" style="font-size:13px;flex:none;padding:0 6px"></div>'+
+    '<form id="cs" class="ch-bar"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt">'+
+      '<div class="ch-pill"><button type="button" class="ch-pb" id="cat" title="'+esc(t('attach'))+'">📎</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsgS'))+'"></textarea><button type="button" class="ch-pb" id="cdic" title="'+esc(t('dictate'))+'">🎙️</button></div>'+
+      '<button class="ch-send" id="cb" title="Send">➤</button></form></div>';
   let last=0,msgs=[],reads=[],members=0,readKey='',replyTo=null;const box=$('cm');
   box.addEventListener('scroll',()=>{box.dataset.stick=box.scrollHeight-box.scrollTop-box.clientHeight<80?'1':'0'},{passive:true});
   const isBoss=['super','commissioner'].includes((S.me||{}).role);
   const ticks=m=>{if(!m.mine||m.deleted)return '';const n=reads.filter(x=>x>=m.id).length;
-    return ' <span title="'+esc(n+' / '+members+' '+t('seenBy'))+'" style="font-weight:800;letter-spacing:-3px;color:'+(n&&n>=members?'#2f9bf0':'#8a9a99')+'">'+(n?'✓✓':'✓')+'</span>'};
-  const bubble=(m,k)=>{const prev=k>0?msgs[k-1]:null;const first=!prev||prev.uid!==m.uid||prev.mine!==m.mine;m._first=first;return bubble0(m,first)};
-  const bubble0=(m,first)=>'<div style="display:flex;gap:6px;align-items:flex-start;justify-content:'+(m.mine?'flex-end':'flex-start')+';margin:'+(first?'8px':'2px')+' 6px 2px">'+
-    (m.mine?'':first?'<span class="avbtn" data-av="'+m.id+'" style="cursor:pointer;flex:none">'+avatar(m.name,m.photo)+'</span>':'<span style="width:38px;flex:none"></span>')+'<div class="cmsg" data-mid="'+m.id+'" style="max-width:80%;background:'+(m.mine?'#d4f2e4':'#fff')+';border-radius:12px;padding:7px 10px;box-shadow:0 1px 2px rgba(0,0,0,.12)">'+
-    (m.reply&&!m.deleted?'<div class="cq" data-goto="'+m.reply.id+'" style="border-left:4px solid var(--c);background:rgba(0,0,0,.05);border-radius:6px;padding:4px 8px;margin:2px 0 5px;font-size:13px;cursor:pointer"><b style="color:var(--c)">'+esc(m.reply.name||'')+'</b><div class="mute" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw">'+esc(m.reply.body||'…')+'</div></div>':'')+
-    (m.mine||!first?'':'<div style="font-size:12px;font-weight:700;color:var(--c)">'+esc(m.name||'')+' <span class="mute" style="font-weight:400">'+esc(m.desig?desigLabel(m.desig):'')+(m.code&&room==='all'||m.code&&room==='admins'?' · '+esc(secName(m.code)):'')+'</span></div>')+
-    (m.deleted?'':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener"><img src="'+esc(m.url)+'" loading="lazy" style="max-width:100%;max-height:260px;border-radius:8px;display:block;margin:2px 0"></a>':
-      m.kind==='call'&&m.url?'<div style="display:flex;gap:10px;align-items:center;padding:4px 0"><span style="font-size:28px">📹</span><div><b>'+t('videoCall')+'</b><br><a class="btn sm" style="margin-top:4px;background:#16a085" href="'+esc(m.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false" target="_blank" rel="noopener">'+t('joinCall')+'</a></div></div>':
-      m.kind==='audio'&&m.url?'<audio controls preload="none" src="'+esc(m.url)+'" style="max-width:240px;height:40px"></audio>':
-      m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" style="display:flex;gap:8px;align-items:center;background:#f2f6f6;border-radius:8px;padding:8px;text-decoration:none"><span style="font-size:24px">📄</span><span><b>'+esc(m.fname||t('file'))+'</b><br><span class="mute" style="font-size:12px">'+(m.fsize?fsize(m.fsize):'')+' · '+t('open')+'</span></span></a>':'')+
-    (m.deleted?'<i class="mute">'+t('msgDeleted')+'</i>':!m.body?'':'<div style="white-space:pre-wrap;word-break:break-word">'+esc(m.body).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')+'</div>')+
-    '<div class="mute" style="font-size:11px;text-align:right">'+esc(chatTime(m.at))+ticks(m)+'</div></div></div>';
-  const paint=(stick)=>{const atEnd=box.scrollHeight-box.scrollTop-box.clientHeight<80;box.innerHTML=msgs.length?msgs.map((m,k)=>bubble(m,k)).join(''):'<p class="mute" style="text-align:center;margin-top:30px">'+t('noMsgs')+'</p>';
+    return ' <span title="'+esc(n+' / '+members+' '+t('seenBy'))+'" class="ch-tick'+(n&&n>=members?' all':'')+'">'+(n?'✓✓':'✓')+'</span>'};
+  const bubble=(m,k)=>{const prev=k>0?msgs[k-1]:null;const first=!prev||prev.uid!==m.uid||prev.mine!==m.mine||dayLabel(prev.at)!==dayLabel(m.at);m._first=first;return bubble0(m,first)};
+  const NAMEC=['#0f766e','#c2410c','#7c3aed','#b91c1c','#1d4ed8','#047857','#a16207','#be185d','#0369a1','#4d7c0f'];
+  const nameColor=n=>{let h=0;for(const ch of String(n||''))h=(h*31+ch.charCodeAt(0))>>>0;return NAMEC[h%NAMEC.length]};
+  const dayLabel=a=>{const d=new Date(a),n=new Date(),y=new Date(n-864e5);return d.toDateString()===n.toDateString()?t('today'):d.toDateString()===y.toDateString()?t('yesterday'):d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})};
+  let popAfter=Infinity;
+  const bubble0=(m,first)=>{const me=m.mine;
+    const media=m.deleted?'':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" class="ch-img"><img src="'+esc(m.url)+'" loading="lazy"></a>':
+      m.kind==='call'&&m.url?'<div class="ch-call"><span>📹</span><div><b>'+t('videoCall')+'</b><a href="'+esc(m.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false" target="_blank" rel="noopener">'+t('joinCall')+'</a></div></div>':
+      m.kind==='audio'&&m.url?'<audio controls preload="none" src="'+esc(m.url)+'" style="max-width:230px;height:40px"></audio>':
+      m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" class="ch-file"><span>📄</span><span><b>'+esc(m.fname||t('file'))+'</b><small>'+(m.fsize?fsize(m.fsize):'')+' · '+t('open')+'</small></span></a>':'';
+    return '<div class="ch-row '+(me?'me':'them')+(first?' first':'')+(m.id>popAfter?' pop':'')+'">'+
+      (me?'':first?'<span class="avbtn" data-av="'+m.id+'">'+avatar(m.name,m.photo,34)+'</span>':'<span class="ch-sp"></span>')+
+      '<div class="cmsg bub '+(me?'me':'them')+(first?' first':'')+(m.kind==='image'&&!m.body?' pic':'')+'" data-mid="'+m.id+'">'+
+      (me||!first||isDm?'':'<div class="ch-nm" style="color:'+nameColor(m.name)+'">'+esc(m.name||'')+'<span>'+esc(m.desig?desigLabel(m.desig):'')+(m.code&&!room.startsWith('ward:')?' · '+esc(secName(m.code)):'')+'</span></div>')+
+      (m.reply&&!m.deleted?'<div class="cq" data-goto="'+m.reply.id+'"><b>'+esc(m.reply.name||'')+'</b><div>'+esc(m.reply.body||'…')+'</div></div>':'')+media+
+      (m.deleted?'<i class="ch-del">🚫 '+t('msgDeleted')+'</i>':!m.body?'':'<div class="ch-tx">'+esc(m.body).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')+'</div>')+
+      '<div class="ch-tm">'+esc(chatTime(m.at).replace(/^.*?,\s*/,''))+ticks(m)+'</div></div></div>'};
+  const paint=(stick)=>{const atEnd=box.scrollHeight-box.scrollTop-box.clientHeight<80;box.innerHTML=msgs.length?msgs.map((m,k)=>{const dl=dayLabel(m.at),pd=k?dayLabel(msgs[k-1].at):'';return (dl!==pd?'<div class="ch-day"><span>'+esc(dl)+'</span></div>':'')+bubble(m,k)}).join(''):'<p class="mute" style="text-align:center;margin-top:30px">'+t('noMsgs')+'</p>';
     if(stick||atEnd)box.scrollTop=box.scrollHeight;
     box.querySelectorAll('[data-av]').forEach(a=>a.onclick=()=>{const m=msgs.find(x=>x.id===+a.dataset.av);if(!m)return;
       const d=sheet('<div style="text-align:center;padding:10px 0">'+avatar(m.name,m.photo,150)+'<h2 style="margin:12px 0 2px">'+esc(m.name||'')+'</h2><div class="mute">'+esc(m.desig?desigLabel(m.desig):'')+(m.code?' · '+esc(secName(m.code)):'')+'</div></div>'+(m.uid&&!room.startsWith('dm:')?'<button type="button" class="btn" style="width:100%;justify-content:center;margin-bottom:8px" id="avm">💬 '+t('msgPrivately')+'</button>':'')+'<button type="button" class="btn alt" style="width:100%;justify-content:center" id="avc">'+t('close')+'</button>');d.querySelector('#avc').onclick=()=>d.remove();const am=d.querySelector('#avm');if(am)am.onclick=()=>{d.remove();openDm(m.uid,m.name)}});
     box.querySelectorAll('[data-goto]').forEach(q=>q.onclick=e=>{e.stopPropagation();const el=box.querySelector('[data-mid="'+q.dataset.goto+'"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500)}})};
   const pull=async(first)=>{try{const r=await rpc('wp_chat_sync',{p_token:S.token,p_room:room,p_after:last})||{};const nw=r.msgs||[];
+    if(!isDm&&$('csub'))$('csub').textContent=((r.members||0)+1)+' '+t('membersN');
     const rk=JSON.stringify(r.reads||[])+'/'+r.members;const changed=rk!==readKey;reads=r.reads||[];members=r.members||0;readKey=rk;
-    if(nw.length||first||changed){msgs=msgs.concat(nw);if(nw.length)last=nw[nw.length-1].id;chatMark(room,last);paint(first)}}catch(er){if(first)box.innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+    if(nw.length||first||changed){popAfter=first?Infinity:last;msgs=msgs.concat(nw);if(nw.length)last=nw[nw.length-1].id;chatMark(room,last);paint(first)}}catch(er){if(first)box.innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
   // long-press (or right-click) a message: Reply / Copy / Info / Delete – like WhatsApp
   const sheet=(html)=>{const d=document.createElement('div');d.className='csheet';d.innerHTML='<div class="cs-in">'+html+'</div>';document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.remove()};return d};
   const openMenu=id=>{const m=msgs.find(x=>x.id===id);if(!m||m.deleted)return;try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}
@@ -1753,8 +1825,8 @@ async function vChat(room){const app=curApp;
     sr.onresult=e=>{let inter='';for(let k=e.resultIndex;k<e.results.length;k++){const r=e.results[k];if(r.isFinal)fin+=r[0].transcript+' ';else inter+=r[0].transcript}
       ta.value=base+fin+inter;ta.oninput()};
     sr.onerror=e=>{if(e.error==='not-allowed')toast(t('noMic'))};
-    sr.onend=()=>{sr=null;$('cdic').classList.remove('red');$('cdic').textContent='🎙️';$('up').innerHTML='';ta.focus()};
-    try{sr.start();$('cdic').classList.add('red');$('cdic').textContent='⏹';$('up').innerHTML='🔴 '+t('listening')+' ('+(te()?'తెలుగు':'English')+') – '+t('tapStopDic')}catch(e){sr=null}};
+    sr.onend=()=>{sr=null;$('cdic').classList.remove('rec');$('cdic').textContent='🎙️';$('up').innerHTML='';ta.focus()};
+    try{sr.start();$('cdic').classList.add('rec');$('cdic').textContent='⏹';$('up').innerHTML='🔴 '+t('listening')+' ('+(te()?'తెలుగు':'English')+') – '+t('tapStopDic')}catch(e){sr=null}};
   // video call: posts a join link in this room and opens the call
   $('cvc').onclick=async()=>{if(!confirm(t('startCallQ')))return;
     const id='WardProfile-'+room.replace(/[^0-9a-z]/gi,'').slice(0,24)+'-'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
@@ -1764,7 +1836,7 @@ async function vChat(room){const app=curApp;
     if(w)w.location.href=full;else location.href=full};
   // mute this room's notifications
   pushSub().then(async sub=>{if(!sub)return;let st=null;try{st=await rpc('wp_push_status',{p_token:S.token,p_endpoint:sub.endpoint})}catch(e){}if(!st)return;
-    let muted=(st.muted||[]).includes(room);const mb=$('mu');if(!mb)return;const paintM=()=>{mb.textContent=muted?'🔕':'🔔';mb.title=muted?t('unmute'):t('mute')};paintM();mb.hidden=false;
+    let muted=(st.muted||[]).includes(room);const mb=$('mu');if(!mb)return;const paintM=()=>{mb.textContent=muted?'🔕':'🔔';mb.classList.toggle('off',muted);mb.title=muted?t('unmute'):t('mute')};paintM();mb.hidden=false;
     mb.onclick=async()=>{try{await rpc('wp_push_mute',{p_token:S.token,p_endpoint:sub.endpoint,p_room:room,p_mute:!muted});muted=!muted;paintM();toast(muted?t('muted'):t('unmuted'))}catch(er){toast(errText(er))}}}).catch(()=>{});
   S.chatUnread=Math.max(0,(S.chatUnread||0)-1);renderNav();
 }
