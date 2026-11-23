@@ -54,6 +54,13 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(22,160,133,.55)}70%{box-shadow:0 0 0 16px rgba(22,160,133,0)}100%{box-shadow:0 0 0 0 rgba(22,160,133,0)}}
 #chatFab b{background:#fff;color:#e8566c;border-radius:12px;padding:0 7px;font-size:13px;min-width:20px;text-align:center}
 @media print{#chatFab{display:none!important}}
+#callBox{position:fixed;inset:0;z-index:3000;background:radial-gradient(circle at 50% 35%,#16a085,#0b4747 60%,#062a2a);display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
+#callBox .cb-ic{font-size:64px;animation:wig 1.2s ease-in-out infinite}
+#callBox .cb-t{font-size:15px;letter-spacing:1px;text-transform:uppercase;opacity:.85;margin-top:10px}
+#callBox .cb-n{font-size:24px;font-weight:800;margin-top:6px}#callBox .cb-r{opacity:.85}
+#callBox .cb-b{width:84px;height:84px;border-radius:50%;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:30px;color:#fff;text-decoration:none;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+#callBox .cb-b small{font-size:11px;font-weight:700;margin-top:2px}
+#callBox .cb-b.no{background:#e8566c}#callBox .cb-b.yes{background:#27ae60;animation:ring 1.4s infinite}
 .qdel{border:0;background:#fde8ec;color:#c0392b;border-radius:6px;padding:0 5px;margin-left:4px;cursor:pointer;font-size:12px;vertical-align:middle}
 .btn.big{width:100%;justify-content:center;font-size:19px;letter-spacing:.3px;padding:15px 18px;border-radius:14px;margin-top:16px;position:relative;overflow:hidden;
   background:linear-gradient(110deg,#0e6b6b,#16a085,#f2a33a,#e8566c,#0e6b6b);background-size:300% 100%;animation:bgmove 6s ease infinite;box-shadow:0 6px 18px rgba(14,107,107,.35);transition:transform .15s,box-shadow .15s}
@@ -326,7 +333,7 @@ const TX={
  addUser:['Add user','యూజర్‌ను జోడించు'], addUserHelp:['Add anyone directly – a new secretary, an in-charge, a commissioner office staff. They can log in at once with this phone / mail and password.','ఎవరినైనా నేరుగా జోడించండి – కొత్త సెక్రటరీ, ఇన్‌ఛార్జ్, కమిషనర్ కార్యాలయ సిబ్బంది. ఈ ఫోన్ / మెయిల్, పాస్‌వర్డ్‌తో వెంటనే లాగిన్ కావచ్చు.'],
  role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
  popn:['Population','జనాభా'], photosN:['Photos','ఫోటోలు'], chat:['Chat','చాట్'], chatHelp:['Talk with all secretariats and the commissioner. Messages are seen only by people logged in to this app.','అన్ని సచివాలయాలు, కమిషనర్‌తో మాట్లాడండి. ఈ యాప్‌లో లాగిన్ అయినవారికి మాత్రమే సందేశాలు కనిపిస్తాయి.'],
- commShort:['Commissioner','కమిషనర్'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
+ incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['Commissioner','కమిషనర్'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
  notifNo:['This browser cannot show notifications. On Android use Chrome; on iPhone first add the app to the home screen.','ఈ బ్రౌజర్ నోటిఫికేషన్లు చూపదు. ఆండ్రాయిడ్‌లో Chrome వాడండి; ఐఫోన్‌లో ముందు యాప్‌ను హోమ్ స్క్రీన్‌కు జోడించండి.'], pushDenied:['Notifications are blocked. Open the browser site settings for this app and allow Notifications.','నోటిఫికేషన్లు బ్లాక్ అయ్యాయి. బ్రౌజర్ సైట్ సెట్టింగ్‌లలో Notifications అనుమతించండి.'],
  turnOn:['Turn on','ఆన్ చేయి'], turnOff:['Turn off','ఆఫ్ చేయి'], mute:['Mute this room','ఈ గదిని మ్యూట్ చేయి'], unmute:['Unmute this room','మ్యూట్ తీసివేయి'], muted:['Room muted – no alerts','మ్యూట్ – అలర్ట్‌లు రావు'], unmuted:['Alerts on for this room','ఈ గదికి అలర్ట్‌లు ఆన్'],
@@ -1545,6 +1552,25 @@ async function pushOn(){
   await rpc('wp_push_save',{p_token:S.token,p_sub:sub.toJSON(),p_on:true});return sub}
 async function pushOff(){const sub=await pushSub();if(sub){try{await rpc('wp_push_save',{p_token:S.token,p_sub:sub.toJSON(),p_on:false})}catch(e){}await sub.unsubscribe()}}
 const fsize=n=>n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';
+
+/* incoming video call: ringtone + full-screen card */
+let ringCtx=null,ringTimer=null,ringOsc=[];
+function ringStart(){try{ringCtx=ringCtx||new (window.AudioContext||window.webkitAudioContext)();ringCtx.resume&&ringCtx.resume();
+  const burst=()=>{const t0=ringCtx.currentTime;[0,0.45].forEach(off=>{const g=ringCtx.createGain();g.gain.setValueAtTime(0,t0+off);g.gain.linearRampToValueAtTime(.35,t0+off+.03);g.gain.setValueAtTime(.35,t0+off+.35);g.gain.linearRampToValueAtTime(0,t0+off+.4);g.connect(ringCtx.destination);
+    [440,480].forEach(f=>{const o=ringCtx.createOscillator();o.frequency.value=f;o.connect(g);o.start(t0+off);o.stop(t0+off+.42);ringOsc.push(o)})})};
+  burst();ringTimer=setInterval(burst,2200)}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate([800,300,800,300,800,300,800,300,800,300,800,300,800])}catch(e){}}
+function ringStop(){clearInterval(ringTimer);ringTimer=null;ringOsc.forEach(o=>{try{o.stop()}catch(e){}});ringOsc=[];try{navigator.vibrate&&navigator.vibrate(0)}catch(e){}}
+function callsSeen(){try{return JSON.parse(localStorage.getItem('wp_calls_seen')||'[]')}catch(e){return []}}
+function incomingCall(c){const seen=callsSeen();if(seen.includes(c.id)||$('callBox'))return;localStorage.setItem('wp_calls_seen',JSON.stringify(seen.concat(c.id).slice(-50)));
+  const d=document.createElement('div');d.id='callBox';
+  d.innerHTML='<div class="cb-in"><div class="cb-ic">📹</div><div class="cb-t">'+t('incomingCall')+'</div><div class="cb-n">'+esc(c.name||'')+'</div><div class="cb-r">'+esc(c.title||'')+'</div>'+
+    '<div class="row" style="justify-content:center;gap:18px;margin-top:22px"><button type="button" class="cb-b no">✖<small>'+t('later')+'</small></button><a class="cb-b yes" target="_blank" rel="noopener" href="'+esc(c.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false">📹<small>'+t('joinCall')+'</small></a></div></div>';
+  document.body.appendChild(d);ringStart();const end=()=>{ringStop();d.remove()};
+  d.querySelector('.no').onclick=end;d.querySelector('.yes').onclick=()=>setTimeout(end,100);setTimeout(()=>{if(document.body.contains(d))end()},45000)}
+async function callPoll(){if(!S.token||document.visibilityState!=='visible')return;try{const cs=await rpc('wp_chat_calls',{p_token:S.token})||[];const c=cs[cs.length-1];if(c)incomingCall(c)}catch(e){}}
+setInterval(callPoll,10000);
+if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.type==='call'&&e.data.call)incomingCall(e.data.call)});
 async function vChat(room){const app=curApp;
   if(!S.token){location.hash='#login';return}
   await loadSecs();
