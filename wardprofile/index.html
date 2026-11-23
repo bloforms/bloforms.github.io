@@ -326,7 +326,7 @@ const TX={
  addUser:['Add user','యూజర్‌ను జోడించు'], addUserHelp:['Add anyone directly – a new secretary, an in-charge, a commissioner office staff. They can log in at once with this phone / mail and password.','ఎవరినైనా నేరుగా జోడించండి – కొత్త సెక్రటరీ, ఇన్‌ఛార్జ్, కమిషనర్ కార్యాలయ సిబ్బంది. ఈ ఫోన్ / మెయిల్, పాస్‌వర్డ్‌తో వెంటనే లాగిన్ కావచ్చు.'],
  role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
  popn:['Population','జనాభా'], photosN:['Photos','ఫోటోలు'], chat:['Chat','చాట్'], chatHelp:['Talk with all secretariats and the commissioner. Messages are seen only by people logged in to this app.','అన్ని సచివాలయాలు, కమిషనర్‌తో మాట్లాడండి. ఈ యాప్‌లో లాగిన్ అయినవారికి మాత్రమే సందేశాలు కనిపిస్తాయి.'],
- roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
+ commShort:['Commissioner','కమిషనర్'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
  notifNo:['This browser cannot show notifications. On Android use Chrome; on iPhone first add the app to the home screen.','ఈ బ్రౌజర్ నోటిఫికేషన్లు చూపదు. ఆండ్రాయిడ్‌లో Chrome వాడండి; ఐఫోన్‌లో ముందు యాప్‌ను హోమ్ స్క్రీన్‌కు జోడించండి.'], pushDenied:['Notifications are blocked. Open the browser site settings for this app and allow Notifications.','నోటిఫికేషన్లు బ్లాక్ అయ్యాయి. బ్రౌజర్ సైట్ సెట్టింగ్‌లలో Notifications అనుమతించండి.'],
  turnOn:['Turn on','ఆన్ చేయి'], turnOff:['Turn off','ఆఫ్ చేయి'], mute:['Mute this room','ఈ గదిని మ్యూట్ చేయి'], unmute:['Unmute this room','మ్యూట్ తీసివేయి'], muted:['Room muted – no alerts','మ్యూట్ – అలర్ట్‌లు రావు'], unmuted:['Alerts on for this room','ఈ గదికి అలర్ట్‌లు ఆన్'],
@@ -1521,7 +1521,7 @@ async function vAbstract(){const app=curApp;
 /* ----- chat: all Guntakal / WS + commissioner / each ward ----- */
 function chatSeen(){try{return JSON.parse(localStorage.getItem('wp_chat_seen')||'{}')}catch(e){return {}}}
 function chatMark(room,id){const s=chatSeen();if(id&&(!s[room]||s[room]<id)){s[room]=id;localStorage.setItem('wp_chat_seen',JSON.stringify(s))}}
-function roomName(r){if(r.room==='all')return '🌐 '+t('roomAll');if(r.room==='admins')return '🏛️ '+t('roomAdmins');return '🏢 '+(r.title||secName(r.room.slice(5)))}
+function roomName(r){if(r.room==='all')return '🌐 '+t('roomAll');if(r.room==='admins')return '🏛️ '+t('roomAdmins');if(r.room.startsWith('dept:')){const d=DEPTS.find(x=>x[0]===r.room.slice(5));return (d?d[1]+' '+(te()?d[3]:d[2]):r.room.slice(5))+' + '+t('commShort')}return '🏢 '+(r.title||secName(r.room.slice(5)))}
 async function chatPoll(){if(!S.token)return;try{const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];const seen=chatSeen();
   const n=rs.filter(r=>r.last_id&&r.last_id>(seen[r.room]||0)).length;if(n!==S.chatUnread){S.chatUnread=n;header()}S.chatRooms=rs}catch(e){}}
 setInterval(()=>{if(document.visibilityState==='visible'&&!(location.hash||'').startsWith('#chat/'))chatPoll()},45000);
@@ -1550,7 +1550,7 @@ async function vChat(room){const app=curApp;
   await loadSecs();
   if(!room){app.innerHTML='<div class="card"><span class="spin"></span></div>';
     const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];S.chatRooms=rs;const seen=chatSeen();
-    const me=S.me||{};const ordered=rs.slice().sort((a,b)=>(a.room===('ward:'+me.code)?-1:0)-(b.room===('ward:'+me.code)?-1:0)||(b.room==='all')-(a.room==='all'));
+    const me=S.me||{};const rank=x=>x.room==='ward:'+me.code?0:x.room==='all'?1:x.room==='admins'?2:x.room.startsWith('dept:')?3:4;const ordered=rs.slice().sort((a,b)=>rank(a)-rank(b));
     const sub=await pushSub().catch(()=>null);
     app.innerHTML='<div class="secttl"><span style="font-size:26px">💬</span><h1>'+t('chat')+'</h1></div><p class="mute">'+t('chatHelp')+'</p>'+
       '<div class="card row" style="justify-content:space-between;background:'+(sub?'#eaf7ef':'#fff8ea')+'"><div class="grow"><b>'+(sub?'🔔 '+t('notifOn'):'🔕 '+t('notifOff'))+'</b><div class="mute" style="font-size:13px">'+t(pushOK()?'notifHelp':'notifNo')+'</div></div>'+
