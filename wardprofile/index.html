@@ -244,7 +244,7 @@ const TX={
  placeHelp:['Needs a "Secretariat" column (name or SGSW number, e.g. 21003001) at the end of the Live Data sheet. Then upload the sheet again and tap this.','లైవ్ డేటా షీట్ చివర "Secretariat" కాలమ్ (పేరు లేదా SGSW నంబర్, ఉదా: 21003001) ఉండాలి. తర్వాత షీట్‌ను మళ్లీ అప్‌లోడ్ చేసి దీన్ని నొక్కండి.'],
  filledN:['filled','నింపబడ్డాయి'], noMatchN:['not found in saved list','సేవ్ చేసిన జాబితాలో దొరకలేదు'], placedN:['placed','ఉంచబడ్డారు'], skippedN:['already there','ఇప్పటికే ఉన్నారు'], unknownN:['without a secretariat','సచివాలయం లేకుండా'],
  withSec:['with Secretariat column','సచివాలయ కాలమ్‌తో'],
- clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
+ vacantPosts:['Vacant posts','ఖాళీ పోస్టులు'], clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
  badAadhaar:['Aadhaar must be 12 digits.','ఆధార్ 12 అంకెలు ఉండాలి.'],
@@ -724,7 +724,7 @@ function vWardTab(w){
     body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a><a class="btn alt" href="#export/'+code+'">'+t('dlEmp')+'</a><button type="button" class="btn orange" id="fillWard">'+t('fillAll')+'</button></div>':'')+'<div class="list">'+
      (w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+
        '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+clusterLine(s)+privLine(s)+'</div>'+
-       '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>';
+       '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>'+((w.vacant||[]).length?'<div class="card"><h3 style="margin-top:0">🪑 '+t('vacantPosts')+' ('+w.vacant.length+')</h3><ul style="margin:0">'+w.vacant.map(v=>'<li>'+esc(desigLabel(v))+'</li>').join('')+'</ul></div>':'');
     return;
   }
   /* overview */
