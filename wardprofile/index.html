@@ -229,7 +229,15 @@ const TX={
  fileTitle:['Heading on top of the sheet (optional)','షీట్ పైన శీర్షిక (ఐచ్ఛికం)'], xlsxB:['⬇ Excel (.xlsx)','⬇ ఎక్సెల్ (.xlsx)'], csvB:['⬇ CSV','⬇ CSV'], copyB:['📋 Copy for Google Sheet','📋 గూగుల్ షీట్ కోసం కాపీ'],
  copyDone:['Copied. Open Google Sheets, tap cell A1 and paste.','కాపీ అయింది. గూగుల్ షీట్స్ తెరిచి A1 సెల్‌లో పేస్ట్ చేయండి.'], employeesN:['employees','ఉద్యోగులు'], colsN:['columns','కాలమ్‌లు'],
  onlyBlo:['Only BLOs','BLOలు మాత్రమే'], scopeAll:['All 35 secretariats','మొత్తం 35 సచివాలయాలు'],
- loginId:['Phone number, mail ID or secretariat number (e.g. 21003001)','ఫోన్ నంబర్, మెయిల్ ఐడీ లేదా సచివాలయ నంబర్ (ఉదా: 21003001)'],
+ loginId:['Login ID (e.g. 21003001-WS) or phone / mail','లాగిన్ ఐడీ (ఉదా: 21003001-WS) లేదా ఫోన్ / మెయిల్'],
+ postIds:['Post login IDs','పోస్టు లాగిన్ ఐడీలు'], postIdsHelp:['Your secretariat number, a dash, then your post:','మీ సచివాలయ నంబర్, డాష్, తర్వాత మీ పోస్టు:'],
+ mustChange:['First login: please set your own password now. The common password stops working for you after this.','మొదటి లాగిన్: దయచేసి ఇప్పుడే మీ సొంత పాస్‌వర్డ్ పెట్టుకోండి. ఆ తర్వాత ఉమ్మడి పాస్‌వర్డ్ మీకు పనిచేయదు.'],
+ createPost:['👥 Create post logins for all 35 secretariats','👥 అన్ని 35 సచివాలయాలకు పోస్టు లాగిన్‌లు సృష్టించండి'],
+ resetPost:['🔁 Reset common password (only for logins not yet changed)','🔁 ఉమ్మడి పాస్‌వర్డ్ రీసెట్ (ఇంకా మార్చని లాగిన్‌లకు మాత్రమే)'],
+ commonPassQ:['Common first password for all post logins (6+ letters)','అన్ని పోస్టు లాగిన్‌లకు ఉమ్మడి మొదటి పాస్‌వర్డ్ (6+ అక్షరాలు)'],
+ postCreated:['post logins created','పోస్టు లాగిన్‌లు సృష్టించబడ్డాయి'], postExisted:['already existed (not changed)','ఇప్పటికే ఉన్నాయి (మార్చలేదు)'], postReset:['logins reset','లాగిన్‌లు రీసెట్ అయ్యాయి'],
+ notChanged:['password not changed yet','పాస్‌వర్డ్ ఇంకా మార్చలేదు'], filterUsers:['Search name, login ID or secretariat','పేరు, లాగిన్ ఐడీ లేదా సచివాలయం వెతకండి'],
+ e_same_password:['New password must be different from the common password.','కొత్త పాస్‌వర్డ్ ఉమ్మడి పాస్‌వర్డ్‌కి భిన్నంగా ఉండాలి.'],
  master:['Saved employee list','సేవ్ చేసిన ఉద్యోగుల జాబితా'], masterHelp:['Upload the Live Data sheet once (Google Sheets → File → Download → Microsoft Excel). Every employee and all their details are saved here. Secretariats then fill employees from this list, and Administrative Secretaries whose WhatsApp number is in it are approved automatically when they sign up.','లైవ్ డేటా షీట్‌ను ఒకసారి అప్‌లోడ్ చేయండి (Google Sheets → File → Download → Microsoft Excel). ప్రతి ఉద్యోగి మరియు వారి అన్ని వివరాలు ఇక్కడ సేవ్ అవుతాయి. సచివాలయాలు ఈ జాబితా నుండి ఉద్యోగులను నింపుతాయి; ఈ జాబితాలో వాట్సాప్ నంబర్ ఉన్న పరిపాలనా కార్యదర్శులు సైన్ అప్ చేయగానే ఆటోమేటిక్‌గా ఆమోదించబడతారు.'],
  masterSave:['Save as the saved list','సేవ్ చేసిన జాబితాగా సేవ్ చేయండి'], masterCount:['employees in saved list','ఉద్యోగులు సేవ్ చేసిన జాబితాలో'], masterAdmins:['Administrative Secretaries with phone (auto-approved)','ఫోన్‌తో ఉన్న పరిపాలనా కార్యదర్శులు (ఆటో ఆమోదం)'],
  masterReplace:['This replaces the whole saved list. Continue?','ఇది మొత్తం సేవ్ చేసిన జాబితాను మార్చేస్తుంది. కొనసాగించాలా?'],
@@ -626,10 +634,11 @@ function vAbout(){const app=curApp;
 
 function vLogin(){const app=curApp;
   app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('login')+'</h2><form id="f">'+
-   '<label>'+t('loginId')+'</label><input id="lg" autocomplete="username" inputmode="email" required>'+
+   '<label>'+t('loginId')+'</label><input id="lg" autocomplete="username" autocapitalize="characters" placeholder="21003001-WS" required>'+
    '<label>'+t('password')+'</label><input id="pw" type="password" autocomplete="current-password" required>'+
    '<div id="m"></div><button class="btn" style="margin-top:12px;width:100%;justify-content:center">'+t('login')+'</button></form>'+
-   '<p style="text-align:center"><a href="#signup">'+t('noAcc')+'</a></p></div>';
+   '<p style="text-align:center"><a href="#signup">'+t('noAcc')+'</a></p>'+
+   '<details style="margin-top:8px"><summary style="cursor:pointer;color:var(--c);font-weight:600">'+t('postIds')+'</summary><p class="mute">'+t('postIdsHelp')+'</p><table>'+POSTS.map(x=>'<tr><td><b>21003001-'+x[0]+'</b></td><td>'+esc(desigLabel(x[1]))+'</td></tr>').join('')+'</table></details></div>';
   $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
     try{const r=await rpc('wp_login',{p_login:$('lg').value,p_pass:$('pw').value});setSession(r.token,r.me);location.hash='#home'}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}b.disabled=false};
@@ -657,10 +666,10 @@ async function vSignup(){const app=curApp;
 function vAccount(){const app=curApp;
   if(!S.token){location.hash='#login';return}
   const me=S.me||{};
-  app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('account')+'</h2><p><b>'+esc(me.name)+'</b><br><span class="mute">'+esc(me.login)+'<br>'+esc(desigLabel(me.designation))+'<br>'+esc(me.secretariat||'')+'</span></p>'+
+  app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('account')+'</h2>'+(me.must_change?'<div class="msg err">🔑 '+t('mustChange')+'</div>':'')+'<p><b>'+esc(me.name)+'</b><br><span class="mute">'+esc(loginLabel(me.login))+'<br>'+esc(desigLabel(me.designation))+'<br>'+esc(me.secretariat||'')+'</span></p>'+
    '<h3>'+t('changePass')+'</h3><form id="f"><label>'+t('oldPass')+'</label><input id="op" type="password" required><label>'+t('newPass')+'</label><input id="np" type="password" minlength="6" required><div id="m"></div><button class="btn" style="margin-top:10px">'+t('save')+'</button></form>'+
    '<hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><button class="btn red" id="lo">'+t('logout')+'</button></div>';
-  $('f').onsubmit=async e=>{e.preventDefault();try{await rpc('wp_change_password',{p_token:S.token,p_old:$('op').value,p_new:$('np').value});$('m').innerHTML='<div class="msg ok">'+t('saved')+'</div>';e.target.reset()}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+  $('f').onsubmit=async e=>{e.preventDefault();try{await rpc('wp_change_password',{p_token:S.token,p_old:$('op').value,p_new:$('np').value});const was=S.me&&S.me.must_change;if(S.me){S.me.must_change=false;localStorage.setItem('wp_me',JSON.stringify(S.me))}$('m').innerHTML='<div class="msg ok">'+t('saved')+'</div>';e.target.reset();if(was)setTimeout(()=>{location.hash='#home'},800)}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
   $('lo').onclick=async()=>{try{await rpc('wp_logout',{p_token:S.token})}catch(e){}logoutLocal();location.hash='#home'};
 }
 
@@ -888,6 +897,8 @@ function matchDesig(txt){
   for(const k of keys)if(x.includes(k[0]))return DESIG[k[1]][0];
   return String(txt||'').trim()||DESIG[10][0];
 }
+const POSTS=[['WS','Ward Administrative Secretary'],['WAS','Ward Amenities Secretary'],['WEDS','Ward Education & Data Processing Secretary'],['WWDS','Ward Welfare & Development Secretary'],['WPRS','Ward Planning & Regulation Secretary'],['WSES','Ward Sanitation & Environment Secretary'],['WRS','Ward Revenue Secretary'],['WHS','Ward Health Secretary (ANM)'],['WMPS','Ward Women Protection Secretary (Mahila Police)']];
+const loginLabel=l=>/^\d{8}-/.test(String(l||''))?String(l).toUpperCase():(l||'');
 const titleCase=n=>String(n).trim().replace(/\s+/g,' ').toLowerCase().replace(/(^|[\s.])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
 function parseReport(text){
   const out=[];const idRe=/^\d{2,4}X{2,}\d{2,6}$/i;
@@ -1093,9 +1104,10 @@ async function vAdmin(tab){const app=curApp;
   if(S.atab==='requests'||S.atab==='users'){
     const us=await rpc('wp_accounts_list',{p_token:S.token});
     const list=S.atab==='requests'?us.filter(u=>!u.approved):us.filter(u=>u.approved);
-    ab.innerHTML=list.length?'<div class="list">'+list.map(u=>'<div class="it"><div class="grow"><div class="nm">'+esc(u.name)+' <span class="pill">'+esc(u.role)+'</span></div><div class="mute">'+esc(u.login)+' · '+esc(desigLabel(u.designation))+'<br>'+esc(u.secretariat||'')+'</div></div><div class="row">'+
+    ab.innerHTML=(S.atab==='users'?'<input id="uf" placeholder="🔍 '+esc(t('filterUsers'))+'" style="margin-bottom:6px">':'')+(list.length?'<div class="list">'+list.map(u=>'<div class="it" data-u="'+esc((u.name+' '+loginLabel(u.login)+' '+(u.secretariat||'')).toLowerCase())+'"><div class="grow"><div class="nm">'+esc(u.name)+' <span class="pill">'+esc(u.role)+'</span>'+(u.must_change?' <span class="pill o">'+t('notChanged')+'</span>':'')+'</div><div class="mute">'+esc(loginLabel(u.login))+' · '+esc(desigLabel(u.designation))+'<br>'+esc(u.secretariat||'')+'</div></div><div class="row">'+
       (u.role==='super'?'':(u.approved?'<button class="btn alt sm" data-pw="'+u.id+'">'+t('resetPass')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('remove')+'</button>':'<button class="btn sm" data-ap="'+u.id+'">'+t('approve')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('reject')+'</button>'))+'</div></div>').join('')+'</div>'
-      :'<p class="mute">'+t('noRequests')+'</p>';
+      :'<p class="mute">'+t('noRequests')+'</p>');
+    if($('uf'))$('uf').oninput=()=>{const q=$('uf').value.trim().toLowerCase();ab.querySelectorAll('[data-u]').forEach(el=>{el.style.display=!q||el.dataset.u.includes(q)?'':'none'})};
     const act=async(id,a,v)=>{try{await rpc('wp_manage_account',{p_token:S.token,p_id:id,p_action:a,p_value:v||null});toast(t('saved'));vAdmin(S.atab)}catch(er){toast(errText(er))}};
     ab.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>act(b.dataset.ap,'approve'));
     ab.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{if(confirm(t('confirmDel')))act(b.dataset.rm,'remove')});
@@ -1128,10 +1140,12 @@ async function vAdmin(tab){const app=curApp;
   const ov=await rpc('wp_overview',{p_token:S.token});
   if(S.atab==='wards'){
     let secL=[];try{secL=await rpc('wp_sec_logins',{p_token:S.token})}catch(e){}
-    ab.innerHTML='<div class="row"><button class="btn alt sm" id="csv">'+t('export')+'</button><button class="btn alt sm" id="expAll">'+t('dlEmp')+' – '+t('allWardsShort')+'</button></div><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('secLogin')+'</th><th>'+t('publicOn')+'</th></tr>'+
+    ab.innerHTML='<div class="card" style="background:#f6fafa"><div class="row"><button class="btn sm" id="mkPost" type="button">'+t('createPost')+'</button><button class="btn alt sm" id="rsPost" type="button">'+t('resetPost')+'</button></div><p class="mute" style="margin:6px 0 0">'+POSTS.map(x=>x[0]).join(' · ')+'</p><div id="pmsg"></div></div><div class="row"><button class="btn alt sm" id="csv">'+t('export')+'</button><button class="btn alt sm" id="expAll">'+t('dlEmp')+' – '+t('allWardsShort')+'</button></div><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('secLogin')+'</th><th>'+t('publicOn')+'</th></tr>'+
      ov.map(o=>'<tr><td>'+o.sl+'</td><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a><div class="mute">'+o.code+'</div></td><td>'+completion(o)+'%</td><td>'+o.places+'</td><td>'+o.photos+'</td><td>'+o.staff+'</td><td>'+o.accounts+'</td><td style="white-space:nowrap">'+(secL.includes(o.code)?'✅ ':'')+'<button class="btn alt sm" data-sp="'+o.code+'">🔑 '+t('setPass')+'</button></td><td><label class="chk"><input type="checkbox" data-pub="'+o.code+'"'+(o.public_on?' checked':'')+'>'+(o.public_on?t('on'):t('off'))+'</label>'+(o.public_on?'<button class="btn alt sm" data-sh="'+o.code+'">🔗</button>':'')+'</td></tr>').join('')+'</table></div>';
     ab.querySelectorAll('[data-pub]').forEach(c=>c.onchange=async()=>{const on=c.checked;try{await rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:on});pushUndo(t('publicOn')+' – '+secName(c.dataset.pub),()=>rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:!on}));vAdmin('wards')}catch(er){toast(errText(er))}});
     ab.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>copyLink(b.dataset.sh));
+    $('mkPost').onclick=async()=>{const v=prompt(t('commonPassQ'));if(!v)return;try{const r=await rpc('wp_create_post_logins',{p_token:S.token,p_pass:v});$('pmsg').innerHTML='<div class="msg ok">'+r.created+' '+t('postCreated')+(r.existed?' · '+r.existed+' '+t('postExisted'):'')+'<br>21003001-WS … / '+esc(v)+'</div>'}catch(er){$('pmsg').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+    $('rsPost').onclick=async()=>{const v=prompt(t('commonPassQ'));if(!v)return;try{const n=await rpc('wp_reset_post_logins',{p_token:S.token,p_pass:v});$('pmsg').innerHTML='<div class="msg ok">'+n+' '+t('postReset')+'</div>'}catch(er){$('pmsg').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
     ab.querySelectorAll('[data-sp]').forEach(b=>b.onclick=async()=>{const c=b.dataset.sp;const v=prompt(t('secPassQ')+' '+c+' (6+)');if(!v)return;try{await rpc('wp_set_sec_password',{p_token:S.token,p_code:c,p_pass:v});alert(t('secPassDone')+'\n\n'+c+' / '+v);vAdmin('wards')}catch(er){toast(errText(er))}});
     $('csv').onclick=()=>csv(ov);
     $('expAll').onclick=()=>{location.hash='#export/all'};
@@ -1182,7 +1196,8 @@ async function vPublic(code){const app=curApp;
 async function route(){
   header();
   MAIN.innerHTML='';curApp=document.createElement('div');MAIN.appendChild(curApp);const app=curApp;
-  const h=(location.hash||'#home').slice(1).split('/');
+  let h=(location.hash||'#home').slice(1).split('/');
+  if(S.token&&S.me&&S.me.must_change&&!['account','about'].includes(h[0])){history.replaceState(null,'','#account');h=['account']}
   window.scrollTo(0,0);
   try{
     switch(h[0]){
