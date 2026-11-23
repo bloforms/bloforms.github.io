@@ -221,6 +221,9 @@ const TX={
  pdfHelp:['In the print screen, choose "Save as PDF" to download.','ప్రింట్ స్క్రీన్‌లో "Save as PDF" ఎంచుకుంటే డౌన్‌లోడ్ అవుతుంది.'], editShort:['Edit details','వివరాలు మార్చండి'],
  undo:['Undo','రద్దు చేయి'], nothingUndo:['Nothing to undo','రద్దు చేయడానికి ఏమీ లేదు'], undoQ:['Undo this change?','ఈ మార్పును రద్దు చేయాలా?'], undone:['Undone','రద్దు చేయబడింది'],
  generated:['Generated on','తయారు చేసిన తేదీ'], wardMenu:['Ward','వార్డు'], menu:['Menu','మెనూ'], deletedL:['Deleted','తొలగించారు'], blosSet:['BLO','BLO'],
+ empDetails:['Employee details (election duty format)','ఉద్యోగి వివరాలు (ఎన్నికల విధి ఫార్మాట్)'], showAll:['Show all details','అన్ని వివరాలు చూపించు'],
+ whatsapp:['WhatsApp mobile number','వాట్సాప్ మొబైల్ నంబర్'], search:['Search name','పేరు వెతకండి'], tickHint:['Tick the employees who work in this secretariat. Names already in this ward are ticked for you.','ఈ సచివాలయంలో పని చేసే ఉద్యోగులను టిక్ చేయండి. ఈ వార్డులో ఇప్పటికే ఉన్న పేర్లు టిక్ అయి ఉంటాయి.'],
+ liveFmt:['Live Data format found','లైవ్ డేటా ఫార్మాట్ గుర్తించబడింది'], expEmp:['⬇ Employees (Live Data format)','⬇ ఉద్యోగులు (లైవ్ డేటా ఫార్మాట్)'], ticked:['ticked','టిక్ చేసినవి'],
  clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
@@ -286,6 +289,34 @@ const DESIG=[
  ['Volunteer / Other','వాలంటీర్ / ఇతర']
 ];
 
+/* employee details – same columns as the "Live Data" sheet (col index, key, English, Telugu, group, input kind) */
+const EMPF=[
+ [1,'dept','Department Name','శాఖ పేరు','svc','text'],[2,'office_type','Office type','కార్యాలయ రకం','svc',['State','Central','PSU (State)','PSU (Central)','Private','Bank']],
+ [5,'emp_type','Regular / Temporary / Contract / Outsourcing','రెగ్యులర్ / తాత్కాలిక / కాంట్రాక్ట్ / అవుట్‌సోర్సింగ్','svc',['Regular','Temporary','Contract','Outsourcing']],
+ [6,'gazetted','Gazetted / Non Gazetted','గెజిటెడ్ / నాన్ గెజిటెడ్','svc',['Gazetted','Non Gazetted']],
+ [7,'hrms','HRMS ID','HRMS ఐడీ','svc','text'],[8,'cfms','CFMS ID','CFMS ఐడీ','svc','text'],[9,'emp_other','Employee ID – Others','ఉద్యోగి ఐడీ – ఇతర','svc','text'],
+ [10,'gender','Gender','లింగం','per',['Male','Female']],[11,'dob','Date of birth (dd/mm/yyyy)','పుట్టిన తేదీ (dd/mm/yyyy)','per','date'],[12,'retire','Date of retirement (dd/mm/yyyy)','పదవీ విరమణ తేదీ (dd/mm/yyyy)','per','date'],
+ [13,'pay_from','Time scale – From','టైమ్ స్కేల్ – నుండి','pay','num'],[14,'pay_to','Time scale – To','టైమ్ స్కేల్ – వరకు','pay','num'],[15,'basic_pay','Basic pay','బేసిక్ పే','pay','num'],
+ [16,'ph','Physically handicapped (details)','దివ్యాంగులు (వివరాలు)','spl','text'],[17,'pregnant','Pregnant / lactating mother','గర్భిణీ / పాలిచ్చే తల్లి','spl',['No','Yes']],
+ [18,'spouse','Spouse working','జీవిత భాగస్వామి ఉద్యోగం','spl',['No','Yes']],[19,'long_leave','On long leave','దీర్ఘ సెలవులో ఉన్నారా','spl',['No','Yes']],
+ [20,'prev_election','Previous election duty (PO / APO / OPO / Sector officer / other)','గత ఎన్నికల విధి (PO / APO / OPO / సెక్టార్ అధికారి / ఇతర)','spl','text'],
+ [21,'work_addr','Present working address','ప్రస్తుత పని చిరునామా','work','text'],[22,'work_mandal','Mandal / Municipality','మండలం / మున్సిపాలిటీ','work','text'],[23,'work_district','District','జిల్లా','work','text'],
+ [24,'work_ac_name','Working constituency name','పని చేసే నియోజకవర్గం పేరు','work','text'],[25,'work_ac_code','Working constituency code','పని చేసే నియోజకవర్గం కోడ్','work','text'],
+ [26,'res_addr','Residential address','నివాస చిరునామా','res','text'],[27,'res_mandal','Mandal / Municipality','మండలం / మున్సిపాలిటీ','res','text'],[28,'res_district','District','జిల్లా','res','text'],
+ [29,'res_ac_name','Residential constituency name','నివాస నియోజకవర్గం పేరు','res','text'],[30,'res_ac_code','Residential constituency code','నివాస నియోజకవర్గం కోడ్','res','text'],
+ [31,'nat_addr','Native address','స్వస్థలం చిరునామా','nat','text'],[32,'nat_village','Village','గ్రామం','nat','text'],[33,'nat_mandal','Mandal / Municipality','మండలం / మున్సిపాలిటీ','nat','text'],[34,'nat_district','District','జిల్లా','nat','text'],
+ [35,'nat_ac_name','Native constituency name','స్వస్థల నియోజకవర్గం పేరు','nat','text'],[36,'nat_ac_code','Native constituency code','స్వస్థల నియోజకవర్గం కోడ్','nat','text'],
+ [37,'epic','EPIC card number','EPIC కార్డు నంబర్','epic','text'],[38,'epic_ac','EPIC assembly constituency no.','EPIC అసెంబ్లీ నియోజకవర్గం నం.','epic','text'],
+ [39,'epic_ps','EPIC polling station no.','EPIC పోలింగ్ స్టేషన్ నం.','epic','text'],[40,'epic_serial','Serial no. in polling station','పోలింగ్ స్టేషన్‌లో సీరియల్ నం.','epic','text'],
+ [42,'alt_mobile','Alternative mobile number','ప్రత్యామ్నాయ మొబైల్ నంబర్','con','tel'],
+ [43,'aadhaar','Aadhaar number','ఆధార్ నంబర్','bank','aadhaar'],[44,'bank_acc','Bank account number','బ్యాంక్ ఖాతా నంబర్','bank','text'],[45,'ifsc','IFSC code','IFSC కోడ్','bank','text'],
+ [46,'remarks','Remarks','వ్యాఖ్యలు','rem','area']
+];
+const EMPG=[['svc','🪪 Service details','సేవా వివరాలు'],['per','🎂 Personal','వ్యక్తిగత'],['pay','💰 Time scale of pay','వేతన టైమ్ స్కేల్'],['spl','⚕️ Special conditions','ప్రత్యేక పరిస్థితులు'],
+ ['work','🏢 Present working place','ప్రస్తుత పని స్థలం'],['res','🏠 Residential address','నివాస చిరునామా'],['nat','🌾 Nativity particulars','స్వస్థల వివరాలు'],['epic','🗳️ EPIC (voter ID)','EPIC (ఓటరు ఐడీ)'],
+ ['con','📱 Contact','సంప్రదింపు'],['bank','🏦 Aadhaar & bank','ఆధార్ & బ్యాంకు'],['rem','📝 Remarks','వ్యాఖ్యలు']];
+const EMP_DEFAULTS={dept:'Municipal Administration Department',office_type:'State',emp_type:'Regular',gazetted:'Non Gazetted',work_addr:'Guntakal Municipality',work_mandal:'Guntakal',work_district:'Anantapur',work_ac_name:'Guntakal',work_ac_code:'150'};
+
 /* ---------- state & helpers ---------- */
 const S={lang:localStorage.getItem('wp_lang')||'en',token:localStorage.getItem('wp_token')||'',me:null,secs:[],tab:'overview',filter:'all',ward:null};
 try{S.me=JSON.parse(localStorage.getItem('wp_me')||'null')}catch(e){}
@@ -325,6 +356,37 @@ function typeInfo(key,data){
   const c=((data&&data.types)||[]).find(x=>x.key===key);return {label:c?c.label:key,emo:'📌'};
 }
 function clusterLine(s){const c=s.clusters||[];if(!c.length)return '';return '<div class="mute">🏘 '+t('clusters')+': '+c.map(x=>esc(x.no)+(x.households!=null&&x.households!==''?' ('+fmt(x.households)+')':'')).join(' + ')+'</div>'}
+function empForm(pv){
+  pv=pv||{};
+  return EMPG.map(g=>{const fs=EMPF.filter(f=>f[4]===g[0]);
+    return '<details class="card" style="padding:10px 12px;margin:8px 0"'+(['svc','con','bank'].includes(g[0])?' open':'')+'><summary style="font-weight:700;color:var(--c);cursor:pointer">'+(te()?g[2]:g[1])+'</summary><div class="two">'+
+      fs.map(f=>{const v=pv[f[1]]==null?'':String(pv[f[1]]);const lab='<label>'+esc(te()?f[3]:f[2])+'</label>';const id='ef_'+f[1];
+        if(Array.isArray(f[5]))return '<div>'+lab+'<select id="'+id+'"><option value="">–</option>'+f[5].concat(v&&!f[5].some(o=>o.toLowerCase()===v.toLowerCase())?[v]:[]).map(o=>'<option'+(o.toLowerCase()===v.toLowerCase()?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select></div>';
+        if(f[5]==='area')return '<div style="grid-column:1/-1">'+lab+'<textarea id="'+id+'">'+esc(v)+'</textarea></div>';
+        const ty=f[5]==='num'?' inputmode="numeric"':f[5]==='tel'?' type="tel"':f[5]==='aadhaar'?' inputmode="numeric" maxlength="14"':f[5]==='date'?' placeholder="dd/mm/yyyy" inputmode="numeric"':'';
+        return '<div>'+lab+'<input id="'+id+'"'+ty+' value="'+esc(v)+'"></div>'}).join('')+'</div></details>'}).join('');
+}
+function readEmpForm(old){const o=Object.assign({},old||{});EMPF.forEach(f=>{const el=$('ef_'+f[1]);if(el){let v=el.value.trim();if(f[5]==='aadhaar')v=v.replace(/\D/g,'');o[f[1]]=v}});return o}
+function cleanCell(v){return String(v==null?'':v).replace(/\s+/g,' ').trim()}
+function isLiveData(rows){return rows.slice(0,4).some(r=>/department name/i.test(String(r[1]||''))&&r.some(c=>/epic/i.test(String(c))))}
+function liveRows(rows){
+  const hi=rows.findIndex(r=>/department name/i.test(String(r[1]||'')));
+  let secCol=-1;rows.slice(hi,hi+3).forEach(r=>r.forEach((c,i)=>{if(i>46&&/secretariat|sgsw|sachivalay/i.test(String(c)))secCol=i}));
+  const out=[];
+  rows.slice(hi+1).forEach(r=>{
+    const name=cleanCell(r[3]);if(!name||/^(hrms|time scale|from)/i.test(name))return;
+    const pv={};EMPF.forEach(f=>{let v=cleanCell(r[f[0]]);if(f[5]==='aadhaar')v=v.replace(/\D/g,'');if(v)pv[f[1]]=v});
+    out.push({name:name,designation:matchDesig(cleanCell(r[4])),phone:cleanCell(r[41]).replace(/[^\d+]/g,''),private:pv,clusters:[],sec:secCol>=0?cleanCell(r[secCol]):''});
+  });
+  return out;
+}
+function exportEmployees(staffList,fname){
+  const head=['S.No','Secretariat','Name','Designation'].concat(EMPF.map(f=>f[2])).concat(['WhatsApp mobile','Clusters']);
+  const q=v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  const rows=staffList.map((x,i)=>{const pv=x.private||{};return [i+1,secName(x.code),x.name,x.designation].concat(EMPF.map(f=>pv[f[1]]||'')).concat([x.phone||'',(x.clusters||[]).map(c=>c.no+(c.households!=null?':'+c.households:'')).join(' + ')])});
+  const blob=new Blob(['﻿'+[head].concat(rows).map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;a.click();
+}
 function maskA(a){a=String(a||'').replace(/\D/g,'');return a.length>4?'XXXX XXXX '+a.slice(-4):a}
 function privLine(s){const p=s.private||{};const parts=[];if(p.hrms)parts.push('HRMS '+esc(p.hrms));if(p.cfms)parts.push('CFMS '+esc(p.cfms));if(p.aadhaar)parts.push('Aadhaar '+esc(maskA(p.aadhaar)));return parts.length?'<div class="mute">🔒 '+parts.join(' · ')+'</div>':''}
 function parseClusters(cl,hh){
@@ -352,6 +414,7 @@ function pctPill(p){return '<span class="pill '+(p>=80?'g':p>=40?'o':'r')+'">'+p
 function secOptions(sel){return S.secs.map(s=>'<option value="'+s.code+'"'+(s.code===sel?' selected':'')+'>'+s.sl+'. '+esc(s.name)+'</option>').join('')}
 async function loadSecs(force){if(S.secs.length&&!force)return;S.secs=await rpc('wp_secretariats')}
 function lightbox(src){const d=document.createElement('div');d.className='lb';d.innerHTML='<img src="'+esc(src)+'" alt="">';d.onclick=()=>d.remove();document.body.appendChild(d)}
+document.addEventListener('click',e=>{if(e.target&&e.target.id==='expE'&&S.ward)exportEmployees(S.ward.staff,'employees-'+S.ward.sec.name+'.csv')});
 document.addEventListener('click',e=>{const im=e.target.closest('img[data-full]');if(im)lightbox(im.getAttribute('data-full'))});
 
 /* ---------- maps ---------- */
@@ -629,7 +692,7 @@ function vWardTab(w){
     return;
   }
   if(S.tab==='staff'){
-    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a></div>':'')+'<div class="list">'+
+    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a><button type="button" class="btn alt" id="expE">'+t('expEmp')+'</button></div>':'')+'<div class="list">'+
      (w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+
        '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+clusterLine(s)+privLine(s)+'</div>'+
        '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>';
@@ -752,11 +815,9 @@ async function vStaff(code,id){const app=curApp;
   app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p><form id="f" class="card">'+
    '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
    '<label>'+t('designation')+'</label><select id="dg">'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
-   '<label>'+t('phone')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
+   '<label>'+t('whatsapp')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
    '<label>'+t('clusters')+'</label><div id="cl"></div><button type="button" class="btn alt sm" id="addcl">'+t('addCluster')+'</button>'+
-   '<div class="msg info" style="margin-top:14px">🔒 '+t('officeOnly')+'</div><div class="two">'+
-   '<div><label>'+t('aadhaar')+'</label><input id="aa" inputmode="numeric" maxlength="14" value="'+esc(pv.aadhaar||'')+'"></div>'+
-   '<div><label>'+t('hrms')+'</label><input id="hr" value="'+esc(pv.hrms||'')+'"></div><div><label>'+t('cfms')+'</label><input id="cf" value="'+esc(pv.cfms||'')+'"></div></div>'+
+   '<h2 style="margin-top:18px">'+t('empDetails')+'</h2><div class="msg info">🔒 '+t('officeOnly')+'</div>'+empForm(id==='new'?Object.assign({},EMP_DEFAULTS,pv):pv)+
    '<label>'+t('photo')+'</label><div id="sph"></div>'+
    '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div><div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div></div>'+
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
@@ -766,10 +827,10 @@ async function vStaff(code,id){const app=curApp;
   drawCl();$('addcl').onclick=()=>{readCl();cls.push({no:'',households:null});drawCl()};
   photoPicker('sph',ph,1,code);
   $('f').onsubmit=async e=>{e.preventDefault();readCl();
-    const aa=$('aa').value.replace(/\D/g,'');if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
+    const epv=readEmpForm(pv);const aa=epv.aadhaar||'';if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
     $('sv').disabled=true;
     const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
-      clusters:cls.filter(c=>c.no),private:{aadhaar:aa,hrms:$('hr').value.trim(),cfms:$('cf').value.trim()}};
+      clusters:cls.filter(c=>c.no),private:epv};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||null));
     try{const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));
       pushUndo(t('staff')+' – '+o.name,old?()=>rpc('wp_save_staff',{p_token:S.token,s:old}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}));S.tab='staff';location.hash='#ward/'+code}
@@ -837,15 +898,21 @@ async function vImport(code){const app=curApp;
    '<label>'+t('pasteHere')+'</label><textarea id="tx" style="min-height:140px"></textarea><button class="btn" id="rd" type="button" style="margin-top:8px">'+t('readIt')+'</button><div id="res"></div></div>';
   $('tpl').onclick=templateCsv;
   const findEx=r=>w.staff.find(x=>(r.private&&r.private.hrms&&x.private&&x.private.hrms===r.private.hrms)||x.name.trim().toLowerCase()===r.name.trim().toLowerCase());
-  const preview=(box,rows)=>{
+  const preview=(box,rows,live)=>{
     if(!rows.length){$(box).innerHTML='<div class="msg err">'+t('noneFound')+'</div>';return}
-    $(box).innerHTML='<p><b>'+rows.length+'</b> '+t('found')+'</p><div class="list">'+rows.map((r,i)=>{const ex=findEx(r);
-      return '<label class="it chk" style="margin:0"><input type="checkbox" data-i="'+i+'" checked><span class="grow"><b>'+esc(r.name)+'</b> <span class="pill '+(ex?'o':'g')+'">'+(ex?t('isUpd'):t('isNew'))+'</span><br><span class="mute">'+esc(desigLabel(r.designation||(ex&&ex.designation)||''))+'</span>'+clusterLine(r)+privLine(r)+'</span></label>'}).join('')+
+    const me=w.sec;const norm=v=>String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+    const pre=r=>live?(r.sec?(norm(r.sec)===norm(me.name)||norm(r.sec)===me.code):!!findEx(r)):true;
+    $(box).innerHTML=(live?'<div class="msg ok">✅ '+t('liveFmt')+' – '+rows.length+'</div><p class="mute">'+t('tickHint')+'</p><input data-q placeholder="🔍 '+esc(t('search'))+'" style="margin-bottom:6px">':'<p><b>'+rows.length+'</b> '+t('found')+'</p>')+
+      '<p class="mute"><b data-n>0</b> '+t('ticked')+'</p><div class="list" style="max-height:60vh;overflow:auto">'+rows.map((r,i)=>{const ex=findEx(r);
+      return '<label class="it chk" style="margin:0" data-row="'+i+'"><input type="checkbox" data-i="'+i+'"'+(pre(r)?' checked':'')+'><span class="grow"><b>'+esc(r.name)+'</b> <span class="pill '+(ex?'o':'g')+'">'+(ex?t('isUpd'):t('isNew'))+'</span><br><span class="mute">'+esc(desigLabel(r.designation||(ex&&ex.designation)||''))+'</span>'+clusterLine(r)+privLine(r)+'</span></label>'}).join('')+
       '</div><button class="btn" type="button" data-save style="margin-top:10px">'+t('saveAll')+'</button><div data-m></div>';
+    const cnt=()=>{$(box).querySelector('[data-n]').textContent=$(box).querySelectorAll('[data-i]:checked').length};cnt();
+    $(box).querySelectorAll('[data-i]').forEach(c=>c.onchange=cnt);
+    const qi=$(box).querySelector('[data-q]');if(qi)qi.oninput=()=>{const q=qi.value.trim().toLowerCase();$(box).querySelectorAll('[data-row]').forEach(el=>{el.style.display=!q||rows[+el.dataset.row].name.toLowerCase().includes(q)?'':'none'})};
     const bt=$(box).querySelector('[data-save]');
     bt.onclick=async()=>{bt.disabled=true;let n=0;const invs=[];const pick=[...$(box).querySelectorAll('[data-i]')].filter(c=>c.checked).map(c=>rows[+c.dataset.i]);
       try{for(const r of pick){const ex=findEx(r);let o;
-          if(ex){const pv=Object.assign({},ex.private||{});['aadhaar','hrms','cfms'].forEach(k=>{if(r.private&&r.private[k])pv[k]=r.private[k]});
+          if(ex){const pv=Object.assign({},ex.private||{});Object.keys(r.private||{}).forEach(k=>{if(r.private[k])pv[k]=r.private[k]});
             o={id:ex.id,code:code,name:ex.name,designation:r.designation||ex.designation,phone:r.phone||ex.phone||'',photo:ex.photo||'',joined:ex.joined||'',sort:String(ex.sort==null?'':ex.sort),
                clusters:(r.clusters&&r.clusters.length)?r.clusters:(ex.clusters||[]),private:pv}}
           else{const di=DESIG.findIndex(d=>d[0]===r.designation);o={code:code,name:titleCase(r.name),designation:r.designation||DESIG[10][0],phone:r.phone||'',photo:'',joined:'',sort:String(di<0?20:di+1),clusters:r.clusters||[],private:r.private||{}}}
@@ -858,12 +925,12 @@ async function vImport(code){const app=curApp;
   $('xf').onchange=async()=>{const f=$('xf').files[0];if(!f)return;$('ures').innerHTML='<span class="spin"></span>';
     try{let rows;
       if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());
-      else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:false,defval:''})}
-      preview('ures',rowsToStaff(rows))}
+      else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});const sn=wb.SheetNames.find(n=>/live/i.test(n))||wb.SheetNames[0];rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:false,defval:''})}
+      if(isLiveData(rows))preview('ures',liveRows(rows),true);else preview('ures',rowsToStaff(rows))}
     catch(e){$('ures').innerHTML='<div class="msg err">'+t('fileFail')+'</div>'}};
   $('gsb').onclick=async()=>{const u=$('gs').value.trim();const m=u.match(/\/d\/([\w-]{20,})/);if(!m){$('ures').innerHTML='<div class="msg err">'+t('sheetFail')+'</div>';return}
     const gid=(u.match(/[#&?]gid=(\d+)/)||[])[1];$('ures').innerHTML='<span class="spin"></span>';
-    try{const r=await fetch('https://docs.google.com/spreadsheets/d/'+m[1]+'/gviz/tq?tqx=out:csv'+(gid?'&gid='+gid:''));if(!r.ok)throw 0;const tx=await r.text();if(/^\s*</.test(tx))throw 0;preview('ures',rowsToStaff(csvRows(tx)))}
+    try{const r=await fetch('https://docs.google.com/spreadsheets/d/'+m[1]+'/gviz/tq?tqx=out:csv&headers=0'+(gid?'&gid='+gid:'&sheet=Live%20Data'));if(!r.ok)throw 0;const tx=await r.text();if(/^\s*</.test(tx))throw 0;const rows=csvRows(tx);if(isLiveData(rows))preview('ures',liveRows(rows),true);else preview('ures',rowsToStaff(rows))}
     catch(e){$('ures').innerHTML='<div class="msg err">'+t('sheetFail')+'</div>'}};
   $('rd').onclick=()=>{
     const rows=parseReport($('tx').value).map(r=>({name:titleCase(r.name),designation:matchDesig(r.designation),clusters:[],private:{}}));
@@ -932,11 +999,14 @@ async function vAdmin(tab){const app=curApp;
   }
   const ov=await rpc('wp_overview',{p_token:S.token});
   if(S.atab==='wards'){
-    ab.innerHTML='<button class="btn alt sm" id="csv">'+t('export')+'</button><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('publicOn')+'</th></tr>'+
+    ab.innerHTML='<div class="row"><button class="btn alt sm" id="csv">'+t('export')+'</button><button class="btn alt sm" id="expAll">'+t('expEmp')+' – '+t('allWardsShort')+'</button></div><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('publicOn')+'</th></tr>'+
      ov.map(o=>'<tr><td>'+o.sl+'</td><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a><div class="mute">'+o.code+'</div></td><td>'+completion(o)+'%</td><td>'+o.places+'</td><td>'+o.photos+'</td><td>'+o.staff+'</td><td>'+o.accounts+'</td><td><label class="chk"><input type="checkbox" data-pub="'+o.code+'"'+(o.public_on?' checked':'')+'>'+(o.public_on?t('on'):t('off'))+'</label>'+(o.public_on?'<button class="btn alt sm" data-sh="'+o.code+'">🔗</button>':'')+'</td></tr>').join('')+'</table></div>';
     ab.querySelectorAll('[data-pub]').forEach(c=>c.onchange=async()=>{const on=c.checked;try{await rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:on});pushUndo(t('publicOn')+' – '+secName(c.dataset.pub),()=>rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:!on}));vAdmin('wards')}catch(er){toast(errText(er))}});
     ab.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>copyLink(b.dataset.sh));
     $('csv').onclick=()=>csv(ov);
+    $('expAll').onclick=async()=>{const b=$('expAll');b.disabled=true;const all=[];
+      try{for(const o of ov){b.textContent=o.sl+'/'+ov.length+'…';const w=await rpc('wp_ward',{p_token:S.token,p_code:o.code});w.staff.forEach(x=>all.push(x))}
+        exportEmployees(all,'employees-all-wards.csv')}catch(er){toast(errText(er))}b.disabled=false;b.textContent=t('expEmp')+' – '+t('allWardsShort')};
     return;
   }
   /* compare */
