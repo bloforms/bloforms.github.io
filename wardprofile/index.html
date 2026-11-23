@@ -261,6 +261,8 @@ const TX={
  kText:['Text','టెక్స్ట్'], kNum:['Number','సంఖ్య'], kYn:['Yes / No','అవును / కాదు'], kDate:['Date','తేదీ'], kChoice:['Choice list','ఎంపికల జాబితా'], addField:['+ Add field','+ ఫీల్డ్ జోడించండి'], noFields:['No custom fields yet.','ఇంకా అదనపు ఫీల్డ్‌లు లేవు.'],
  licensedP:['Licensed','లైసెన్స్ ఉంది'], unlicensedP:['No licence','లైసెన్స్ లేదు'],
  myDetails:['My details','నా వివరాలు'], myHelp:['Check and correct your own details here – name, phone, clusters, bank, HRMS etc. Only you and your ward admin can see office-only details.','మీ స్వంత వివరాలు ఇక్కడ సరిచూసి సరిచేయండి – పేరు, ఫోన్, క్లస్టర్లు, బ్యాంక్, HRMS మొదలైనవి. ఆఫీస్ వివరాలు మీకు, మీ వార్డు అడ్మిన్‌కు మాత్రమే కనిపిస్తాయి.'],
+ topics:['topics','అంశాలు'], pickDept:['Choose your department, then a topic. Fill what you know and press Save.','మీ శాఖను ఎంచుకోండి, తర్వాత అంశాన్ని ఎంచుకోండి. తెలిసినవి నింపి సేవ్ నొక్కండి.'], surveyView:['Departments of this ward (view only)','ఈ వార్డు శాఖలు (చూడటానికి మాత్రమే)'],
+ moreTitle:['➕ Your own fields','➕ మీ సొంత ఫీల్డ్‌లు'], moreHelp:['Anything more you know about this topic – type a heading and its details.','ఈ అంశం గురించి మీకు తెలిసిన మరేదైనా – శీర్షిక, దాని వివరాలు టైప్ చేయండి.'], mHead:['Heading (e.g. Borewells)','శీర్షిక (ఉదా: బోర్‌వెల్స్)'], mVal:['Details','వివరాలు'], addMore:['Add field','ఫీల్డ్ జోడించు'],
  builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
  pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
  fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
@@ -546,6 +548,7 @@ function canEditProfile(code){const m=S.me||{};return m.role==='super'||(m.role=
 function renderNav(){
   const nav=$('side');if(!nav)return;
   const h=(location.hash||'#home').slice(1).split('/');const r=h[0]||'home';
+  const sub=(icon,label,href,on,lv)=>'<a class="ni'+(on?' on':'')+'" href="'+href+'" style="padding-left:'+(lv*16+14)+'px;font-size:'+(lv>1?13:14)+'px"><span class="ic">'+icon+'</span><span>'+esc(label)+'</span></a>';
   const it=(icon,label,href,on)=>'<a class="ni'+(on?' on':'')+'" href="'+href+'"><span class="ic">'+icon+'</span><span>'+esc(label)+'</span></a>';
   const grp=(key,icon,label,children,on)=>{const open=S.navOpen[key]!==undefined?S.navOpen[key]:on;
     return '<div class="grp'+(open?' open':'')+'"><button type="button" class="ni'+(on?' on':'')+'" data-grp="'+key+'"><span class="ic">'+icon+'</span><span>'+esc(label)+' '+(open?'▾':'▸')+'</span></button><div class="sub">'+children.join('')+'</div></div>'};
@@ -558,7 +561,8 @@ function renderNav(){
         it('📍',t('places'),'#ward/'+code+'/places',r==='place'||(r==='ward'&&tab==='places')),
         it('👥',t('staff'),'#ward/'+code+'/staff',r==='staff'||r==='import'||r==='export'||(r==='ward'&&tab==='staff')),
         it('🗳️',t('blos'),'#ward/'+code+'/blos',r==='ward'&&tab==='blos'),
-        it('📝',t('surveys'),'#survey/'+code,r==='survey'),
+        it('📝',t('surveys'),'#survey/'+code,r==='survey'&&!h[2]),
+        ...(r==='survey'&&S.ward&&S.ward.sec.code===code?DEPTS.filter(d=>canDept(d[0],S.ward)).flatMap(d=>[sub(d[1],te()?d[3]:d[2],'#survey/'+code+'/'+d[0],h[2]===d[0]&&!h[3],1)].concat(h[2]===d[0]?deptTopics(d[0]).filter(x=>x.defs.length||x.key!=='other'||canDept(d[0],S.ward)).map(tp=>sub(tp.emo,te()?tp.te:tp.en,'#survey/'+code+'/'+d[0]+'/'+tp.key,h[3]===tp.key,2)):[])):[]),
         it('📥',t('registers'),'#registers/'+code,r==='registers'&&h[1]!=='all'),
         ...(canEditProfile(code)?[it('📊',t('builder'),'#builder/'+code,r==='builder'&&h[1]!=='all')]:[]),
         it('📄',t('report'),'#report/'+code,r==='report')];
@@ -628,9 +632,9 @@ const DEPTS=[
  ['women','👩','Women Protection (WMPS)','మహిళా సంరక్షణ (WMPS)',[['ps_name','Police station that monitors this ward','ఈ వార్డును పర్యవేక్షించే పోలీస్ స్టేషన్','text'],['ps_phone','Police station phone','పోలీస్ స్టేషన్ ఫోన్','text'],['beat','Beat officer / SI name','బీట్ అధికారి / ఎస్‌ఐ పేరు','text'],['beat_phone','Beat officer phone','బీట్ అధికారి ఫోన్','text'],N('anganwadi','Anganwadi centres','అంగన్వాడీ కేంద్రాలు'),N('aw_kids','Children in Anganwadis','అంగన్వాడీల్లో పిల్లలు'),N('shg','SHG groups','స్వయం సహాయక సంఘాలు'),N('shg_members','SHG members','SHG సభ్యులు'),N('disha','Disha / Shakti app registrations','దిశ / శక్తి యాప్ నమోదులు'),N('complaints','Complaints received','అందిన ఫిర్యాదులు'),N('awareness','Awareness meetings held','అవగాహన సమావేశాలు')]]
 ];
 const DEPT_PLACES={amenities:['park','trees','public_tank','water_tank'],sanitation:['shop','toilet','market'],planning:['main_building','function_hall'],health:['hospital','clinic','pharmacy'],education:['school','college','library'],welfare:['hostel','school','community_hall'],revenue:['ration_shop'],women:['anganwadi','police']};
-const DEPT_RX={health:/health/i,education:/education/i,welfare:/welfare/i,revenue:/revenue/i,women:/women|mahila/i};
+const DEPT_RX={amenities:/amenities/i,sanitation:/sanitation/i,planning:/planning/i,health:/health/i,education:/education/i,welfare:/welfare/i,revenue:/revenue/i,women:/women|mahila/i};
 function canDept(dept,w){const m=S.me||{};if(!w||!w.can_edit)return false;if(m.role==='super'||m.role==='admin')return true;const d=m.designation||'';
-  if(/administrative|amenities|planning|sanitation/i.test(d))return true;return !!(DEPT_RX[dept]&&DEPT_RX[dept].test(d))}
+  if(/administrative/i.test(d))return true;return !!(DEPT_RX[dept]&&DEPT_RX[dept].test(d))}
 /* custom fields added by the app admin */
 function customDefs(scope){return (S.fields||[]).filter(f=>f.scope===scope&&f.kind!=='hide').map(f=>['f'+f.id,f.label,f.label,f.kind==='number'?'num':f.kind==='yesno'?'yn':f.kind==='date'?'date':f.kind==='choice'?(f.options||[]):'text'])}
 async function loadFields(force){if(S.fields&&!force)return S.fields;try{S.fields=await rpc('wp_fields_list',{p_token:S.token})}catch(e){S.fields=[]}return S.fields}
@@ -928,13 +932,14 @@ async function vPlace(code,id,preType){const app=curApp;
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
   photoPicker('ph',p.photos,5,code);
   await loadFields();let xv=Object.assign({},p.extra||{});
-  const drawX=()=>{const d=regDefs($('ty').value);$('xq').innerHTML=d.length?qInputs(d,xv,'x_'):'<p class="mute">–</p>'};drawX();
-  $('ty').onchange=()=>{Object.assign(xv,readQ(regDefs($('ty').value),'x_'));drawX();if(id==='new')$('ow').value=['shop','pharmacy','petrol_bunk','function_hall','main_building','clinic','bank'].includes($('ty').value)?'private':'govt'};
+  const drawX=()=>{const d=regDefs($('ty').value);$('xq').innerHTML=(d.length?qInputs(d,xv,'x_'):'')+'<h4 style="margin:12px 0 4px">'+t('moreTitle')+'</h4><p class="mute" style="margin-top:0">'+t('moreHelp')+'</p><div id="xmb"></div>';getMore=moreBox('xmb',pMore)};
+  const pMore=((p.extra||{})._more||[]).map(m=>({h:m.h,v:m.v}));let getMore=null;drawX();
+  $('ty').onchange=()=>{Object.assign(xv,readQ(regDefs($('ty').value),'x_'));getMore();drawX();if(id==='new')$('ow').value=['shop','pharmacy','petrol_bunk','function_hall','main_building','clinic','bank'].includes($('ty').value)?'private':'govt'};
   pickMap('pm','la','ln',p.lat!=null?[p.lat,p.lng]:(w.sec.lat!=null?[w.sec.lat,w.sec.lng]:null));
   $('gps').onclick=()=>gpsInto('la','ln',()=>{const f=$('la').onchange;f&&f()});
   if(id==='new'&&!p.lat)setTimeout(()=>{if(!$('la').value)gpsInto('la','ln',()=>$('la').onchange&&$('la').onchange())},400);
   $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
-    const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos,extra:Object.assign({},p.extra||{},readQ(regDefs($('ty').value),'x_'))};
+    const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos,extra:(()=>{const x=Object.assign({},p.extra||{});regDefs($('ty').value).forEach(f=>delete x[f[0]]);Object.assign(x,readQ(regDefs($('ty').value),'x_'));const m=getMore();if(m.length)x._more=m;else delete x._more;return x})()};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||null));
     try{const nid=await rpc('wp_save_place',{p_token:S.token,p:o});toast(t('saved'));
       pushUndo(t('places')+' – '+o.name,old?()=>rpc('wp_save_place',{p_token:S.token,p:old}):()=>rpc('wp_delete_place',{p_token:S.token,p_id:nid}));S.tab='places';location.hash='#ward/'+code}
@@ -1161,27 +1166,99 @@ async function vExport(scope){const app=curApp;
 }
 
 /* ----- department surveys ----- */
-async function vSurvey(code){const app=curApp;
+/* topics inside each department survey */
+const TOPICS={
+ amenities:[['lights','💡','Poles & street lights','స్తంభాలు & వీధి దీపాలు',['poles','lights','lights_ok','lights_bad','highmast'],[]],
+  ['water','💧','Water tanks & ponds','నీటి ట్యాంకులు & చెరువులు',['ohsr','ptanks'],['water_tank','public_tank']],
+  ['roads','🛣️','Roads & culverts','రోడ్లు & కల్వర్టులు',['cc_km','bt_km','kutcha_km','culverts'],[]],
+  ['drains','🚰','Drains','కాలువలు',['drain_open','drain_closed'],[]],
+  ['green','🌳','Parks & trees','పార్కులు & చెట్లు',['parks','trees'],['park','trees']]],
+ sanitation:[['garbage','🗑️','Garbage & workers','చెత్త & కార్మికులు',['gvp','bins','seg_hh','vehicles','workers'],[]],
+  ['toilets','🚻','Toilets','మరుగుదొడ్లు',['ptoilets','ctoilets'],['toilet']],
+  ['shops','🛍️','Shops & trade licence','దుకాణాలు & ట్రేడ్ లైసెన్స్',['shops','shops_lic','shops_nolic'],['shop','market']],
+  ['drains','🚰','Drain cleaning','కాలువల శుభ్రత',['drain_clean'],[]]],
+ planning:[['buildings','🏠','Buildings & assessments','భవనాలు & అసెస్‌మెంట్లు',['bld','bld_ok','bld_no','bld_new','assess'],['main_building','function_hall']],
+  ['layouts','📐','Layouts & vacant plots','లేఅవుట్లు & ఖాళీ స్థలాలు',['vacant','layouts_ok','layouts_no'],[]],
+  ['enforce','🚧','Encroachments & hoardings','ఆక్రమణలు & హోర్డింగ్‌లు',['encroach','hoardings'],[]]],
+ health:[['hosp','🏥','Hospitals, clinics & labs','ఆసుపత్రులు, క్లినిక్‌లు & ల్యాబ్‌లు',['ghosp','phosp','clinics','pharmacies','labs'],['hospital','clinic','pharmacy']],
+  ['mch','🤰','Mothers & children','తల్లులు & పిల్లలు',['preg','lact','kids05','immun','highrisk'],[]],
+  ['ncd','🩺','BP / sugar follow-up','బీపీ / షుగర్ ఫాలో-అప్',['ncd'],[]]],
+ education:[['schools','🏫','Schools & colleges','పాఠశాలలు & కళాశాలలు',['gsch','psch','colleges','students','oosc'],['school','college']],
+  ['aw','🧸','Anganwadi centres','అంగన్వాడీ కేంద్రాలు',['anganwadi'],['anganwadi']],
+  ['lib','📚','Libraries','గ్రంథాలయాలు',['libraries'],['library']]],
+ welfare:[['pens','👵','Pensions','పెన్షన్లు',['pen_old','pen_widow','pen_dis','pen_single','pen_other','pen_total'],[]],
+  ['wsch','🏫','Welfare schools & hostels','సంక్షేమ పాఠశాలలు & హాస్టళ్లు',['w_schools','w_students','hostels'],['hostel','school']],
+  ['schemes','📋','Schemes & beneficiaries','పథకాలు & లబ్ధిదారులు',['benef','schemes'],['community_hall']]],
+ revenue:[['rice','🍚','Rice cards & ration shops','బియ్యం కార్డులు & రేషన్ షాపులు',['rice_cards','rice_members','aay_cards','rc_pending','rc_split','ration_shops'],['ration_shop']],
+  ['land','🗺️','Govt land','ప్రభుత్వ భూమి',['govt_land','land_issues'],[]],
+  ['certs','📄','Certificates','సర్టిఫికెట్లు',['certs'],[]]],
+ women:[['police','👮','Police station & complaints','పోలీస్ స్టేషన్ & ఫిర్యాదులు',['ps_name','ps_phone','beat','beat_phone','complaints'],['police']],
+  ['aw','🧸','Anganwadi centres','అంగన్వాడీ కేంద్రాలు',['anganwadi','aw_kids'],['anganwadi']],
+  ['shg','👩‍👩‍👧','SHGs, Disha & awareness','SHGలు, దిశ & అవగాహన',['shg','shg_members','disha','awareness'],[]]]
+};
+function deptTopics(key){const defs=deptDefs(key),list=(TOPICS[key]||[]).map(x=>x.slice());const used=new Set();
+  const out=list.map(x=>{const f=defs.filter(d=>x[4].includes(d[0]));f.forEach(d=>used.add(d[0]));return {key:x[0],emo:x[1],en:x[2],te:x[3],defs:f,places:x[5]}});
+  const rest=defs.filter(d=>!used.has(d[0]));
+  out.push({key:'other',emo:'➕',en:'Other details',te:'ఇతర వివరాలు',defs:rest,places:(DEPT_PLACES[key]||[]).filter(p=>!list.some(x=>x[5].includes(p)))});
+  return out}
+/* "add field" rows: a heading the secretary types + its details */
+function moreBox(el,arr,disabled){
+  const draw=()=>{$(el).innerHTML=arr.map((m,k)=>'<div class="row" data-mi="'+k+'" style="flex-wrap:nowrap;margin-bottom:6px;align-items:flex-start"><input class="mh" placeholder="'+esc(t('mHead'))+'" value="'+esc(m.h||'')+'" style="flex:1"'+(disabled?' disabled':'')+'><input class="mv" placeholder="'+esc(t('mVal'))+'" value="'+esc(m.v||'')+'" style="flex:1.4"'+(disabled?' disabled':'')+'>'+(disabled?'':'<button type="button" class="btn red sm" data-mx="'+k+'">✕</button>')+'</div>').join('')+
+    (disabled?'':'<button type="button" class="btn alt sm" data-ma="1">➕ '+t('addMore')+'</button>');
+    if(disabled)return;
+    $(el).querySelectorAll('[data-mx]').forEach(b=>b.onclick=()=>{read();arr.splice(+b.dataset.mx,1);draw()});
+    $(el).querySelector('[data-ma]').onclick=()=>{read();arr.push({h:'',v:''});draw();const r=$(el).querySelectorAll('.mh');r.length&&r[r.length-1].focus()}};
+  const read=()=>{$(el).querySelectorAll('[data-mi]').forEach(r=>{const k=+r.dataset.mi;arr[k]={h:r.querySelector('.mh').value.trim(),v:r.querySelector('.mv').value.trim()}})};
+  draw();return ()=>{read();return arr.filter(m=>m.h||m.v)}}
+function moreText(list){return (list||[]).filter(m=>m.h||m.v).map(m=>m.h+': '+m.v).join('; ')}
+function topicFilled(tp,v){const more=(v._more||[]).filter(m=>m.t===tp.key).length;return [tp.defs.filter(f=>v[f[0]]!=null&&v[f[0]]!=='').length+more,tp.defs.length+more]}
+async function vSurvey(code,dept,topic){const app=curApp;
   if(!S.token){location.hash='#login';return}
   await loadSecs();app.innerHTML='<div class="card"><span class="spin"></span></div>';
-  const w=await loadWard(code);S.lastCode=code;renderNav();await loadFields();
-  const dd=(w.data&&w.data.dept)||{};
-  app.innerHTML='<div class="secttl"><span style="font-size:26px">📝</span><h1>'+t('surveys')+'</h1></div><p class="mute">'+esc(w.sec.name)+' · '+code+'</p><p class="mute">'+t('surveyHelp')+'</p>'+
-   DEPTS.map(d=>{const ok=canDept(d[0],w),v=dd[d[0]]||{};
-     return '<details class="card"'+(ok?' open':'')+'><summary style="cursor:pointer;font-weight:700;font-size:17px;color:var(--c)">'+d[1]+' '+esc(te()?d[3]:d[2])+' <span class="pill '+(ok?'g':'')+'">'+(ok?t('youFill'):t('viewOnlyS'))+'</span></summary>'+
-       (v._by?'<p class="mute">'+t('lastBy')+': '+esc(v._by)+' · '+esc(v._at||'')+'</p>':'')+qInputs(deptDefs(d[0]),v,'q_'+d[0]+'_',!ok)+
-       '<div class="row" style="margin-top:10px">'+(DEPT_PLACES[d[0]]||[]).map(ty=>{const n=w.places.filter(p=>p.type===ty).length,ti=typeInfo(ty,w.data);return '<a class="btn alt sm" href="'+(w.can_edit?'#place/'+code+'/new/'+ty:'#ward/'+code+'/places')+'">'+ti.emo+' '+esc(ti.label)+' ('+n+')'+(w.can_edit?' +':'')+'</a>'}).join('')+'</div>'+
-       (ok?'<button class="btn" type="button" data-sd="'+d[0]+'" style="margin-top:10px">💾 '+t('save')+'</button>':'')+'</details>'}).join('')+
-   '<div class="card"><button class="btn alt" type="button" id="sdl">'+t('surveyDl')+'</button></div>';
-  app.querySelectorAll('[data-sd]').forEach(b=>b.onclick=async()=>{const k=b.dataset.sd;b.disabled=true;const old=Object.assign({},dd[k]||{});delete old._by;delete old._at;
-    try{await rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:k,p_answers:readQ(deptDefs(k),'q_'+k+'_')});toast(t('saved'));
-      pushUndo(t('surveys')+' – '+k,()=>rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:k,p_answers:old}));b.disabled=false}catch(er){toast(errText(er));b.disabled=false}});
-  $('sdl').onclick=()=>surveyTable([{code:code,name:w.sec.name,sl:w.sec.sl,dept:dd}],w.sec.name+' – Department surveys');
+  const w=await loadWard(code);S.lastCode=code;await loadFields();renderNav();
+  const dd=(w.data&&w.data.dept)||{};const mine=DEPTS.filter(d=>canDept(d[0],w));
+  const head=(ttl,back)=>(back?'<a href="'+back+'">'+t('back')+'</a>':'')+'<div class="secttl"><span style="font-size:26px">📝</span><h1>'+ttl+'</h1></div><p class="mute">'+esc(w.sec.name)+' · '+code+'</p>';
+  const dName=d=>d[1]+' '+(te()?d[3]:d[2]);
+  // 1) list of departments
+  if(!dept){
+    if(mine.length===1&&!/super|admin/.test((S.me&&S.me.role)||'')){location.replace('#survey/'+code+'/'+mine[0][0]);return}
+    const show=mine.length?mine:DEPTS;
+    app.innerHTML=head(t('surveys'))+'<p class="mute">'+t(mine.length?'pickDept':'surveyView')+'</p><div class="list card">'+show.map(d=>{const v=dd[d[0]]||{};const tl=deptTopics(d[0]);const f=tl.reduce((a,tp)=>{const x=topicFilled(tp,v);return [a[0]+x[0],a[1]+x[1]]},[0,0]);
+      return '<a class="it" href="#survey/'+code+'/'+d[0]+'" style="text-decoration:none;color:inherit"><div class="grow"><div class="nm">'+esc(dName(d))+'</div><div class="mute">'+tl.filter(x=>x.defs.length||x.key!=='other').length+' '+t('topics')+(v._by?' · '+t('lastBy')+': '+esc(v._by):'')+'</div></div><span class="pill '+(f[0]?'g':'')+'">'+f[0]+' / '+f[1]+'</span> ›</a>'}).join('')+'</div>'+
+      ((S.me||{}).role==='super'||(S.me||{}).role==='admin'?'<div class="card"><button class="btn alt" type="button" id="sdl">'+t('surveyDl')+'</button></div>':'');
+    if($('sdl'))$('sdl').onclick=()=>surveyTable([{code:code,name:w.sec.name,sl:w.sec.sl,dept:dd}],w.sec.name+' – Department surveys');
+    return}
+  const d=DEPTS.find(x=>x[0]===dept);if(!d){location.hash='#survey/'+code;return}
+  const ok=canDept(dept,w),v=dd[dept]||{},tl=deptTopics(dept).filter(x=>x.defs.length||x.key!=='other'||ok);
+  // 2) list of topics
+  if(!topic){
+    app.innerHTML=head(esc(dName(d)),'#survey/'+code)+(ok?'':'<div class="msg info">'+t('viewOnly')+'</div>')+(v._by?'<p class="mute">'+t('lastBy')+': '+esc(v._by)+' · '+esc(v._at||'')+'</p>':'')+
+      '<div class="list card">'+tl.map(tp=>{const f=topicFilled(tp,v);return '<a class="it" href="#survey/'+code+'/'+dept+'/'+tp.key+'" style="text-decoration:none;color:inherit"><span style="font-size:22px;width:32px">'+tp.emo+'</span><div class="grow"><div class="nm">'+esc(te()?tp.te:tp.en)+'</div><div class="mute">'+tp.defs.map(q=>qLabel(q)).slice(0,4).map(esc).join(', ')+(tp.defs.length>4?' …':'')+'</div></div><span class="pill '+(f[0]?'g':'')+'">'+f[0]+' / '+f[1]+'</span> ›</a>'}).join('')+'</div>';
+    return}
+  // 3) one topic: its questions + secretary's own added fields + its places
+  const k=tl.findIndex(x=>x.key===topic);if(k<0){location.hash='#survey/'+code+'/'+dept;return}const tp=tl[k];
+  const allMore=(v._more||[]).slice();const myMore=allMore.filter(m=>m.t===tp.key).map(m=>({h:m.h,v:m.v}));
+  app.innerHTML=head(tp.emo+' '+esc(te()?tp.te:tp.en),'#survey/'+code+'/'+dept)+'<p class="mute">'+esc(dName(d))+'</p>'+(ok?'':'<div class="msg info">'+t('viewOnly')+'</div>')+
+    '<div class="card">'+(tp.defs.length?qInputs(tp.defs,v,'q_',!ok):'')+
+    '<h3 style="margin:14px 0 6px">'+t('moreTitle')+'</h3><p class="mute" style="margin-top:0">'+t('moreHelp')+'</p><div id="mb"></div>'+
+    (tp.places.length?'<h3 style="margin:14px 0 6px">'+t('regDetails')+'</h3><div class="row">'+tp.places.map(ty=>{const n=w.places.filter(p=>p.type===ty).length,ti=typeInfo(ty,w.data);return '<a class="btn alt sm" href="'+(w.can_edit?'#place/'+code+'/new/'+ty:'#ward/'+code+'/places')+'">'+ti.emo+' '+esc(ti.label)+' ('+n+')'+(w.can_edit?' +':'')+'</a>'}).join('')+'</div>':'')+
+    '<div class="row" style="margin-top:14px;justify-content:space-between">'+(k>0?'<a class="btn alt sm" href="#survey/'+code+'/'+dept+'/'+tl[k-1].key+'">← '+esc(te()?tl[k-1].te:tl[k-1].en)+'</a>':'<span></span>')+
+    (ok?'<button class="btn" type="button" id="sv">💾 '+t('save')+'</button>':'')+
+    (k<tl.length-1?'<a class="btn alt sm" href="#survey/'+code+'/'+dept+'/'+tl[k+1].key+'">'+esc(te()?tl[k+1].te:tl[k+1].en)+' →</a>':'<span></span>')+'</div></div>';
+  const getMore=moreBox('mb',myMore,!ok);
+  if(ok)$('sv').onclick=async()=>{const b=$('sv');b.disabled=true;
+    const ans=readQ(tp.defs,'q_');const send={};tp.defs.forEach(f=>{send[f[0]]=ans[f[0]]==null?null:ans[f[0]]});
+    send._more=allMore.filter(m=>m.t!==tp.key).concat(getMore().map(m=>({t:tp.key,h:m.h,v:m.v})));
+    const old={};tp.defs.forEach(f=>{old[f[0]]=v[f[0]]==null?null:v[f[0]]});old._more=v._more||[];
+    try{await rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:dept,p_answers:send});toast(t('saved'));S.ward=null;
+      pushUndo(t('surveys')+' – '+(te()?tp.te:tp.en),()=>rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:dept,p_answers:old}));
+      location.hash=k<tl.length-1?'#survey/'+code+'/'+dept+'/'+tl[k+1].key:'#survey/'+code+'/'+dept}catch(er){toast(errText(er));b.disabled=false}};
 }
 function surveyTable(list,title){
   const cols=[];DEPTS.forEach(d=>deptDefs(d[0]).forEach(f=>cols.push([d[0],f,d[2]])));
+  DEPTS.forEach(d=>cols.push([d[0],['_more','Other details added'],d[2]]));
   const head=['S.No','Secretariat','SGSW code'].concat(cols.map(c=>c[2].replace(/\s*\(.*\)/,'')+' – '+c[1][1]));
-  const aoa=[head].concat(list.map((o,i)=>[i+1,o.name,o.code].concat(cols.map(c=>{const v=((o.dept||{})[c[0]]||{})[c[1][0]];return v==null?'':v}))));
+  const aoa=[head].concat(list.map((o,i)=>[i+1,o.name,o.code].concat(cols.map(c=>{const v=((o.dept||{})[c[0]]||{})[c[1][0]];return c[1][0]==='_more'?moreText(v):v==null?'':v}))));
   saveTable(aoa,title,title);
 }
 /* ----- registers download (hospitals, schools, shops, parks …) ----- */
@@ -1229,12 +1306,12 @@ function bCatalog(mode){
     ['s.blon','BLOs (count)',c=>(c.staff||[]).filter(x=>x.blo_booth).length],['s.pct','Profile complete %',c=>completion({lat:c.sec.lat,map_status:c.sec.map_status,data:c.data||{},places:(c.places||[]).length,photos:(c.places||[]).reduce((a,p)=>a+(p.photos||[]).length,0),staff:(c.staff||[]).length})]]);
   add('👪 '+t('gPop'),[['total',t('total')],['households',t('households')],['men',t('men')],['women',t('women')],['above60',t('above60')],['children',t('children')],['pensions',t('pensions')],['ration_cards',t('rationCards')],['voters',t('voters')],['shgs',t('shgs')],['as_on',t('asOn')]]
     .map(x=>['p.'+x[0],x[1],c=>P(c)[x[0]]==null?'':P(c)[x[0]]]).concat([['bc','BC'],['sc','SC'],['st','ST'],['oc','OC'],['minority','Minorities']].map(x=>['c.'+x[0],x[1]+' (office only)',c=>((c.private||{})[x[0]])==null?'':c.private[x[0]]])));
-  DEPTS.forEach(d=>add(d[1]+' '+d[2],deptDefs(d[0]).map(f=>['d.'+d[0]+'.'+f[0],f[1],c=>{const v=(((c.data||{}).dept||{})[d[0]]||{})[f[0]];return v==null?'':v}])));
+  DEPTS.forEach(d=>add(d[1]+' '+d[2],deptDefs(d[0]).map(f=>['d.'+d[0]+'.'+f[0],f[1],c=>{const v=(((c.data||{}).dept||{})[d[0]]||{})[f[0]];return v==null?'':v}]).concat([['d.'+d[0]+'._more',d[2].replace(/\s*\(.*\)/,'')+' – other details added',c=>moreText((((c.data||{}).dept||{})[d[0]]||{})._more)]])));
   add('🏫 '+t('gCounts'),typeList({}).map(x=>['k.'+x[0],x[1]+' (count)',c=>{const by={};(c.places||[]).forEach(p=>{by[p.type]=(by[p.type]||0)+1});return typeCount(c.data,by,x[0])}]));
   if(mode==='place'){
     add('📍 '+t('gPlace'),[['pl.type','Place type',(c,i,p)=>typeInfo(p.type,c.data).label],['pl.name','Place name',(c,i,p)=>p.name],['pl.own','Govt / Private',(c,i,p)=>p.ownership==='govt'?'Government':p.ownership==='private'?'Private':''],
       ['pl.addr','Address / landmark',(c,i,p)=>p.address||''],['pl.contact','Contact',(c,i,p)=>p.contact||''],['pl.lat','Latitude',(c,i,p)=>p.lat==null?'':p.lat],['pl.lng','Longitude',(c,i,p)=>p.lng==null?'':p.lng],
-      ['pl.map','Google Maps link',(c,i,p)=>p.lat==null?'':gmaps(p.lat,p.lng)],['pl.notes','Notes',(c,i,p)=>p.notes||''],['pl.photos','Photo links',(c,i,p)=>(p.photos||[]).join(' ')]]);
+      ['pl.map','Google Maps link',(c,i,p)=>p.lat==null?'':gmaps(p.lat,p.lng)],['pl.notes','Notes',(c,i,p)=>p.notes||''],['pl.photos','Photo links',(c,i,p)=>(p.photos||[]).join(' ')],['pl.more','Other details added',(c,i,p)=>moreText((p.extra||{})._more)]]);
     TYPES.forEach(x=>{const defs=regDefs(x[0]);add(x[3]+' '+t('gReg')+' – '+x[1],defs.map(f=>['x.'+x[0]+'.'+f[0],x[1]+' – '+f[1],(c,i,p)=>p.type===x[0]&&(p.extra||{})[f[0]]!=null?p.extra[f[0]]:'']))});
   }
   if(mode==='emp'){
@@ -1479,7 +1556,7 @@ async function route(){
       case 'ward':S.filter='all';return await vWard(h[1],h[2]);
       case 'report':return await vReport(h[1]);
       case 'export':return await vExport(h[1]);
-      case 'survey':return await vSurvey(h[1]);
+      case 'survey':return await vSurvey(h[1],h[2],h[3]);
       case 'me':return await vStaff(null,null,true);
       case 'builder':return await vBuilder(h[1]||'all');
       case 'registers':return await vRegisters(h[1]||'all');
