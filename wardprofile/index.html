@@ -54,6 +54,13 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(22,160,133,.55)}70%{box-shadow:0 0 0 16px rgba(22,160,133,0)}100%{box-shadow:0 0 0 0 rgba(22,160,133,0)}}
 #chatFab b{background:#fff;color:#e8566c;border-radius:12px;padding:0 7px;font-size:13px;min-width:20px;text-align:center}
 @media print{#chatFab{display:none!important}}
+.cmsg{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:background .3s}
+.cmsg.sel,.cmsg.flash{background:#b9e3d3!important}
+#rp[hidden]{display:none!important}
+.csheet{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center}
+.csheet .cs-in{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:12px 14px 18px;box-shadow:0 -6px 20px rgba(0,0,0,.25);max-height:88vh;overflow:auto;animation:sheetup .18s ease-out}
+.csheet button[data-a]{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 8px;font-size:17px;cursor:pointer;font-family:inherit}
+@keyframes sheetup{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
 #callBox{position:fixed;inset:0;z-index:3000;background:radial-gradient(circle at 50% 35%,#16a085,#0b4747 60%,#062a2a);display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
 #callBox .cb-ic{font-size:64px;animation:wig 1.2s ease-in-out infinite}
 #callBox .cb-t{font-size:15px;letter-spacing:1px;text-transform:uppercase;opacity:.85;margin-top:10px}
@@ -333,6 +340,7 @@ const TX={
  addUser:['Add user','యూజర్‌ను జోడించు'], addUserHelp:['Add anyone directly – a new secretary, an in-charge, a commissioner office staff. They can log in at once with this phone / mail and password.','ఎవరినైనా నేరుగా జోడించండి – కొత్త సెక్రటరీ, ఇన్‌ఛార్జ్, కమిషనర్ కార్యాలయ సిబ్బంది. ఈ ఫోన్ / మెయిల్, పాస్‌వర్డ్‌తో వెంటనే లాగిన్ కావచ్చు.'],
  role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
  popn:['Population','జనాభా'], photosN:['Photos','ఫోటోలు'], chat:['Chat','చాట్'], chatHelp:['Talk with all secretariats and the commissioner. Messages are seen only by people logged in to this app.','అన్ని సచివాలయాలు, కమిషనర్‌తో మాట్లాడండి. ఈ యాప్‌లో లాగిన్ అయినవారికి మాత్రమే సందేశాలు కనిపిస్తాయి.'],
+ reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['Commissioner','కమిషనర్'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + Commissioner','WS + కమిషనర్'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
  notifNo:['This browser cannot show notifications. On Android use Chrome; on iPhone first add the app to the home screen.','ఈ బ్రౌజర్ నోటిఫికేషన్లు చూపదు. ఆండ్రాయిడ్‌లో Chrome వాడండి; ఐఫోన్‌లో ముందు యాప్‌ను హోమ్ స్క్రీన్‌కు జోడించండి.'], pushDenied:['Notifications are blocked. Open the browser site settings for this app and allow Notifications.','నోటిఫికేషన్లు బ్లాక్ అయ్యాయి. బ్రౌజర్ సైట్ సెట్టింగ్‌లలో Notifications అనుమతించండి.'],
@@ -1591,26 +1599,58 @@ async function vChat(room){const app=curApp;
   const info=(S.chatRooms||[]).find(x=>x.room===room)||{room:room,title:room.startsWith('ward:')?secName(room.slice(5)):''};
   app.innerHTML='<div style="display:flex;flex-direction:column;height:calc(100vh / var(--z,1) - var(--hh,58px) - 40px)"><div class="row" style="justify-content:space-between;flex:none"><a href="#chat">'+t('back')+'</a><b>'+esc(roomName(info))+'</b><span class="row" style="gap:6px;flex-wrap:nowrap"><button type="button" class="btn sm" id="cvc" title="'+esc(t('videoCall'))+'" style="background:#16a085">📹 '+t('videoCallS')+'</button><button type="button" class="btn alt sm" id="mu" hidden></button></span></div>'+
     '<div id="cm" style="flex:1;overflow-y:auto;padding:8px 2px;margin:6px 0;background:#eef4f3;border-radius:12px"></div>'+
-    '<div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cdic" title="'+esc(t('dictate'))+'" style="height:44px;padding:0 10px">🎙️</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsg'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
-  let last=0,msgs=[];const box=$('cm');
-  const bubble=m=>'<div style="display:flex;justify-content:'+(m.mine?'flex-end':'flex-start')+';margin:4px 6px"><div style="max-width:80%;background:'+(m.mine?'#d4f2e4':'#fff')+';border-radius:12px;padding:7px 10px;box-shadow:0 1px 2px rgba(0,0,0,.12)">'+
+    '<div id="rp" hidden style="display:flex;gap:8px;align-items:center;background:#fff;border-radius:10px;padding:6px 8px;margin-bottom:6px;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.15)"></div><div id="up" class="mute" style="font-size:13px;flex:none"></div><form id="cs" style="display:flex;gap:6px;flex:none;align-items:flex-end"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt"><button type="button" class="btn alt" id="cat" title="'+esc(t('attach'))+'" style="height:44px;padding:0 10px">📎</button><button type="button" class="btn alt" id="cdic" title="'+esc(t('dictate'))+'" style="height:44px;padding:0 10px">🎙️</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsg'))+'" style="flex:1;min-height:44px;max-height:130px;resize:none"></textarea><button class="btn" id="cb" style="height:44px">➤</button></form></div>';
+  let last=0,msgs=[],reads=[],members=0,readKey='',replyTo=null;const box=$('cm');
+  const isBoss=['super','commissioner'].includes((S.me||{}).role);
+  const ticks=m=>{if(!m.mine||m.deleted)return '';const n=reads.filter(x=>x>=m.id).length;
+    return ' <span title="'+esc(n+' / '+members+' '+t('seenBy'))+'" style="font-weight:800;letter-spacing:-3px;color:'+(n&&n>=members?'#2f9bf0':'#8a9a99')+'">'+(n?'✓✓':'✓')+'</span>'};
+  const bubble=m=>'<div style="display:flex;justify-content:'+(m.mine?'flex-end':'flex-start')+';margin:4px 6px"><div class="cmsg" data-mid="'+m.id+'" style="max-width:80%;background:'+(m.mine?'#d4f2e4':'#fff')+';border-radius:12px;padding:7px 10px;box-shadow:0 1px 2px rgba(0,0,0,.12)">'+
+    (m.reply&&!m.deleted?'<div class="cq" data-goto="'+m.reply.id+'" style="border-left:4px solid var(--c);background:rgba(0,0,0,.05);border-radius:6px;padding:4px 8px;margin:2px 0 5px;font-size:13px;cursor:pointer"><b style="color:var(--c)">'+esc(m.reply.name||'')+'</b><div class="mute" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60vw">'+esc(m.reply.body||'…')+'</div></div>':'')+
     (m.mine?'':'<div style="font-size:12px;font-weight:700;color:var(--c)">'+esc(m.name||'')+' <span class="mute" style="font-weight:400">'+esc(m.desig?desigLabel(m.desig):'')+(m.code&&room==='all'||m.code&&room==='admins'?' · '+esc(secName(m.code)):'')+'</span></div>')+
     (m.deleted?'':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener"><img src="'+esc(m.url)+'" loading="lazy" style="max-width:100%;max-height:260px;border-radius:8px;display:block;margin:2px 0"></a>':
       m.kind==='call'&&m.url?'<div style="display:flex;gap:10px;align-items:center;padding:4px 0"><span style="font-size:28px">📹</span><div><b>'+t('videoCall')+'</b><br><a class="btn sm" style="margin-top:4px;background:#16a085" href="'+esc(m.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false" target="_blank" rel="noopener">'+t('joinCall')+'</a></div></div>':
       m.kind==='audio'&&m.url?'<audio controls preload="none" src="'+esc(m.url)+'" style="max-width:240px;height:40px"></audio>':
       m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" style="display:flex;gap:8px;align-items:center;background:#f2f6f6;border-radius:8px;padding:8px;text-decoration:none"><span style="font-size:24px">📄</span><span><b>'+esc(m.fname||t('file'))+'</b><br><span class="mute" style="font-size:12px">'+(m.fsize?fsize(m.fsize):'')+' · '+t('open')+'</span></span></a>':'')+
     (m.deleted?'<i class="mute">'+t('msgDeleted')+'</i>':!m.body?'':'<div style="white-space:pre-wrap;word-break:break-word">'+esc(m.body).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')+'</div>')+
-    '<div class="mute" style="font-size:11px;text-align:right">'+esc(chatTime(m.at))+(!m.deleted&&(m.mine||(S.me||{}).role==='super')?' · <a href="#" data-cd="'+m.id+'">'+t('del')+'</a>':'')+'</div></div></div>';
+    '<div class="mute" style="font-size:11px;text-align:right">'+esc(chatTime(m.at))+ticks(m)+'</div></div></div>';
   const paint=(stick)=>{const atEnd=box.scrollHeight-box.scrollTop-box.clientHeight<80;box.innerHTML=msgs.length?msgs.map(bubble).join(''):'<p class="mute" style="text-align:center;margin-top:30px">'+t('noMsgs')+'</p>';
     if(stick||atEnd)box.scrollTop=box.scrollHeight;
-    box.querySelectorAll('[data-cd]').forEach(a=>a.onclick=async e=>{e.preventDefault();if(!confirm(t('confirmDel')))return;try{await rpc('wp_chat_delete',{p_token:S.token,p_id:+a.dataset.cd});const m=msgs.find(x=>x.id===+a.dataset.cd);if(m){m.deleted=true;m.body=null}paint()}catch(er){toast(errText(er))}})};
-  const pull=async(first)=>{try{const nw=await rpc('wp_chat_list',{p_token:S.token,p_room:room,p_after:last})||[];if(nw.length||first){msgs=msgs.concat(nw);if(nw.length)last=nw[nw.length-1].id;chatMark(room,last);paint(first)}}catch(er){if(first)box.innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+    box.querySelectorAll('[data-goto]').forEach(q=>q.onclick=e=>{e.stopPropagation();const el=box.querySelector('[data-mid="'+q.dataset.goto+'"]');if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1500)}})};
+  const pull=async(first)=>{try{const r=await rpc('wp_chat_sync',{p_token:S.token,p_room:room,p_after:last})||{};const nw=r.msgs||[];
+    const rk=JSON.stringify(r.reads||[])+'/'+r.members;const changed=rk!==readKey;reads=r.reads||[];members=r.members||0;readKey=rk;
+    if(nw.length||first||changed){msgs=msgs.concat(nw);if(nw.length)last=nw[nw.length-1].id;chatMark(room,last);paint(first)}}catch(er){if(first)box.innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+  // long-press (or right-click) a message: Reply / Copy / Info / Delete – like WhatsApp
+  const sheet=(html)=>{const d=document.createElement('div');d.className='csheet';d.innerHTML='<div class="cs-in">'+html+'</div>';document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.remove()};return d};
+  const openMenu=id=>{const m=msgs.find(x=>x.id===id);if(!m||m.deleted)return;try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}
+    const el=box.querySelector('[data-mid="'+id+'"]');el&&el.classList.add('sel');
+    const items=[['re','↩️ '+t('reply')]].concat(m.body?[['cp','📋 '+t('copy')]]:[]).concat(m.mine||isBoss?[['in','ℹ️ '+t('msgInfo')]]:[]).concat(m.mine||(S.me||{}).role==='super'?[['dl','🗑️ '+t('del')]]:[]);
+    const d=sheet('<div class="mute" style="padding:4px 6px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc((m.mine?t('you'):m.name)+': '+(m.body||m.fname||''))+'</div>'+items.map(x=>'<button type="button" data-a="'+x[0]+'">'+x[1]+'</button>').join(''));
+    const close=()=>{d.remove();el&&el.classList.remove('sel')};d.onclick=e=>{if(e.target===d)close()};
+    d.querySelectorAll('[data-a]').forEach(b=>b.onclick=async()=>{const a=b.dataset.a;close();
+      if(a==='re'){replyTo={id:m.id,name:m.mine?t('you'):m.name,body:m.body||(m.kind==='image'?'📷 Photo':m.kind==='call'?'📹 Video call':'📎 '+(m.fname||''))};drawReply();ta.focus()}
+      else if(a==='cp'){try{await navigator.clipboard.writeText(m.body);toast(t('copyDone'))}catch(e){prompt('',m.body)}}
+      else if(a==='dl'){if(!confirm(t('confirmDel')))return;try{await rpc('wp_chat_delete',{p_token:S.token,p_id:m.id});m.deleted=true;m.body=null;paint()}catch(er){toast(errText(er))}}
+      else if(a==='in'){const w=sheet('<div class="spin"></div>');try{const r=await rpc('wp_chat_info',{p_token:S.token,p_id:m.id});
+        const who=x=>'<div class="it" style="padding:6px 2px"><div class="grow"><b>'+esc(x.name||'')+'</b><div class="mute" style="font-size:12px">'+esc(desigLabel(x.desig||''))+(x.code?' · '+esc(secName(x.code)):'')+'</div></div>'+(x.at?'<span class="mute" style="font-size:12px">'+esc(chatTime(x.at))+'</span>':'')+'</div>';
+        w.querySelector('.cs-in').innerHTML='<h3 style="margin:4px 0 8px">ℹ️ '+t('msgInfo')+'</h3><div style="background:#d4f2e4;border-radius:10px;padding:8px;margin-bottom:10px">'+esc(m.body||m.fname||'')+'</div>'+
+          '<b style="color:#2f9bf0">✓✓ '+t('seenBy')+' ('+r.seen.length+')</b><div class="list" style="max-height:32vh;overflow:auto">'+(r.seen.map(who).join('')||'<p class="mute">–</p>')+'</div>'+
+          '<b class="mute" style="display:block;margin-top:10px">✓ '+t('notSeen')+' ('+r.not_seen.length+')</b><div class="list" style="max-height:28vh;overflow:auto">'+(r.not_seen.map(who).join('')||'<p class="mute">–</p>')+'</div>'+
+          '<button type="button" class="btn alt" style="width:100%;justify-content:center;margin-top:10px" id="ciClose">'+t('close')+'</button>';
+        w.querySelector('#ciClose').onclick=()=>w.remove()}catch(er){w.remove();toast(errText(er))}}})};
+  let lp=null,lpXY=null;
+  box.addEventListener('touchstart',e=>{const el=e.target.closest('.cmsg');if(!el)return;const tt=e.touches[0];lpXY=[tt.clientX,tt.clientY];clearTimeout(lp);lp=setTimeout(()=>{lp=null;openMenu(+el.dataset.mid)},500)},{passive:true});
+  box.addEventListener('touchmove',e=>{if(!lp)return;const tt=e.touches[0];if(Math.abs(tt.clientX-lpXY[0])>10||Math.abs(tt.clientY-lpXY[1])>10){clearTimeout(lp);lp=null}},{passive:true});
+  box.addEventListener('touchend',()=>{clearTimeout(lp);lp=null});
+  box.addEventListener('contextmenu',e=>{const el=e.target.closest('.cmsg');if(!el)return;e.preventDefault();openMenu(+el.dataset.mid)});
+  const drawReply=()=>{const rp=$('rp');if(!replyTo){rp.innerHTML='';rp.hidden=true;return}rp.hidden=false;
+    rp.innerHTML='<div style="flex:1;border-left:4px solid var(--c);padding-left:8px;min-width:0"><b style="color:var(--c);font-size:13px">↩️ '+esc(replyTo.name)+'</b><div class="mute" style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(replyTo.body||'')+'</div></div><button type="button" class="btn alt sm" id="rpx">✕</button>';
+    $('rpx').onclick=()=>{replyTo=null;drawReply()}};
   await pull(true);
   const timer=setInterval(()=>{if(curApp!==app||!document.body.contains(box)||location.hash!=='#chat/'+encodeURIComponent(room)){clearInterval(timer);return}if(document.visibilityState==='visible')pull()},5000);
   const ta=$('ct');ta.oninput=()=>{ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,130)+'px'};
   ta.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!/Android|iPhone|iPad/i.test(navigator.userAgent)){e.preventDefault();$('cs').requestSubmit()}};
   $('cs').onsubmit=async e=>{e.preventDefault();const b=ta.value.trim();if(!b)return;$('cb').disabled=true;
-    try{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:b});ta.value='';ta.style.height='auto';await pull();box.scrollTop=box.scrollHeight}catch(er){toast(errText(er))}$('cb').disabled=false;ta.focus()};
+    try{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:b,p_reply:replyTo?replyTo.id:null});replyTo=null;drawReply();ta.value='';ta.style.height='auto';await pull();box.scrollTop=box.scrollHeight}catch(er){toast(errText(er))}$('cb').disabled=false;ta.focus()};
   // attachments
   const send=async(att)=>{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:'',p_att:att});await pull();box.scrollTop=box.scrollHeight};
   $('cat').onclick=()=>$('cfi').click();
