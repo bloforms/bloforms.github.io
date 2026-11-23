@@ -462,6 +462,7 @@ const TX={
  today:['Today','ఈరోజు'], yesterday:['Yesterday','నిన్న'], membersN:['members','సభ్యులు'],
  homePage:['Home page','హోమ్ పేజీ'], others:['Others','ఇతరాలు'],
  addIt:['Add','జోడించు'], todoShort:['Still to fill – tap to add','ఇంకా నింపాల్సినవి – జోడించడానికి నొక్కండి'],
+ isBlo:['Are you a BLO?','మీరు BLO నా?'], yesW:['Yes','అవును'], noW:['No','కాదు'], boothNo:['Booth (part) number','బూత్ (పార్ట్) నంబర్'], needBooth:['Enter the booth number','బూత్ నంబర్ నమోదు చేయండి'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -771,7 +772,6 @@ function renderNav(){
       const ch=[it('📊',t('overview'),'#ward/'+code+'/overview',r==='ward'&&tab==='overview'),
         it('📍',t('places'),'#ward/'+code+'/places',r==='place'||(r==='ward'&&tab==='places')),
         it('👥',t('staff'),'#ward/'+code+'/staff',r==='staff'||r==='import'||r==='export'||(r==='ward'&&tab==='staff')),
-        it('🗳️',t('blos'),'#ward/'+code+'/blos',r==='ward'&&tab==='blos'),
         it('📝',t('surveys'),'#survey/'+code,r==='survey'&&!h[2]),
         ...(r==='survey'&&S.ward&&S.ward.sec.code===code?DEPTS.filter(d=>canDept(d[0],S.ward)).flatMap(d=>[sub(d[1],te()?d[3]:d[2],'#survey/'+code+'/'+d[0],h[2]===d[0]&&!h[3],1)].concat(h[2]===d[0]?deptTopics(d[0]).filter(x=>x.defs.length||x.key!=='other'||canDept(d[0],S.ward)).map(tp=>sub(tp.emo,te()?tp.te:tp.en,'#survey/'+code+'/'+d[0]+'/'+tp.key,h[3]===tp.key,2)):[])):[]),
         it('📥',t('registers'),'#registers/'+code,r==='registers'&&h[1]!=='all'),
@@ -1025,7 +1025,7 @@ async function vWard(code,tab){const app=curApp;
   const w=await loadWard(code);
   const d=w.data||{},sec=w.sec,c=wardCounts(w),pct=completion(c);
   S.lastCode=code;renderNav();
-  const tabs={overview:['📊',t('overview')],places:['📍',t('places')+' ('+w.places.length+')'],staff:['👥',t('staff')+' ('+w.staff.length+')'],blos:['🗳️',t('blos')+' ('+w.staff.filter(x=>x.blo_booth).length+')']};
+  const tabs={overview:['📊',t('overview')],places:['📍',t('places')+' ('+w.places.length+')'],staff:['👥',t('staff')+' ('+w.staff.length+')']};
   if(!tabs[S.tab])S.tab='overview';
   app.innerHTML='<div class="card"><select id="wsel" class="selbig">'+secOptions(code)+'</select>'+
    '<div class="row" style="margin-top:8px;justify-content:space-between"><div><b>'+esc(sec.name)+'</b> <span class="mute">· '+sec.code+(d.ward_no?' · '+t('wardNo')+' '+esc(d.ward_no):'')+'</span></div>'+pctPill(pct)+'</div>'+
@@ -1210,12 +1210,16 @@ async function vStaff(code,id,self){const app=curApp;
    '<form id="f" class="card">'+
    '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
    '<label>'+t('designation')+'</label><select id="dg"'+(self?' disabled':'')+'>'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
+   '<div class="two"><div><label>🗳️ '+t('isBlo')+'</label><select id="isblo"><option value="no"'+(s.blo_booth?'':' selected')+'>'+t('noW')+'</option><option value="yes"'+(s.blo_booth?' selected':'')+'>'+t('yesW')+'</option></select></div>'+
+   '<div id="bbw"'+(s.blo_booth?'':' hidden')+'><label>'+t('boothNo')+'</label><input id="bbn" inputmode="numeric" value="'+esc(s.blo_booth||'')+'" placeholder="e.g. 159"></div></div>'+
    '<label>'+t('whatsapp')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
    '<label>'+t('clusters')+'</label><div id="cl"></div><button type="button" class="btn alt sm" id="addcl">'+t('addCluster')+'</button>'+
    '<h2 style="margin-top:18px">'+t('empDetails')+'</h2><div class="msg info">🔒 '+t('officeOnly')+'</div>'+empForm(id==='new'&&!self?Object.assign({},EMP_DEFAULTS,pv):pv)+
    '<label>'+t('photo')+'</label><div id="sph"></div>'+
    '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div>'+(self?'':'<div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div>')+'</div>'+
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'&&!self?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
+  $('isblo').onchange=()=>{$('bbw').hidden=$('isblo').value!=='yes';if(!$('bbw').hidden)$('bbn').focus()};
+  const bloVal=()=>$('isblo').value==='yes'?$('bbn').value.trim():'';
   const readCl=()=>{$('cl').querySelectorAll('[data-ci]').forEach(r=>{const k=+r.dataset.ci;cls[k]={no:r.querySelector('.cn').value.trim(),households:num(r.querySelector('.ch').value)}})};
   const drawCl=()=>{$('cl').innerHTML=cls.map((c,k)=>'<div class="row" data-ci="'+k+'" style="margin-bottom:6px;flex-wrap:nowrap"><input class="cn" placeholder="'+esc(t('clusterNo'))+'" value="'+esc(c.no||'')+'" style="flex:1"><input class="ch" type="number" inputmode="numeric" placeholder="'+esc(t('households'))+'" value="'+esc(c.households==null?'':c.households)+'" style="flex:1"><button type="button" class="btn red sm" data-cx="'+k+'">×</button></div>').join('');
     $('cl').querySelectorAll('[data-cx]').forEach(b=>b.onclick=()=>{readCl();cls.splice(+b.dataset.cx,1);drawCl()})};
@@ -1235,10 +1239,11 @@ async function vStaff(code,id,self){const app=curApp;
   $('f').onsubmit=async e=>{e.preventDefault();readCl();
     const epv=readEmpForm(pv);const aa=epv.aadhaar||'';if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
     $('sv').disabled=true;
-    if(self){const o={name:$('nm').value.trim(),phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,clusters:cls.filter(c=>c.no),private:epv};
+    if($('isblo').value==='yes'&&!$('bbn').value.trim()){$('m').innerHTML='<div class="msg err">'+t('needBooth')+'</div>';$('sv').disabled=false;$('bbn').focus();return}
+    if(self){const o={blo_booth:bloVal(),name:$('nm').value.trim(),phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,clusters:cls.filter(c=>c.no),private:epv};
       try{await rpc('wp_save_my_staff',{p_token:S.token,s:o});if(S.me){S.me.name=o.name;localStorage.setItem('wp_me',JSON.stringify(S.me))}S.ward=null;toast(t('saved'));location.hash='#ward/'+code}
       catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}return}
-    const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
+    const o={blo_booth:bloVal(),id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
       clusters:cls.filter(c=>c.no),private:epv};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||null));
     try{const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));
