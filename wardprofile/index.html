@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ward Profile – Guntakal</title>
+<meta name="description" content="Ward Profile: one place for everything about each Guntakal ward secretariat – boundaries, population, places with photos and staff.">
+<meta name="theme-color" content="#0f5c5c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ward Profile">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{--c:#0f5c5c;--c2:#167b7b;--acc:#f29d38;--bg:#f2f6f6;--card:#fff;--ink:#1d2a2a;--mute:#5f6f6f;--line:#d8e3e3;--ok:#1f8a4c;--warn:#b5660c;--bad:#b3261e}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+a{color:var(--c2)}
+button,input,select,textarea{font:inherit}
+header{position:sticky;top:0;z-index:1000;background:linear-gradient(100deg,#0b4747,var(--c) 55%,#1d8a8a);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.bar{max-width:980px;margin:auto;display:flex;align-items:center;gap:8px;padding:9px 12px}
+.brand{flex:1;color:#fff;text-decoration:none;font-weight:800;font-size:18px;line-height:1.2}
+.brand small{display:block;font-weight:500;font-size:12px;opacity:.85}
+.lang{display:flex;border:1px solid rgba(255,255,255,.6);border-radius:20px;overflow:hidden}
+.lang button{background:none;border:0;color:#fff;padding:4px 10px;cursor:pointer;font-size:14px}
+.lang button.on{background:#fff;color:var(--c);font-weight:700}
+.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:20px;padding:4px 10px;cursor:pointer;font-size:14px;white-space:nowrap}
+main{max-width:980px;margin:auto;padding:12px 12px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--c)}h3{font-size:16px;margin:10px 0 6px}
+.mute{color:var(--mute);font-size:14px}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--c);color:#fff;border:0;border-radius:10px;padding:10px 14px;cursor:pointer;text-decoration:none;font-weight:600}
+.btn.alt{background:#fff;color:var(--c);border:1.5px solid var(--c)}
+.btn.sm{padding:6px 10px;font-size:14px;border-radius:8px}
+.btn.red{background:var(--bad)}
+.btn.orange{background:var(--acc);color:#222}
+.btn:disabled{opacity:.5}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.stat{background:#f6fafa;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:24px;color:var(--c)}
+.stat span{font-size:13px;color:var(--mute)}
+label{display:block;font-size:14px;font-weight:600;margin:10px 0 4px}
+input,select,textarea{width:100%;padding:10px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid #9fd3d3;border-color:var(--c2)}
+textarea{min-height:70px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+@media(max-width:520px){.two{grid-template-columns:1fr}}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.tabs button{flex:none;border:1.5px solid var(--c);background:#fff;color:var(--c);border-radius:20px;padding:6px 14px;cursor:pointer;font-weight:600}
+.tabs button.on{background:var(--c);color:#fff}
+.map{height:340px;border-radius:12px;border:1px solid var(--line);margin:8px 0;background:#e9f0f0}
+.map.small{height:240px}
+.list .it{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.list .it:last-child{border-bottom:0}
+.it .grow{flex:1;min-width:0}
+.it .nm{font-weight:700}
+.bar2{height:8px;border-radius:6px;background:#e3ecec;overflow:hidden;margin-top:4px}
+.bar2 i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--ok))}
+.pill{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;background:#e6f2f2;color:var(--c);font-weight:600}
+.pill.g{background:#e5f4ea;color:var(--ok)}.pill.o{background:#fdf0dc;color:var(--warn)}.pill.r{background:#fbe6e4;color:var(--bad)}
+.thumbs{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.thumbs img{width:76px;height:76px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:pointer}
+.thumbs .t{position:relative}
+.thumbs .t button{position:absolute;top:-6px;right:-6px;background:var(--bad);color:#fff;border:0;border-radius:50%;width:22px;height:22px;cursor:pointer;line-height:20px}
+.av{width:56px;height:56px;border-radius:50%;object-fit:cover;background:#dfeaea;flex:none;display:flex;align-items:center;justify-content:center;font-size:24px}
+.msg{padding:10px 12px;border-radius:10px;margin:8px 0;font-size:15px}
+.msg.ok{background:#e5f4ea;color:#14502d}.msg.err{background:#fbe6e4;color:#7a1a14}.msg.info{background:#e8f1fb;color:#1b3f66}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#eef5f5;position:sticky;top:0}
+.tw{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:10px}
+.hero{background:linear-gradient(135deg,#e2f3f3,#fff6ea);border-color:#cfe5e5}
+.steps{margin:6px 0 0;padding-left:20px}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;display:flex;align-items:center;justify-content:center}
+.lb img{max-width:96vw;max-height:90vh;border-radius:8px}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#1d2a2a;color:#fff;padding:10px 16px;border-radius:10px;z-index:4000;max-width:90vw}
+.selbig{font-weight:700;font-size:16px;border-color:var(--c2)}
+.emo{font-size:22px;width:34px;text-align:center;flex:none}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px}
+.chk{display:flex;align-items:center;gap:6px;font-weight:500;margin:4px 12px 4px 0}
+.chk input{width:auto}
+.spin{display:inline-block;width:18px;height:18px;border:3px solid #cfe2e2;border-top-color:var(--c);border-radius:50%;animation:sp 1s linear infinite;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+.leaflet-div-icon.emoji{background:none;border:0;font-size:24px;line-height:24px;text-shadow:0 1px 2px #fff}
+.secpin{background:var(--c);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <a class="brand" href="#home"><span id="appName">Ward Profile</span><small id="appSub">Guntakal ward secretariats</small></a>
+  <div class="lang"><button id="lte" type="button">తెలుగు</button><button id="len" type="button">EN</button></div>
+  <button class="hbtn" id="acctBtn" type="button"></button>
+</div></header>
+<main id="app"><div class="card"><span class="spin"></span></div></main>
+<footer>Designed by Sivananda Pujari</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+'use strict';
+const SB='https://rdtnikmsxyejimvudzvc.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJkdG5pa21zeHllamltdnVkenZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM5MzU5NzUsImV4cCI6MjEwOTUxMTk3NX0.3vmEUx7f6XsXROfyIFcLr6zqO4jhd7dapenBy17BZXk';
+const CENTER=[15.166,77.379];
+
+/* ---------- words ---------- */
+const TX={
+ appName:['Ward Profile','వార్డు ప్రొఫైల్'],
+ appSub:['Guntakal ward secretariats','గుంతకల్ వార్డు సచివాలయాలు'],
+ login:['Login','లాగిన్'], logout:['Logout','లాగౌట్'], account:['My account','నా ఖాతా'],
+ request:['Request access','యాక్సెస్ కోరండి'], about:['About this app','ఈ యాప్ గురించి'],
+ publicPages:['Public ward pages','ప్రజల కోసం వార్డు పేజీలు'],
+ heroTitle:['One place for everything about your ward','మీ వార్డు గురించి అంతా ఒకే చోట'],
+ heroText:['Every ward secretariat of Guntakal keeps its ward\'s full picture here: boundaries, door numbers, population totals, every school, hospital, toilet, park, office and main building with location and photos, and the secretariat staff.','గుంతకల్ లోని ప్రతి వార్డు సచివాలయం తమ వార్డు పూర్తి వివరాలు ఇక్కడ ఉంచుతుంది: సరిహద్దులు, డోర్ నంబర్లు, జనాభా మొత్తాలు, ప్రతి పాఠశాల, ఆసుపత్రి, టాయిలెట్, పార్కు, కార్యాలయం, ముఖ్య భవనం – లొకేషన్ మరియు ఫోటోలతో, సచివాలయ సిబ్బంది వివరాలు.'],
+ myWard:['My ward','నా వార్డు'], openWard:['Open any ward','ఏ వార్డునైనా చూడండి'],
+ pickSec:['Select secretariat','సచివాలయం ఎంచుకోండి'],
+ allWards:['All 35 secretariats','మొత్తం 35 సచివాలయాలు'],
+ complete:['complete','పూర్తి'], admin:['Admin','అడ్మిన్'],
+ overview:['Ward profile','వార్డు ప్రొఫైల్'], places:['Places','ప్రదేశాలు'], staff:['Employees','ఉద్యోగులు'],
+ blos:['BLOs','BLOలు'], booth:['Booth / Part number','బూత్ / పార్ట్ నంబర్'], pickEmp:['Choose employee','ఉద్యోగిని ఎంచుకోండి'], assign:['Assign as BLO','BLOగా నియమించండి'],
+ noBlos:['No BLOs assigned yet.','ఇంకా BLOలు నియమించలేదు.'], bloHelp:['Pick an employee of this secretariat and enter the booth number. Add employees first in the Employees tab.','ఈ సచివాలయ ఉద్యోగిని ఎంచుకుని బూత్ నంబర్ ఇవ్వండి. ముందుగా ఉద్యోగులు ట్యాబ్‌లో ఉద్యోగులను జోడించండి.'],
+ unassign:['Remove BLO','BLO తీసివేయండి'], boothNeeded:['Enter the booth number.','బూత్ నంబర్ ఇవ్వండి.'], edit:['Edit ward details','వార్డు వివరాలు మార్చండి'],
+ population:['Population','జనాభా'], total:['Total','మొత్తం'], households:['Households','కుటుంబాలు'], men:['Men','పురుషులు'], women:['Women','స్త్రీలు'],
+ above60:['Above 60','60 ఏళ్లు పైబడినవారు'], children:['Children','పిల్లలు'], asOn:['As on date','తేదీ నాటికి'],
+ boundaries:['Boundaries','సరిహద్దులు'], north:['North','ఉత్తరం'], south:['South','దక్షిణం'], east:['East','తూర్పు'], west:['West','పడమర'],
+ doorFrom:['Door numbers from','డోర్ నంబర్లు నుండి'], doorTo:['Door numbers to','డోర్ నంబర్లు వరకు'], doors:['Door numbers','డోర్ నంబర్లు'],
+ streets:['Streets / colonies','వీధులు / కాలనీలు'], wardNo:['Ward number','వార్డు నంబర్'],
+ office:['Secretariat office','సచివాలయ కార్యాలయం'], officeAddress:['Office address','కార్యాలయ చిరునామా'], officePhone:['Office phone','కార్యాలయ ఫోన్'], officePhoto:['Office building photo','కార్యాలయ భవనం ఫోటో'],
+ officeLoc:['Office location (GPS)','కార్యాలయ లొకేషన్ (GPS)'], useLoc:['📍 Use my location','📍 నా లొకేషన్ తీసుకోండి'], tapMap:['or tap on the map','లేదా మ్యాప్ పై నొక్కండి'],
+ lat:['Latitude','అక్షాంశం'], lng:['Longitude','రేఖాంశం'], openGmaps:['Google Maps','గూగుల్ మ్యాప్స్'],
+ caste:['Caste-wise totals (office only, optional)','కులాల వారీగా మొత్తాలు (కార్యాలయానికి మాత్రమే, ఐచ్ఛికం)'],
+ casteNote:['Seen only by this secretariat and the app admin. Never shown to the public or other wards.','ఈ సచివాలయం మరియు యాప్ అడ్మిన్ మాత్రమే చూడగలరు. ప్రజలకు, ఇతర వార్డులకు కనిపించదు.'],
+ minority:['Minorities','మైనారిటీలు'],
+ placeTypes:['Place types','ప్రదేశ రకాలు'], hideTypes:['Untick types your ward does not need','మీ వార్డుకు అవసరం లేని రకాలను తీసివేయండి'], addType:['Add a new type','కొత్త రకం జోడించండి'], typeName:['New type name','కొత్త రకం పేరు'],
+ save:['Save','సేవ్ చేయండి'], saved:['Saved','సేవ్ అయింది'], cancel:['Cancel','రద్దు'], del:['Delete','తొలగించండి'], editB:['Edit','మార్చండి'], back:['← Back','← వెనుకకు'],
+ addPlace:['+ Add place','+ ప్రదేశం జోడించండి'], addStaff:['+ Add employee','+ ఉద్యోగిని జోడించండి'],
+ type:['Type','రకం'], ownership:['Govt or private','ప్రభుత్వ / ప్రైవేట్'], govt:['Government','ప్రభుత్వ'], private:['Private','ప్రైవేట్'],
+ name:['Name','పేరు'], address:['Address / landmark','చిరునామా / గుర్తు'], contact:['Contact person / phone','సంప్రదించవలసిన వ్యక్తి / ఫోన్'], notes:['Notes (rooms, seats, students, beds…)','గమనికలు (గదులు, సీట్లు, విద్యార్థులు, పడకలు…)'],
+ photos:['Photos (up to 5)','ఫోటోలు (5 వరకు)'], addPhoto:['📷 Add photo','📷 ఫోటో జోడించండి'], uploading:['Uploading photo…','ఫోటో అప్‌లోడ్ అవుతోంది…'],
+ designation:['Designation','హోదా'], phone:['Phone','ఫోన్'], photo:['Passport-size photo','పాస్‌పోర్ట్ సైజు ఫోటో'], joined:['Joining date','చేరిన తేదీ'], order:['Order in list','జాబితాలో క్రమం'],
+ call:['📞 Call','📞 కాల్'], all:['All','అన్నీ'], govtB:['Government buildings','ప్రభుత్వ భవనాలు'], privB:['Private buildings','ప్రైవేట్ భవనాలు'], photosCount:['Photos','ఫోటోలు'],
+ noPlaces:['No places added yet.','ఇంకా ప్రదేశాలు జోడించలేదు.'], noStaff:['No employees added yet.','ఇంకా ఉద్యోగులను జోడించలేదు.'],
+ notFilled:['Not filled yet','ఇంకా నింపలేదు'], viewOnly:['View only – you can edit only your own ward.','చూడటానికి మాత్రమే – మీ వార్డును మాత్రమే మార్చగలరు.'],
+ lastUpd:['Last updated','చివరిగా మార్చినది'],
+ phoneOrMail:['Phone number or mail ID','ఫోన్ నంబర్ లేదా మెయిల్ ఐడీ'], password:['Password','పాస్‌వర్డ్'], password6:['Password (at least 6 letters)','పాస్‌వర్డ్ (కనీసం 6 అక్షరాలు)'],
+ yourName:['Your name','మీ పేరు'], yourSec:['Your secretariat','మీ సచివాలయం'], role:['You are','మీరు'],
+ roleAdmin:['Ward Administrative Secretary (fills the ward profile)','వార్డు పరిపాలనా కార్యదర్శి (వార్డు ప్రొఫైల్ నింపుతారు)'],
+ roleStaff:['Other secretary (adds places and photos)','ఇతర కార్యదర్శి (ప్రదేశాలు, ఫోటోలు జోడిస్తారు)'],
+ sendReq:['Send request','అభ్యర్థన పంపండి'],
+ reqSent:['Request sent. The app admin (or your Administrative Secretary) will approve it. Then log in here with the same phone/mail and password.','అభ్యర్థన పంపబడింది. యాప్ అడ్మిన్ (లేదా మీ పరిపాలనా కార్యదర్శి) ఆమోదించిన తర్వాత అదే ఫోన్/మెయిల్, పాస్‌వర్డ్‌తో లాగిన్ అవ్వండి.'],
+ haveAcc:['Already approved? Login','ఇప్పటికే ఆమోదం వచ్చిందా? లాగిన్'], noAcc:['New here? Request access','కొత్తవారా? యాక్సెస్ కోరండి'],
+ changePass:['Change password','పాస్‌వర్డ్ మార్చండి'], oldPass:['Current password','ప్రస్తుత పాస్‌వర్డ్'], newPass:['New password','కొత్త పాస్‌వర్డ్'],
+ requests:['Access requests','యాక్సెస్ అభ్యర్థనలు'], users:['Users','వినియోగదారులు'], wards:['Wards','వార్డులు'], compare:['Compare wards','వార్డుల పోలిక'],
+ approve:['Approve','ఆమోదించండి'], reject:['Reject','తిరస్కరించండి'], remove:['Remove','తొలగించండి'], resetPass:['Reset password','పాస్‌వర్డ్ రీసెట్'],
+ noRequests:['No pending requests.','పెండింగ్ అభ్యర్థనలు లేవు.'], publicOn:['Public page','పబ్లిక్ పేజీ'], on:['On','ఆన్'], off:['Off','ఆఫ్'],
+ export:['⬇ Download Excel (CSV)','⬇ ఎక్సెల్ (CSV) డౌన్‌లోడ్'], accounts:['Logins','లాగిన్‌లు'],
+ publicNone:['No ward has opened its public page yet.','ఇంకా ఏ వార్డు పబ్లిక్ పేజీ తెరవలేదు.'],
+ share:['🔗 Copy public link','🔗 పబ్లిక్ లింక్ కాపీ'], copied:['Link copied','లింక్ కాపీ అయింది'],
+ install:['📲 Install app','📲 యాప్ ఇన్‌స్టాల్'], installTxt:['Add Ward Profile to your home screen for quick use.','త్వరగా వాడటానికి హోమ్ స్క్రీన్‌కి జోడించండి.'],
+ installHelp:['Open the Chrome menu (⋮) and tap "Add to Home screen". On iPhone: Share → Add to Home Screen.','Chrome మెనూ (⋮) తెరిచి "Add to Home screen" నొక్కండి. iPhone లో: Share → Add to Home Screen.'],
+ confirmDel:['Delete this? It cannot be undone.','దీన్ని తొలగించాలా? తిరిగి రాదు.'],
+ gpsFail:['Could not get location. Turn on GPS and allow location, or tap on the map.','లొకేషన్ రాలేదు. GPS ఆన్ చేసి అనుమతి ఇవ్వండి, లేదా మ్యాప్ పై నొక్కండి.'],
+ gpsOk:['Location taken','లొకేషన్ తీసుకోబడింది'], mapOff:['Map needs internet.','మ్యాప్‌కి ఇంటర్నెట్ అవసరం.'],
+ todo:['To complete this ward','ఈ వార్డు పూర్తి కావడానికి'],
+ c_loc:['Exact office location','ఖచ్చితమైన కార్యాలయ లొకేషన్'], c_addr:['Office address','కార్యాలయ చిరునామా'], c_bound:['Boundaries (at least 2 sides)','సరిహద్దులు (కనీసం 2 వైపులు)'], c_door:['Door number range','డోర్ నంబర్ల పరిధి'],
+ c_pop:['Total population','మొత్తం జనాభా'], c_staff:['At least 1 employee','కనీసం 1 ఉద్యోగి'], c_places:['At least 5 places','కనీసం 5 ప్రదేశాలు'], c_photos:['At least 3 place photos','కనీసం 3 ప్రదేశ ఫోటోలు'], c_ophoto:['Office photo','కార్యాలయ ఫోటో'],
+ mapStatus:['Map point','మ్యాప్ పాయింట్'], areaOnly:['Approximate – please set exact office location','సుమారు – ఖచ్చితమైన లొకేషన్ పెట్టండి'],
+ superNote:['You are the app admin.','మీరు యాప్ అడ్మిన్.'],
+ loading:['Loading…','లోడ్ అవుతోంది…'],
+ importT:['📋 Import from attendance report','📋 హాజరు రిపోర్ట్ నుండి దిగుమతి'],
+ importHelp:['Open the SGSW attendance report (sgsw.ap.gov.in → Secretariat level details) for your secretariat, select the whole table, copy it, and paste it below. The app picks up each employee\'s name and designation. Add phone numbers and photos afterwards.','మీ సచివాలయానికి SGSW హాజరు రిపోర్ట్ (sgsw.ap.gov.in → Secretariat level details) తెరిచి, మొత్తం టేబుల్‌ను సెలెక్ట్ చేసి కాపీ చేసి, క్రింద పేస్ట్ చేయండి. యాప్ ప్రతి ఉద్యోగి పేరు, హోదా తీసుకుంటుంది. తర్వాత ఫోన్ నంబర్లు, ఫోటోలు జోడించండి.'],
+ pasteHere:['Paste the copied table here','కాపీ చేసిన టేబుల్ ఇక్కడ పేస్ట్ చేయండి'], readIt:['Read names','పేర్లు చదవండి'],
+ found:['employees found – untick anyone you don\'t want to add','ఉద్యోగులు దొరికారు – జోడించకూడని వారిని తీసివేయండి'], addSel:['Add selected to staff','ఎంచుకున్నవారిని సిబ్బందిలో జోడించండి'],
+ noneFound:['No employees found. Copy the whole table including the S.No and Employee ID columns.','ఉద్యోగులు దొరకలేదు. S.No, Employee ID కాలమ్‌లతో సహా మొత్తం టేబుల్ కాపీ చేయండి.'],
+ already:['already in staff','ఇప్పటికే సిబ్బందిలో ఉన్నారు'], added:['added','జోడించబడ్డారు'],
+ e_wrong_login:['Wrong phone/mail or password.','ఫోన్/మెయిల్ లేదా పాస్‌వర్డ్ తప్పు.'],
+ e_pending:['Your request is waiting for approval.','మీ అభ్యర్థన ఆమోదం కోసం వేచి ఉంది.'],
+ e_locked:['Too many wrong tries. Wait 15 minutes.','చాలా సార్లు తప్పు. 15 నిమిషాలు ఆగండి.'],
+ e_exists:['This phone/mail is already registered. Please login.','ఈ ఫోన్/మెయిల్ ఇప్పటికే నమోదైంది. లాగిన్ అవ్వండి.'],
+ e_short_password:['Password must be at least 6 letters.','పాస్‌వర్డ్ కనీసం 6 అక్షరాలు ఉండాలి.'],
+ e_name_required:['Please enter the name.','దయచేసి పేరు నమోదు చేయండి.'],
+ e_bad_login:['Enter a 10-digit mobile number or a valid mail ID.','10 అంకెల మొబైల్ నంబర్ లేదా సరైన మెయిల్ ఐడీ ఇవ్వండి.'],
+ e_pick_secretariat:['Please select your secretariat.','దయచేసి మీ సచివాలయం ఎంచుకోండి.'],
+ e_not_allowed:['You are not allowed to do this.','దీనికి మీకు అనుమతి లేదు.'],
+ e_not_signed_in:['Please login again.','దయచేసి మళ్లీ లాగిన్ అవ్వండి.'],
+ e_wrong_password:['Current password is wrong.','ప్రస్తుత పాస్‌వర్డ్ తప్పు.'],
+ e_not_public:['This ward\'s public page is not open yet.','ఈ వార్డు పబ్లిక్ పేజీ ఇంకా తెరవలేదు.'],
+ e_network:['No internet. Please try again.','ఇంటర్నెట్ లేదు. మళ్లీ ప్రయత్నించండి.'],
+ e_error:['Something went wrong. Please try again.','ఏదో తప్పు జరిగింది. మళ్లీ ప్రయత్నించండి.'],
+ a_purpose:['Purpose','ఉద్దేశ్యం'],
+ a_purposeT:['Every ward secretariat keeps its ward\'s full picture in one app: population totals, boundaries and door numbers, every school, hospital, toilet, park, museum, office and main building with location and photos, and the secretariat staff.','ప్రతి వార్డు సచివాలయం తమ వార్డు పూర్తి వివరాలను ఒకే యాప్‌లో ఉంచుతుంది: జనాభా మొత్తాలు, సరిహద్దులు, డోర్ నంబర్లు, ప్రతి పాఠశాల, ఆసుపత్రి, టాయిలెట్, పార్కు, మ్యూజియం, కార్యాలయం, ముఖ్య భవనం – లొకేషన్, ఫోటోలతో, సచివాలయ సిబ్బంది.'],
+ a_enter:['What you enter','మీరు ఏమి నమోదు చేస్తారు'],
+ a_enterT:['Ward boundaries and door-number range; population totals (total, men, women, above 60, children); important places with a GPS point and photos; your staff with designation, phone and photo. About 5 minutes per place – add a little each day.','వార్డు సరిహద్దులు, డోర్ నంబర్ల పరిధి; జనాభా మొత్తాలు (మొత్తం, పురుషులు, స్త్రీలు, 60 పైబడినవారు, పిల్లలు); GPS పాయింట్, ఫోటోలతో ముఖ్య ప్రదేశాలు; హోదా, ఫోన్, ఫోటోతో సిబ్బంది. ఒక్కో ప్రదేశానికి సుమారు 5 నిమిషాలు – రోజూ కొంచెం జోడించండి.'],
+ a_why:['Why it helps you','ఇది మీకు ఎలా ఉపయోగం'],
+ a_whyT:['No more searching registers when officers ask for ward details. Surveys, plans for new schools, toilets or parks, election work and field visits can all start from this profile. Every secretary can open any other ward from the dropdown to see its office, location, staff and places.','అధికారులు వార్డు వివరాలు అడిగినప్పుడు రిజిస్టర్లు వెతకాల్సిన అవసరం లేదు. సర్వేలు, కొత్త పాఠశాలలు, టాయిలెట్లు, పార్కుల ప్రణాళికలు, ఎన్నికల పని, ఫీల్డ్ విజిట్లు అన్నీ ఈ ప్రొఫైల్ నుండి మొదలుపెట్టవచ్చు. ప్రతి కార్యదర్శి డ్రాప్‌డౌన్ నుండి ఏ వార్డునైనా తెరిచి దాని కార్యాలయం, లొకేషన్, సిబ్బంది, ప్రదేశాలు చూడవచ్చు.'],
+ a_public:['Public view','ప్రజల కోసం'],
+ a_publicT:['Once a ward is complete, its public page shows only places, locations, officers\' names, phone numbers and photos. Population and office-only figures are never shown to the public.','వార్డు పూర్తయ్యాక, దాని పబ్లిక్ పేజీలో ప్రదేశాలు, లొకేషన్లు, అధికారుల పేర్లు, ఫోన్ నంబర్లు, ఫోటోలు మాత్రమే కనిపిస్తాయి. జనాభా, కార్యాలయ వివరాలు ప్రజలకు ఎప్పుడూ కనిపించవు.'],
+ a_start:['How to start','ఎలా మొదలుపెట్టాలి'],
+ a_s1:['Tap "Request access" and choose your secretariat.','"యాక్సెస్ కోరండి" నొక్కి మీ సచివాలయం ఎంచుకోండి.'],
+ a_s2:['Wait for approval, then login with your phone/mail and password.','ఆమోదం తర్వాత మీ ఫోన్/మెయిల్, పాస్‌వర్డ్‌తో లాగిన్ అవ్వండి.'],
+ a_s3:['Open "My ward" → "Edit ward details": fill boundaries, door numbers, population and office location.','"నా వార్డు" → "వార్డు వివరాలు మార్చండి": సరిహద్దులు, డోర్ నంబర్లు, జనాభా, కార్యాలయ లొకేషన్ నింపండి.'],
+ a_s4:['Add staff, then add places one by one – stand at the place and tap "Use my location".','సిబ్బందిని జోడించండి, తర్వాత ప్రదేశాలను ఒక్కొక్కటిగా జోడించండి – ఆ ప్రదేశం వద్ద నిలబడి "నా లొకేషన్ తీసుకోండి" నొక్కండి.']
+};
+const TYPES=[
+ ['govt_office','Government office','ప్రభుత్వ కార్యాలయం','🏛️'],['school','School','పాఠశాల','🏫'],['college','College','కళాశాల','🎓'],
+ ['anganwadi','Anganwadi','అంగన్వాడీ','🧒'],['hospital','Hospital / PHC','ఆసుపత్రి / PHC','🏥'],['clinic','Clinic','క్లినిక్','⚕️'],
+ ['toilet','Public toilet','పబ్లిక్ టాయిలెట్','🚻'],['park','Park / Garden','పార్కు / ఉద్యానవనం','🌳'],['museum','Museum','మ్యూజియం','🖼️'],
+ ['temple','Temple','దేవాలయం','🛕'],['mosque','Mosque','మసీదు','🕌'],['church','Church','చర్చి','⛪'],
+ ['water_tank','Water tank','నీటి ట్యాంకు','💧'],['ration_shop','Ration shop','రేషన్ షాపు','🍚'],['bank','Bank / ATM','బ్యాంకు / ATM','🏦'],
+ ['police','Police station','పోలీస్ స్టేషన్','🚓'],['community_hall','Community hall','కమ్యూనిటీ హాల్','🏠'],['market','Market','మార్కెట్','🛒'],
+ ['main_building','Main private building','ముఖ్యమైన ప్రైవేట్ భవనం','🏢'],['other','Other','ఇతర','📍']
+];
+const DESIG=[
+ ['Ward Administrative Secretary','వార్డు పరిపాలనా కార్యదర్శి'],['Ward Amenities Secretary','వార్డు సౌకర్యాల కార్యదర్శి'],
+ ['Ward Sanitation & Environment Secretary','వార్డు పారిశుద్ధ్య & పర్యావరణ కార్యదర్శి'],['Ward Education & Data Processing Secretary','వార్డు విద్య & డేటా ప్రాసెసింగ్ కార్యదర్శి'],
+ ['Ward Planning & Regulation Secretary','వార్డు ప్రణాళిక & నియంత్రణ కార్యదర్శి'],['Ward Welfare & Development Secretary','వార్డు సంక్షేమ & అభివృద్ధి కార్యదర్శి'],
+ ['Ward Energy Secretary','వార్డు ఇంధన కార్యదర్శి'],['Ward Health Secretary (ANM)','వార్డు ఆరోగ్య కార్యదర్శి (ANM)'],
+ ['Ward Revenue Secretary','వార్డు రెవెన్యూ కార్యదర్శి'],['Ward Women Protection Secretary (Mahila Police)','వార్డు మహిళా సంరక్షణ కార్యదర్శి (మహిళా పోలీస్)'],
+ ['Volunteer / Other','వాలంటీర్ / ఇతర']
+];
+
+/* ---------- state & helpers ---------- */
+const S={lang:localStorage.getItem('wp_lang')||'en',token:localStorage.getItem('wp_token')||'',me:null,secs:[],tab:'overview',filter:'all',ward:null};
+try{S.me=JSON.parse(localStorage.getItem('wp_me')||'null')}catch(e){}
+const $=id=>document.getElementById(id);
+let curApp=$('app');const MAIN=curApp;
+const te=()=>S.lang==='te';
+const t=k=>{const v=TX[k];return v?(te()?v[1]:v[0]):k};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=u=>(typeof u==='string'&&u.startsWith(SB+'/storage/'))?u:'';
+const num=v=>(v===''||v==null||isNaN(+v))?null:+v;
+const fmt=n=>n==null||n===''?'–':Number(n).toLocaleString('en-IN');
+const secName=c=>{const s=S.secs.find(x=>x.code===c);return s?s.name:c};
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+function errText(e){const k='e_'+(e&&e.message||'error');return TX[k]?t(k):t('e_error')}
+async function rpc(fn,args){
+  let r;
+  try{r=await fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(args||{})})}
+  catch(e){throw new Error('network')}
+  const tx=await r.text();let j=null;try{j=tx?JSON.parse(tx):null}catch(e){}
+  if(!r.ok){
+    let m=(j&&j.message)||'error';
+    if(!TX['e_'+m]) m='error';
+    if((m==='not_signed_in'||m==='pending')&&args&&args.p_token){logoutLocal();setTimeout(()=>{location.hash='#login'},50)}
+    throw new Error(m);
+  }
+  return j;
+}
+function setSession(tok,me){S.token=tok;S.me=me;localStorage.setItem('wp_token',tok);localStorage.setItem('wp_me',JSON.stringify(me))}
+function logoutLocal(){S.token='';S.me=null;localStorage.removeItem('wp_token');localStorage.removeItem('wp_me')}
+const typeList=data=>{
+  const hidden=(data&&data.hidden_types)||[];
+  const custom=((data&&data.types)||[]).map(x=>[x.key,x.label,x.label,'📌']);
+  return TYPES.concat(custom).filter(x=>!hidden.includes(x[0]));
+};
+function typeInfo(key,data){
+  const d=TYPES.find(x=>x[0]===key);if(d)return {label:te()?d[2]:d[1],emo:d[3]};
+  const c=((data&&data.types)||[]).find(x=>x.key===key);return {label:c?c.label:key,emo:'📌'};
+}
+function desigLabel(en){const d=DESIG.find(x=>x[0]===en);return d?(te()?d[1]:d[0]):(en||'')}
+function gmaps(lat,lng){return 'https://www.google.com/maps?q='+lat+','+lng}
+function completionItems(o){
+  const d=o.data||{},b=d.boundary||{},p=d.population||{};
+  return [
+   ['c_loc',!!(o.lat!=null&&['Found','Set by secretariat'].includes(o.map_status))],
+   ['c_addr',!!d.office_address],
+   ['c_bound',['north','south','east','west'].filter(k=>b[k]).length>=2],
+   ['c_door',!!(d.door_from&&d.door_to)],
+   ['c_pop',!!p.total],
+   ['c_staff',o.staff>0],['c_places',o.places>=5],['c_photos',o.photos>=3],['c_ophoto',!!d.office_photo]
+  ];
+}
+function completion(o){const it=completionItems(o);return Math.round(it.filter(x=>x[1]).length/it.length*100)}
+function pctPill(p){return '<span class="pill '+(p>=80?'g':p>=40?'o':'r')+'">'+p+'% '+t('complete')+'</span>'}
+function secOptions(sel){return S.secs.map(s=>'<option value="'+s.code+'"'+(s.code===sel?' selected':'')+'>'+s.sl+'. '+esc(s.name)+'</option>').join('')}
+async function loadSecs(force){if(S.secs.length&&!force)return;S.secs=await rpc('wp_secretariats')}
+function lightbox(src){const d=document.createElement('div');d.className='lb';d.innerHTML='<img src="'+esc(src)+'" alt="">';d.onclick=()=>d.remove();document.body.appendChild(d)}
+document.addEventListener('click',e=>{const im=e.target.closest('img[data-full]');if(im)lightbox(im.getAttribute('data-full'))});
+
+/* ---------- maps ---------- */
+function mkMap(id,center,zoom){
+  const el=$(id);if(!el)return null;
+  if(!window.L){el.innerHTML='<p class="mute" style="padding:10px">'+t('mapOff')+'</p>';return null}
+  const m=L.map(id,{scrollWheelZoom:false}).setView(center||CENTER,zoom||14);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(m);
+  setTimeout(()=>m.invalidateSize(),200);
+  return m;
+}
+const emojiIcon=e=>window.L?L.divIcon({className:'emoji',html:e,iconSize:[26,26],iconAnchor:[13,13]}):null;
+const secIcon=n=>window.L?L.divIcon({className:'',html:'<div class="secpin">'+n+'</div>',iconSize:[26,26],iconAnchor:[13,13]}):null;
+
+/* ---------- photos ---------- */
+function compress(file){
+  return new Promise((res,rej)=>{
+    const fr=new FileReader();
+    fr.onerror=()=>rej(new Error('error'));
+    fr.onload=()=>{const img=new Image();img.onerror=()=>rej(new Error('error'));img.onload=()=>{
+      let max=1280,q=.72,out='';
+      for(let i=0;i<4;i++){
+        const sc=Math.min(1,max/Math.max(img.width,img.height));
+        const c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);
+        c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+        out=c.toDataURL('image/jpeg',q);
+        if(out.length<850000)break;max=Math.round(max*.8);q-=.1;
+      }
+      res(out);
+    };img.src=fr.result};
+    fr.readAsDataURL(file);
+  });
+}
+async function uploadPhoto(file,code){
+  const data=await compress(file);
+  let r;try{r=await fetch(SB+'/functions/v1/wp-photo',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({token:S.token,code:code,image:data})})}catch(e){throw new Error('network')}
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.url)throw new Error(j.error==='not_allowed'?'not_allowed':'error');
+  return j.url;
+}
+function photoPicker(holderId,list,max,code,onChange){
+  const h=$(holderId);
+  const draw=()=>{
+    h.innerHTML='<div class="thumbs">'+list.map((u,i)=>'<div class="t"><img src="'+esc(safeUrl(u))+'" data-full="'+esc(safeUrl(u))+'" alt=""><button type="button" data-rm="'+i+'">×</button></div>').join('')+'</div>'+
+      (list.length<max?'<label class="btn alt sm" style="display:inline-flex;margin-top:6px">'+t('addPhoto')+'<input type="file" accept="image/*" hidden></label>':'')+'<span class="mute" data-st></span>';
+    h.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{list.splice(+b.dataset.rm,1);draw();onChange&&onChange()});
+    const inp=h.querySelector('input[type=file]');
+    if(inp)inp.onchange=async()=>{const f=inp.files[0];if(!f)return;const st=h.querySelector('[data-st]');st.innerHTML=' <span class="spin"></span> '+t('uploading');
+      try{list.push(await uploadPhoto(f,code));draw();onChange&&onChange()}catch(e){st.textContent=' '+errText(e)}};
+  };
+  draw();
+}
+function gpsInto(latId,lngId,cb){
+  if(!navigator.geolocation){toast(t('gpsFail'));return}
+  toast(t('loading'));
+  navigator.geolocation.getCurrentPosition(p=>{$(latId).value=p.coords.latitude.toFixed(6);$(lngId).value=p.coords.longitude.toFixed(6);toast(t('gpsOk'));cb&&cb()},
+    ()=>toast(t('gpsFail')),{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+}
+function pickMap(mapId,latId,lngId,center){
+  const m=mkMap(mapId,center||CENTER,center?17:14);if(!m)return;
+  let mk=null;
+  const put=()=>{const la=num($(latId).value),ln=num($(lngId).value);if(la==null||ln==null)return;
+    if(mk)mk.setLatLng([la,ln]);else mk=L.marker([la,ln]).addTo(m);m.setView([la,ln],17)};
+  put();
+  m.on('click',e=>{$(latId).value=e.latlng.lat.toFixed(6);$(lngId).value=e.latlng.lng.toFixed(6);put()});
+  $(latId).onchange=put;$(lngId).onchange=put;
+  return put;
+}
+
+/* ---------- header ---------- */
+function header(){
+  $('appName').textContent=t('appName');$('appSub').textContent=t('appSub');
+  $('lte').classList.toggle('on',te());$('len').classList.toggle('on',!te());
+  $('acctBtn').textContent=S.token?'👤 '+(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account')):t('login');
+  document.documentElement.lang=te()?'te':'en';
+}
+$('lte').onclick=()=>{S.lang='te';localStorage.setItem('wp_lang','te');route()};
+$('len').onclick=()=>{S.lang='en';localStorage.setItem('wp_lang','en');route()};
+$('acctBtn').onclick=()=>{location.hash=S.token?'#account':'#login'};
+
+/* ---------- install ---------- */
+let deferredInstall=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e});
+const standalone=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+function installCard(){
+  if(standalone())return '';
+  return '<div class="card row" id="instCard"><div style="flex:1"><b>'+t('install')+'</b><div class="mute" id="instTxt">'+t('installTxt')+'</div></div><button class="btn sm" id="instBtn" type="button">'+t('install')+'</button></div>';
+}
+function wireInstall(){const b=$('instBtn');if(!b)return;b.onclick=()=>{if(deferredInstall){deferredInstall.prompt();deferredInstall=null}else $('instTxt').textContent=t('installHelp')}}
+
+/* ---------- views ---------- */
+async function vHome(){const app=curApp;
+  await loadSecs();
+  if(!S.token){
+    app.innerHTML='<div class="card hero"><h1>'+t('heroTitle')+'</h1><p>'+t('heroText')+'</p><div class="row"><a class="btn" href="#login">'+t('login')+'</a><a class="btn alt" href="#signup">'+t('request')+'</a><a class="btn alt" href="#about">'+t('about')+'</a></div></div>'+
+      '<div class="card"><h2>'+t('allWards')+'</h2><div id="map" class="map"></div><a class="btn alt sm" href="#public">'+t('publicPages')+'</a></div>'+installCard();
+    wireInstall();
+    const m=mkMap('map');if(m)S.secs.forEach(s=>{if(s.lat!=null)L.marker([s.lat,s.lng],{icon:secIcon(s.sl)}).addTo(m).bindPopup('<b>'+esc(s.name)+'</b><br>'+s.code)});
+    return;
+  }
+  app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';
+  const ov=await rpc('wp_overview',{p_token:S.token});
+  S.overview=ov;
+  const me=S.me||{};
+  const mine=ov.find(x=>x.code===me.code);
+  app.innerHTML=
+   '<div class="card hero"><h1>'+esc(me.name||'')+'</h1><div class="mute">'+esc(desigLabel(me.designation))+(me.secretariat?' · '+esc(me.secretariat):'')+'</div>'+
+   (me.role==='super'?'<div class="msg info">'+t('superNote')+'</div>':'')+
+   '<div class="row" style="margin-top:8px">'+(me.code?'<a class="btn" href="#ward/'+me.code+'">🏠 '+t('myWard')+'</a>':'')+
+   ((me.role==='super'||me.role==='admin')?'<a class="btn orange" href="#admin">⚙️ '+t('admin')+'</a>':'')+
+   '<a class="btn alt" href="#about">'+t('about')+'</a></div>'+
+   (mine?'<div style="margin-top:10px">'+pctPill(completion(mine))+'<div class="bar2"><i style="width:'+completion(mine)+'%"></i></div></div>':'')+'</div>'+
+   '<div class="card"><label>'+t('openWard')+'</label><select id="goSel" class="selbig"><option value="">'+t('pickSec')+'</option>'+secOptions('')+'</select></div>'+
+   '<div class="card"><h2>'+t('allWards')+'</h2><div id="map" class="map"></div><div class="list">'+
+   ov.map(o=>{const p=completion(o);return '<a class="it" style="text-decoration:none;color:inherit" href="#ward/'+o.code+'"><div class="secpin" style="flex:none">'+o.sl+'</div><div class="grow"><div class="nm">'+esc(o.name)+'</div><div class="mute">'+o.places+' '+t('places')+' · '+o.staff+' '+t('staff')+' · '+o.photos+' '+t('photosCount')+'</div><div class="bar2"><i style="width:'+p+'%"></i></div></div>'+pctPill(p)+'</a>'}).join('')+
+   '</div></div>'+installCard();
+  wireInstall();
+  $('goSel').onchange=e=>{if(e.target.value)location.hash='#ward/'+e.target.value};
+  const m=mkMap('map');if(m)ov.forEach(o=>{if(o.lat!=null)L.marker([o.lat,o.lng],{icon:secIcon(o.sl)}).addTo(m).bindPopup('<b>'+esc(o.name)+'</b><br>'+completion(o)+'% '+t('complete')+'<br><a href="#ward/'+o.code+'">'+t('openWard')+' →</a>')});
+}
+
+function vAbout(){const app=curApp;
+  app.innerHTML='<div class="card"><h1>'+t('appName')+'</h1>'+
+   ['a_purpose','a_enter','a_why','a_public'].map(k=>'<h3>'+t(k)+'</h3><p>'+t(k+'T')+'</p>').join('')+
+   '<h3>'+t('a_start')+'</h3><ol class="steps"><li>'+t('a_s1')+'</li><li>'+t('a_s2')+'</li><li>'+t('a_s3')+'</li><li>'+t('a_s4')+'</li></ol>'+
+   (S.token?'':'<div class="row" style="margin-top:12px"><a class="btn" href="#signup">'+t('request')+'</a><a class="btn alt" href="#login">'+t('login')+'</a></div>')+'</div>';
+}
+
+function vLogin(){const app=curApp;
+  app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('login')+'</h2><form id="f">'+
+   '<label>'+t('phoneOrMail')+'</label><input id="lg" autocomplete="username" inputmode="email" required>'+
+   '<label>'+t('password')+'</label><input id="pw" type="password" autocomplete="current-password" required>'+
+   '<div id="m"></div><button class="btn" style="margin-top:12px;width:100%;justify-content:center">'+t('login')+'</button></form>'+
+   '<p style="text-align:center"><a href="#signup">'+t('noAcc')+'</a></p></div>';
+  $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
+    try{const r=await rpc('wp_login',{p_login:$('lg').value,p_pass:$('pw').value});setSession(r.token,r.me);location.hash='#home'}
+    catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}b.disabled=false};
+}
+
+async function vSignup(){const app=curApp;
+  await loadSecs();
+  app.innerHTML='<div class="card" style="max-width:520px;margin:auto"><h2>'+t('request')+'</h2><form id="f">'+
+   '<label>'+t('yourName')+'</label><input id="nm" required>'+
+   '<label>'+t('phoneOrMail')+'</label><input id="lg" autocomplete="username" required>'+
+   '<label>'+t('password6')+'</label><input id="pw" type="password" autocomplete="new-password" minlength="6" required>'+
+   '<label>'+t('yourSec')+'</label><select id="sc" required><option value="">'+t('pickSec')+'</option>'+secOptions('')+'</select>'+
+   '<label>'+t('role')+'</label><select id="rl"><option value="admin">'+t('roleAdmin')+'</option><option value="staff">'+t('roleStaff')+'</option></select>'+
+   '<label>'+t('designation')+'</label><select id="dg">'+DESIG.map(d=>'<option value="'+esc(d[0])+'">'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
+   '<div id="m"></div><button class="btn" style="margin-top:12px;width:100%;justify-content:center">'+t('sendReq')+'</button></form>'+
+   '<p style="text-align:center"><a href="#login">'+t('haveAcc')+'</a></p></div>';
+  $('rl').onchange=()=>{if($('rl').value==='admin')$('dg').value=DESIG[0][0]};
+  $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
+    try{const r=await rpc('wp_signup',{p_login:$('lg').value,p_pass:$('pw').value,p_name:$('nm').value,p_code:$('sc').value,p_role:$('rl').value,p_designation:$('dg').value});
+      if(r.token){setSession(r.token,r.me);location.hash='#home'}
+      else{$('f').innerHTML='<div class="msg ok">'+t('reqSent')+'</div><a class="btn" href="#login">'+t('login')+'</a>'}}
+    catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';b.disabled=false}};
+}
+
+function vAccount(){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const me=S.me||{};
+  app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('account')+'</h2><p><b>'+esc(me.name)+'</b><br><span class="mute">'+esc(me.login)+'<br>'+esc(desigLabel(me.designation))+'<br>'+esc(me.secretariat||'')+'</span></p>'+
+   '<h3>'+t('changePass')+'</h3><form id="f"><label>'+t('oldPass')+'</label><input id="op" type="password" required><label>'+t('newPass')+'</label><input id="np" type="password" minlength="6" required><div id="m"></div><button class="btn" style="margin-top:10px">'+t('save')+'</button></form>'+
+   '<hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><button class="btn red" id="lo">'+t('logout')+'</button></div>';
+  $('f').onsubmit=async e=>{e.preventDefault();try{await rpc('wp_change_password',{p_token:S.token,p_old:$('op').value,p_new:$('np').value});$('m').innerHTML='<div class="msg ok">'+t('saved')+'</div>';e.target.reset()}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+  $('lo').onclick=async()=>{try{await rpc('wp_logout',{p_token:S.token})}catch(e){}logoutLocal();location.hash='#home'};
+}
+
+/* ----- ward ----- */
+async function loadWard(code){S.ward=await rpc('wp_ward',{p_token:S.token,p_code:code});return S.ward}
+function wardCounts(w){
+  const photos=w.places.reduce((a,p)=>a+(p.photos||[]).length,0);
+  return {code:w.sec.code,lat:w.sec.lat,map_status:w.sec.map_status,data:w.data,places:w.places.length,photos:photos,staff:w.staff.length};
+}
+async function vWard(code,tab){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  await loadSecs();
+  if(tab)S.tab=tab;
+  app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';
+  const w=await loadWard(code);
+  const d=w.data||{},sec=w.sec,c=wardCounts(w),pct=completion(c);
+  const tabs=[['overview',t('overview')],['places',t('places')+' ('+w.places.length+')'],['staff',t('staff')+' ('+w.staff.length+')'],['blos',t('blos')+' ('+w.staff.filter(x=>x.blo_booth).length+')']];
+  app.innerHTML='<div class="card"><select id="wsel" class="selbig">'+secOptions(code)+'</select>'+
+   '<div class="row" style="margin-top:8px;justify-content:space-between"><div><b>'+esc(sec.name)+'</b> <span class="mute">· '+sec.code+(d.ward_no?' · '+t('wardNo')+' '+esc(d.ward_no):'')+'</span></div>'+pctPill(pct)+'</div>'+
+   '<div class="bar2"><i style="width:'+pct+'%"></i></div>'+
+   (w.can_edit?'':'<div class="msg info">'+t('viewOnly')+'</div>')+
+   (w.can_edit_profile?'<div class="row" style="margin-top:8px"><a class="btn sm" href="#edit/'+code+'">✏️ '+t('edit')+'</a></div>':'')+
+   '</div><div class="tabs">'+tabs.map(x=>'<button type="button" data-tab="'+x[0]+'" class="'+(S.tab===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div><div id="tabBody"></div>';
+  $('wsel').onchange=e=>{location.hash='#ward/'+e.target.value};
+  app.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;vWardTab(w);app.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b))});
+  vWardTab(w);
+}
+function vWardTab(w){
+  const body=$('tabBody'),d=w.data||{},code=w.sec.code;
+  if(S.tab==='places'){
+    const types=typeList(d);
+    const used=[...new Set(w.places.map(p=>p.type))];
+    const list=w.places.filter(p=>S.filter==='all'||p.type===S.filter);
+    body.innerHTML='<div class="card">'+(w.can_edit?'<a class="btn" href="#place/'+code+'/new">'+t('addPlace')+'</a>':'')+
+      '<label>'+t('type')+'</label><select id="flt"><option value="all">'+t('all')+' ('+w.places.length+')</option>'+used.map(k=>'<option value="'+esc(k)+'"'+(S.filter===k?' selected':'')+'>'+esc(typeInfo(k,d).emo+' '+typeInfo(k,d).label)+' ('+w.places.filter(p=>p.type===k).length+')</option>').join('')+'</select>'+
+      '<div id="pmap" class="map"></div><div class="list">'+
+      (list.length?list.map(p=>{const ti=typeInfo(p.type,d);return '<div class="it"><div class="emo">'+ti.emo+'</div><div class="grow"><div class="nm">'+esc(p.name)+'</div><div class="mute">'+esc(ti.label)+(p.ownership?' · '+t(p.ownership==='govt'?'govt':'private'):'')+(p.address?' · '+esc(p.address):'')+'</div>'+
+        (p.contact?'<div class="mute">☎ '+esc(p.contact)+'</div>':'')+(p.notes?'<div class="mute">'+esc(p.notes)+'</div>':'')+
+        '<div class="thumbs">'+(p.photos||[]).map(u=>'<img src="'+esc(safeUrl(u))+'" data-full="'+esc(safeUrl(u))+'" alt="" loading="lazy">').join('')+'</div>'+
+        '<div class="row" style="margin-top:4px">'+(p.lat!=null?'<a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(p.lat,p.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+(w.can_edit?'<a class="btn alt sm" href="#place/'+code+'/'+p.id+'">'+t('editB')+'</a>':'')+'</div></div></div>'}).join(''):'<p class="mute">'+t('noPlaces')+'</p>')+'</div></div>';
+    $('flt').onchange=e=>{S.filter=e.target.value;vWardTab(w)};
+    const m=mkMap('pmap',w.sec.lat!=null?[w.sec.lat,w.sec.lng]:CENTER,15);
+    if(m){const pts=[];if(w.sec.lat!=null){L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m).bindPopup('<b>'+esc(w.sec.name)+'</b>');pts.push([w.sec.lat,w.sec.lng])}
+      list.forEach(p=>{if(p.lat!=null){L.marker([p.lat,p.lng],{icon:emojiIcon(typeInfo(p.type,d).emo)}).addTo(m).bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(typeInfo(p.type,d).label));pts.push([p.lat,p.lng])}});
+      if(pts.length>1)m.fitBounds(pts,{padding:[30,30],maxZoom:17})}
+    return;
+  }
+  if(S.tab==='blos'){
+    const blos=w.staff.filter(x=>x.blo_booth).sort((a,b)=>String(a.blo_booth).localeCompare(String(b.blo_booth),undefined,{numeric:true}));
+    const free=w.staff.filter(x=>!x.blo_booth);
+    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<p class="mute">'+t('bloHelp')+'</p><div class="two"><div><label>'+t('pickEmp')+'</label><select id="be"><option value="">–</option>'+free.map(x=>'<option value="'+x.id+'">'+esc(x.name)+' – '+esc(desigLabel(x.designation))+'</option>').join('')+'</select></div><div><label>'+t('booth')+'</label><input id="bb" inputmode="numeric"></div></div><button class="btn" id="ba" type="button" style="margin-top:8px">'+t('assign')+'</button><div id="bm"></div>':'')+
+      '<div class="list">'+(blos.length?blos.map(x=>'<div class="it"><div class="secpin" style="flex:none;width:auto;min-width:40px;border-radius:10px;padding:0 6px">'+esc(x.blo_booth)+'</div><div class="grow"><div class="nm">'+esc(x.name)+'</div><div class="mute">'+t('booth')+' '+esc(x.blo_booth)+' · '+esc(desigLabel(x.designation))+'</div>'+(x.phone?'<div>'+esc(x.phone)+'</div>':'')+'</div><div class="row">'+(x.phone?'<a class="btn sm" href="tel:'+esc(String(x.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<button class="btn alt sm" type="button" data-ub="'+x.id+'">'+t('unassign')+'</button>':'')+'</div></div>').join(''):'<p class="mute">'+t('noBlos')+'</p>')+'</div></div>';
+    const setB=async(id,booth)=>{try{await rpc('wp_set_blo',{p_token:S.token,p_id:id,p_booth:booth});toast(t('saved'));vWard(code,'blos')}catch(er){toast(errText(er))}};
+    if($('ba'))$('ba').onclick=()=>{const id=$('be').value,b=$('bb').value.trim();if(!id){$('bm').innerHTML='<div class="msg err">'+t('pickEmp')+'</div>';return}if(!b){$('bm').innerHTML='<div class="msg err">'+t('boothNeeded')+'</div>';return}setB(id,b)};
+    body.querySelectorAll('[data-ub]').forEach(bt=>bt.onclick=()=>{if(confirm(t('unassign')+'?'))setB(bt.dataset.ub,'')});
+    return;
+  }
+  if(S.tab==='staff'){
+    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('importT')+'</a></div>':'')+'<div class="list">'+
+     (w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+
+       '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+'</div>'+
+       '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>';
+    return;
+  }
+  /* overview */
+  const p=d.population||{},b=d.boundary||{},pr=w.private;
+  const byType={};w.places.forEach(x=>{byType[x.type]=(byType[x.type]||0)+1});
+  const govt=w.places.filter(x=>x.ownership==='govt').length,priv=w.places.filter(x=>x.ownership==='private').length;
+  const c=wardCounts(w);const todo=completionItems(c).filter(x=>!x[1]);
+  const st=(v,l)=>'<div class="stat"><b>'+fmt(v)+'</b><span>'+l+'</span></div>';
+  body.innerHTML=
+   '<div class="card"><h2>'+t('population')+'</h2><div class="grid">'+st(p.total,t('total'))+st(p.households,t('households'))+st(p.men,t('men'))+st(p.women,t('women'))+st(p.above60,t('above60'))+st(p.children,t('children'))+'</div>'+(p.as_on?'<p class="mute">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
+   (pr&&(pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>'+t('caste')+'</h3><div class="grid">'+st(pr.bc,'BC')+st(pr.sc,'SC')+st(pr.st,'ST')+st(pr.oc,'OC')+st(pr.minority,t('minority'))+'</div>':'')+'</div>'+
+   '<div class="card"><h2>'+t('places')+'</h2><div class="grid">'+st(w.places.length,t('all'))+st(govt,t('govtB'))+st(priv,t('privB'))+st(c.photos,t('photosCount'))+st(w.staff.length,t('staff'))+
+     typeList(d).filter(x=>byType[x[0]]||['school','toilet','hospital','park','museum','anganwadi'].includes(x[0])).map(x=>st(byType[x[0]]||0,x[3]+' '+(te()?x[2]:x[1]))).join('')+'</div></div>'+
+   '<div class="card"><h2>'+t('boundaries')+'</h2><table>'+[['north','⬆'],['south','⬇'],['east','➡'],['west','⬅']].map(k=>'<tr><th style="width:40%">'+k[1]+' '+t(k[0])+'</th><td>'+(b[k[0]]?esc(b[k[0]]):'<span class="mute">'+t('notFilled')+'</span>')+'</td></tr>').join('')+
+     '<tr><th>'+t('doors')+'</th><td>'+(d.door_from||d.door_to?esc(d.door_from||'')+' → '+esc(d.door_to||''):'<span class="mute">'+t('notFilled')+'</span>')+'</td></tr>'+
+     (d.streets?'<tr><th>'+t('streets')+'</th><td style="white-space:pre-wrap">'+esc(d.streets)+'</td></tr>':'')+'</table></div>'+
+   '<div class="card"><h2>'+t('office')+'</h2>'+(safeUrl(d.office_photo)?'<img src="'+esc(safeUrl(d.office_photo))+'" data-full="'+esc(safeUrl(d.office_photo))+'" alt="" style="width:100%;max-height:260px;object-fit:cover;border-radius:10px">':'')+
+     '<p>'+(d.office_address?esc(d.office_address):'<span class="mute">'+t('notFilled')+'</span>')+(d.office_phone?'<br>☎ <a href="tel:'+esc(String(d.office_phone).replace(/[^0-9+]/g,''))+'">'+esc(d.office_phone)+'</a>':'')+'</p>'+
+     (w.sec.lat!=null?'<div class="mute">'+t('mapStatus')+': '+esc(w.sec.map_status||'')+(['Area only','Likely'].includes(w.sec.map_status)?' – '+t('areaOnly'):'')+'</div><div id="omap" class="map small"></div><a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(w.sec.lat,w.sec.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+'</div>'+
+   (todo.length?'<div class="card"><h2>'+t('todo')+'</h2><ul>'+todo.map(x=>'<li>'+t(x[0])+'</li>').join('')+'</ul></div>':'')+
+   (w.updated_at?'<p class="mute">'+t('lastUpd')+': '+new Date(w.updated_at).toLocaleString('en-IN')+'</p>':'');
+  if(w.sec.lat!=null){const m=mkMap('omap',[w.sec.lat,w.sec.lng],17);if(m)L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m)}
+}
+
+async function vEdit(code){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  await loadSecs();
+  const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
+  if(!w.can_edit_profile){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  const d=JSON.parse(JSON.stringify(w.data||{})),p=d.population||{},b=d.boundary||{},pr=w.private||{};
+  d.types=d.types||[];d.hidden_types=d.hidden_types||[];
+  const ophoto=d.office_photo?[d.office_photo]:[];
+  const inp=(id,lab,val,type)=>'<div><label>'+lab+'</label><input id="'+id+'" '+(type?'type="'+type+'"'+(type==='number'?' step="any" inputmode="decimal"':''):'')+' value="'+esc(val==null?'':val)+'"></div>';
+  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+t('edit')+'</h1><p class="mute">'+esc(w.sec.name)+' · '+code+'</p><form id="f">'+
+   '<div class="card"><h2>'+t('office')+'</h2><div class="two">'+inp('ward_no',t('wardNo'),d.ward_no)+inp('office_phone',t('officePhone'),d.office_phone,'tel')+'</div>'+
+    '<label>'+t('officeAddress')+'</label><textarea id="office_address">'+esc(d.office_address||'')+'</textarea>'+
+    '<label>'+t('officePhoto')+'</label><div id="oph"></div>'+
+    '<label>'+t('officeLoc')+'</label><div class="row"><button type="button" class="btn alt sm" id="gps">'+t('useLoc')+'</button><span class="mute">'+t('tapMap')+'</span></div>'+
+    '<div class="two">'+inp('olat',t('lat'),w.sec.lat,'number')+inp('olng',t('lng'),w.sec.lng,'number')+'</div><div id="emap" class="map small"></div></div>'+
+   '<div class="card"><h2>'+t('boundaries')+'</h2><div class="two">'+inp('b_north','⬆ '+t('north'),b.north)+inp('b_south','⬇ '+t('south'),b.south)+inp('b_east','➡ '+t('east'),b.east)+inp('b_west','⬅ '+t('west'),b.west)+
+    inp('door_from',t('doorFrom'),d.door_from)+inp('door_to',t('doorTo'),d.door_to)+'</div><label>'+t('streets')+'</label><textarea id="streets">'+esc(d.streets||'')+'</textarea></div>'+
+   '<div class="card"><h2>'+t('population')+'</h2><div class="two">'+inp('p_total',t('total'),p.total,'number')+inp('p_households',t('households'),p.households,'number')+inp('p_men',t('men'),p.men,'number')+inp('p_women',t('women'),p.women,'number')+
+    inp('p_above60',t('above60'),p.above60,'number')+inp('p_children',t('children'),p.children,'number')+inp('p_as_on',t('asOn'),p.as_on,'date')+'</div>'+
+    '<h3>'+t('caste')+'</h3><p class="mute">'+t('casteNote')+'</p><div class="two">'+inp('c_bc','BC',pr.bc,'number')+inp('c_sc','SC',pr.sc,'number')+inp('c_st','ST',pr.st,'number')+inp('c_oc','OC',pr.oc,'number')+inp('c_min',t('minority'),pr.minority,'number')+'</div></div>'+
+   '<div class="card"><h2>'+t('placeTypes')+'</h2><p class="mute">'+t('hideTypes')+'</p><div class="row" id="tyl"></div>'+
+    '<label>'+t('addType')+'</label><div class="row"><input id="nty" placeholder="'+esc(t('typeName'))+'" style="flex:1"><button type="button" class="btn sm" id="ntyb">+</button></div></div>'+
+   '<div id="m"></div><button class="btn" style="width:100%;justify-content:center;padding:14px">💾 '+t('save')+'</button></form>';
+  photoPicker('oph',ophoto,1,code);
+  pickMap('emap','olat','olng',w.sec.lat!=null?[w.sec.lat,w.sec.lng]:null);
+  $('gps').onclick=()=>gpsInto('olat','olng',()=>{const f=$('olat').onchange;f&&f()});
+  const drawTypes=()=>{
+    $('tyl').innerHTML=TYPES.map(x=>'<label class="chk"><input type="checkbox" data-ty="'+x[0]+'"'+(d.hidden_types.includes(x[0])?'':' checked')+'>'+x[3]+' '+esc(te()?x[2]:x[1])+'</label>').join('')+
+      d.types.map((x,i)=>'<label class="chk">📌 '+esc(x.label)+' <button type="button" class="btn red sm" data-dt="'+i+'" style="padding:2px 8px">×</button></label>').join('');
+    $('tyl').querySelectorAll('[data-ty]').forEach(c=>c.onchange=()=>{const k=c.dataset.ty;d.hidden_types=d.hidden_types.filter(x=>x!==k);if(!c.checked)d.hidden_types.push(k)});
+    $('tyl').querySelectorAll('[data-dt]').forEach(bt=>bt.onclick=()=>{d.types.splice(+bt.dataset.dt,1);drawTypes()});
+  };
+  drawTypes();
+  $('ntyb').onclick=()=>{const v=$('nty').value.trim();if(!v)return;d.types.push({key:'c_'+Date.now().toString(36),label:v.slice(0,60)});$('nty').value='';drawTypes()};
+  $('f').onsubmit=async e=>{e.preventDefault();const bt=e.target.querySelector('button.btn[style*="padding:14px"]');bt.disabled=true;
+    const v=id=>$(id).value.trim();
+    const nd=Object.assign({},d,{ward_no:v('ward_no'),office_phone:v('office_phone'),office_address:v('office_address'),office_photo:ophoto[0]||'',
+      boundary:{north:v('b_north'),south:v('b_south'),east:v('b_east'),west:v('b_west')},door_from:v('door_from'),door_to:v('door_to'),streets:v('streets'),
+      population:{total:num(v('p_total')),households:num(v('p_households')),men:num(v('p_men')),women:num(v('p_women')),above60:num(v('p_above60')),children:num(v('p_children')),as_on:v('p_as_on')}});
+    const npr={bc:num(v('c_bc')),sc:num(v('c_sc')),st:num(v('c_st')),oc:num(v('c_oc')),minority:num(v('c_min'))};
+    const la=num(v('olat')),ln=num(v('olng'));
+    const moved=la!=null&&ln!=null&&(la!==w.sec.lat||ln!==w.sec.lng);
+    try{await rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:nd,p_private:npr,p_lat:moved?la:null,p_lng:moved?ln:null});toast(t('saved'));S.tab='overview';location.hash='#ward/'+code}
+    catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';bt.disabled=false}};
+}
+
+async function vPlace(code,id){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
+  if(!w.can_edit){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  const p=id==='new'?{type:'school',ownership:'govt',photos:[]}:JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||{photos:[]}));
+  p.photos=p.photos||[];
+  const types=typeList(w.data);
+  if(p.type&&!types.find(x=>x[0]===p.type))types.push([p.type,p.type,p.type,'📍']);
+  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addPlace'):esc(p.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p><form id="f" class="card">'+
+   '<label>'+t('type')+'</label><select id="ty">'+types.map(x=>'<option value="'+esc(x[0])+'"'+(x[0]===p.type?' selected':'')+'>'+x[3]+' '+esc(te()?x[2]:x[1])+'</option>').join('')+'</select>'+
+   '<label>'+t('ownership')+'</label><select id="ow"><option value="govt"'+(p.ownership==='govt'?' selected':'')+'>'+t('govt')+'</option><option value="private"'+(p.ownership==='private'?' selected':'')+'>'+t('private')+'</option></select>'+
+   '<label>'+t('name')+'</label><input id="nm" required value="'+esc(p.name||'')+'">'+
+   '<label>'+t('address')+'</label><input id="ad" value="'+esc(p.address||'')+'">'+
+   '<label>📍 GPS</label><div class="row"><button type="button" class="btn alt sm" id="gps">'+t('useLoc')+'</button><span class="mute">'+t('tapMap')+'</span></div>'+
+   '<div class="two"><div><label>'+t('lat')+'</label><input id="la" type="number" step="any" value="'+esc(p.lat==null?'':p.lat)+'"></div><div><label>'+t('lng')+'</label><input id="ln" type="number" step="any" value="'+esc(p.lng==null?'':p.lng)+'"></div></div>'+
+   '<div id="pm" class="map small"></div>'+
+   '<label>'+t('photos')+'</label><div id="ph"></div>'+
+   '<label>'+t('contact')+'</label><input id="ct" value="'+esc(p.contact||'')+'">'+
+   '<label>'+t('notes')+'</label><textarea id="no">'+esc(p.notes||'')+'</textarea>'+
+   '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
+  photoPicker('ph',p.photos,5,code);
+  pickMap('pm','la','ln',p.lat!=null?[p.lat,p.lng]:(w.sec.lat!=null?[w.sec.lat,w.sec.lng]:null));
+  $('gps').onclick=()=>gpsInto('la','ln',()=>{const f=$('la').onchange;f&&f()});
+  if(id==='new'&&!p.lat)setTimeout(()=>{if(!$('la').value)gpsInto('la','ln',()=>$('la').onchange&&$('la').onchange())},400);
+  $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
+    const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos};
+    try{await rpc('wp_save_place',{p_token:S.token,p:o});toast(t('saved'));S.tab='places';location.hash='#ward/'+code}
+    catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
+  if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_delete_place',{p_token:S.token,p_id:id});S.tab='places';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+}
+
+async function vStaff(code,id){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
+  if(!w.can_edit_profile){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  const s=id==='new'?{designation:DESIG[0][0]}:Object.assign({},w.staff.find(x=>x.id===id)||{});
+  const ph=s.photo?[s.photo]:[];
+  const opts=DESIG.slice();if(s.designation&&!opts.find(x=>x[0]===s.designation))opts.push([s.designation,s.designation]);
+  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p><form id="f" class="card">'+
+   '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
+   '<label>'+t('designation')+'</label><select id="dg">'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
+   '<label>'+t('phone')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
+   '<label>'+t('photo')+'</label><div id="sph"></div>'+
+   '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div><div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div></div>'+
+   '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
+  photoPicker('sph',ph,1,code);
+  $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
+    const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value};
+    try{await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));S.tab='staff';location.hash='#ward/'+code}
+    catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
+  if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_delete_staff',{p_token:S.token,p_id:id});S.tab='staff';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+}
+
+/* ----- import staff from SGSW attendance report ----- */
+function matchDesig(txt){
+  const x=String(txt||'').toLowerCase();
+  const keys=[['administrative',0],['amenities',1],['sanitation',2],['education',3],['plan',4],['welfare',5],['energy',6],['health',7],['anm',7],['revenue',8],['women',9],['mahila',9]];
+  for(const k of keys)if(x.includes(k[0]))return DESIG[k[1]][0];
+  return String(txt||'').trim()||DESIG[10][0];
+}
+const titleCase=n=>String(n).trim().replace(/\s+/g,' ').toLowerCase().replace(/(^|[\s.])([a-z])/g,(m,a,b)=>a+b.toUpperCase());
+function parseReport(text){
+  const out=[];const idRe=/^\d{2,4}X{2,}\d{2,6}$/i;
+  const lines=String(text).replace(/\r/g,'').split('\n');
+  // 1) tab separated rows
+  lines.forEach(l=>{const c=l.split('\t').map(x=>x.trim());
+    if(c.length>=4){const i=c.findIndex(v=>idRe.test(v.replace(/\s/g,'')));if(i>=0&&c[i+1]&&c[i+2])out.push({name:c[i+1],designation:c[i+2]})}});
+  if(out.length)return out;
+  // 2) one cell per line
+  const L=lines.map(x=>x.trim()).filter(Boolean);
+  for(let i=0;i<L.length;i++){
+    if(idRe.test(L[i].replace(/\s/g,''))){
+      const name=L[i+1]||'';let des=[];let j=i+2;
+      while(j<L.length&&!/^\d{1,2}:\d{2}/.test(L[j])&&!/^NA$/i.test(L[j])&&!idRe.test(L[j].replace(/\s/g,''))&&!/^\d+$/.test(L[j])){des.push(L[j]);j++}
+      if(name)out.push({name:name,designation:des.join(' ')});
+    }
+  }
+  return out;
+}
+async function vImport(code){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
+  if(!w.can_edit_profile){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
+  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+t('importT')+'</h1><p class="mute">'+esc(w.sec.name)+'</p><div class="card"><p>'+t('importHelp')+'</p>'+
+   '<label>'+t('pasteHere')+'</label><textarea id="tx" style="min-height:160px"></textarea><button class="btn" id="rd" type="button" style="margin-top:8px">'+t('readIt')+'</button><div id="res"></div></div>';
+  $('rd').onclick=()=>{
+    const have=new Set(w.staff.map(s=>s.name.trim().toLowerCase()));
+    const rows=parseReport($('tx').value).map(r=>({name:titleCase(r.name),designation:matchDesig(r.designation)}));
+    if(!rows.length){$('res').innerHTML='<div class="msg err">'+t('noneFound')+'</div>';return}
+    $('res').innerHTML='<p><b>'+rows.length+'</b> '+t('found')+'</p><div class="list">'+rows.map((r,i)=>{const dup=have.has(r.name.toLowerCase());
+      return '<label class="it chk" style="margin:0"><input type="checkbox" data-i="'+i+'"'+(dup?'':' checked')+'><span class="grow"><b>'+esc(r.name)+'</b><br><span class="mute">'+esc(desigLabel(r.designation))+(dup?' · '+t('already'):'')+'</span></span></label>'}).join('')+
+      '</div><button class="btn" id="ad" type="button" style="margin-top:10px">'+t('addSel')+'</button><div id="m"></div>';
+    $('ad').onclick=async()=>{$('ad').disabled=true;let n=0;
+      const pick=[...document.querySelectorAll('[data-i]')].filter(c=>c.checked).map(c=>rows[+c.dataset.i]);
+      try{for(let k=0;k<pick.length;k++){const di=DESIG.findIndex(d=>d[0]===pick[k].designation);
+        await rpc('wp_save_staff',{p_token:S.token,s:{code:code,name:pick[k].name,designation:pick[k].designation,phone:'',photo:'',joined:'',sort:String(di<0?20:di+1)}});n++}
+        toast(n+' '+t('added'));S.tab='staff';location.hash='#ward/'+code}
+      catch(er){$('m').innerHTML='<div class="msg err">'+n+' '+t('added')+'. '+errText(er)+'</div>';$('ad').disabled=false}};
+  };
+}
+
+/* ----- admin ----- */
+async function vAdmin(tab){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  const me=S.me||{};
+  if(!['super','admin'].includes(me.role)){location.hash='#home';return}
+  S.atab=tab||S.atab||'requests';
+  const tabs=[['requests',t('requests')],['users',t('users')]].concat(me.role==='super'?[['wards',t('wards')],['compare',t('compare')]]:[]);
+  app.innerHTML='<h1>⚙️ '+t('admin')+'</h1><div class="tabs">'+tabs.map(x=>'<button type="button" data-a="'+x[0]+'" class="'+(S.atab===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div><div id="ab" class="card"><span class="spin"></span></div>';
+  app.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>vAdmin(b.dataset.a));
+  const ab=$('ab');
+  try{
+  if(S.atab==='requests'||S.atab==='users'){
+    const us=await rpc('wp_accounts_list',{p_token:S.token});
+    const list=S.atab==='requests'?us.filter(u=>!u.approved):us.filter(u=>u.approved);
+    ab.innerHTML=list.length?'<div class="list">'+list.map(u=>'<div class="it"><div class="grow"><div class="nm">'+esc(u.name)+' <span class="pill">'+esc(u.role)+'</span></div><div class="mute">'+esc(u.login)+' · '+esc(desigLabel(u.designation))+'<br>'+esc(u.secretariat||'')+'</div></div><div class="row">'+
+      (u.role==='super'?'':(u.approved?'<button class="btn alt sm" data-pw="'+u.id+'">'+t('resetPass')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('remove')+'</button>':'<button class="btn sm" data-ap="'+u.id+'">'+t('approve')+'</button><button class="btn red sm" data-rm="'+u.id+'">'+t('reject')+'</button>'))+'</div></div>').join('')+'</div>'
+      :'<p class="mute">'+t('noRequests')+'</p>';
+    const act=async(id,a,v)=>{try{await rpc('wp_manage_account',{p_token:S.token,p_id:id,p_action:a,p_value:v||null});toast(t('saved'));vAdmin(S.atab)}catch(er){toast(errText(er))}};
+    ab.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>act(b.dataset.ap,'approve'));
+    ab.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{if(confirm(t('confirmDel')))act(b.dataset.rm,'remove')});
+    ab.querySelectorAll('[data-pw]').forEach(b=>b.onclick=()=>{const v=prompt(t('newPass')+' (6+)');if(v)act(b.dataset.pw,'password',v)});
+    return;
+  }
+  const ov=await rpc('wp_overview',{p_token:S.token});
+  if(S.atab==='wards'){
+    ab.innerHTML='<button class="btn alt sm" id="csv">'+t('export')+'</button><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('publicOn')+'</th></tr>'+
+     ov.map(o=>'<tr><td>'+o.sl+'</td><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a><div class="mute">'+o.code+'</div></td><td>'+completion(o)+'%</td><td>'+o.places+'</td><td>'+o.photos+'</td><td>'+o.staff+'</td><td>'+o.accounts+'</td><td><label class="chk"><input type="checkbox" data-pub="'+o.code+'"'+(o.public_on?' checked':'')+'>'+(o.public_on?t('on'):t('off'))+'</label>'+(o.public_on?'<button class="btn alt sm" data-sh="'+o.code+'">🔗</button>':'')+'</td></tr>').join('')+'</table></div>';
+    ab.querySelectorAll('[data-pub]').forEach(c=>c.onchange=async()=>{try{await rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:c.checked});vAdmin('wards')}catch(er){toast(errText(er))}});
+    ab.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>copyLink(b.dataset.sh));
+    $('csv').onclick=()=>csv(ov);
+    return;
+  }
+  /* compare */
+  const keys=TYPES.map(x=>x[0]);
+  const P=o=>(o.data&&o.data.population)||{};
+  ab.innerHTML='<button class="btn alt sm" id="csv">'+t('export')+'</button><div class="tw" style="margin-top:8px"><table><tr><th>'+t('wards')+'</th><th>'+t('total')+'</th><th>'+t('men')+'</th><th>'+t('women')+'</th><th>'+t('above60')+'</th><th>'+t('children')+'</th>'+TYPES.map(x=>'<th title="'+esc(te()?x[2]:x[1])+'">'+x[3]+'</th>').join('')+'</tr>'+
+   ov.map(o=>'<tr><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a></td><td>'+fmt(P(o).total)+'</td><td>'+fmt(P(o).men)+'</td><td>'+fmt(P(o).women)+'</td><td>'+fmt(P(o).above60)+'</td><td>'+fmt(P(o).children)+'</td>'+keys.map(k=>'<td>'+((o.types||{})[k]||'')+'</td>').join('')+'</tr>').join('')+
+   '<tr><th>'+t('total')+'</th>'+['total','men','women','above60','children'].map(k=>'<th>'+fmt(ov.reduce((a,o)=>a+(+P(o)[k]||0),0))+'</th>').join('')+keys.map(k=>'<th>'+(ov.reduce((a,o)=>a+((o.types||{})[k]||0),0)||'')+'</th>').join('')+'</tr></table></div>';
+  $('csv').onclick=()=>csv(ov);
+  }catch(er){ab.innerHTML='<div class="msg err">'+errText(er)+'</div>'}
+}
+function csv(ov){
+  const keys=TYPES.map(x=>x[0]);
+  const head=['Sl','Secretariat','Code','Complete %','Total population','Households','Men','Women','Above 60','Children','Places','Photos','Staff','Logins','Office latitude','Office longitude'].concat(TYPES.map(x=>x[1]));
+  const q=v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  const rows=ov.map(o=>{const p=(o.data&&o.data.population)||{};return [o.sl,o.name,o.code,completion(o),p.total,p.households,p.men,p.women,p.above60,p.children,o.places,o.photos,o.staff,o.accounts,o.lat,o.lng].concat(keys.map(k=>(o.types||{})[k]||0))});
+  const blob=new Blob(['﻿'+[head].concat(rows).map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ward-profile-guntakal.csv';a.click();
+}
+function copyLink(code){const u=location.origin+location.pathname+'#public/'+code;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast(t('copied'))).catch(()=>prompt('',u))}
+
+/* ----- public ----- */
+async function vPublicList(){const app=curApp;
+  await loadSecs(true);
+  const pub=S.secs.filter(s=>s.public_on);
+  app.innerHTML='<div class="card"><h2>'+t('publicPages')+'</h2>'+(pub.length?'<div class="list">'+pub.map(s=>'<a class="it" style="text-decoration:none;color:inherit" href="#public/'+s.code+'"><div class="secpin">'+s.sl+'</div><div class="grow nm">'+esc(s.name)+'</div>→</a>').join('')+'</div>':'<p class="mute">'+t('publicNone')+'</p>')+'</div>';
+}
+async function vPublic(code){const app=curApp;
+  app.innerHTML='<div class="card"><span class="spin"></span></div>';
+  const w=await rpc('wp_public_ward',{p_code:code});
+  const d=w.data||{};
+  app.innerHTML='<div class="card hero"><h1>'+esc(w.sec.name)+'</h1><div class="mute">'+t('appSub')+' · '+esc(w.sec.code)+'</div>'+
+   (safeUrl(d.office_photo)?'<img src="'+esc(safeUrl(d.office_photo))+'" data-full="'+esc(safeUrl(d.office_photo))+'" alt="" style="width:100%;max-height:240px;object-fit:cover;border-radius:10px;margin-top:8px">':'')+
+   (d.office_address?'<p>'+esc(d.office_address)+'</p>':'')+(d.office_phone?'<a class="btn sm" href="tel:'+esc(String(d.office_phone).replace(/[^0-9+]/g,''))+'">'+t('call')+' '+esc(d.office_phone)+'</a> ':'')+
+   (w.sec.lat!=null?'<a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(w.sec.lat,w.sec.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+'</div>'+
+   '<div class="card"><h2>'+t('staff')+'</h2><div class="list">'+(w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+'<div class="grow"><div class="nm">'+esc(s.name)+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div></div>'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+'</div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>'+
+   '<div class="card"><h2>'+t('places')+'</h2><div id="pm" class="map"></div><div class="list">'+w.places.map(p=>{const ti=typeInfo(p.type,d);return '<div class="it"><div class="emo">'+ti.emo+'</div><div class="grow"><div class="nm">'+esc(p.name)+'</div><div class="mute">'+esc(ti.label)+(p.address?' · '+esc(p.address):'')+'</div><div class="thumbs">'+(p.photos||[]).map(u=>'<img src="'+esc(safeUrl(u))+'" data-full="'+esc(safeUrl(u))+'" alt="" loading="lazy">').join('')+'</div></div>'+(p.lat!=null?'<a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(p.lat,p.lng)+'">🗺</a>':'')+'</div>'}).join('')+'</div></div>';
+  const m=mkMap('pm',w.sec.lat!=null?[w.sec.lat,w.sec.lng]:CENTER,15);
+  if(m){const pts=[];if(w.sec.lat!=null){L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m);pts.push([w.sec.lat,w.sec.lng])}
+    w.places.forEach(p=>{if(p.lat!=null){L.marker([p.lat,p.lng],{icon:emojiIcon(typeInfo(p.type,d).emo)}).addTo(m).bindPopup(esc(p.name));pts.push([p.lat,p.lng])}});
+    if(pts.length>1)m.fitBounds(pts,{padding:[30,30],maxZoom:17})}
+}
+
+/* ---------- router ---------- */
+async function route(){
+  header();
+  MAIN.innerHTML='';curApp=document.createElement('div');MAIN.appendChild(curApp);const app=curApp;
+  const h=(location.hash||'#home').slice(1).split('/');
+  window.scrollTo(0,0);
+  try{
+    switch(h[0]){
+      case 'about':return vAbout();
+      case 'login':return vLogin();
+      case 'signup':return await vSignup();
+      case 'account':return vAccount();
+      case 'ward':S.filter='all';return await vWard(h[1],h[2]);
+      case 'edit':return await vEdit(h[1]);
+      case 'place':return await vPlace(h[1],h[2]||'new');
+      case 'staff':return await vStaff(h[1],h[2]||'new');
+      case 'import':return await vImport(h[1]);
+      case 'admin':return await vAdmin(h[1]);
+      case 'public':return h[1]?await vPublic(h[1]):await vPublicList();
+      default:return await vHome();
+    }
+  }catch(er){app.innerHTML='<div class="msg err">'+errText(er)+'</div><a class="btn" href="#home">'+t('back')+'</a>'}
+}
+window.addEventListener('hashchange',route);
+route();
+if(S.token)rpc('wp_me',{p_token:S.token}).then(me=>{S.me=me;localStorage.setItem('wp_me',JSON.stringify(me));header()}).catch(()=>{});
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

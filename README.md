@@ -68,3 +68,9 @@ Owner dashboard: https://bloforms.github.io/idli/admin.html
 Unofficial helper for the Census of India 2027 household schedule (Self-Enumeration, Q1–Q40): add households and persons, fill each person's answers section by section with the schedule's skip rules, checks for Aadhaar/mobile numbers, printable summary, Excel (CSV) export and backup. Data stays on the phone; works offline.
 
 Open the app: https://bloforms.github.io/census/
+
+# Ward Profile – Guntakal
+
+One place for each of Guntakal's 35 ward secretariats: ward profile (boundaries, door numbers, population totals, office location and photo), places with GPS and photos, employees (with import from the SGSW attendance report) and BLOs with booth numbers. Telugu / English, login per secretariat, any secretary can view other wards, and public pages that the admin switches on.
+
+Open the app: https://bloforms.github.io/wardprofile/
