@@ -20,7 +20,7 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans T
 a{color:var(--c2)}
 button,input,select,textarea{font:inherit}
 header{position:sticky;top:0;z-index:1000;background:linear-gradient(100deg,#0b4747,var(--c) 55%,#1d8a8a);color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.2)}
-.bar{max-width:980px;margin:auto;display:flex;align-items:center;gap:8px;padding:9px 12px}
+.bar{margin:auto;display:flex;align-items:center;gap:8px;padding:9px 12px}
 .brand{flex:1;color:#fff;text-decoration:none;font-weight:800;font-size:18px;line-height:1.2}
 .brand small{display:block;font-weight:500;font-size:12px;opacity:.85}
 .lang{display:flex;border:1px solid rgba(255,255,255,.6);border-radius:20px;overflow:hidden}
@@ -79,6 +79,50 @@ th{background:#eef5f5;position:sticky;top:0}
 .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#1d2a2a;color:#fff;padding:10px 16px;border-radius:10px;z-index:4000;max-width:90vw}
 .selbig{font-weight:700;font-size:16px;border-color:var(--c2)}
 .emo{font-size:22px;width:34px;text-align:center;flex:none}
+/* side menu */
+.shell{display:flex;align-items:flex-start}
+#side{flex:none;width:78px;position:sticky;top:var(--hh,58px);height:calc(100vh - var(--hh,58px));overflow-y:auto;z-index:900;
+ background:linear-gradient(180deg,#062a2a 0%,#0b4747 45%,#14385a 100%);border-right:3px solid #d4a017;box-shadow:3px 0 12px rgba(0,0,0,.25);padding-bottom:30px}
+#side .ni{display:flex;flex-direction:column;align-items:center;gap:3px;width:100%;padding:11px 3px;color:#d9ecec;text-decoration:none;font-size:11px;line-height:1.15;text-align:center;
+ background:none;border:0;border-left:4px solid transparent;border-bottom:1px solid rgba(255,255,255,.07);cursor:pointer;word-break:break-word;font-family:inherit}
+#side .ni .ic{font-size:22px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+#side .ni:hover{background:rgba(255,255,255,.06)}
+#side .ni.on{background:linear-gradient(90deg,rgba(242,193,78,.28),rgba(242,193,78,.06));border-left-color:#f2c14e;color:#fff;font-weight:700}
+#side .grp>.ni.on{background:rgba(242,193,78,.12)}
+#side .sub{display:none;background:rgba(0,0,0,.22);box-shadow:inset 0 3px 6px rgba(0,0,0,.25)}
+#side .grp.open>.sub{display:block}
+#side .sub .ni{font-size:10px;padding:8px 2px}
+#side .sub .ni .ic{font-size:18px}
+#side .cap{color:#f2c14e;font-size:10px;text-align:center;padding:8px 2px 4px;letter-spacing:.5px;text-transform:uppercase}
+.shell>main{flex:1;min-width:0;margin:0 auto}
+@media(min-width:900px){
+ #side{width:236px}
+ #side .ni{flex-direction:row;gap:12px;font-size:15px;text-align:left;padding:12px 16px}
+ #side .ni .ic{font-size:20px;width:26px;text-align:center}
+ #side .sub .ni{font-size:14px;padding:9px 16px 9px 30px}
+ #side .sub .ni .ic{font-size:17px}
+ #side .cap{text-align:left;padding:12px 18px 4px;font-size:11px}
+}
+.hbtn.ic{font-size:18px;padding:3px 10px;position:relative}
+.hbtn:disabled{opacity:.4}
+.hbtn sup{position:absolute;top:-6px;right:-6px;background:#f2c14e;color:#222;border-radius:10px;font-size:11px;padding:0 5px;font-weight:700}
+@media(max-width:560px){.brand small{display:none}.brand{font-size:15px}.acnm{display:none}.lang button{padding:4px 7px}}
+.secttl{display:flex;align-items:center;gap:8px;margin:2px 0 10px}
+.secttl h1{margin:0}
+/* report */
+.rep h2{border-bottom:2px solid var(--c);padding-bottom:4px;margin-top:6px}
+.rep table{font-size:13px}
+.rep td,.rep th{border:1px solid #c9d6d6}
+.rep .kv th{width:42%;background:#f1f6f6}
+@media print{
+ header,#side,.noprint{display:none!important}
+ .shell{display:block}
+ main{max-width:none;padding:0}
+ body{background:#fff;font-size:12px}
+ .card{box-shadow:none;border:0;padding:4px 0;break-inside:avoid}
+ .rep table{break-inside:auto}.rep tr{break-inside:avoid}
+ th{position:static}
+}
 footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px}
 .chk{display:flex;align-items:center;gap:6px;font-weight:500;margin:4px 12px 4px 0}
 .chk input{width:auto}
@@ -89,12 +133,14 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
 </style>
 </head>
 <body>
-<header><div class="bar">
+<header id="hdr"><div class="bar">
+  <button class="hbtn ic" id="backBtn" type="button" title="Back">←</button>
   <a class="brand" href="#home"><span id="appName">Ward Profile</span><small id="appSub">Guntakal ward secretariats</small></a>
+  <button class="hbtn ic" id="undoBtn" type="button" title="Undo">↶<sup id="undoN" hidden></sup></button>
   <div class="lang"><button id="lte" type="button">తెలుగు</button><button id="len" type="button">EN</button></div>
   <button class="hbtn" id="acctBtn" type="button"></button>
 </div></header>
-<main id="app"><div class="card"><span class="spin"></span></div></main>
+<div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
 <footer>Designed by Sivananda Pujari</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -170,6 +216,11 @@ const TX={
  mapStatus:['Map point','మ్యాప్ పాయింట్'], areaOnly:['Approximate – please set exact office location','సుమారు – ఖచ్చితమైన లొకేషన్ పెట్టండి'],
  superNote:['You are the app admin.','మీరు యాప్ అడ్మిన్.'],
  loading:['Loading…','లోడ్ అవుతోంది…'],
+ home:['Home','హోమ్'], allWardsShort:['All wards','అన్ని వార్డులు'], publicShort:['Public pages','పబ్లిక్ పేజీలు'], aboutShort:['About','గురించి'],
+ report:['View / Download','చూడండి / డౌన్‌లోడ్'], reportTitle:['Ward profile report','వార్డు ప్రొఫైల్ రిపోర్ట్'], downloadPdf:['⬇ Download PDF','⬇ PDF డౌన్‌లోడ్'], printB:['🖨 Print','🖨 ప్రింట్'],
+ pdfHelp:['In the print screen, choose "Save as PDF" to download.','ప్రింట్ స్క్రీన్‌లో "Save as PDF" ఎంచుకుంటే డౌన్‌లోడ్ అవుతుంది.'], editShort:['Edit details','వివరాలు మార్చండి'],
+ undo:['Undo','రద్దు చేయి'], nothingUndo:['Nothing to undo','రద్దు చేయడానికి ఏమీ లేదు'], undoQ:['Undo this change?','ఈ మార్పును రద్దు చేయాలా?'], undone:['Undone','రద్దు చేయబడింది'],
+ generated:['Generated on','తయారు చేసిన తేదీ'], wardMenu:['Ward','వార్డు'], menu:['Menu','మెనూ'], deletedL:['Deleted','తొలగించారు'], blosSet:['BLO','BLO'],
  clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
@@ -370,15 +421,65 @@ function pickMap(mapId,latId,lngId,center){
   return put;
 }
 
+/* ---------- undo ---------- */
+S.undo=[];S.navOpen={};
+function pushUndo(label,inv){S.undo.push({label:label,inv:inv});if(S.undo.length>30)S.undo.shift();header()}
+/* ---------- side menu ---------- */
+const WARD_ROUTES=['ward','edit','place','staff','import','report'];
+function curWardCode(){const h=(location.hash||'').slice(1).split('/');if(WARD_ROUTES.includes(h[0])&&h[1])return h[1];return S.lastCode||(S.me&&S.me.code)||''}
+function canEditProfile(code){const m=S.me||{};return m.role==='super'||(m.role==='admin'&&m.code===code)}
+function renderNav(){
+  const nav=$('side');if(!nav)return;
+  const h=(location.hash||'#home').slice(1).split('/');const r=h[0]||'home';
+  const it=(icon,label,href,on)=>'<a class="ni'+(on?' on':'')+'" href="'+href+'"><span class="ic">'+icon+'</span><span>'+esc(label)+'</span></a>';
+  const grp=(key,icon,label,children,on)=>{const open=S.navOpen[key]!==undefined?S.navOpen[key]:on;
+    return '<div class="grp'+(open?' open':'')+'"><button type="button" class="ni'+(on?' on':'')+'" data-grp="'+key+'"><span class="ic">'+icon+'</span><span>'+esc(label)+' '+(open?'▾':'▸')+'</span></button><div class="sub">'+children.join('')+'</div></div>'};
+  let out=it('🏠',t('home'),'#home',r==='home');
+  if(S.token){
+    const me=S.me||{};const code=curWardCode();
+    if(code){
+      const isW=WARD_ROUTES.includes(r);const tab=r==='ward'?(h[2]||S.tab||'overview'):'';
+      const ch=[it('📊',t('overview'),'#ward/'+code+'/overview',r==='ward'&&tab==='overview'),
+        it('📍',t('places'),'#ward/'+code+'/places',r==='place'||(r==='ward'&&tab==='places')),
+        it('👥',t('staff'),'#ward/'+code+'/staff',r==='staff'||r==='import'||(r==='ward'&&tab==='staff')),
+        it('🗳️',t('blos'),'#ward/'+code+'/blos',r==='ward'&&tab==='blos'),
+        it('📄',t('report'),'#report/'+code,r==='report')];
+      if(canEditProfile(code))ch.push(it('✏️',t('editShort'),'#edit/'+code,r==='edit'));
+      const nm=secName(code);
+      out+=grp('ward','🏢',me.code===code?t('myWard'):nm,ch,isW);
+      if(me.code&&me.code!==code)out+=it('🏡',t('myWard'),'#ward/'+me.code+'/overview',false);
+    }
+    out+=it('🗺️',t('allWardsShort'),'#wards',r==='wards');
+    if(me.role==='super'||me.role==='admin'){
+      const a=h[1]||S.atab||'requests';
+      const ch=[it('📨',t('requests'),'#admin/requests',r==='admin'&&a==='requests'),it('👤',t('users'),'#admin/users',r==='admin'&&a==='users')];
+      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'));
+      out+=grp('admin','⚙️',t('admin'),ch,r==='admin');
+    }
+  }
+  out+=it('🌐',t('publicShort'),'#public',r==='public');
+  out+=it('ℹ️',t('aboutShort'),'#about',r==='about');
+  out+=S.token?it('👤',t('account'),'#account',r==='account'):it('🔑',t('login'),'#login',r==='login')+it('📝',t('request'),'#signup',r==='signup');
+  nav.innerHTML=out;
+  nav.querySelectorAll('[data-grp]').forEach(b=>b.onclick=()=>{const k=b.dataset.grp;const g=b.parentElement;S.navOpen[k]=!g.classList.contains('open');renderNav()});
+}
+
 /* ---------- header ---------- */
 function header(){
   $('appName').textContent=t('appName');$('appSub').textContent=t('appSub');
   $('lte').classList.toggle('on',te());$('len').classList.toggle('on',!te());
-  $('acctBtn').textContent=S.token?'👤 '+(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account')):t('login');
+  $('acctBtn').innerHTML=S.token?'👤<span class="acnm"> '+esc(S.me&&S.me.name?S.me.name.split(' ')[0]:t('account'))+'</span>':'🔑<span class="acnm"> '+t('login')+'</span>';
+  const u=$('undoBtn');u.disabled=!S.undo.length;u.title=t('undo')+(S.undo.length?': '+S.undo[S.undo.length-1].label:'');const n=$('undoN');n.hidden=!S.undo.length;n.textContent=S.undo.length;
+  document.documentElement.style.setProperty('--hh',($('hdr').offsetHeight||58)+'px');
+  renderNav();
   document.documentElement.lang=te()?'te':'en';
 }
 $('lte').onclick=()=>{S.lang='te';localStorage.setItem('wp_lang','te');route()};
 $('len').onclick=()=>{S.lang='en';localStorage.setItem('wp_lang','en');route()};
+$('backBtn').onclick=()=>{if(history.length>1)history.back();else location.hash='#home'};
+$('undoBtn').onclick=async()=>{const u=S.undo[S.undo.length-1];if(!u){toast(t('nothingUndo'));return}
+  if(!confirm(t('undoQ')+'\n\n'+u.label))return;
+  try{await u.inv();S.undo.pop();toast(t('undone'));route()}catch(er){toast(errText(er))}};
 $('acctBtn').onclick=()=>{location.hash=S.token?'#account':'#login'};
 
 /* ---------- install ---------- */
@@ -392,7 +493,7 @@ function installCard(){
 function wireInstall(){const b=$('instBtn');if(!b)return;b.onclick=()=>{if(deferredInstall){deferredInstall.prompt();deferredInstall=null}else $('instTxt').textContent=t('installHelp')}}
 
 /* ---------- views ---------- */
-async function vHome(){const app=curApp;
+async function vHome(mode){const app=curApp;
   await loadSecs();
   if(!S.token){
     app.innerHTML='<div class="card hero"><h1>'+t('heroTitle')+'</h1><p>'+t('heroText')+'</p><div class="row"><a class="btn" href="#login">'+t('login')+'</a><a class="btn alt" href="#signup">'+t('request')+'</a><a class="btn alt" href="#about">'+t('about')+'</a></div></div>'+
@@ -406,18 +507,20 @@ async function vHome(){const app=curApp;
   S.overview=ov;
   const me=S.me||{};
   const mine=ov.find(x=>x.code===me.code);
-  app.innerHTML=
+  const listOnly=mode==='wards';
+  app.innerHTML=(listOnly?'':
    '<div class="card hero"><h1>'+esc(me.name||'')+'</h1><div class="mute">'+esc(desigLabel(me.designation))+(me.secretariat?' · '+esc(me.secretariat):'')+'</div>'+
    (me.role==='super'?'<div class="msg info">'+t('superNote')+'</div>':'')+
    '<div class="row" style="margin-top:8px">'+(me.code?'<a class="btn" href="#ward/'+me.code+'">🏠 '+t('myWard')+'</a>':'')+
    ((me.role==='super'||me.role==='admin')?'<a class="btn orange" href="#admin">⚙️ '+t('admin')+'</a>':'')+
    '<a class="btn alt" href="#about">'+t('about')+'</a></div>'+
-   (mine?'<div style="margin-top:10px">'+pctPill(completion(mine))+'<div class="bar2"><i style="width:'+completion(mine)+'%"></i></div></div>':'')+'</div>'+
-   '<div class="card"><label>'+t('openWard')+'</label><select id="goSel" class="selbig"><option value="">'+t('pickSec')+'</option>'+secOptions('')+'</select></div>'+
+   (mine?'<div style="margin-top:10px">'+pctPill(completion(mine))+'<div class="bar2"><i style="width:'+completion(mine)+'%"></i></div></div>':'')+'</div>'+installCard())+
+   (!listOnly?'':'<div class="card"><label>'+t('openWard')+'</label><select id="goSel" class="selbig"><option value="">'+t('pickSec')+'</option>'+secOptions('')+'</select></div>'+
    '<div class="card"><h2>'+t('allWards')+'</h2><div id="map" class="map"></div><div class="list">'+
    ov.map(o=>{const p=completion(o);return '<a class="it" style="text-decoration:none;color:inherit" href="#ward/'+o.code+'"><div class="secpin" style="flex:none">'+o.sl+'</div><div class="grow"><div class="nm">'+esc(o.name)+'</div><div class="mute">'+o.places+' '+t('places')+' · '+o.staff+' '+t('staff')+' · '+o.photos+' '+t('photosCount')+'</div><div class="bar2"><i style="width:'+p+'%"></i></div></div>'+pctPill(p)+'</a>'}).join('')+
-   '</div></div>'+installCard();
+   '</div></div>');
   wireInstall();
+  if(!listOnly)return;
   $('goSel').onchange=e=>{if(e.target.value)location.hash='#ward/'+e.target.value};
   const m=mkMap('map');if(m)ov.forEach(o=>{if(o.lat!=null)L.marker([o.lat,o.lng],{icon:secIcon(o.sl)}).addTo(m).bindPopup('<b>'+esc(o.name)+'</b><br>'+completion(o)+'% '+t('complete')+'<br><a href="#ward/'+o.code+'">'+t('openWard')+' →</a>')});
 }
@@ -482,15 +585,16 @@ async function vWard(code,tab){const app=curApp;
   app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';
   const w=await loadWard(code);
   const d=w.data||{},sec=w.sec,c=wardCounts(w),pct=completion(c);
-  const tabs=[['overview',t('overview')],['places',t('places')+' ('+w.places.length+')'],['staff',t('staff')+' ('+w.staff.length+')'],['blos',t('blos')+' ('+w.staff.filter(x=>x.blo_booth).length+')']];
+  S.lastCode=code;renderNav();
+  const tabs={overview:['📊',t('overview')],places:['📍',t('places')+' ('+w.places.length+')'],staff:['👥',t('staff')+' ('+w.staff.length+')'],blos:['🗳️',t('blos')+' ('+w.staff.filter(x=>x.blo_booth).length+')']};
+  if(!tabs[S.tab])S.tab='overview';
   app.innerHTML='<div class="card"><select id="wsel" class="selbig">'+secOptions(code)+'</select>'+
    '<div class="row" style="margin-top:8px;justify-content:space-between"><div><b>'+esc(sec.name)+'</b> <span class="mute">· '+sec.code+(d.ward_no?' · '+t('wardNo')+' '+esc(d.ward_no):'')+'</span></div>'+pctPill(pct)+'</div>'+
    '<div class="bar2"><i style="width:'+pct+'%"></i></div>'+
    (w.can_edit?'':'<div class="msg info">'+t('viewOnly')+'</div>')+
-   (w.can_edit_profile?'<div class="row" style="margin-top:8px"><a class="btn sm" href="#edit/'+code+'">✏️ '+t('edit')+'</a></div>':'')+
-   '</div><div class="tabs">'+tabs.map(x=>'<button type="button" data-tab="'+x[0]+'" class="'+(S.tab===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div><div id="tabBody"></div>';
-  $('wsel').onchange=e=>{location.hash='#ward/'+e.target.value};
-  app.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;vWardTab(w);app.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('on',x===b))});
+   '<div class="row" style="margin-top:8px">'+(w.can_edit_profile?'<a class="btn sm" href="#edit/'+code+'">✏️ '+t('edit')+'</a>':'')+'<a class="btn alt sm" href="#report/'+code+'">📄 '+t('report')+'</a></div>'+
+   '</div><div class="secttl"><span style="font-size:26px">'+tabs[S.tab][0]+'</span><h1>'+tabs[S.tab][1]+'</h1></div><div id="tabBody"></div>';
+  $('wsel').onchange=e=>{location.hash='#ward/'+e.target.value+'/'+S.tab};
   vWardTab(w);
 }
 function vWardTab(w){
@@ -518,7 +622,8 @@ function vWardTab(w){
     const free=w.staff.filter(x=>!x.blo_booth);
     body.innerHTML='<div class="card">'+(w.can_edit_profile?'<p class="mute">'+t('bloHelp')+'</p><div class="two"><div><label>'+t('pickEmp')+'</label><select id="be"><option value="">–</option>'+free.map(x=>'<option value="'+x.id+'">'+esc(x.name)+' – '+esc(desigLabel(x.designation))+'</option>').join('')+'</select></div><div><label>'+t('booth')+'</label><input id="bb" inputmode="numeric"></div></div><button class="btn" id="ba" type="button" style="margin-top:8px">'+t('assign')+'</button><div id="bm"></div>':'')+
       '<div class="list">'+(blos.length?blos.map(x=>'<div class="it"><div class="secpin" style="flex:none;width:auto;min-width:40px;border-radius:10px;padding:0 6px">'+esc(x.blo_booth)+'</div><div class="grow"><div class="nm">'+esc(x.name)+'</div><div class="mute">'+t('booth')+' '+esc(x.blo_booth)+' · '+esc(desigLabel(x.designation))+'</div>'+(x.phone?'<div>'+esc(x.phone)+'</div>':'')+'</div><div class="row">'+(x.phone?'<a class="btn sm" href="tel:'+esc(String(x.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<button class="btn alt sm" type="button" data-ub="'+x.id+'">'+t('unassign')+'</button>':'')+'</div></div>').join(''):'<p class="mute">'+t('noBlos')+'</p>')+'</div></div>';
-    const setB=async(id,booth)=>{try{await rpc('wp_set_blo',{p_token:S.token,p_id:id,p_booth:booth});toast(t('saved'));vWard(code,'blos')}catch(er){toast(errText(er))}};
+    const setB=async(id,booth)=>{const e=w.staff.find(x=>x.id===id)||{};const ob=e.blo_booth||'';
+      try{await rpc('wp_set_blo',{p_token:S.token,p_id:id,p_booth:booth});toast(t('saved'));pushUndo(t('blosSet')+' – '+e.name,()=>rpc('wp_set_blo',{p_token:S.token,p_id:id,p_booth:ob}));route()}catch(er){toast(errText(er))}};
     if($('ba'))$('ba').onclick=()=>{const id=$('be').value,b=$('bb').value.trim();if(!id){$('bm').innerHTML='<div class="msg err">'+t('pickEmp')+'</div>';return}if(!b){$('bm').innerHTML='<div class="msg err">'+t('boothNeeded')+'</div>';return}setB(id,b)};
     body.querySelectorAll('[data-ub]').forEach(bt=>bt.onclick=()=>{if(confirm(t('unassign')+'?'))setB(bt.dataset.ub,'')});
     return;
@@ -597,7 +702,9 @@ async function vEdit(code){const app=curApp;
     const npr={bc:num(v('c_bc')),sc:num(v('c_sc')),st:num(v('c_st')),oc:num(v('c_oc')),minority:num(v('c_min'))};
     const la=num(v('olat')),ln=num(v('olng'));
     const moved=la!=null&&ln!=null&&(la!==w.sec.lat||ln!==w.sec.lng);
-    try{await rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:nd,p_private:npr,p_lat:moved?la:null,p_lng:moved?ln:null});toast(t('saved'));S.tab='overview';location.hash='#ward/'+code}
+    const oldD=JSON.parse(JSON.stringify(w.data||{})),oldP=JSON.parse(JSON.stringify(w.private||{})),oLa=w.sec.lat,oLn=w.sec.lng;
+    try{await rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:nd,p_private:npr,p_lat:moved?la:null,p_lng:moved?ln:null});toast(t('saved'));
+      pushUndo(t('edit')+' – '+w.sec.name,()=>rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:oldD,p_private:oldP,p_lat:moved?oLa:null,p_lng:moved?oLn:null}));S.tab='overview';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';bt.disabled=false}};
 }
 
@@ -627,9 +734,12 @@ async function vPlace(code,id){const app=curApp;
   if(id==='new'&&!p.lat)setTimeout(()=>{if(!$('la').value)gpsInto('la','ln',()=>$('la').onchange&&$('la').onchange())},400);
   $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
     const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos};
-    try{await rpc('wp_save_place',{p_token:S.token,p:o});toast(t('saved'));S.tab='places';location.hash='#ward/'+code}
+    const old=id==='new'?null:JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||null));
+    try{const nid=await rpc('wp_save_place',{p_token:S.token,p:o});toast(t('saved'));
+      pushUndo(t('places')+' – '+o.name,old?()=>rpc('wp_save_place',{p_token:S.token,p:old}):()=>rpc('wp_delete_place',{p_token:S.token,p_id:nid}));S.tab='places';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
-  if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_delete_place',{p_token:S.token,p_id:id});S.tab='places';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+  if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;const old=JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||{}));try{await rpc('wp_delete_place',{p_token:S.token,p_id:id});
+    pushUndo(t('deletedL')+': '+old.name,()=>rpc('wp_save_place',{p_token:S.token,p:Object.assign({},old,{id:''})}));S.tab='places';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
 }
 
 async function vStaff(code,id){const app=curApp;
@@ -660,9 +770,12 @@ async function vStaff(code,id){const app=curApp;
     $('sv').disabled=true;
     const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
       clusters:cls.filter(c=>c.no),private:{aadhaar:aa,hrms:$('hr').value.trim(),cfms:$('cf').value.trim()}};
-    try{await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));S.tab='staff';location.hash='#ward/'+code}
+    const old=id==='new'?null:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||null));
+    try{const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));
+      pushUndo(t('staff')+' – '+o.name,old?()=>rpc('wp_save_staff',{p_token:S.token,s:old}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}));S.tab='staff';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
-  if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_delete_staff',{p_token:S.token,p_id:id});S.tab='staff';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
+  if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;const old=JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||{}));try{await rpc('wp_delete_staff',{p_token:S.token,p_id:id});
+    pushUndo(t('deletedL')+': '+old.name,async()=>{const nid=await rpc('wp_save_staff',{p_token:S.token,s:Object.assign({},old,{id:''})});if(old.blo_booth)await rpc('wp_set_blo',{p_token:S.token,p_id:nid,p_booth:old.blo_booth})});S.tab='staff';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
 }
 
 /* ----- import staff from SGSW attendance report ----- */
@@ -730,13 +843,15 @@ async function vImport(code){const app=curApp;
       return '<label class="it chk" style="margin:0"><input type="checkbox" data-i="'+i+'" checked><span class="grow"><b>'+esc(r.name)+'</b> <span class="pill '+(ex?'o':'g')+'">'+(ex?t('isUpd'):t('isNew'))+'</span><br><span class="mute">'+esc(desigLabel(r.designation||(ex&&ex.designation)||''))+'</span>'+clusterLine(r)+privLine(r)+'</span></label>'}).join('')+
       '</div><button class="btn" type="button" data-save style="margin-top:10px">'+t('saveAll')+'</button><div data-m></div>';
     const bt=$(box).querySelector('[data-save]');
-    bt.onclick=async()=>{bt.disabled=true;let n=0;const pick=[...$(box).querySelectorAll('[data-i]')].filter(c=>c.checked).map(c=>rows[+c.dataset.i]);
+    bt.onclick=async()=>{bt.disabled=true;let n=0;const invs=[];const pick=[...$(box).querySelectorAll('[data-i]')].filter(c=>c.checked).map(c=>rows[+c.dataset.i]);
       try{for(const r of pick){const ex=findEx(r);let o;
           if(ex){const pv=Object.assign({},ex.private||{});['aadhaar','hrms','cfms'].forEach(k=>{if(r.private&&r.private[k])pv[k]=r.private[k]});
             o={id:ex.id,code:code,name:ex.name,designation:r.designation||ex.designation,phone:r.phone||ex.phone||'',photo:ex.photo||'',joined:ex.joined||'',sort:String(ex.sort==null?'':ex.sort),
                clusters:(r.clusters&&r.clusters.length)?r.clusters:(ex.clusters||[]),private:pv}}
           else{const di=DESIG.findIndex(d=>d[0]===r.designation);o={code:code,name:titleCase(r.name),designation:r.designation||DESIG[10][0],phone:r.phone||'',photo:'',joined:'',sort:String(di<0?20:di+1),clusters:r.clusters||[],private:r.private||{}}}
-          await rpc('wp_save_staff',{p_token:S.token,s:o});n++}
+          const before=ex?JSON.parse(JSON.stringify(ex)):null;const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});n++;
+          invs.push(before?()=>rpc('wp_save_staff',{p_token:S.token,s:before}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}))}
+        pushUndo(t('uploadT')+' – '+n,async()=>{for(const f of invs.slice().reverse())await f()});
         toast(n+' '+t('added'));S.tab='staff';location.hash='#ward/'+code}
       catch(er){$(box).querySelector('[data-m]').innerHTML='<div class="msg err">'+n+' '+t('added')+'. '+errText(er)+'</div>';bt.disabled=false}};
   };
@@ -756,6 +871,42 @@ async function vImport(code){const app=curApp;
   };
 }
 
+/* ----- report (view / download) ----- */
+async function vReport(code){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  await loadSecs();
+  app.innerHTML='<div class="card"><span class="spin"></span></div>';
+  const w=await loadWard(code);S.lastCode=code;renderNav();
+  const d=w.data||{},p=d.population||{},b=d.boundary||{},pr=w.private,sec=w.sec;
+  const byType={};w.places.forEach(x=>{byType[x.type]=(byType[x.type]||0)+1});
+  const kv=rows=>'<table class="kv">'+rows.filter(r=>r[1]!==undefined).map(r=>'<tr><th>'+r[0]+'</th><td>'+(r[1]===null||r[1]===''?'–':r[1])+'</td></tr>').join('')+'</table>';
+  const nf=v=>v==null||v===''?'–':fmt(v);
+  const hhSum=w.staff.reduce((a,x)=>a+(x.clusters||[]).reduce((q,c)=>q+(+c.households||0),0),0);
+  const facs=typeList(d).filter(x=>typeCount(d,byType,x[0]));
+  const blos=w.staff.filter(x=>x.blo_booth).sort((a,c)=>String(a.blo_booth).localeCompare(String(c.blo_booth),undefined,{numeric:true}));
+  const own=!!w.can_edit;
+  const today=new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  app.innerHTML='<div class="noprint card row"><button class="btn" id="pdf" type="button">'+t('downloadPdf')+'</button><button class="btn alt" id="prn" type="button">'+t('printB')+'</button><span class="mute">'+t('pdfHelp')+'</span></div>'+
+   '<div class="rep"><div class="card"><div style="text-align:center"><div class="mute">'+t('appName')+' · '+t('appSub')+'</div><h1 style="margin:4px 0">'+esc(sec.name)+'</h1><div>'+t('reportTitle')+' · '+sec.code+(d.ward_no?' · '+t('wardNo')+' '+esc(d.ward_no):'')+'</div><div class="mute">'+t('generated')+': '+today+'</div></div>'+
+   (safeUrl(d.office_photo)?'<img src="'+esc(safeUrl(d.office_photo))+'" alt="" style="display:block;margin:10px auto;max-width:100%;max-height:220px;border-radius:8px">':'')+'</div>'+
+   '<div class="card"><h2>🏢 '+t('office')+'</h2>'+kv([[t('officeAddress'),esc(d.office_address||'')],[t('officePhone'),esc(d.office_phone||'')],[t('officeLoc'),sec.lat!=null?sec.lat.toFixed(6)+', '+sec.lng.toFixed(6):''],
+     [t('doors'),(d.door_from||d.door_to)?esc((d.door_from||'')+' → '+(d.door_to||'')):''],[t('clustersTotal'),nf(d.clusters_total)],[t('streets'),esc(d.streets||'')]])+'</div>'+
+   '<div class="card"><h2>🧭 '+t('boundaries')+'</h2>'+kv([[t('north'),esc(b.north||'')],[t('south'),esc(b.south||'')],[t('east'),esc(b.east||'')],[t('west'),esc(b.west||'')]])+'</div>'+
+   '<div class="card"><h2>👪 '+t('population')+'</h2>'+kv([[t('total'),nf(p.total)],[t('households'),nf(p.households)],[t('men'),nf(p.men)],[t('women'),nf(p.women)],[t('above60'),nf(p.above60)],[t('children'),nf(p.children)],
+     [t('pensions'),nf(p.pensions)],[t('rationCards'),nf(p.ration_cards)],[t('voters'),nf(p.voters)],[t('shgs'),nf(p.shgs)],[t('clusterHH'),hhSum?fmt(hhSum):'–'],[t('asOn'),esc(p.as_on||'')]])+
+     (pr&&(pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>'+t('caste')+'</h3>'+kv([['BC',nf(pr.bc)],['SC',nf(pr.sc)],['ST',nf(pr.st)],['OC',nf(pr.oc)],[t('minority'),nf(pr.minority)]]):'')+'</div>'+
+   '<div class="card"><h2>🏫 '+t('counts')+'</h2>'+(facs.length?'<table><tr><th>'+t('type')+'</th><th>'+t('total')+'</th></tr>'+facs.map(x=>'<tr><td>'+x[3]+' '+esc(te()?x[2]:x[1])+'</td><td>'+fmt(typeCount(d,byType,x[0]))+'</td></tr>').join('')+'</table>':'<p class="mute">–</p>')+'</div>'+
+   '<div class="card"><h2>📍 '+t('places')+' ('+w.places.length+')</h2>'+(w.places.length?'<table><tr><th>#</th><th>'+t('type')+'</th><th>'+t('name')+'</th><th>'+t('ownership')+'</th><th>'+t('address')+'</th><th>GPS</th></tr>'+
+     w.places.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(typeInfo(x.type,d).label)+'</td><td>'+esc(x.name)+'</td><td>'+(x.ownership?t(x.ownership==='govt'?'govt':'private'):'')+'</td><td>'+esc(x.address||'')+'</td><td>'+(x.lat!=null?(+x.lat).toFixed(5)+', '+(+x.lng).toFixed(5):'')+'</td></tr>').join('')+'</table>':'<p class="mute">'+t('noPlaces')+'</p>')+'</div>'+
+   '<div class="card"><h2>👥 '+t('staff')+' ('+w.staff.length+')</h2>'+(w.staff.length?'<table><tr><th>#</th><th>'+t('name')+'</th><th>'+t('designation')+'</th><th>'+t('phone')+'</th><th>'+t('clusters')+'</th>'+(own?'<th>'+t('hrms')+'</th><th>'+t('cfms')+'</th><th>'+t('aadhaar')+'</th>':'')+'</tr>'+
+     w.staff.map((x,i)=>{const pv=x.private||{};return '<tr><td>'+(i+1)+'</td><td>'+esc(x.name)+'</td><td>'+esc(desigLabel(x.designation))+'</td><td>'+esc(x.phone||'')+'</td><td>'+(x.clusters||[]).map(c=>esc(c.no)+(c.households!=null&&c.households!==''?' ('+fmt(c.households)+')':'')).join(' + ')+'</td>'+
+       (own?'<td>'+esc(pv.hrms||'')+'</td><td>'+esc(pv.cfms||'')+'</td><td>'+esc(maskA(pv.aadhaar))+'</td>':'')+'</tr>'}).join('')+'</table>':'<p class="mute">'+t('noStaff')+'</p>')+'</div>'+
+   '<div class="card"><h2>🗳️ '+t('blos')+' ('+blos.length+')</h2>'+(blos.length?'<table><tr><th>'+t('booth')+'</th><th>'+t('name')+'</th><th>'+t('designation')+'</th><th>'+t('phone')+'</th></tr>'+
+     blos.map(x=>'<tr><td>'+esc(x.blo_booth)+'</td><td>'+esc(x.name)+'</td><td>'+esc(desigLabel(x.designation))+'</td><td>'+esc(x.phone||'')+'</td></tr>').join('')+'</table>':'<p class="mute">'+t('noBlos')+'</p>')+'</div></div>';
+  const doPrint=()=>{const old=document.title;document.title='Ward Profile - '+sec.name;window.print();setTimeout(()=>{document.title=old},1500)};
+  $('pdf').onclick=doPrint;$('prn').onclick=doPrint;
+}
+
 /* ----- admin ----- */
 async function vAdmin(tab){const app=curApp;
   if(!S.token){location.hash='#login';return}
@@ -763,7 +914,7 @@ async function vAdmin(tab){const app=curApp;
   if(!['super','admin'].includes(me.role)){location.hash='#home';return}
   S.atab=tab||S.atab||'requests';
   const tabs=[['requests',t('requests')],['users',t('users')]].concat(me.role==='super'?[['wards',t('wards')],['compare',t('compare')]]:[]);
-  app.innerHTML='<h1>⚙️ '+t('admin')+'</h1><div class="tabs">'+tabs.map(x=>'<button type="button" data-a="'+x[0]+'" class="'+(S.atab===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div><div id="ab" class="card"><span class="spin"></span></div>';
+  app.innerHTML='<h1>⚙️ '+t('admin')+' – '+((tabs.find(x=>x[0]===S.atab)||tabs[0])[1])+'</h1><div><div id="ab" class="card"><span class="spin"></span></div>';
   app.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>vAdmin(b.dataset.a));
   const ab=$('ab');
   try{
@@ -783,7 +934,7 @@ async function vAdmin(tab){const app=curApp;
   if(S.atab==='wards'){
     ab.innerHTML='<button class="btn alt sm" id="csv">'+t('export')+'</button><div class="tw" style="margin-top:8px"><table><tr><th>#</th><th>'+t('wards')+'</th><th>%</th><th>'+t('places')+'</th><th>'+t('photosCount')+'</th><th>'+t('staff')+'</th><th>'+t('accounts')+'</th><th>'+t('publicOn')+'</th></tr>'+
      ov.map(o=>'<tr><td>'+o.sl+'</td><td><a href="#ward/'+o.code+'">'+esc(o.name)+'</a><div class="mute">'+o.code+'</div></td><td>'+completion(o)+'%</td><td>'+o.places+'</td><td>'+o.photos+'</td><td>'+o.staff+'</td><td>'+o.accounts+'</td><td><label class="chk"><input type="checkbox" data-pub="'+o.code+'"'+(o.public_on?' checked':'')+'>'+(o.public_on?t('on'):t('off'))+'</label>'+(o.public_on?'<button class="btn alt sm" data-sh="'+o.code+'">🔗</button>':'')+'</td></tr>').join('')+'</table></div>';
-    ab.querySelectorAll('[data-pub]').forEach(c=>c.onchange=async()=>{try{await rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:c.checked});vAdmin('wards')}catch(er){toast(errText(er))}});
+    ab.querySelectorAll('[data-pub]').forEach(c=>c.onchange=async()=>{const on=c.checked;try{await rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:on});pushUndo(t('publicOn')+' – '+secName(c.dataset.pub),()=>rpc('wp_set_public',{p_token:S.token,p_code:c.dataset.pub,p_on:!on}));vAdmin('wards')}catch(er){toast(errText(er))}});
     ab.querySelectorAll('[data-sh]').forEach(b=>b.onclick=()=>copyLink(b.dataset.sh));
     $('csv').onclick=()=>csv(ov);
     return;
@@ -842,6 +993,8 @@ async function route(){
       case 'signup':return await vSignup();
       case 'account':return vAccount();
       case 'ward':S.filter='all';return await vWard(h[1],h[2]);
+      case 'report':return await vReport(h[1]);
+      case 'wards':return await vHome('wards');
       case 'edit':return await vEdit(h[1]);
       case 'place':return await vPlace(h[1],h[2]||'new');
       case 'staff':return await vStaff(h[1],h[2]||'new');
