@@ -1,4 +1,4 @@
-const CACHE='ward-profile-v29';
+const CACHE='ward-profile-v30';
 const FILES=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 const LIBS=['https://unpkg.com/leaflet@1.9.4/dist/leaflet.css','https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES).then(()=>Promise.all(LIBS.map(u=>c.add(u).catch(()=>{})))) ).then(()=>self.skipWaiting()));});
@@ -13,11 +13,11 @@ self.addEventListener('fetch',e=>{
 });
 /* chat notifications */
 const callJoin=u=>u+'#config.prejoinConfig.enabled=false';
-self.addEventListener('push',e=>{let d={};try{d=e.data?e.data.json():{}}catch(x){d={title:'Ward Profile',body:e.data&&e.data.text()}}
+self.addEventListener('push',e=>{let d={};try{d=e.data?e.data.json():{}}catch(x){d={title:'GTL Ward Sarathi',body:e.data&&e.data.text()}}
   const call=d.kind==='call'&&d.call_url;
   e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(ws=>{
     if(call)ws.forEach(w=>w.postMessage({type:'call',call:{id:d.id,room:d.room,name:d.title,url:d.call_url}}));
-    return self.registration.showNotification(d.title||'Ward Profile',call?
+    return self.registration.showNotification(d.title||'GTL Ward Sarathi',call?
       {body:d.body||'',icon:'icon-192.png',badge:'icon-192.png',tag:'call-'+d.id,renotify:true,requireInteraction:true,vibrate:[800,300,800,300,800,300,800,300,800,300,800],
        actions:[{action:'join',title:'📹 Join'},{action:'no',title:'✖ Later'}],data:{url:d.url||'./#chat',call:d.call_url}}:
       {body:d.body||'',icon:'icon-192.png',badge:'icon-192.png',tag:d.room||'chat',renotify:true,vibrate:[200,100,200],data:{url:d.url||'./#chat'}})}));});

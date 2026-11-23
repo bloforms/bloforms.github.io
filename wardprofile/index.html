@@ -7,14 +7,14 @@
 (function(){var m=localStorage.getItem('wp_mode');if(!m)m=Math.min(screen.width,screen.height)<700?'phone':'desk';
  if(m==='desk'){var fit=function(){var w=window.innerWidth||screen.width;var z=w<1000?(w/1000).toFixed(3):'';document.documentElement.style.zoom=z;document.documentElement.style.setProperty('--z',z||1)};fit();window.addEventListener('resize',fit)}
  document.documentElement.className+=' m-'+m;})();</script>
-<title>Ward Profile – Guntakal</title>
-<meta name="description" content="Ward Profile: one place for everything about each Guntakal ward secretariat – boundaries, population, places with photos and staff.">
+<title>GTL Ward Sarathi – Guntakal</title>
+<meta name="description" content="GTL Ward Sarathi: one place for everything about each Guntakal ward secretariat – boundaries, population, places with photos and staff.">
 <meta name="theme-color" content="#0f5c5c">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Ward Profile">
+<meta name="apple-mobile-web-app-title" content="Ward Sarathi">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
 :root{--c:#0f5c5c;--c2:#167b7b;--acc:#f29d38;--bg:#f2f6f6;--card:#fff;--ink:#1d2a2a;--mute:#5f6f6f;--line:#d8e3e3;--ok:#1f8a4c;--warn:#b5660c;--bad:#b3261e}
@@ -89,7 +89,7 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 /* phone mode: menu becomes a slide-in drawer, page uses full width */
 .m-phone #navBtn{display:inline-block;background:#fff;color:var(--c);font-weight:900}
 .m-phone .hbtn.out .acnm,.m-phone #acctBtn,.m-phone .brand small{display:none}
-.m-phone .brand{font-size:15px}
+.m-phone .brand{font-size:14px;line-height:1.1;min-width:0;letter-spacing:-.2px}.m-phone .lang,.m-phone .hbtn{flex:none}
 .m-phone .bar{gap:6px;padding:8px}
 .m-phone .hbtn.ic{padding:3px 8px}
 .m-phone .lang button{padding:4px 7px}
@@ -207,7 +207,7 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
 <header id="hdr"><div class="bar">
   <button class="hbtn ic" id="backBtn" type="button" title="Back">←</button>
   <button class="hbtn ic" id="navBtn" type="button" title="Menu">☰</button>
-  <a class="brand" href="#home"><span id="appName">Ward Profile</span><small id="appSub">Guntakal ward secretariats</small></a>
+  <a class="brand" href="#home"><span id="appName">GTL Ward Sarathi</span><small id="appSub">Guntakal ward secretariats</small></a>
   <button class="hbtn ic" id="undoBtn" type="button" title="Undo">↶<sup id="undoN" hidden></sup></button>
   <div class="lang"><button id="lte" type="button">తెలుగు</button><button id="len" type="button">EN</button></div>
   <button class="hbtn" id="acctBtn" type="button"></button>
@@ -226,7 +226,7 @@ const CENTER=[15.166,77.379];
 
 /* ---------- words ---------- */
 const TX={
- appName:['Ward Profile','వార్డు ప్రొఫైల్'],
+ appName:['GTL Ward Sarathi','జీటీఎల్ వార్డ్ సారథి'],
  appSub:['Guntakal ward secretariats','గుంతకల్ వార్డు సచివాలయాలు'],
  login:['Login','లాగిన్'], logout:['Sign out','సైన్ అవుట్'], account:['My account','నా ఖాతా'],
  request:['Request access','యాక్సెస్ కోరండి'], about:['About this app','ఈ యాప్ గురించి'],
@@ -279,7 +279,7 @@ const TX={
  export:['⬇ Download Excel (CSV)','⬇ ఎక్సెల్ (CSV) డౌన్‌లోడ్'], accounts:['Logins','లాగిన్‌లు'],
  publicNone:['No ward has opened its public page yet.','ఇంకా ఏ వార్డు పబ్లిక్ పేజీ తెరవలేదు.'],
  share:['🔗 Copy public link','🔗 పబ్లిక్ లింక్ కాపీ'], copied:['Link copied','లింక్ కాపీ అయింది'],
- install:['📲 Install app','📲 యాప్ ఇన్‌స్టాల్'], installTxt:['Add Ward Profile to your home screen for quick use.','త్వరగా వాడటానికి హోమ్ స్క్రీన్‌కి జోడించండి.'],
+ install:['📲 Install app','📲 యాప్ ఇన్‌స్టాల్'], installTxt:['Add GTL Ward Sarathi to your home screen for quick use.','త్వరగా వాడటానికి హోమ్ స్క్రీన్‌కి జోడించండి.'],
  installHelp:['Open the Chrome menu (⋮) and tap "Add to Home screen". On iPhone: Share → Add to Home Screen.','Chrome మెనూ (⋮) తెరిచి "Add to Home screen" నొక్కండి. iPhone లో: Share → Add to Home Screen.'],
  confirmDel:['Delete this? It cannot be undone.','దీన్ని తొలగించాలా? తిరిగి రాదు.'],
  gpsFail:['Could not get location. Turn on GPS and allow location, or tap on the map.','లొకేషన్ రాలేదు. GPS ఆన్ చేసి అనుమతి ఇవ్వండి, లేదా మ్యాప్ పై నొక్కండి.'],
@@ -1739,7 +1739,7 @@ async function vReport(code){const app=curApp;
        (own?'<td>'+esc(pv.hrms||'')+'</td><td>'+esc(pv.cfms||'')+'</td><td>'+esc(pv.aadhaar||'')+'</td>':'')+'</tr>'}).join('')+'</table>':'<p class="mute">'+t('noStaff')+'</p>')+'</div>'+
    '<div class="card"><h2>🗳️ '+t('blos')+' ('+blos.length+')</h2>'+(blos.length?'<table><tr><th>'+t('booth')+'</th><th>'+t('name')+'</th><th>'+t('designation')+'</th><th>'+t('phone')+'</th></tr>'+
      blos.map(x=>'<tr><td>'+esc(x.blo_booth)+'</td><td>'+esc(x.name)+'</td><td>'+esc(desigLabel(x.designation))+'</td><td>'+esc(x.phone||'')+'</td></tr>').join('')+'</table>':'<p class="mute">'+t('noBlos')+'</p>')+'</div></div>';
-  const doPrint=()=>{const old=document.title;document.title='Ward Profile - '+sec.name;window.print();setTimeout(()=>{document.title=old},1500)};
+  const doPrint=()=>{const old=document.title;document.title='GTL Ward Sarathi - '+sec.name;window.print();setTimeout(()=>{document.title=old},1500)};
   $('pdf').onclick=doPrint;$('prn').onclick=doPrint;
 }
 
