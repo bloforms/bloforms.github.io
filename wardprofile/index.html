@@ -91,6 +91,10 @@ main{padding-bottom:96px}
 .csheet{position:fixed;inset:0;z-index:2500;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center}
 .csheet .cs-in{background:#fff;width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:12px 14px 18px;box-shadow:0 -6px 20px rgba(0,0,0,.25);max-height:88vh;overflow:auto;animation:sheetup .18s ease-out}
 .csheet button[data-a]{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:14px 8px;font-size:17px;cursor:pointer;font-family:inherit}
+/* search sheets open from the top so the keyboard never hides the results */
+.csheet.top{align-items:flex-start}
+.csheet.top .cs-in{border-radius:0 0 18px 18px;display:flex;flex-direction:column;max-height:calc(var(--vvh,100vh) - 8px);animation:sheetdown .18s ease-out}
+@keyframes sheetdown{from{transform:translateY(-40px);opacity:.4}to{transform:none;opacity:1}}
 @keyframes sheetup{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
 #callBox{position:fixed;inset:0;z-index:3000;background:radial-gradient(circle at 50% 35%,#16a085,#0b4747 60%,#062a2a);display:flex;align-items:center;justify-content:center;color:#fff;text-align:center}
 #callBox .cb-ic{font-size:64px;animation:wig 1.2s ease-in-out infinite}
@@ -1625,8 +1629,8 @@ function avatar(name,photo,size){size=size||38;const n=String(name||'?').trim();
   return '<span class="hexav" style="width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*.36)+'px;background:'+AVC[h%AVC.length]+'">'+(photo?'<img src="'+esc(photo)+'" alt="" loading="lazy" onerror="this.remove()">':'')+esc(ini)+'</span>'}
 function dmRoom(uid){const me=(S.me||{}).id||'';return 'dm:'+[String(me),String(uid)].sort().join(':')}
 function openDm(uid,name){const r=dmRoom(uid);S.dmNames=S.dmNames||{};S.dmNames[r]=name;location.hash='#chat/'+encodeURIComponent(r)}
-async function pickPerson(){const d=document.createElement('div');d.className='csheet';d.innerHTML='<div class="cs-in"><h3 style="margin:4px 0 8px">➕ '+t('newChat')+'</h3><input id="pp" placeholder="🔍 '+esc(t('searchPeople'))+'"><div id="pl" class="list" style="max-height:60vh;overflow:auto;margin-top:6px"><span class="spin"></span></div></div>';
-  document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.remove()};
+async function pickPerson(){const d=document.createElement('div');d.className='csheet top';d.innerHTML='<div class="cs-in"><div class="row" style="justify-content:space-between;flex-wrap:nowrap"><h3 style="margin:4px 0 8px">➕ '+t('newChat')+'</h3><button type="button" class="btn alt sm" id="ppx">✕</button></div><input id="pp" placeholder="🔍 '+esc(t('searchPeople'))+'" autocomplete="off"><div id="pl" class="list" style="overflow:auto;margin-top:6px;flex:1;min-height:0"><span class="spin"></span></div></div>';
+  document.body.appendChild(d);d.onclick=e=>{if(e.target===d)d.remove()};d.querySelector('#ppx').onclick=()=>d.remove();
   let ppl=[];try{ppl=await rpc('wp_chat_people',{p_token:S.token})||[]}catch(er){d.remove();toast(errText(er));return}
   const draw=()=>{const q=$('pp').value.trim().toLowerCase();const L=ppl.filter(x=>!q||(x.name+' '+(x.desig||'')+' '+(x.code?secName(x.code):'')).toLowerCase().includes(q)).slice(0,80);
     $('pl').innerHTML=L.map(x=>'<button type="button" class="it" data-pu="'+x.id+'" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);cursor:pointer;font:inherit;gap:10px">'+avatar(x.name,x.photo,40)+'<div class="grow"><b>'+esc(x.name)+'</b><div class="mute" style="font-size:12px">'+esc(desigLabel(x.desig||''))+(x.code?' · '+esc(secName(x.code)):'')+'</div></div></button>').join('')||'<p class="mute">–</p>';
@@ -1960,6 +1964,8 @@ async function route(){
     }
   }catch(er){app.innerHTML='<div class="msg err">'+errText(er)+'</div><a class="btn" href="#home">'+t('back')+'</a>'}
 }
+(function(){const vv=window.visualViewport;if(!vv)return;const f=()=>document.documentElement.style.setProperty('--vvh',vv.height+'px');vv.addEventListener('resize',f);f()})();
+document.addEventListener('focusin',e=>{if(e.target&&e.target.id==='cf')setTimeout(()=>e.target.scrollIntoView({block:'start',behavior:'smooth'}),300)});
 window.addEventListener('hashchange',()=>{document.documentElement.classList.remove('navopen');route()});
 route();
 if(S.token)rpc('wp_me',{p_token:S.token}).then(me=>{S.me=me;localStorage.setItem('wp_me',JSON.stringify(me));header();chatPoll()}).catch(()=>{});
