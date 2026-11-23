@@ -258,6 +258,10 @@ tr.tapr{cursor:pointer}tr.tapr:active{background:#eef7f5}
 .addt{color:#d97706;font-weight:600}
 .todo{background:linear-gradient(120deg,#fff7e6,#f0fbf8)}
 .chatb{background:linear-gradient(135deg,#0f766e,#10b981)!important;border:0}
+.autodel{display:inline-block;background:#fff7e6;border:1px solid #f3c98b;color:#92400e;border-radius:12px;padding:6px 12px;font-size:13px;font-weight:600;margin:0 0 10px}
+.ch-note{text-align:center;font-size:11px;color:#7a8f8c;margin:-2px 0 5px;flex:none}
+.ch-exp{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.05);font-size:14px;font-style:italic;opacity:.85}
+.bub.me .ch-exp{background:rgba(255,255,255,.16)}.ch-exp small{font-style:normal;opacity:.8}
 .chip{display:inline-block;padding:6px 12px;border-radius:16px;background:#fff;border:1px solid #f3c98b;color:#92400e;text-decoration:none;font-size:13px;font-weight:600}
 .flashin{animation:flashin 2.2s ease}
 @keyframes flashin{0%,40%{background:#fff3cd;box-shadow:0 0 0 4px #fde68a;border-radius:10px}100%{background:transparent;box-shadow:none}}
@@ -496,6 +500,7 @@ const TX={
  homePage:['Home page','హోమ్ పేజీ'], others:['Others','ఇతరాలు'],
  addIt:['Add','జోడించు'], todoShort:['Still to fill – tap to add','ఇంకా నింపాల్సినవి – జోడించడానికి నొక్కండి'],
  isBlo:['Are you a BLO?','మీరు BLO నా?'], yesW:['Yes','అవును'], noW:['No','కాదు'], boothNo:['Booth (part) number','బూత్ (పార్ట్) నంబర్'], needBooth:['Enter the booth number','బూత్ నంబర్ నమోదు చేయండి'],
+ autoDel:['Photos and files shared in chat are deleted automatically after 3 days. Messages stay. Download anything you need to keep.','చాట్‌లో పంపిన ఫోటోలు, ఫైళ్లు 3 రోజుల తర్వాత ఆటోమేటిక్‌గా తొలగించబడతాయి. సందేశాలు అలాగే ఉంటాయి. అవసరమైనవి డౌన్‌లోడ్ చేసుకోండి.'], autoDelShort:['Photos & files auto-delete after 3 days','ఫోటోలు & ఫైళ్లు 3 రోజుల్లో ఆటో-డిలీట్'], fileExpired:['File deleted after 3 days','3 రోజుల తర్వాత ఫైల్ తొలగించబడింది'], photoExpired:['Photo deleted after 3 days','3 రోజుల తర్వాత ఫోటో తొలగించబడింది'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -1784,7 +1789,7 @@ async function vChat(room){const app=curApp;
   if(!room){app.innerHTML='<div class="card"><span class="spin"></span></div>';
     const rs=await rpc('wp_chat_rooms',{p_token:S.token})||[];S.chatRooms=rs;const seen=chatSeen();
     const me=S.me||{};const rank=x=>x.room==='ward:'+me.code?0:x.room==='all'?1:x.room==='admins'?2:x.room.startsWith('dept:')?3:4;const ordered=rs.slice().sort((a,b)=>(b.last_id||0)-(a.last_id||0)||rank(a)-rank(b));
-    app.innerHTML='<div class="secttl"><h1>'+t('chat')+'</h1></div><p class="mute">'+t('chatHelp')+'</p>'+
+    app.innerHTML='<div class="secttl"><h1>'+t('chat')+'</h1></div><p class="mute">'+t('chatHelp')+'</p><div class="autodel">🕒 '+t('autoDel')+'</div>'+
       '<div class="row" style="gap:8px;flex-wrap:nowrap;margin-bottom:8px"><input id="cf" placeholder="🔍 '+esc(t('searchPeople2'))+'" style="flex:1;min-width:0"><button class="btn" type="button" id="nc" style="white-space:nowrap">➕ '+t('newChat')+'</button></div>'+
       '<div class="list card">'+ordered.map(r=>{const un=r.last_id&&r.last_id>(seen[r.room]||0);
         return '<a class="it" data-cr="'+esc(roomName(r).toLowerCase())+'" href="#chat/'+encodeURIComponent(r.room)+'" style="text-decoration:none;color:inherit;gap:10px">'+(r.room.startsWith('dm:')?avatar(r.title,r.photo,40):'')+'<div class="grow"><div class="nm">'+esc(r.room.startsWith('dm:')?(r.title||''):roomName(r))+'</div><div class="mute" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw">'+(r.last?esc(r.last.name+': '+r.last.body):t('noMsgs'))+'</div></div>'+
@@ -1810,7 +1815,7 @@ async function vChat(room){const app=curApp;
       '<button type="button" class="ch-ib call" id="cvc" title="'+esc(t('videoCall'))+'">📹</button><button type="button" class="ch-ib" id="mu" hidden></button></div>'+
     '<div id="cm" class="ch-bg"></div>'+
     '<div id="rp" hidden class="ch-reply"></div><div id="up" class="mute" style="font-size:13px;flex:none;padding:0 6px"></div>'+
-    '<form id="cs" class="ch-bar"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt">'+
+    '<div class="ch-note">🕒 '+t('autoDelShort')+'</div><form id="cs" class="ch-bar"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt">'+
       '<div class="ch-pill"><button type="button" class="ch-pb" id="cat" title="'+esc(t('attach'))+'">📎</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsgS'))+'"></textarea><button type="button" class="ch-pb" id="cdic" title="'+esc(t('dictate'))+'">🎙️</button></div>'+
       '<button class="ch-send" id="cb" title="Send">➤</button></form></div>';
   let last=0,msgs=[],reads=[],members=0,readKey='',replyTo=null;const box=$('cm');
@@ -1824,7 +1829,7 @@ async function vChat(room){const app=curApp;
   const dayLabel=a=>{const d=new Date(a),n=new Date(),y=new Date(n-864e5);return d.toDateString()===n.toDateString()?t('today'):d.toDateString()===y.toDateString()?t('yesterday'):d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})};
   let popAfter=Infinity;
   const bubble0=(m,first)=>{const me=m.mine;
-    const media=m.deleted?'':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" class="ch-img"><img src="'+esc(m.url)+'" loading="lazy"></a>':
+    const media=m.deleted?'':m.expired?'<div class="ch-exp">⌛ '+(m.kind==='image'?t('photoExpired'):t('fileExpired'))+(m.fname&&m.kind!=='image'?'<small>'+esc(m.fname)+'</small>':'')+'</div>':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" class="ch-img"><img src="'+esc(m.url)+'" loading="lazy"></a>':
       m.kind==='call'&&m.url?'<div class="ch-call"><span>📹</span><div><b>'+t('videoCall')+'</b><a href="'+esc(m.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false" target="_blank" rel="noopener">'+t('joinCall')+'</a></div></div>':
       m.kind==='audio'&&m.url?'<audio controls preload="none" src="'+esc(m.url)+'" style="max-width:230px;height:40px"></audio>':
       m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" class="ch-file"><span>📄</span><span><b>'+esc(m.fname||t('file'))+'</b><small>'+(m.fsize?fsize(m.fsize):'')+' · '+t('open')+'</small></span></a>':'';
@@ -1882,7 +1887,7 @@ async function vChat(room){const app=curApp;
   $('cat').onclick=()=>$('cfi').click();
   $('cfi').onchange=async()=>{const f=$('cfi').files[0];$('cfi').value='';if(!f)return;
     if(f.size>8*1048576){toast(t('e_too_big'));return}
-    $('up').innerHTML='<span class="spin"></span> '+t('uploading')+' '+esc(f.name);
+    $('up').innerHTML='<span class="spin"></span> '+t('uploading')+' '+esc(f.name)+' · <small>🕒 '+t('autoDelShort')+'</small>';
     try{let j,kind='file',mime=f.type||'';
       if(/^image\//.test(mime)){const d=await compress(f);j=await chatUpload(room,d,f.name,'image/jpeg');kind='image';mime='image/jpeg'}
       else j=await chatUpload(room,f,f.name,mime||'application/octet-stream');
