@@ -37,6 +37,7 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 .btn.red{background:var(--bad)}
 .btn.orange{background:var(--acc);color:#222}
 .btn:disabled{opacity:.5}
+.qdel{border:0;background:#fde8ec;color:#c0392b;border-radius:6px;padding:0 5px;margin-left:4px;cursor:pointer;font-size:12px;vertical-align:middle}
 .btn.big{width:100%;justify-content:center;font-size:19px;letter-spacing:.3px;padding:15px 18px;border-radius:14px;margin-top:16px;position:relative;overflow:hidden;
   background:linear-gradient(110deg,#0e6b6b,#16a085,#f2a33a,#e8566c,#0e6b6b);background-size:300% 100%;animation:bgmove 6s ease infinite;box-shadow:0 6px 18px rgba(14,107,107,.35);transition:transform .15s,box-shadow .15s}
 .btn.big::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:shine 2.8s ease-in-out infinite}
@@ -275,6 +276,7 @@ const TX={
  myDetails:['My details','నా వివరాలు'], myHelp:['Check and correct your own details here – name, phone, clusters, bank, HRMS etc. Only you and your ward admin can see office-only details.','మీ స్వంత వివరాలు ఇక్కడ సరిచూసి సరిచేయండి – పేరు, ఫోన్, క్లస్టర్లు, బ్యాంక్, HRMS మొదలైనవి. ఆఫీస్ వివరాలు మీకు, మీ వార్డు అడ్మిన్‌కు మాత్రమే కనిపిస్తాయి.'],
  topics:['topics','అంశాలు'], pickDept:['Choose your department, then a topic. Fill what you know and press Save.','మీ శాఖను ఎంచుకోండి, తర్వాత అంశాన్ని ఎంచుకోండి. తెలిసినవి నింపి సేవ్ నొక్కండి.'], surveyView:['Departments of this ward (view only)','ఈ వార్డు శాఖలు (చూడటానికి మాత్రమే)'],
  moreTitle:['➕ Your own fields','➕ మీ సొంత ఫీల్డ్‌లు'], moreHelp:['Anything more you know about this topic – type a heading and its details.','ఈ అంశం గురించి మీకు తెలిసిన మరేదైనా – శీర్షిక, దాని వివరాలు టైప్ చేయండి.'], mHead:['Heading (e.g. Borewells)','శీర్షిక (ఉదా: బోర్‌వెల్స్)'], mVal:['Details','వివరాలు'], addMore:['Add field','ఫీల్డ్ జోడించు'],
+ delFieldQ:['Delete this question for all 35 wards? (You can restore it in Admin → Custom fields, or press Undo.)','ఈ ప్రశ్నను 35 వార్డులకూ తొలగించాలా? (అడ్మిన్ → కస్టమ్ ఫీల్డ్‌లలో తిరిగి తెచ్చుకోవచ్చు, లేదా Undo నొక్కండి.)'], fieldDeleted:['Question deleted','ప్రశ్న తొలగించబడింది'],
  builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
  pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
  fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
@@ -653,15 +655,22 @@ async function loadFields(force){if(S.fields&&!force)return S.fields;try{S.field
 function regDefs(type){const h=(S.fields||[]).filter(f=>f.scope==='place:'+type&&f.kind==='hide').map(f=>f.label);return (REG[type]||[]).filter(f=>!h.includes(f[0])).concat(customDefs('place:'+type))}
 function deptDefs(key){const d=DEPTS.find(x=>x[0]===key);const h=(S.fields||[]).filter(f=>f.scope==='dept:'+key&&f.kind==='hide').map(f=>f.label);return (d?d[4]:[]).filter(f=>!h.includes(f[0])).concat(customDefs('dept:'+key))}
 function qLabel(f){return te()?f[2]:f[1]}
-function qInputs(defs,vals,prefix,disabled){
-  vals=vals||{};const dis=disabled?' disabled':'';
-  return '<div class="two">'+defs.map(f=>{const id=prefix+f[0],v=vals[f[0]]==null?'':String(vals[f[0]]);const lab='<label for="'+id+'">'+esc(qLabel(f))+'</label>';
+function qInputs(defs,vals,prefix,disabled,delScope){
+  vals=vals||{};const dis=disabled?' disabled':'';const canDel=delScope&&!disabled&&(S.me||{}).role==='super';
+  return '<div class="two">'+defs.map(f=>{const id=prefix+f[0],v=vals[f[0]]==null?'':String(vals[f[0]]);const lab='<label for="'+id+'">'+esc(qLabel(f))+(canDel?' <button type="button" class="qdel" data-qd="'+esc(f[0])+'" data-qs="'+esc(delScope)+'" title="'+esc(t('del'))+'">🗑</button>':'')+'</label>';
     if(Array.isArray(f[3]))return '<div>'+lab+'<select id="'+id+'"'+dis+'><option value="">–</option>'+f[3].concat(v&&!f[3].includes(v)?[v]:[]).map(o=>'<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select></div>';
     if(f[3]==='yn')return '<div>'+lab+'<select id="'+id+'"'+dis+'><option value="">–</option><option value="Yes"'+(v==='Yes'?' selected':'')+'>'+(te()?'అవును':'Yes')+'</option><option value="No"'+(v==='No'?' selected':'')+'>'+(te()?'కాదు':'No')+'</option></select></div>';
     if(f[3]==='area')return '<div style="grid-column:1/-1">'+lab+'<textarea id="'+id+'"'+dis+' style="min-height:90px">'+esc(v)+'</textarea></div>';
     const ty=f[3]==='num'?' type="number" step="any" inputmode="decimal"':f[3]==='date'?' type="date"':'';
     return '<div>'+lab+'<input id="'+id+'"'+ty+dis+' value="'+esc(v)+'"></div>'}).join('')+'</div>';
 }
+/* app admin: delete a question for all wards (built-in ones are hidden and can be restored in Admin → Custom fields) */
+function bindQDel(box,after){box.querySelectorAll('[data-qd]').forEach(b=>b.onclick=async e=>{e.preventDefault();const key=b.dataset.qd,sc=b.dataset.qs;
+  const lab=b.parentNode.firstChild.textContent.trim();if(!confirm(t('delFieldQ')+'\n\n'+lab))return;
+  try{const cus=/^f\d+$/.test(key)?(S.fields||[]).find(f=>'f'+f.id===key):null;
+    if(cus){await rpc('wp_field_remove',{p_token:S.token,p_id:cus.id});pushUndo(t('del')+' – '+lab,()=>rpc('wp_field_save',{p_token:S.token,f:{scope:cus.scope,label:cus.label,kind:cus.kind,options:cus.options||[]}}).then(()=>loadFields(true)))}
+    else{const id=await rpc('wp_field_save',{p_token:S.token,f:{scope:sc,label:key,kind:'hide',options:[]}});pushUndo(t('del')+' – '+lab,async()=>{const fl=await loadFields(true);const h=fl.find(f=>f.scope===sc&&f.kind==='hide'&&f.label===key);if(h)await rpc('wp_field_remove',{p_token:S.token,p_id:h.id});await loadFields(true)})}
+    await loadFields(true);toast(t('fieldDeleted'));after()}catch(er){toast(errText(er))}})}
 function readQ(defs,prefix){const o={};defs.forEach(f=>{const el=$(prefix+f[0]);if(!el)return;const v=el.value.trim();if(v!=='')o[f[0]]=f[3]==='num'&&!isNaN(+v)?+v:v});return o}
 function extraSummary(p){const defs=regDefs(p.type),x=p.extra||{};return defs.filter(f=>x[f[0]]!=null&&x[f[0]]!=='').slice(0,4).map(f=>esc(qLabel(f))+': <b>'+esc(f[3]==='yn'?(x[f[0]]==='Yes'?(te()?'అవును':'Yes'):(te()?'కాదు':'No')):x[f[0]])+'</b>').join(' · ')}
 /* one table → Excel (.xlsx) or CSV */
@@ -946,7 +955,7 @@ async function vPlace(code,id,preType){const app=curApp;
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
   photoPicker('ph',p.photos,5,code);
   await loadFields();let xv=Object.assign({},p.extra||{});
-  const drawX=()=>{const d=regDefs($('ty').value);$('xq').innerHTML=(d.length?qInputs(d,xv,'x_'):'')+'<h4 style="margin:12px 0 4px">'+t('moreTitle')+'</h4><p class="mute" style="margin-top:0">'+t('moreHelp')+'</p><div id="xmb"></div>';getMore=moreBox('xmb',pMore)};
+  const drawX=()=>{const d=regDefs($('ty').value);$('xq').innerHTML=(d.length?qInputs(d,xv,'x_',false,'place:'+$('ty').value):'')+'<h4 style="margin:12px 0 4px">'+t('moreTitle')+'</h4><p class="mute" style="margin-top:0">'+t('moreHelp')+'</p><div id="xmb"></div>';getMore=moreBox('xmb',pMore);bindQDel($('xq'),()=>{Object.assign(xv,readQ(regDefs($('ty').value),'x_'));getMore();drawX()})};
   const pMore=((p.extra||{})._more||[]).map(m=>({h:m.h,v:m.v}));let getMore=null;drawX();
   $('ty').onchange=()=>{Object.assign(xv,readQ(regDefs($('ty').value),'x_'));getMore();drawX();if(id==='new')$('ow').value=['shop','pharmacy','petrol_bunk','function_hall','main_building','clinic','bank'].includes($('ty').value)?'private':'govt'};
   pickMap('pm','la','ln',p.lat!=null?[p.lat,p.lng]:(w.sec.lat!=null?[w.sec.lat,w.sec.lng]:null));
@@ -1253,13 +1262,13 @@ async function vSurvey(code,dept,topic){const app=curApp;
   const k=tl.findIndex(x=>x.key===topic);if(k<0){location.hash='#survey/'+code+'/'+dept;return}const tp=tl[k];
   const allMore=(v._more||[]).slice();const myMore=allMore.filter(m=>m.t===tp.key).map(m=>({h:m.h,v:m.v}));
   app.innerHTML=head(tp.emo+' '+esc(te()?tp.te:tp.en),'#survey/'+code+'/'+dept)+'<p class="mute">'+esc(dName(d))+'</p>'+(ok?'':'<div class="msg info">'+t('viewOnly')+'</div>')+
-    '<div class="card">'+(tp.defs.length?qInputs(tp.defs,v,'q_',!ok):'')+
+    '<div class="card">'+(tp.defs.length?qInputs(tp.defs,v,'q_',!ok,'dept:'+dept):'')+
     '<h3 style="margin:14px 0 6px">'+t('moreTitle')+'</h3><p class="mute" style="margin-top:0">'+t('moreHelp')+'</p><div id="mb"></div>'+
     (tp.places.length?'<h3 style="margin:14px 0 6px">'+t('regDetails')+'</h3><div class="row">'+tp.places.map(ty=>{const n=w.places.filter(p=>p.type===ty).length,ti=typeInfo(ty,w.data);return '<a class="btn alt sm" href="'+(w.can_edit?'#place/'+code+'/new/'+ty:'#ward/'+code+'/places')+'">'+ti.emo+' '+esc(ti.label)+' ('+n+')'+(w.can_edit?' +':'')+'</a>'}).join('')+'</div>':'')+
     '<div class="row" style="margin-top:14px;justify-content:space-between">'+(k>0?'<a class="btn alt sm" href="#survey/'+code+'/'+dept+'/'+tl[k-1].key+'">← '+esc(te()?tl[k-1].te:tl[k-1].en)+'</a>':'<span></span>')+
     (ok?'<button class="btn" type="button" id="sv">💾 '+t('save')+'</button>':'')+
     (k<tl.length-1?'<a class="btn alt sm" href="#survey/'+code+'/'+dept+'/'+tl[k+1].key+'">'+esc(te()?tl[k+1].te:tl[k+1].en)+' →</a>':'<span></span>')+'</div></div>';
-  const getMore=moreBox('mb',myMore,!ok);
+  const getMore=moreBox('mb',myMore,!ok);bindQDel(app,()=>route());
   if(ok)$('sv').onclick=async()=>{const b=$('sv');b.disabled=true;
     const ans=readQ(tp.defs,'q_');const send={};tp.defs.forEach(f=>{send[f[0]]=ans[f[0]]==null?null:ans[f[0]]});
     send._more=allMore.filter(m=>m.t!==tp.key).concat(getMore().map(m=>({t:tp.key,h:m.h,v:m.v})));
