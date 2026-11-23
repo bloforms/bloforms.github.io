@@ -225,6 +225,7 @@ a.stat.empty{background:#fffaf0;border-style:dashed;border-color:#f3c98b}
 tr.tapr{cursor:pointer}tr.tapr:active{background:#eef7f5}
 .addt{color:#d97706;font-weight:600}
 .todo{background:linear-gradient(120deg,#fff7e6,#f0fbf8)}
+.chatb{background:linear-gradient(135deg,#0f766e,#10b981)!important;border:0}
 .chip{display:inline-block;padding:6px 12px;border-radius:16px;background:#fff;border:1px solid #f3c98b;color:#92400e;text-decoration:none;font-size:13px;font-weight:600}
 .flashin{animation:flashin 2.2s ease}
 @keyframes flashin{0%,40%{background:#fff3cd;box-shadow:0 0 0 4px #fde68a;border-radius:10px}100%{background:transparent;box-shadow:none}}
@@ -1071,7 +1072,9 @@ function vWardTab(w){
     body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a><a class="btn alt" href="#export/'+code+'">'+t('dlEmp')+'</a><button type="button" class="btn orange" id="fillWard">'+t('fillAll')+'</button></div>':'')+'<div class="list">'+
      (w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+
        '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+clusterLine(s)+privLine(s)+'</div>'+
-       '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>'+((w.vacant||[]).length?'<div class="card"><h3 style="margin-top:0">🪑 '+t('vacantPosts')+' ('+w.vacant.length+')</h3><ul style="margin:0">'+w.vacant.map(v=>'<li>'+esc(desigLabel(v))+'</li>').join('')+'</ul></div>':'');
+       '<div class="row"><button type="button" class="btn sm chatb" data-chs="'+s.id+'" hidden title="'+esc(t('chat'))+'">💬</button>'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>'+((w.vacant||[]).length?'<div class="card"><h3 style="margin-top:0">🪑 '+t('vacantPosts')+' ('+w.vacant.length+')</h3><ul style="margin:0">'+w.vacant.map(v=>'<li>'+esc(desigLabel(v))+'</li>').join('')+'</ul></div>':'');
+    rpc('wp_staff_accounts',{p_token:S.token,p_code:code}).then(map=>{map=map||{};const myId=(S.me||{}).id;
+      body.querySelectorAll('[data-chs]').forEach(b=>{const a=map[b.dataset.chs];if(!a||a.id===myId)return;b.hidden=false;b.onclick=()=>{const st=w.staff.find(x=>x.id===b.dataset.chs)||{};openDm(a.id,st.name||a.name)}})}).catch(()=>{});
     return;
   }
   /* overview */
