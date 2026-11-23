@@ -170,6 +170,17 @@ const TX={
  mapStatus:['Map point','మ్యాప్ పాయింట్'], areaOnly:['Approximate – please set exact office location','సుమారు – ఖచ్చితమైన లొకేషన్ పెట్టండి'],
  superNote:['You are the app admin.','మీరు యాప్ అడ్మిన్.'],
  loading:['Loading…','లోడ్ అవుతోంది…'],
+ clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
+ clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
+ officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
+ badAadhaar:['Aadhaar must be 12 digits.','ఆధార్ 12 అంకెలు ఉండాలి.'],
+ uploadT:['📊 Upload Excel / Google Sheet','📊 ఎక్సెల్ / గూగుల్ షీట్ అప్‌లోడ్'],
+ uploadHelp:['One row per employee with columns: Name, Designation, Phone, Aadhaar, HRMS ID, CFMS ID, Clusters. Write clusters as cluster:households joined with + (for example 3:45 + 4:60). Download the template to start.','ఒక్కో ఉద్యోగికి ఒక వరుస, కాలమ్‌లు: Name, Designation, Phone, Aadhaar, HRMS ID, CFMS ID, Clusters. క్లస్టర్లను క్లస్టర్:కుటుంబాలు గా + తో రాయండి (ఉదా: 3:45 + 4:60). మొదలుపెట్టడానికి టెంప్లేట్ డౌన్‌లోడ్ చేయండి.'],
+ template:['⬇ Download blank template','⬇ ఖాళీ టెంప్లేట్ డౌన్‌లోడ్'], chooseFile:['Choose Excel or CSV file','ఎక్సెల్ లేదా CSV ఫైల్ ఎంచుకోండి'],
+ sheetLink:['or paste a Google Sheet link (Share → Anyone with the link can view)','లేదా గూగుల్ షీట్ లింక్ పేస్ట్ చేయండి (Share → Anyone with the link can view)'], loadSheet:['Load sheet','షీట్ లోడ్ చేయండి'],
+ sheetFail:['Could not read the Google Sheet. Make sure it is shared as "Anyone with the link", or download it as Excel and choose the file.','గూగుల్ షీట్ చదవలేకపోయాం. "Anyone with the link" గా షేర్ చేశారో చూడండి, లేదా ఎక్సెల్‌గా డౌన్‌లోడ్ చేసి ఫైల్ ఎంచుకోండి.'],
+ fileFail:['Could not read this file. Use .xlsx or .csv.','ఈ ఫైల్ చదవలేకపోయాం. .xlsx లేదా .csv వాడండి.'],
+ saveAll:['Save all','అన్నీ సేవ్ చేయండి'], isNew:['new','కొత్త'], isUpd:['will update','మారుతుంది'], fromReport:['From SGSW attendance report (copy & paste)','SGSW హాజరు రిపోర్ట్ నుండి (కాపీ & పేస్ట్)'],
  importT:['📋 Import from attendance report','📋 హాజరు రిపోర్ట్ నుండి దిగుమతి'],
  importHelp:['Open the SGSW attendance report (sgsw.ap.gov.in → Secretariat level details) for your secretariat, select the whole table, copy it, and paste it below. The app picks up each employee\'s name and designation. Add phone numbers and photos afterwards.','మీ సచివాలయానికి SGSW హాజరు రిపోర్ట్ (sgsw.ap.gov.in → Secretariat level details) తెరిచి, మొత్తం టేబుల్‌ను సెలెక్ట్ చేసి కాపీ చేసి, క్రింద పేస్ట్ చేయండి. యాప్ ప్రతి ఉద్యోగి పేరు, హోదా తీసుకుంటుంది. తర్వాత ఫోన్ నంబర్లు, ఫోటోలు జోడించండి.'],
  pasteHere:['Paste the copied table here','కాపీ చేసిన టేబుల్ ఇక్కడ పేస్ట్ చేయండి'], readIt:['Read names','పేర్లు చదవండి'],
@@ -261,6 +272,15 @@ const typeList=data=>{
 function typeInfo(key,data){
   const d=TYPES.find(x=>x[0]===key);if(d)return {label:te()?d[2]:d[1],emo:d[3]};
   const c=((data&&data.types)||[]).find(x=>x.key===key);return {label:c?c.label:key,emo:'📌'};
+}
+function clusterLine(s){const c=s.clusters||[];if(!c.length)return '';return '<div class="mute">🏘 '+t('clusters')+': '+c.map(x=>esc(x.no)+(x.households!=null&&x.households!==''?' ('+fmt(x.households)+')':'')).join(' + ')+'</div>'}
+function maskA(a){a=String(a||'').replace(/\D/g,'');return a.length>4?'XXXX XXXX '+a.slice(-4):a}
+function privLine(s){const p=s.private||{};const parts=[];if(p.hrms)parts.push('HRMS '+esc(p.hrms));if(p.cfms)parts.push('CFMS '+esc(p.cfms));if(p.aadhaar)parts.push('Aadhaar '+esc(maskA(p.aadhaar)));return parts.length?'<div class="mute">🔒 '+parts.join(' · ')+'</div>':''}
+function parseClusters(cl,hh){
+  const sp=v=>String(v==null?'':v).split(/[+,;\/&]|\s{2,}/).map(x=>x.trim()).filter(Boolean);
+  const a=sp(cl),h=sp(hh);const out=[];
+  a.forEach((x,i)=>{const m=x.match(/^([^:\-(]+)\s*[:\-(]\s*(\d+)/);if(m)out.push({no:m[1].trim(),households:+m[2]});else out.push({no:x,households:h[i]!=null&&!isNaN(+h[i])?+h[i]:null})});
+  return out;
 }
 function typeCount(d,byType,k){const c=(d&&d.counts||{})[k];return c!=null?c:((byType||{})[k]||0)}
 function desigLabel(en){const d=DESIG.find(x=>x[0]===en);return d?(te()?d[1]:d[0]):(en||'')}
@@ -504,9 +524,9 @@ function vWardTab(w){
     return;
   }
   if(S.tab==='staff'){
-    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('importT')+'</a></div>':'')+'<div class="list">'+
+    body.innerHTML='<div class="card">'+(w.can_edit_profile?'<div class="row"><a class="btn" href="#staff/'+code+'/new">'+t('addStaff')+'</a><a class="btn alt" href="#import/'+code+'">'+t('uploadT')+'</a></div>':'')+'<div class="list">'+
      (w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+
-       '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+'</div>'+
+       '<div class="grow"><div class="nm">'+esc(s.name)+(s.blo_booth?' <span class="pill o">BLO '+esc(s.blo_booth)+'</span>':'')+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div>'+(s.phone?'<div>'+esc(s.phone)+'</div>':'')+clusterLine(s)+privLine(s)+'</div>'+
        '<div class="row">'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+(w.can_edit_profile?'<a class="btn alt sm" href="#staff/'+code+'/'+s.id+'">'+t('editB')+'</a>':'')+'</div></div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>';
     return;
   }
@@ -517,7 +537,7 @@ function vWardTab(w){
   const c=wardCounts(w);const todo=completionItems(c).filter(x=>!x[1]);
   const st=(v,l)=>'<div class="stat"><b>'+fmt(v)+'</b><span>'+l+'</span></div>';
   body.innerHTML=
-   '<div class="card"><h2>'+t('population')+'</h2><div class="grid">'+st(p.total,t('total'))+st(p.households,t('households'))+st(p.men,t('men'))+st(p.women,t('women'))+st(p.above60,t('above60'))+st(p.children,t('children'))+'</div><h3>'+t('welfare')+'</h3><div class="grid">'+st(p.pensions,t('pensions'))+st(p.ration_cards,t('rationCards'))+st(p.voters,t('voters'))+st(p.shgs,t('shgs'))+'</div>'+(p.as_on?'<p class="mute">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
+   '<div class="card"><h2>'+t('population')+'</h2><div class="grid">'+st(p.total,t('total'))+st(p.households,t('households'))+st(p.men,t('men'))+st(p.women,t('women'))+st(p.above60,t('above60'))+st(p.children,t('children'))+st(d.clusters_total,t('clustersTotal'))+st(w.staff.reduce((a,x)=>a+(x.clusters||[]).reduce((b,c)=>b+(+c.households||0),0),0)||null,t('clusterHH'))+'</div><h3>'+t('welfare')+'</h3><div class="grid">'+st(p.pensions,t('pensions'))+st(p.ration_cards,t('rationCards'))+st(p.voters,t('voters'))+st(p.shgs,t('shgs'))+'</div>'+(p.as_on?'<p class="mute">'+t('asOn')+': '+esc(p.as_on)+'</p>':'')+
    (pr&&(pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>'+t('caste')+'</h3><div class="grid">'+st(pr.bc,'BC')+st(pr.sc,'SC')+st(pr.st,'ST')+st(pr.oc,'OC')+st(pr.minority,t('minority'))+'</div>':'')+'</div>'+
    '<div class="card"><h2>'+t('places')+'</h2><div class="grid">'+st(w.places.length,t('all'))+st(govt,t('govtB'))+st(priv,t('privB'))+st(c.photos,t('photosCount'))+st(w.staff.length,t('staff'))+
      '</div><h3>'+t('counts')+'</h3><div class="grid">'+typeList(d).filter(x=>typeCount(d,byType,x[0])||['school','toilet','hospital','park','museum','anganwadi','library','temple'].includes(x[0])).map(x=>st(typeCount(d,byType,x[0]),x[3]+' '+(te()?x[2]:x[1]))).join('')+'</div></div>'+
@@ -548,7 +568,7 @@ async function vEdit(code){const app=curApp;
     '<label>'+t('officeLoc')+'</label><div class="row"><button type="button" class="btn alt sm" id="gps">'+t('useLoc')+'</button><span class="mute">'+t('tapMap')+'</span></div>'+
     '<div class="two">'+inp('olat',t('lat'),w.sec.lat,'number')+inp('olng',t('lng'),w.sec.lng,'number')+'</div><div id="emap" class="map small"></div></div>'+
    '<div class="card"><h2>'+t('boundaries')+'</h2><div class="two">'+inp('b_north','⬆ '+t('north'),b.north)+inp('b_south','⬇ '+t('south'),b.south)+inp('b_east','➡ '+t('east'),b.east)+inp('b_west','⬅ '+t('west'),b.west)+
-    inp('door_from',t('doorFrom'),d.door_from)+inp('door_to',t('doorTo'),d.door_to)+'</div><label>'+t('streets')+'</label><textarea id="streets">'+esc(d.streets||'')+'</textarea></div>'+
+    inp('door_from',t('doorFrom'),d.door_from)+inp('door_to',t('doorTo'),d.door_to)+inp('clusters_total',t('clustersTotal'),d.clusters_total,'number')+'</div><label>'+t('streets')+'</label><textarea id="streets">'+esc(d.streets||'')+'</textarea></div>'+
    '<div class="card"><h2>'+t('population')+'</h2><div class="two">'+inp('p_total',t('total'),p.total,'number')+inp('p_households',t('households'),p.households,'number')+inp('p_men',t('men'),p.men,'number')+inp('p_women',t('women'),p.women,'number')+
     inp('p_above60',t('above60'),p.above60,'number')+inp('p_children',t('children'),p.children,'number')+inp('p_as_on',t('asOn'),p.as_on,'date')+'</div>'+
     '<h3>'+t('welfare')+'</h3><div class="two">'+inp('p_pensions',t('pensions'),p.pensions,'number')+inp('p_ration_cards',t('rationCards'),p.ration_cards,'number')+inp('p_voters',t('voters'),p.voters,'number')+inp('p_shgs',t('shgs'),p.shgs,'number')+'</div>'+
@@ -571,7 +591,7 @@ async function vEdit(code){const app=curApp;
   $('f').onsubmit=async e=>{e.preventDefault();const bt=e.target.querySelector('button.btn[style*="padding:14px"]');bt.disabled=true;
     const v=id=>$(id).value.trim();
     const nd=Object.assign({},d,{ward_no:v('ward_no'),office_phone:v('office_phone'),office_address:v('office_address'),office_photo:ophoto[0]||'',
-      boundary:{north:v('b_north'),south:v('b_south'),east:v('b_east'),west:v('b_west')},door_from:v('door_from'),door_to:v('door_to'),streets:v('streets'),
+      boundary:{north:v('b_north'),south:v('b_south'),east:v('b_east'),west:v('b_west')},door_from:v('door_from'),door_to:v('door_to'),clusters_total:num(v('clusters_total')),streets:v('streets'),
       population:{total:num(v('p_total')),households:num(v('p_households')),men:num(v('p_men')),women:num(v('p_women')),above60:num(v('p_above60')),children:num(v('p_children')),as_on:v('p_as_on'),pensions:num(v('p_pensions')),ration_cards:num(v('p_ration_cards')),voters:num(v('p_voters')),shgs:num(v('p_shgs'))}});
     const cn={};typeList(d).forEach(x=>{const el=$('cnt_'+x[0]);if(el&&num(el.value)!=null)cn[x[0]]=num(el.value)});nd.counts=cn;
     const npr={bc:num(v('c_bc')),sc:num(v('c_sc')),st:num(v('c_st')),oc:num(v('c_oc')),minority:num(v('c_min'))};
@@ -616,19 +636,30 @@ async function vStaff(code,id){const app=curApp;
   if(!S.token){location.hash='#login';return}
   const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
   if(!w.can_edit_profile){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
-  const s=id==='new'?{designation:DESIG[0][0]}:Object.assign({},w.staff.find(x=>x.id===id)||{});
-  const ph=s.photo?[s.photo]:[];
+  const s=id==='new'?{designation:DESIG[0][0]}:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||{}));
+  const ph=s.photo?[s.photo]:[];const cls=(s.clusters||[]).slice();if(!cls.length)cls.push({no:'',households:null});const pv=s.private||{};
   const opts=DESIG.slice();if(s.designation&&!opts.find(x=>x[0]===s.designation))opts.push([s.designation,s.designation]);
   app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p><form id="f" class="card">'+
    '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
    '<label>'+t('designation')+'</label><select id="dg">'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
    '<label>'+t('phone')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
+   '<label>'+t('clusters')+'</label><div id="cl"></div><button type="button" class="btn alt sm" id="addcl">'+t('addCluster')+'</button>'+
+   '<div class="msg info" style="margin-top:14px">🔒 '+t('officeOnly')+'</div><div class="two">'+
+   '<div><label>'+t('aadhaar')+'</label><input id="aa" inputmode="numeric" maxlength="14" value="'+esc(pv.aadhaar||'')+'"></div>'+
+   '<div><label>'+t('hrms')+'</label><input id="hr" value="'+esc(pv.hrms||'')+'"></div><div><label>'+t('cfms')+'</label><input id="cf" value="'+esc(pv.cfms||'')+'"></div></div>'+
    '<label>'+t('photo')+'</label><div id="sph"></div>'+
    '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div><div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div></div>'+
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
+  const readCl=()=>{$('cl').querySelectorAll('[data-ci]').forEach(r=>{const k=+r.dataset.ci;cls[k]={no:r.querySelector('.cn').value.trim(),households:num(r.querySelector('.ch').value)}})};
+  const drawCl=()=>{$('cl').innerHTML=cls.map((c,k)=>'<div class="row" data-ci="'+k+'" style="margin-bottom:6px;flex-wrap:nowrap"><input class="cn" placeholder="'+esc(t('clusterNo'))+'" value="'+esc(c.no||'')+'" style="flex:1"><input class="ch" type="number" inputmode="numeric" placeholder="'+esc(t('households'))+'" value="'+esc(c.households==null?'':c.households)+'" style="flex:1"><button type="button" class="btn red sm" data-cx="'+k+'">×</button></div>').join('');
+    $('cl').querySelectorAll('[data-cx]').forEach(b=>b.onclick=()=>{readCl();cls.splice(+b.dataset.cx,1);drawCl()})};
+  drawCl();$('addcl').onclick=()=>{readCl();cls.push({no:'',households:null});drawCl()};
   photoPicker('sph',ph,1,code);
-  $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
-    const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value};
+  $('f').onsubmit=async e=>{e.preventDefault();readCl();
+    const aa=$('aa').value.replace(/\D/g,'');if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
+    $('sv').disabled=true;
+    const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
+      clusters:cls.filter(c=>c.no),private:{aadhaar:aa,hrms:$('hr').value.trim(),cfms:$('cf').value.trim()}};
     try{await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));S.tab='staff';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
   if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_delete_staff',{p_token:S.token,p_id:id});S.tab='staff';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
@@ -660,25 +691,68 @@ function parseReport(text){
   }
   return out;
 }
+function loadXLSX(){return window.XLSX?Promise.resolve():new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';sc.onload=res;sc.onerror=()=>rej(new Error('error'));document.head.appendChild(sc)})}
+function csvRows(text){const rows=[];let row=[],cur='',q=false;text=String(text).replace(/^﻿/,'');
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;else if(c===','){row.push(cur);cur=''}else if(c==='\n'){row.push(cur);rows.push(row);row=[];cur=''}else if(c!=='\r')cur+=c}
+  if(cur||row.length){row.push(cur);rows.push(row)}return rows}
+function rowsToStaff(rows){
+  const hi=rows.findIndex(r=>r.some(c=>/name/i.test(String(c))));if(hi<0)return [];
+  const H=rows[hi].map(c=>String(c).toLowerCase());
+  const col=f=>H.findIndex(f);
+  const ci={name:col(h=>/name/.test(h)&&!/desig/.test(h)),des:col(h=>/desig|post/.test(h)),ph:col(h=>/phone|mobile|cell|contact/.test(h)),aa:col(h=>/aadha|adha|uid/.test(h)),
+    hr:col(h=>/hrms/.test(h)),cf:col(h=>/cfms/.test(h)),cl:col(h=>/cluster/.test(h)),hh:col(h=>/house|hh/.test(h)&&!/cluster/.test(h))};
+  const g=(r,k)=>ci[k]<0?'':String(r[ci[k]]==null?'':r[ci[k]]).trim();
+  return rows.slice(hi+1).filter(r=>g(r,'name')).map(r=>({name:g(r,'name'),designation:g(r,'des')?matchDesig(g(r,'des')):'',phone:g(r,'ph'),
+    private:{aadhaar:g(r,'aa').replace(/\D/g,''),hrms:g(r,'hr'),cfms:g(r,'cf')},clusters:parseClusters(g(r,'cl'),g(r,'hh'))}));
+}
+function templateCsv(){
+  const rows=[['Name','Designation','Phone','Aadhaar','HRMS ID','CFMS ID','Clusters (cluster:households + ...)'],['Example Name','Ward Education & Data Processing Secretary','9xxxxxxxxx','','','','3:45 + 4:60']];
+  const blob=new Blob(['﻿'+rows.map(r=>r.map(v=>/[",]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v).join(',')).join('\n')],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='employees-template.csv';a.click();
+}
 async function vImport(code){const app=curApp;
   if(!S.token){location.hash='#login';return}
   const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
   if(!w.can_edit_profile){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
-  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+t('importT')+'</h1><p class="mute">'+esc(w.sec.name)+'</p><div class="card"><p>'+t('importHelp')+'</p>'+
-   '<label>'+t('pasteHere')+'</label><textarea id="tx" style="min-height:160px"></textarea><button class="btn" id="rd" type="button" style="margin-top:8px">'+t('readIt')+'</button><div id="res"></div></div>';
-  $('rd').onclick=()=>{
-    const have=new Set(w.staff.map(s=>s.name.trim().toLowerCase()));
-    const rows=parseReport($('tx').value).map(r=>({name:titleCase(r.name),designation:matchDesig(r.designation)}));
-    if(!rows.length){$('res').innerHTML='<div class="msg err">'+t('noneFound')+'</div>';return}
-    $('res').innerHTML='<p><b>'+rows.length+'</b> '+t('found')+'</p><div class="list">'+rows.map((r,i)=>{const dup=have.has(r.name.toLowerCase());
-      return '<label class="it chk" style="margin:0"><input type="checkbox" data-i="'+i+'"'+(dup?'':' checked')+'><span class="grow"><b>'+esc(r.name)+'</b><br><span class="mute">'+esc(desigLabel(r.designation))+(dup?' · '+t('already'):'')+'</span></span></label>'}).join('')+
-      '</div><button class="btn" id="ad" type="button" style="margin-top:10px">'+t('addSel')+'</button><div id="m"></div>';
-    $('ad').onclick=async()=>{$('ad').disabled=true;let n=0;
-      const pick=[...document.querySelectorAll('[data-i]')].filter(c=>c.checked).map(c=>rows[+c.dataset.i]);
-      try{for(let k=0;k<pick.length;k++){const di=DESIG.findIndex(d=>d[0]===pick[k].designation);
-        await rpc('wp_save_staff',{p_token:S.token,s:{code:code,name:pick[k].name,designation:pick[k].designation,phone:'',photo:'',joined:'',sort:String(di<0?20:di+1)}});n++}
+  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+t('importT')+'</h1><p class="mute">'+esc(w.sec.name)+'</p>'+
+   '<div class="card"><h2>'+t('uploadT')+'</h2><p class="mute">'+t('uploadHelp')+'</p><button type="button" class="btn alt sm" id="tpl">'+t('template')+'</button>'+
+   '<label>'+t('chooseFile')+'</label><input type="file" id="xf" accept=".xlsx,.xls,.csv">'+
+   '<label>'+t('sheetLink')+'</label><div class="row" style="flex-wrap:nowrap"><input id="gs" placeholder="https://docs.google.com/spreadsheets/d/..." style="flex:1"><button type="button" class="btn sm" id="gsb">'+t('loadSheet')+'</button></div><div id="ures"></div></div>'+
+   '<div class="card"><h2>'+t('fromReport')+'</h2><p class="mute">'+t('importHelp')+'</p>'+
+   '<label>'+t('pasteHere')+'</label><textarea id="tx" style="min-height:140px"></textarea><button class="btn" id="rd" type="button" style="margin-top:8px">'+t('readIt')+'</button><div id="res"></div></div>';
+  $('tpl').onclick=templateCsv;
+  const findEx=r=>w.staff.find(x=>(r.private&&r.private.hrms&&x.private&&x.private.hrms===r.private.hrms)||x.name.trim().toLowerCase()===r.name.trim().toLowerCase());
+  const preview=(box,rows)=>{
+    if(!rows.length){$(box).innerHTML='<div class="msg err">'+t('noneFound')+'</div>';return}
+    $(box).innerHTML='<p><b>'+rows.length+'</b> '+t('found')+'</p><div class="list">'+rows.map((r,i)=>{const ex=findEx(r);
+      return '<label class="it chk" style="margin:0"><input type="checkbox" data-i="'+i+'" checked><span class="grow"><b>'+esc(r.name)+'</b> <span class="pill '+(ex?'o':'g')+'">'+(ex?t('isUpd'):t('isNew'))+'</span><br><span class="mute">'+esc(desigLabel(r.designation||(ex&&ex.designation)||''))+'</span>'+clusterLine(r)+privLine(r)+'</span></label>'}).join('')+
+      '</div><button class="btn" type="button" data-save style="margin-top:10px">'+t('saveAll')+'</button><div data-m></div>';
+    const bt=$(box).querySelector('[data-save]');
+    bt.onclick=async()=>{bt.disabled=true;let n=0;const pick=[...$(box).querySelectorAll('[data-i]')].filter(c=>c.checked).map(c=>rows[+c.dataset.i]);
+      try{for(const r of pick){const ex=findEx(r);let o;
+          if(ex){const pv=Object.assign({},ex.private||{});['aadhaar','hrms','cfms'].forEach(k=>{if(r.private&&r.private[k])pv[k]=r.private[k]});
+            o={id:ex.id,code:code,name:ex.name,designation:r.designation||ex.designation,phone:r.phone||ex.phone||'',photo:ex.photo||'',joined:ex.joined||'',sort:String(ex.sort==null?'':ex.sort),
+               clusters:(r.clusters&&r.clusters.length)?r.clusters:(ex.clusters||[]),private:pv}}
+          else{const di=DESIG.findIndex(d=>d[0]===r.designation);o={code:code,name:titleCase(r.name),designation:r.designation||DESIG[10][0],phone:r.phone||'',photo:'',joined:'',sort:String(di<0?20:di+1),clusters:r.clusters||[],private:r.private||{}}}
+          await rpc('wp_save_staff',{p_token:S.token,s:o});n++}
         toast(n+' '+t('added'));S.tab='staff';location.hash='#ward/'+code}
-      catch(er){$('m').innerHTML='<div class="msg err">'+n+' '+t('added')+'. '+errText(er)+'</div>';$('ad').disabled=false}};
+      catch(er){$(box).querySelector('[data-m]').innerHTML='<div class="msg err">'+n+' '+t('added')+'. '+errText(er)+'</div>';bt.disabled=false}};
+  };
+  $('xf').onchange=async()=>{const f=$('xf').files[0];if(!f)return;$('ures').innerHTML='<span class="spin"></span>';
+    try{let rows;
+      if(/\.csv$/i.test(f.name))rows=csvRows(await f.text());
+      else{await loadXLSX();const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:false,defval:''})}
+      preview('ures',rowsToStaff(rows))}
+    catch(e){$('ures').innerHTML='<div class="msg err">'+t('fileFail')+'</div>'}};
+  $('gsb').onclick=async()=>{const u=$('gs').value.trim();const m=u.match(/\/d\/([\w-]{20,})/);if(!m){$('ures').innerHTML='<div class="msg err">'+t('sheetFail')+'</div>';return}
+    const gid=(u.match(/[#&?]gid=(\d+)/)||[])[1];$('ures').innerHTML='<span class="spin"></span>';
+    try{const r=await fetch('https://docs.google.com/spreadsheets/d/'+m[1]+'/gviz/tq?tqx=out:csv'+(gid?'&gid='+gid:''));if(!r.ok)throw 0;const tx=await r.text();if(/^\s*</.test(tx))throw 0;preview('ures',rowsToStaff(csvRows(tx)))}
+    catch(e){$('ures').innerHTML='<div class="msg err">'+t('sheetFail')+'</div>'}};
+  $('rd').onclick=()=>{
+    const rows=parseReport($('tx').value).map(r=>({name:titleCase(r.name),designation:matchDesig(r.designation),clusters:[],private:{}}));
+    preview('res',rows);
   };
 }
 
