@@ -260,6 +260,7 @@ const TX={
  addTo:['Add to','ఎక్కడ జోడించాలి'], fLabel:['Question / field name','ప్రశ్న / ఫీల్డ్ పేరు'], fKind:['Answer type','జవాబు రకం'], fOptions:['Choices (separate with commas)','ఎంపికలు (కామాలతో వేరు చేయండి)'],
  kText:['Text','టెక్స్ట్'], kNum:['Number','సంఖ్య'], kYn:['Yes / No','అవును / కాదు'], kDate:['Date','తేదీ'], kChoice:['Choice list','ఎంపికల జాబితా'], addField:['+ Add field','+ ఫీల్డ్ జోడించండి'], noFields:['No custom fields yet.','ఇంకా అదనపు ఫీల్డ్‌లు లేవు.'],
  licensedP:['Licensed','లైసెన్స్ ఉంది'], unlicensedP:['No licence','లైసెన్స్ లేదు'],
+ myDetails:['My details','నా వివరాలు'], myHelp:['Check and correct your own details here – name, phone, clusters, bank, HRMS etc. Only you and your ward admin can see office-only details.','మీ స్వంత వివరాలు ఇక్కడ సరిచూసి సరిచేయండి – పేరు, ఫోన్, క్లస్టర్లు, బ్యాంక్, HRMS మొదలైనవి. ఆఫీస్ వివరాలు మీకు, మీ వార్డు అడ్మిన్‌కు మాత్రమే కనిపిస్తాయి.'],
  builder:['Report builder','రిపోర్ట్ బిల్డర్'], rowsAre:['Each row of the sheet is','షీట్‌లో ప్రతి వరుస'], rSec:['Secretariat','సచివాలయం'], rPlace:['Place (register)','ప్రదేశం (రిజిస్టర్)'], rEmp:['Employee','ఉద్యోగి'],
  pickFields:['Tick the fields you need – from any section','కావలసిన ఫీల్డ్‌లను టిక్ చేయండి – ఏ విభాగం నుండైనా'], chosenCols:['Columns of your sheet – use ↑ ↓ to arrange, edit a heading if the format needs another name','మీ షీట్ కాలమ్‌లు – ↑ ↓ తో క్రమం మార్చండి, అవసరమైతే శీర్షిక మార్చండి'],
  fmtName:['Save this format as','ఈ ఫార్మాట్‌ను ఈ పేరుతో సేవ్ చేయండి'], savedFmts:['Saved formats','సేవ్ చేసిన ఫార్మాట్లు'], load:['Load','లోడ్'],
@@ -576,7 +577,7 @@ function renderNav(){
   }
   out+=it('🌐',t('publicShort'),'#public',r==='public');
   out+=it('ℹ️',t('aboutShort'),'#about',r==='about');
-  out+=S.token?it('👤',t('account'),'#account',r==='account'):it('🔑',t('login'),'#login',r==='login')+it('📝',t('request'),'#signup',r==='signup');
+  out+=S.token?(S.me&&S.me.code?it('🪪',t('myDetails'),'#me',r==='me'):'')+it('👤',t('account'),'#account',r==='account'):it('🔑',t('login'),'#login',r==='login')+it('📝',t('request'),'#signup',r==='signup');
   nav.innerHTML=out;
   nav.querySelectorAll('[data-grp]').forEach(b=>b.onclick=()=>{const k=b.dataset.grp;const g=b.parentElement;S.navOpen[k]=!g.classList.contains('open');renderNav()});
 }
@@ -762,7 +763,7 @@ function vAccount(){const app=curApp;
   if(!S.token){location.hash='#login';return}
   const me=S.me||{};
   app.innerHTML='<div class="card" style="max-width:460px;margin:auto"><h2>'+t('account')+'</h2>'+(me.must_change?'<div class="msg err">🔑 '+t('mustChange')+'</div>':'')+'<p><b>'+esc(me.name)+'</b><br><span class="mute">'+esc(loginLabel(me.login))+'<br>'+esc(desigLabel(me.designation))+'<br>'+esc(me.secretariat||'')+'</span></p>'+
-   '<h3>'+t('changePass')+'</h3><form id="f"><label>'+t('oldPass')+'</label><input id="op" type="password" required><label>'+t('newPass')+'</label><input id="np" type="password" minlength="6" required><div id="m"></div><button class="btn" style="margin-top:10px">'+t('save')+'</button></form>'+
+   (me.code?'<a class="btn alt" href="#me" style="margin-bottom:8px">🪪 '+t('myDetails')+'</a>':'')+'<h3>'+t('changePass')+'</h3><form id="f"><label>'+t('oldPass')+'</label><input id="op" type="password" required><label>'+t('newPass')+'</label><input id="np" type="password" minlength="6" required><div id="m"></div><button class="btn" style="margin-top:10px">'+t('save')+'</button></form>'+
    '<hr style="border:0;border-top:1px solid var(--line);margin:16px 0"><button class="btn red" id="lo">'+t('logout')+'</button></div>';
   $('f').onsubmit=async e=>{e.preventDefault();try{await rpc('wp_change_password',{p_token:S.token,p_old:$('op').value,p_new:$('np').value});const was=S.me&&S.me.must_change;if(S.me){S.me.must_change=false;localStorage.setItem('wp_me',JSON.stringify(S.me))}$('m').innerHTML='<div class="msg ok">'+t('saved')+'</div>';e.target.reset();if(was)setTimeout(()=>{location.hash='#home'},800)}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
   $('lo').onclick=async()=>{try{await rpc('wp_logout',{p_token:S.token})}catch(e){}logoutLocal();location.hash='#home'};
@@ -942,24 +943,27 @@ async function vPlace(code,id,preType){const app=curApp;
     pushUndo(t('deletedL')+': '+old.name,()=>rpc('wp_save_place',{p_token:S.token,p:Object.assign({},old,{id:''})}));S.tab='places';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
 }
 
-async function vStaff(code,id){const app=curApp;
+async function vStaff(code,id,self){const app=curApp;
   if(!S.token){location.hash='#login';return}
-  const w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
+  let w,s;
+  if(self){app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';s=await rpc('wp_my_staff',{p_token:S.token});code=s.code;id=s.id||'new';await loadSecs();w={sec:S.secs.find(x=>x.code===code)||{name:code,code:code},staff:[]}}
+  else{w=(S.ward&&S.ward.sec.code===code)?S.ward:await loadWard(code);
   if(!w.can_edit_profile){app.innerHTML='<div class="msg err">'+t('e_not_allowed')+'</div>';return}
-  const s=id==='new'?{designation:DESIG[0][0]}:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||{}));
+  s=id==='new'?{designation:DESIG[0][0]}:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||{}));}
   const ph=s.photo?[s.photo]:[];const cls=(s.clusters||[]).slice();if(!cls.length)cls.push({no:'',households:null});const pv=s.private||{};
   const opts=DESIG.slice();if(s.designation&&!opts.find(x=>x[0]===s.designation))opts.push([s.designation,s.designation]);
-  app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p>'+
-   '<div class="card" style="background:#fff8ea;border-color:#f2d39b"><h3 style="margin-top:0">'+t('fillSaved')+'</h3><p class="mute">'+t('fillHelp')+'</p><input id="mq" placeholder="🔍 '+esc(t('search'))+'" value="'+esc(id==='new'?'':(s.name||''))+'"><div id="mres" class="list"></div></div>'+
+  app.innerHTML=(self?'<h1>👤 '+t('myDetails')+'</h1><p class="mute">'+esc(w.sec.name)+' · '+esc(desigLabel(s.designation))+'</p><div class="msg info">'+t('myHelp')+'</div>':
+   '<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p>'+
+   '<div class="card" style="background:#fff8ea;border-color:#f2d39b"><h3 style="margin-top:0">'+t('fillSaved')+'</h3><p class="mute">'+t('fillHelp')+'</p><input id="mq" placeholder="🔍 '+esc(t('search'))+'" value="'+esc(id==='new'?'':(s.name||''))+'"><div id="mres" class="list"></div></div>')+
    '<form id="f" class="card">'+
    '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
-   '<label>'+t('designation')+'</label><select id="dg">'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
+   '<label>'+t('designation')+'</label><select id="dg"'+(self?' disabled':'')+'>'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
    '<label>'+t('whatsapp')+'</label><input id="phn" type="tel" value="'+esc(s.phone||'')+'">'+
    '<label>'+t('clusters')+'</label><div id="cl"></div><button type="button" class="btn alt sm" id="addcl">'+t('addCluster')+'</button>'+
-   '<h2 style="margin-top:18px">'+t('empDetails')+'</h2><div class="msg info">🔒 '+t('officeOnly')+'</div>'+empForm(id==='new'?Object.assign({},EMP_DEFAULTS,pv):pv)+
+   '<h2 style="margin-top:18px">'+t('empDetails')+'</h2><div class="msg info">🔒 '+t('officeOnly')+'</div>'+empForm(id==='new'&&!self?Object.assign({},EMP_DEFAULTS,pv):pv)+
    '<label>'+t('photo')+'</label><div id="sph"></div>'+
-   '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div><div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div></div>'+
-   '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
+   '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div>'+(self?'':'<div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div>')+'</div>'+
+   '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'&&!self?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
   const readCl=()=>{$('cl').querySelectorAll('[data-ci]').forEach(r=>{const k=+r.dataset.ci;cls[k]={no:r.querySelector('.cn').value.trim(),households:num(r.querySelector('.ch').value)}})};
   const drawCl=()=>{$('cl').innerHTML=cls.map((c,k)=>'<div class="row" data-ci="'+k+'" style="margin-bottom:6px;flex-wrap:nowrap"><input class="cn" placeholder="'+esc(t('clusterNo'))+'" value="'+esc(c.no||'')+'" style="flex:1"><input class="ch" type="number" inputmode="numeric" placeholder="'+esc(t('households'))+'" value="'+esc(c.households==null?'':c.households)+'" style="flex:1"><button type="button" class="btn red sm" data-cx="'+k+'">×</button></div>').join('');
     $('cl').querySelectorAll('[data-cx]').forEach(b=>b.onclick=()=>{readCl();cls.splice(+b.dataset.cx,1);drawCl()})};
@@ -974,11 +978,14 @@ async function vStaff(code,id){const app=curApp;
         try{const nid=await rpc('wp_add_from_master',{p_token:S.token,p_code:code,p_master:+x.id,p_staff:id==='new'?null:id,p_name:titleCase(x.name),p_designation:matchDesig(x.designation)});
           pushUndo(t('fillSaved')+' – '+x.name,old?()=>rpc('wp_save_staff',{p_token:S.token,s:old}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}));
           toast(t('filled'));S.ward=null;if(location.hash==='#staff/'+code+'/'+nid)route();else location.hash='#staff/'+code+'/'+nid}catch(er){toast(errText(er))}})}catch(e){}};
-  let mt=null;$('mq').oninput=()=>{clearTimeout(mt);mt=setTimeout(msearch,300)};
-  if(id!=='new'&&Object.keys(pv).length<5)msearch();
+  let mt=null;if($('mq')){$('mq').oninput=()=>{clearTimeout(mt);mt=setTimeout(msearch,300)};
+  if(id!=='new'&&Object.keys(pv).length<5)msearch();}
   $('f').onsubmit=async e=>{e.preventDefault();readCl();
     const epv=readEmpForm(pv);const aa=epv.aadhaar||'';if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
     $('sv').disabled=true;
+    if(self){const o={name:$('nm').value.trim(),phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,clusters:cls.filter(c=>c.no),private:epv};
+      try{await rpc('wp_save_my_staff',{p_token:S.token,s:o});if(S.me){S.me.name=o.name;localStorage.setItem('wp_me',JSON.stringify(S.me))}S.ward=null;toast(t('saved'));location.hash='#ward/'+code}
+      catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}return}
     const o={id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
       clusters:cls.filter(c=>c.no),private:epv};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||null));
@@ -1473,6 +1480,7 @@ async function route(){
       case 'report':return await vReport(h[1]);
       case 'export':return await vExport(h[1]);
       case 'survey':return await vSurvey(h[1]);
+      case 'me':return await vStaff(null,null,true);
       case 'builder':return await vBuilder(h[1]||'all');
       case 'registers':return await vRegisters(h[1]||'all');
       case 'wards':return await vHome('wards');
