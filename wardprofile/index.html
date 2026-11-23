@@ -252,7 +252,15 @@ const TX={
  placeHelp:['Needs a "Secretariat" column (name or SGSW number, e.g. 21003001) at the end of the Live Data sheet. Then upload the sheet again and tap this.','లైవ్ డేటా షీట్ చివర "Secretariat" కాలమ్ (పేరు లేదా SGSW నంబర్, ఉదా: 21003001) ఉండాలి. తర్వాత షీట్‌ను మళ్లీ అప్‌లోడ్ చేసి దీన్ని నొక్కండి.'],
  filledN:['filled','నింపబడ్డాయి'], noMatchN:['not found in saved list','సేవ్ చేసిన జాబితాలో దొరకలేదు'], placedN:['placed','ఉంచబడ్డారు'], skippedN:['already there','ఇప్పటికే ఉన్నారు'], unknownN:['without a secretariat','సచివాలయం లేకుండా'],
  withSec:['with Secretariat column','సచివాలయ కాలమ్‌తో'],
- vacantPosts:['Vacant posts','ఖాళీ పోస్టులు'], clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
+ vacantPosts:['Vacant posts','ఖాళీ పోస్టులు'], surveys:['Department surveys','శాఖల వారీ సర్వే'], surveyHelp:['Each secretary fills their own department. The ward admin (WS) fills every section of their own ward. Leave blank what you do not know.','ప్రతి కార్యదర్శి తమ శాఖ వివరాలు నింపుతారు. వార్డు అడ్మిన్ (WS) తమ వార్డులో అన్ని విభాగాలు నింపవచ్చు. తెలియనివి ఖాళీగా వదిలేయండి.'],
+ youFill:['You can fill this','మీరు నింపవచ్చు'], viewOnlyS:['View only','చూడటానికి మాత్రమే'], lastBy:['Last saved by','చివరిగా సేవ్ చేసినవారు'],
+ regDetails:['Register details','రిజిస్టర్ వివరాలు'], registers:['Registers (Excel)','రిజిస్టర్లు (ఎక్సెల్)'], regHelp:['Pick the registers you want – hospitals, schools, shops, parks and so on – then download.','కావలసిన రిజిస్టర్లు ఎంచుకోండి – ఆసుపత్రులు, పాఠశాలలు, షాపులు, పార్కులు మొదలైనవి – తర్వాత డౌన్‌లోడ్ చేయండి.'],
+ allTypes:['All types','అన్ని రకాలు'], surveyDl:['⬇ Department surveys (Excel)','⬇ శాఖల సర్వే (ఎక్సెల్)'], rows:['rows','వరుసలు'],
+ fieldsT:['Custom fields','అదనపు ఫీల్డ్‌లు'], fieldsHelp:['Add your own question to any register (shops, hospitals, schools…) or department survey. It appears for all 35 secretariats and in the Excel downloads.','ఏ రిజిస్టర్‌కైనా (షాపులు, ఆసుపత్రులు, పాఠశాలలు…) లేదా శాఖ సర్వేకైనా మీ సొంత ప్రశ్న జోడించండి. ఇది 35 సచివాలయాలకూ, ఎక్సెల్ డౌన్‌లోడ్‌లలోనూ కనిపిస్తుంది.'],
+ addTo:['Add to','ఎక్కడ జోడించాలి'], fLabel:['Question / field name','ప్రశ్న / ఫీల్డ్ పేరు'], fKind:['Answer type','జవాబు రకం'], fOptions:['Choices (separate with commas)','ఎంపికలు (కామాలతో వేరు చేయండి)'],
+ kText:['Text','టెక్స్ట్'], kNum:['Number','సంఖ్య'], kYn:['Yes / No','అవును / కాదు'], kDate:['Date','తేదీ'], kChoice:['Choice list','ఎంపికల జాబితా'], addField:['+ Add field','+ ఫీల్డ్ జోడించండి'], noFields:['No custom fields yet.','ఇంకా అదనపు ఫీల్డ్‌లు లేవు.'],
+ licensedP:['Licensed','లైసెన్స్ ఉంది'], unlicensedP:['No licence','లైసెన్స్ లేదు'],
+ clusters:['Clusters','క్లస్టర్లు'], clustersTotal:['Number of clusters','క్లస్టర్ల సంఖ్య'], clusterNo:['Cluster no.','క్లస్టర్ నం.'], addCluster:['+ Add cluster','+ క్లస్టర్ జోడించండి'],
  clusterHH:['Households in clusters','క్లస్టర్లలో కుటుంబాలు'], aadhaar:['Aadhaar number','ఆధార్ నంబర్'], hrms:['HRMS ID','HRMS ఐడీ'], cfms:['CFMS ID','CFMS ఐడీ'],
  officeOnly:['Office only – seen by this secretariat and the app admin, never by other wards or the public','కార్యాలయానికి మాత్రమే – ఈ సచివాలయం, యాప్ అడ్మిన్ మాత్రమే చూడగలరు; ఇతర వార్డులు, ప్రజలు చూడలేరు'],
  badAadhaar:['Aadhaar must be 12 digits.','ఆధార్ 12 అంకెలు ఉండాలి.'],
@@ -306,6 +314,7 @@ const TYPES=[
  ['police','Police station','పోలీస్ స్టేషన్','🚓'],['community_hall','Community hall','కమ్యూనిటీ హాల్','🏠'],['market','Market','మార్కెట్','🛒'],
  ['library','Library','గ్రంథాలయం','📚'],['hostel','Hostel','హాస్టల్','🛏️'],['playground','Playground','ఆట స్థలం','⚽'],['function_hall','Function hall','ఫంక్షన్ హాల్','🎉'],
  ['bus_stop','Bus stop','బస్ స్టాప్','🚌'],['petrol_bunk','Petrol bunk','పెట్రోల్ బంక్','⛽'],['burial_ground','Burial ground','శ్మశాన వాటిక','🪦'],
+ ['shop','Shop','షాపు','🛍️'],['pharmacy','Pharmacy / medical shop','మందుల షాపు','💊'],['public_tank','Public tank / pond','ప్రజా చెరువు / కుంట','🏞️'],['trees','Trees','చెట్లు','🌴'],
  ['main_building','Main private building','ముఖ్యమైన ప్రైవేట్ భవనం','🏢'],['other','Other','ఇతర','📍']
 ];
 const DESIG=[
@@ -525,7 +534,7 @@ function pickMap(mapId,latId,lngId,center){
 S.undo=[];S.navOpen={};
 function pushUndo(label,inv){S.undo.push({label:label,inv:inv});if(S.undo.length>30)S.undo.shift();header()}
 /* ---------- side menu ---------- */
-const WARD_ROUTES=['ward','edit','place','staff','import','report','export'];
+const WARD_ROUTES=['ward','edit','place','staff','import','report','export','survey','registers'];
 function curWardCode(){const h=(location.hash||'').slice(1).split('/');if(WARD_ROUTES.includes(h[0])&&h[1]&&h[1]!=='all')return h[1];return S.lastCode||(S.me&&S.me.code)||''}
 function canEditProfile(code){const m=S.me||{};return m.role==='super'||(m.role==='admin'&&m.code===code)}
 function renderNav(){
@@ -543,6 +552,8 @@ function renderNav(){
         it('📍',t('places'),'#ward/'+code+'/places',r==='place'||(r==='ward'&&tab==='places')),
         it('👥',t('staff'),'#ward/'+code+'/staff',r==='staff'||r==='import'||r==='export'||(r==='ward'&&tab==='staff')),
         it('🗳️',t('blos'),'#ward/'+code+'/blos',r==='ward'&&tab==='blos'),
+        it('📝',t('surveys'),'#survey/'+code,r==='survey'),
+        it('📥',t('registers'),'#registers/'+code,r==='registers'&&h[1]!=='all'),
         it('📄',t('report'),'#report/'+code,r==='report')];
       if(canEditProfile(code))ch.push(it('✏️',t('editShort'),'#edit/'+code,r==='edit'));
       const nm=secName(code);
@@ -553,7 +564,7 @@ function renderNav(){
     if(me.role==='super'||me.role==='admin'){
       const a=h[1]||S.atab||'requests';
       const ch=[it('📨',t('requests'),'#admin/requests',r==='admin'&&a==='requests'),it('👤',t('users'),'#admin/users',r==='admin'&&a==='users')];
-      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'),it('📋',t('master'),'#admin/master',r==='admin'&&a==='master'));
+      if(me.role==='super')ch.push(it('🏘️',t('wards'),'#admin/wards',r==='admin'&&a==='wards'),it('📈',t('compare'),'#admin/compare',r==='admin'&&a==='compare'),it('📋',t('master'),'#admin/master',r==='admin'&&a==='master'),it('🧩',t('fieldsT'),'#admin/fields',r==='admin'&&a==='fields'),it('📥',t('registers')+' – '+t('allWardsShort'),'#registers/all',r==='registers'&&h[1]==='all'));
       out+=grp('admin','⚙️',t('admin'),ch,r==='admin');
     }
   }
@@ -562,6 +573,82 @@ function renderNav(){
   out+=S.token?it('👤',t('account'),'#account',r==='account'):it('🔑',t('login'),'#login',r==='login')+it('📝',t('request'),'#signup',r==='signup');
   nav.innerHTML=out;
   nav.querySelectorAll('[data-grp]').forEach(b=>b.onclick=()=>{const k=b.dataset.grp;const g=b.parentElement;S.navOpen[k]=!g.classList.contains('open');renderNav()});
+}
+
+/* ---------- register questions per place type: [key, English, Telugu, kind] kind = 'text' | 'num' | 'yn' | 'date' | [options] ---------- */
+const SHOP_CATS=['Eatery / Hotel','Tea stall','Bakery','Sweet shop','Mutton / Chicken / Fish','Vegetables / Fruits','Kirana / Retail shop','Jewellery','Book stall','Textiles / Cloth','Footwear','Medical shop','Hardware','Electronics / Mobile','Salon / Beauty parlour','Tailor','Wholesale','Other'];
+const TIMINGS=['timings','Timings','సమయాలు','text'];
+const REG={
+ hospital:[['htype','Hospital type','ఆసుపత్రి రకం',['Govt hospital','UPHC / PHC','Private hospital','Nursing home','Clinic','Diagnostic centre']],['beds','Beds','పడకలు','num'],['doctors','Doctors','డాక్టర్లు','num'],['nurses','Nurses / staff','నర్సులు / సిబ్బంది','num'],['spec','Specialities','ప్రత్యేక విభాగాలు','text'],TIMINGS,['emergency','24×7 emergency','24×7 అత్యవసర సేవ','yn'],['aarogyasri','Aarogyasri / NTR Vaidya Seva','ఆరోగ్యశ్రీ / ఎన్టీఆర్ వైద్య సేవ','yn'],['reg_no','Registration no.','రిజిస్ట్రేషన్ నం.','text']],
+ clinic:[['doctor','Doctor name','డాక్టర్ పేరు','text'],['qual','Qualification','అర్హత','text'],TIMINGS,['reg_no','Registration no.','రిజిస్ట్రేషన్ నం.','text']],
+ pharmacy:[['owner','Owner name','యజమాని పేరు','text'],['lic','Drug licence no.','డ్రగ్ లైసెన్స్ నం.','text'],['pharmacist','Pharmacist','ఫార్మసిస్ట్','text'],['licensed','Trade licensed','ట్రేడ్ లైసెన్స్ ఉందా','yn'],TIMINGS],
+ school:[['mgmt','Management','యాజమాన్యం',['Govt / Municipal','ZP / Mandal','Private aided','Private unaided','Residential','Central (KV / NV)']],['level','Level','స్థాయి',['Primary','Upper primary','High school','Junior college']],['medium','Medium','మాధ్యమం',['Telugu','English','Urdu','Telugu & English','Other']],['boys','Boys','బాలురు','num'],['girls','Girls','బాలికలు','num'],['teachers','Teachers','ఉపాధ్యాయులు','num'],['hm','Head master & phone','ప్రధానోపాధ్యాయులు & ఫోన్','text'],['udise','UDISE code','UDISE కోడ్','text'],['toilets','Toilets','టాయిలెట్లు','yn'],['water','Drinking water','తాగునీరు','yn'],['mdm','Mid-day meal','మధ్యాహ్న భోజనం','yn']],
+ college:[['ctype','Type','రకం',['Junior college','Degree college','ITI / Polytechnic','Professional','Other']],['mgmt','Management','యాజమాన్యం',['Govt','Private aided','Private']],['courses','Courses','కోర్సులు','text'],['students','Students','విద్యార్థులు','num']],
+ anganwadi:[['aww','Worker name & phone','కార్యకర్త పేరు & ఫోన్','text'],['awc_code','Centre code','కేంద్రం కోడ్','text'],['kids','Children (0–6)','పిల్లలు (0–6)','num'],['preg','Pregnant women registered','నమోదైన గర్భిణీలు','num'],['own','Own building','సొంత భవనం','yn']],
+ shop:[['owner','Owner name','యజమాని పేరు','text'],['owner_phone','Owner phone','యజమాని ఫోన్','text'],['cat','Shop category','షాపు వర్గం',SHOP_CATS],['licensed','Trade licensed','ట్రేడ్ లైసెన్స్ ఉందా','yn'],['lic_no','Trade licence no.','ట్రేడ్ లైసెన్స్ నం.','text'],['lic_valid','Licence valid till','లైసెన్స్ చెల్లుబాటు వరకు','date'],['workers','Workers','కార్మికులు','num']],
+ park:[['area','Area (sq. yards)','విస్తీర్ణం (చ.గజాలు)','num'],['maint','Maintained by','నిర్వహణ','text'],['lights','Lights','లైట్లు','yn'],['benches','Benches','బెంచీలు','num'],['play','Play equipment','ఆట పరికరాలు','yn'],['walk','Walking track','వాకింగ్ ట్రాక్','yn']],
+ trees:[['species','Species / name','జాతి / పేరు','text'],['count','Number of trees','చెట్ల సంఖ్య','num'],['planted','Planted year','నాటిన సంవత్సరం','text'],['cond','Condition','స్థితి',['Good','Needs care','Dangerous / to be removed']]],
+ public_tank:[['ttype','Type','రకం',['Tank','Pond','Lake','Well','Kalyani']],['area','Area (acres)','విస్తీర్ణం (ఎకరాలు)','num'],['cond','Condition','స్థితి',['Good','Needs repair','Dry','Encroached']],['use','Used for','ఉపయోగం','text']],
+ water_tank:[['cap','Capacity (litres)','సామర్థ్యం (లీటర్లు)','num'],['wtype','Type','రకం',['Overhead','Ground level']],['cond','Condition','స్థితి',['Working','Needs repair','Not working']]],
+ toilet:[['seats_m','Seats – men','సీట్లు – పురుషులు','num'],['seats_w','Seats – women','సీట్లు – స్త్రీలు','num'],['water','Water facility','నీటి సౌకర్యం','yn'],['maint','Maintained by','నిర్వహణ','text'],['cond','Condition','స్థితి',['Clean','Needs cleaning','Not working']]],
+ market:[['stalls','Stalls','స్టాళ్లు','num'],['days','Market days','మార్కెట్ రోజులు','text']],
+ function_hall:[['cap','Capacity (persons)','సామర్థ్యం (వ్యక్తులు)','num'],['owner','Owner & phone','యజమాని & ఫోన్','text'],['licensed','Trade licensed','ట్రేడ్ లైసెన్స్ ఉందా','yn']],
+ main_building:[['floors','Floors','అంతస్తులు','num'],['use','Used for','ఉపయోగం','text'],['approved','Plan approved','ప్లాన్ ఆమోదం','yn'],['owner','Owner & phone','యజమాని & ఫోన్','text']],
+ govt_office:[['dept','Department','శాఖ','text'],['officer','Officer & phone','అధికారి & ఫోన్','text'],TIMINGS],
+ ration_shop:[['dealer','Dealer name & phone','డీలర్ పేరు & ఫోన్','text'],['shop_no','FP shop no.','చౌక దుకాణం నం.','text'],['cards','Cards attached','అనుసంధానమైన కార్డులు','num']],
+ bank:[['branch','Branch','బ్రాంచ్','text'],['ifsc','IFSC','IFSC','text'],['atm','ATM','ఏటీఎం','yn']],
+ community_hall:[['cap','Capacity (persons)','సామర్థ్యం (వ్యక్తులు)','num'],['maint','Maintained by','నిర్వహణ','text']],
+ library:[['books','Books','పుస్తకాలు','num'],TIMINGS],
+ hostel:[['htype','Type','రకం',['SC','ST','BC','Minority','Private']],['gender','For','ఎవరికి',['Boys','Girls','Both']],['students','Students','విద్యార్థులు','num'],['warden','Warden & phone','వార్డెన్ & ఫోన్','text']],
+ police:[['sho','SHO & phone','ఎస్‌హెచ్‌ఓ & ఫోన్','text']],
+ museum:[TIMINGS,['fee','Entry fee','ప్రవేశ రుసుము','text']],
+ temple:[['committee','Committee / trust & phone','కమిటీ / ట్రస్ట్ & ఫోన్','text']],mosque:[['committee','Committee / trust & phone','కమిటీ / ట్రస్ట్ & ఫోన్','text']],church:[['committee','Committee / trust & phone','కమిటీ / ట్రస్ట్ & ఫోన్','text']],
+ playground:[['area','Area (sq. yards)','విస్తీర్ణం (చ.గజాలు)','num'],['sports','Sports','క్రీడలు','text']],
+ bus_stop:[['shelter','Shelter','షెల్టర్','yn']],
+ petrol_bunk:[['company','Company','కంపెనీ','text'],['licensed','Trade licensed','ట్రేడ్ లైసెన్స్ ఉందా','yn']],
+ burial_ground:[['community','For (community)','ఎవరికి','text'],['area','Area (acres)','విస్తీర్ణం (ఎకరాలు)','num']]
+};
+/* ---------- department surveys (ward-level numbers) ---------- */
+const N=(k,en,te)=>[k,en,te,'num'];
+const DEPTS=[
+ ['amenities','💡','Amenities (WAS)','సౌకర్యాలు (WAS)',[N('poles','Electric poles','విద్యుత్ స్తంభాలు'),N('lights','Street lights – total','వీధి దీపాలు – మొత్తం'),N('lights_ok','Street lights – working','వీధి దీపాలు – పనిచేస్తున్నవి'),N('lights_bad','Street lights – not working','వీధి దీపాలు – పనిచేయనివి'),N('highmast','High-mast lights','హై-మాస్ట్ లైట్లు'),N('ohsr','Overhead water tanks','ఓవర్‌హెడ్ నీటి ట్యాంకులు'),N('ptanks','Public tanks / ponds','ప్రజా చెరువులు / కుంటలు'),N('trees','Trees (approx.)','చెట్లు (సుమారు)'),N('cc_km','CC roads (km)','సీసీ రోడ్లు (కి.మీ)'),N('bt_km','BT roads (km)','బీటీ రోడ్లు (కి.మీ)'),N('kutcha_km','Kutcha roads (km)','మట్టి రోడ్లు (కి.మీ)'),N('drain_open','Open drains (km)','ఓపెన్ డ్రైన్లు (కి.మీ)'),N('drain_closed','Closed / underground drains (km)','మూసిన / భూగర్భ డ్రైన్లు (కి.మీ)'),N('culverts','Culverts','కల్వర్టులు'),N('parks','Parks','పార్కులు')]],
+ ['sanitation','🧹','Sanitation & Environment (WSES)','పారిశుద్ధ్యం & పర్యావరణం (WSES)',[N('gvp','Garbage vulnerable points','చెత్త పేరుకుపోయే ప్రదేశాలు'),N('bins','Dustbins','చెత్త డబ్బాలు'),N('ptoilets','Public toilets','పబ్లిక్ టాయిలెట్లు'),N('ctoilets','Community toilets','కమ్యూనిటీ టాయిలెట్లు'),N('seg_hh','Households segregating waste','చెత్త వేరు చేసే కుటుంబాలు'),N('workers','Sanitation workers','పారిశుద్ధ్య కార్మికులు'),N('vehicles','Garbage vehicles / tricycles','చెత్త వాహనాలు / ట్రైసైకిళ్లు'),N('shops','Shops – total','షాపులు – మొత్తం'),N('shops_lic','Shops with trade licence','ట్రేడ్ లైసెన్స్ ఉన్న షాపులు'),N('shops_nolic','Shops without trade licence','ట్రేడ్ లైసెన్స్ లేని షాపులు'),['drain_clean','Drain cleaning (how often)','డ్రైన్ శుభ్రత (ఎంత తరచుగా)','text']]],
+ ['planning','📐','Planning & Regulation (WPRS)','ప్రణాళిక & నియంత్రణ (WPRS)',[N('bld','Buildings – total','భవనాలు – మొత్తం'),N('bld_ok','Approved buildings','ఆమోదిత భవనాలు'),N('bld_no','Unapproved buildings','అనుమతి లేని భవనాలు'),N('bld_new','Under construction','నిర్మాణంలో ఉన్నవి'),N('assess','Property tax assessments','ఆస్తి పన్ను అసెస్‌మెంట్లు'),N('vacant','Vacant plots','ఖాళీ స్థలాలు'),N('layouts_ok','Approved layouts','ఆమోదిత లేఅవుట్లు'),N('layouts_no','Unapproved layouts','అనుమతి లేని లేఅవుట్లు'),N('encroach','Encroachments','ఆక్రమణలు'),N('hoardings','Hoardings','హోర్డింగులు')]],
+ ['health','🏥','Health (ANM – WHS)','ఆరోగ్యం (ANM – WHS)',[N('ghosp','Govt hospitals / UPHCs','ప్రభుత్వ ఆసుపత్రులు / UPHCలు'),N('phosp','Private hospitals','ప్రైవేట్ ఆసుపత్రులు'),N('clinics','Clinics','క్లినిక్‌లు'),N('pharmacies','Pharmacies','మందుల షాపులు'),N('labs','Diagnostic labs','డయాగ్నోస్టిక్ ల్యాబ్‌లు'),N('preg','Pregnant women','గర్భిణీలు'),N('lact','Lactating mothers','పాలిచ్చే తల్లులు'),N('kids05','Children 0–5 years','0–5 సంవత్సరాల పిల్లలు'),N('immun','Immunisation due this month','ఈ నెల టీకాలు'),N('highrisk','High-risk pregnancies','హై-రిస్క్ గర్భాలు'),N('ncd','BP / sugar patients on follow-up','బీపీ / షుగర్ ఫాలో-అప్ రోగులు')]],
+ ['education','🎓','Education (WEDS)','విద్య (WEDS)',[N('gsch','Govt / municipal schools','ప్రభుత్వ / మున్సిపల్ పాఠశాలలు'),N('psch','Private schools','ప్రైవేట్ పాఠశాలలు'),N('colleges','Colleges','కళాశాలలు'),N('anganwadi','Anganwadi centres','అంగన్వాడీ కేంద్రాలు'),N('students','Students (all schools)','విద్యార్థులు (అన్ని పాఠశాలలు)'),N('oosc','Out-of-school children','బడి బయటి పిల్లలు'),N('libraries','Libraries','గ్రంథాలయాలు')]],
+ ['welfare','🤝','Welfare & Development (WWDS)','సంక్షేమం & అభివృద్ధి (WWDS)',[N('pen_old','Old-age pensions','వృద్ధాప్య పెన్షన్లు'),N('pen_widow','Widow pensions','వితంతు పెన్షన్లు'),N('pen_dis','Disability pensions','వికలాంగ పెన్షన్లు'),N('pen_single','Single women pensions','ఒంటరి మహిళ పెన్షన్లు'),N('pen_other','Other pensions','ఇతర పెన్షన్లు'),N('hostels','Welfare hostels','సంక్షేమ హాస్టళ్లు'),N('benef','Welfare scheme beneficiaries','సంక్షేమ పథకాల లబ్ధిదారులు')]],
+ ['revenue','📜','Revenue (WRS)','రెవెన్యూ (WRS)',[N('ration_shops','Ration shops','రేషన్ షాపులు'),N('rice_cards','Rice cards','బియ్యం కార్డులు'),N('govt_land','Govt land (acres)','ప్రభుత్వ భూమి (ఎకరాలు)'),N('land_issues','Land issues pending','పెండింగ్ భూ సమస్యలు'),N('certs','Certificates issued this month','ఈ నెల జారీ చేసిన సర్టిఫికెట్లు')]],
+ ['women','👩','Women Protection (WMPS)','మహిళా సంరక్షణ (WMPS)',[N('shg','SHG groups','స్వయం సహాయక సంఘాలు'),N('shg_members','SHG members','SHG సభ్యులు'),N('disha','Disha / Shakti app registrations','దిశ / శక్తి యాప్ నమోదులు'),N('complaints','Complaints received','అందిన ఫిర్యాదులు'),N('awareness','Awareness meetings held','అవగాహన సమావేశాలు')]]
+];
+const DEPT_RX={health:/health/i,education:/education/i,welfare:/welfare/i,revenue:/revenue/i,women:/women|mahila/i};
+function canDept(dept,w){const m=S.me||{};if(!w||!w.can_edit)return false;if(m.role==='super'||m.role==='admin')return true;const d=m.designation||'';
+  if(/administrative|amenities|planning|sanitation/i.test(d))return true;return !!(DEPT_RX[dept]&&DEPT_RX[dept].test(d))}
+/* custom fields added by the app admin */
+function customDefs(scope){return (S.fields||[]).filter(f=>f.scope===scope).map(f=>['f'+f.id,f.label,f.label,f.kind==='number'?'num':f.kind==='yesno'?'yn':f.kind==='date'?'date':f.kind==='choice'?(f.options||[]):'text'])}
+async function loadFields(force){if(S.fields&&!force)return S.fields;try{S.fields=await rpc('wp_fields_list',{p_token:S.token})}catch(e){S.fields=[]}return S.fields}
+function regDefs(type){return (REG[type]||[]).concat(customDefs('place:'+type))}
+function deptDefs(key){const d=DEPTS.find(x=>x[0]===key);return (d?d[4]:[]).concat(customDefs('dept:'+key))}
+function qLabel(f){return te()?f[2]:f[1]}
+function qInputs(defs,vals,prefix,disabled){
+  vals=vals||{};const dis=disabled?' disabled':'';
+  return '<div class="two">'+defs.map(f=>{const id=prefix+f[0],v=vals[f[0]]==null?'':String(vals[f[0]]);const lab='<label for="'+id+'">'+esc(qLabel(f))+'</label>';
+    if(Array.isArray(f[3]))return '<div>'+lab+'<select id="'+id+'"'+dis+'><option value="">–</option>'+f[3].concat(v&&!f[3].includes(v)?[v]:[]).map(o=>'<option'+(o===v?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select></div>';
+    if(f[3]==='yn')return '<div>'+lab+'<select id="'+id+'"'+dis+'><option value="">–</option><option value="Yes"'+(v==='Yes'?' selected':'')+'>'+(te()?'అవును':'Yes')+'</option><option value="No"'+(v==='No'?' selected':'')+'>'+(te()?'కాదు':'No')+'</option></select></div>';
+    const ty=f[3]==='num'?' type="number" step="any" inputmode="decimal"':f[3]==='date'?' type="date"':'';
+    return '<div>'+lab+'<input id="'+id+'"'+ty+dis+' value="'+esc(v)+'"></div>'}).join('')+'</div>';
+}
+function readQ(defs,prefix){const o={};defs.forEach(f=>{const el=$(prefix+f[0]);if(!el)return;const v=el.value.trim();if(v!=='')o[f[0]]=f[3]==='num'&&!isNaN(+v)?+v:v});return o}
+function extraSummary(p){const defs=regDefs(p.type),x=p.extra||{};return defs.filter(f=>x[f[0]]!=null&&x[f[0]]!=='').slice(0,4).map(f=>esc(qLabel(f))+': <b>'+esc(f[3]==='yn'?(x[f[0]]==='Yes'?(te()?'అవును':'Yes'):(te()?'కాదు':'No')):x[f[0]])+'</b>').join(' · ')}
+/* one table → Excel (.xlsx) or CSV */
+async function saveTable(aoa,title,base,kind){
+  const fname=(base||title||'ward-profile').replace(/[\\/:*?"<>|]+/g,' ').trim();
+  const rows=title?[[title],[]].concat(aoa):aoa;
+  if(kind!=='csv'){try{await loadXLSX();const ws=XLSX.utils.aoa_to_sheet(rows);
+      ws['!cols']=aoa[0].map((h,ci)=>({wch:Math.min(40,Math.max(String(h).length,...aoa.slice(1).map(r=>String(r[ci]==null?'':r[ci]).length))+2)}));
+      if(title)ws['!merges']=[{s:{r:0,c:0},e:{r:0,c:Math.max(0,aoa[0].length-1)}}];
+      const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Sheet1');XLSX.writeFile(wb,fname+'.xlsx');return}catch(e){toast(t('e_network')+' – CSV')}}
+  const q=v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  const blob=new Blob(['﻿'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname+'.csv';a.click();
 }
 
 /* ---------- header ---------- */
@@ -640,7 +727,7 @@ function vLogin(){const app=curApp;
    '<p style="text-align:center"><a href="#signup">'+t('noAcc')+'</a></p>'+
    '<details style="margin-top:8px"><summary style="cursor:pointer;color:var(--c);font-weight:600">'+t('postIds')+'</summary><p class="mute">'+t('postIdsHelp')+'</p><table>'+POSTS.map(x=>'<tr><td><b>21003001-'+x[0]+'</b></td><td>'+esc(desigLabel(x[1]))+'</td></tr>').join('')+'</table></details></div>';
   $('f').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;
-    try{const r=await rpc('wp_login',{p_login:$('lg').value,p_pass:$('pw').value});setSession(r.token,r.me);location.hash='#home'}
+    try{const r=await rpc('wp_login',{p_login:$('lg').value,p_pass:$('pw').value});setSession(r.token,r.me);S.fields=null;location.hash='#home'}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}b.disabled=false};
 }
 
@@ -708,7 +795,7 @@ function vWardTab(w){
       '<label>'+t('type')+'</label><select id="flt"><option value="all">'+t('all')+' ('+w.places.length+')</option>'+used.map(k=>'<option value="'+esc(k)+'"'+(S.filter===k?' selected':'')+'>'+esc(typeInfo(k,d).emo+' '+typeInfo(k,d).label)+' ('+w.places.filter(p=>p.type===k).length+')</option>').join('')+'</select>'+
       '<div id="pmap" class="map"></div><div class="list">'+
       (list.length?list.map(p=>{const ti=typeInfo(p.type,d);return '<div class="it"><div class="emo">'+ti.emo+'</div><div class="grow"><div class="nm">'+esc(p.name)+'</div><div class="mute">'+esc(ti.label)+(p.ownership?' · '+t(p.ownership==='govt'?'govt':'private'):'')+(p.address?' · '+esc(p.address):'')+'</div>'+
-        (p.contact?'<div class="mute">☎ '+esc(p.contact)+'</div>':'')+(p.notes?'<div class="mute">'+esc(p.notes)+'</div>':'')+
+        (p.type==='shop'&&p.extra&&p.extra.licensed?' <span class="pill '+(p.extra.licensed==='Yes'?'g':'r')+'">'+t(p.extra.licensed==='Yes'?'licensedP':'unlicensedP')+'</span>':'')+(extraSummary(p)?'<div class="mute">'+extraSummary(p)+'</div>':'')+(p.contact?'<div class="mute">☎ '+esc(p.contact)+'</div>':'')+(p.notes?'<div class="mute">'+esc(p.notes)+'</div>':'')+
         '<div class="thumbs">'+(p.photos||[]).map(u=>'<img src="'+esc(safeUrl(u))+'" data-full="'+esc(safeUrl(u))+'" alt="" loading="lazy">').join('')+'</div>'+
         '<div class="row" style="margin-top:4px">'+(p.lat!=null?'<a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(p.lat,p.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+(w.can_edit?'<a class="btn alt sm" href="#place/'+code+'/'+p.id+'">'+t('editB')+'</a>':'')+'</div></div></div>'}).join(''):'<p class="mute">'+t('noPlaces')+'</p>')+'</div></div>';
     $('flt').onchange=e=>{S.filter=e.target.value;vWardTab(w)};
@@ -825,16 +912,20 @@ async function vPlace(code,id){const app=curApp;
    '<label>📍 GPS</label><div class="row"><button type="button" class="btn alt sm" id="gps">'+t('useLoc')+'</button><span class="mute">'+t('tapMap')+'</span></div>'+
    '<div class="two"><div><label>'+t('lat')+'</label><input id="la" type="number" step="any" value="'+esc(p.lat==null?'':p.lat)+'"></div><div><label>'+t('lng')+'</label><input id="ln" type="number" step="any" value="'+esc(p.lng==null?'':p.lng)+'"></div></div>'+
    '<div id="pm" class="map small"></div>'+
+   '<h3 style="margin-top:16px">📋 '+t('regDetails')+'</h3><div id="xq"></div>'+
    '<label>'+t('photos')+'</label><div id="ph"></div>'+
    '<label>'+t('contact')+'</label><input id="ct" value="'+esc(p.contact||'')+'">'+
    '<label>'+t('notes')+'</label><textarea id="no">'+esc(p.notes||'')+'</textarea>'+
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
   photoPicker('ph',p.photos,5,code);
+  await loadFields();let xv=Object.assign({},p.extra||{});
+  const drawX=()=>{const d=regDefs($('ty').value);$('xq').innerHTML=d.length?qInputs(d,xv,'x_'):'<p class="mute">–</p>'};drawX();
+  $('ty').onchange=()=>{Object.assign(xv,readQ(regDefs($('ty').value),'x_'));drawX();if(id==='new')$('ow').value=['shop','pharmacy','petrol_bunk','function_hall','main_building','clinic','bank'].includes($('ty').value)?'private':'govt'};
   pickMap('pm','la','ln',p.lat!=null?[p.lat,p.lng]:(w.sec.lat!=null?[w.sec.lat,w.sec.lng]:null));
   $('gps').onclick=()=>gpsInto('la','ln',()=>{const f=$('la').onchange;f&&f()});
   if(id==='new'&&!p.lat)setTimeout(()=>{if(!$('la').value)gpsInto('la','ln',()=>$('la').onchange&&$('la').onchange())},400);
   $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
-    const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos};
+    const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos,extra:Object.assign({},p.extra||{},readQ(regDefs($('ty').value),'x_'))};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||null));
     try{const nid=await rpc('wp_save_place',{p_token:S.token,p:o});toast(t('saved'));
       pushUndo(t('places')+' – '+o.name,old?()=>rpc('wp_save_place',{p_token:S.token,p:old}):()=>rpc('wp_delete_place',{p_token:S.token,p_id:nid}));S.tab='places';location.hash='#ward/'+code}
@@ -1054,6 +1145,57 @@ async function vExport(scope){const app=curApp;
     try{await navigator.clipboard.writeText(txt);$('m').innerHTML='<div class="msg ok">'+t('copyDone')+'</div>'}catch(e){prompt('',txt)}};
 }
 
+/* ----- department surveys ----- */
+async function vSurvey(code){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  await loadSecs();app.innerHTML='<div class="card"><span class="spin"></span></div>';
+  const w=await loadWard(code);S.lastCode=code;renderNav();await loadFields();
+  const dd=(w.data&&w.data.dept)||{};
+  app.innerHTML='<div class="secttl"><span style="font-size:26px">📝</span><h1>'+t('surveys')+'</h1></div><p class="mute">'+esc(w.sec.name)+' · '+code+'</p><p class="mute">'+t('surveyHelp')+'</p>'+
+   DEPTS.map(d=>{const ok=canDept(d[0],w),v=dd[d[0]]||{};
+     return '<details class="card"'+(ok?' open':'')+'><summary style="cursor:pointer;font-weight:700;font-size:17px;color:var(--c)">'+d[1]+' '+esc(te()?d[3]:d[2])+' <span class="pill '+(ok?'g':'')+'">'+(ok?t('youFill'):t('viewOnlyS'))+'</span></summary>'+
+       (v._by?'<p class="mute">'+t('lastBy')+': '+esc(v._by)+' · '+esc(v._at||'')+'</p>':'')+qInputs(deptDefs(d[0]),v,'q_'+d[0]+'_',!ok)+
+       (ok?'<button class="btn" type="button" data-sd="'+d[0]+'" style="margin-top:10px">💾 '+t('save')+'</button>':'')+'</details>'}).join('')+
+   '<div class="card"><button class="btn alt" type="button" id="sdl">'+t('surveyDl')+'</button></div>';
+  app.querySelectorAll('[data-sd]').forEach(b=>b.onclick=async()=>{const k=b.dataset.sd;b.disabled=true;const old=Object.assign({},dd[k]||{});delete old._by;delete old._at;
+    try{await rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:k,p_answers:readQ(deptDefs(k),'q_'+k+'_')});toast(t('saved'));
+      pushUndo(t('surveys')+' – '+k,()=>rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:k,p_answers:old}));b.disabled=false}catch(er){toast(errText(er));b.disabled=false}});
+  $('sdl').onclick=()=>surveyTable([{code:code,name:w.sec.name,sl:w.sec.sl,dept:dd}],w.sec.name+' – Department surveys');
+}
+function surveyTable(list,title){
+  const cols=[];DEPTS.forEach(d=>deptDefs(d[0]).forEach(f=>cols.push([d[0],f,d[2]])));
+  const head=['S.No','Secretariat','SGSW code'].concat(cols.map(c=>c[2].replace(/\s*\(.*\)/,'')+' – '+c[1][1]));
+  const aoa=[head].concat(list.map((o,i)=>[i+1,o.name,o.code].concat(cols.map(c=>{const v=((o.dept||{})[c[0]]||{})[c[1][0]];return v==null?'':v}))));
+  saveTable(aoa,title,title);
+}
+/* ----- registers download (hospitals, schools, shops, parks …) ----- */
+async function vRegisters(scope){const app=curApp;
+  if(!S.token){location.hash='#login';return}
+  await loadSecs();app.innerHTML='<div class="card"><span class="spin"></span></div>';
+  await loadFields();
+  let places=[],title;
+  if(scope==='all'){if((S.me||{}).role!=='super'){location.hash='#home';return}places=await rpc('wp_places_all',{p_token:S.token});title='Guntakal – all 35 secretariats'}
+  else{const w=await loadWard(scope);S.lastCode=scope;renderNav();places=w.places.map(p=>Object.assign({},p,{secretariat:w.sec.name}));title=w.sec.name}
+  const used=TYPES.filter(x=>places.some(p=>p.type===x[0])).concat(((S.ward&&S.ward.data&&S.ward.data.types)||[]).map(x=>[x.key,x.label,x.label,'📌']).filter(x=>places.some(p=>p.type===x[0])));
+  app.innerHTML='<div class="secttl"><span style="font-size:26px">📥</span><h1>'+t('registers')+'</h1></div><p class="mute">'+esc(title)+' · '+places.length+' '+t('places')+'</p>'+
+   '<div class="card"><p class="mute">'+t('regHelp')+'</p><label class="chk"><input type="checkbox" id="rAll" checked> <b>'+t('allTypes')+'</b></label><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(190px,1fr));margin-top:6px">'+
+   used.map(x=>'<label class="chk" style="margin:0;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#fff"><input type="checkbox" data-rt="'+esc(x[0])+'" checked> '+x[3]+' '+esc(te()?x[2]:x[1])+' ('+places.filter(p=>p.type===x[0]).length+')</label>').join('')+'</div>'+
+   '<div class="row" style="margin-top:12px"><button class="btn" type="button" id="rx">'+t('xlsxB')+'</button><button class="btn alt" type="button" id="rc">'+t('csvB')+'</button>'+(scope==='all'?'<button class="btn alt" type="button" id="sAll">'+t('surveyDl')+' – '+t('allWardsShort')+'</button>':'')+'</div></div>'+
+   '<div class="card"><div class="tw" id="rpv" style="max-height:50vh"></div></div>';
+  const chosen=()=>[...app.querySelectorAll('[data-rt]')].filter(c=>c.checked).map(c=>c.dataset.rt);
+  const table=()=>{const ts=chosen();const list=places.filter(p=>ts.includes(p.type));
+    const extraCols=[];ts.forEach(ty=>regDefs(ty).forEach(f=>{if(!extraCols.some(c=>c[0]===f[0]&&c[1]===f[1]))extraCols.push(f)}));
+    const head=['S.No','Secretariat','SGSW code','Type','Name','Govt / Private','Address','Contact','Latitude','Longitude','Google Maps'].concat(extraCols.map(f=>f[1])).concat(['Notes','Photos']);
+    return [head].concat(list.map((p,i)=>[i+1,p.secretariat||secName(p.code),p.code,typeInfo(p.type,S.ward&&S.ward.data).label,p.name,p.ownership==='govt'?'Government':p.ownership==='private'?'Private':'',p.address||'',p.contact||'',
+      p.lat==null?'':p.lat,p.lng==null?'':p.lng,p.lat==null?'':gmaps(p.lat,p.lng)].concat(extraCols.map(f=>{const v=(p.extra||{})[f[0]];return v==null?'':v})).concat([p.notes||'',(p.photos||[]).join(' ')])))};
+  const refresh=()=>{const tb=table();$('rpv').innerHTML='<table><tr>'+tb[0].map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr>'+tb.slice(1,21).map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join('')+'</tr>').join('')+'</table><p class="mute" style="padding:6px">'+(tb.length-1)+' '+t('rows')+'</p>'};
+  $('rAll').onchange=()=>{app.querySelectorAll('[data-rt]').forEach(c=>{c.checked=$('rAll').checked});refresh()};
+  app.querySelectorAll('[data-rt]').forEach(c=>c.onchange=refresh);refresh();
+  const nm=()=>{const ts=chosen();return title+' – '+(ts.length===1?typeInfo(ts[0]).label:t('registers'))};
+  $('rx').onclick=()=>saveTable(table(),nm(),nm());$('rc').onclick=()=>saveTable(table(),nm(),nm(),'csv');
+  if($('sAll'))$('sAll').onclick=async()=>{try{surveyTable(await rpc('wp_depts_all',{p_token:S.token}),'Guntakal – Department surveys – all 35 secretariats')}catch(er){toast(errText(er))}};
+}
+
 /* ----- report (view / download) ----- */
 async function vReport(code){const app=curApp;
   if(!S.token){location.hash='#login';return}
@@ -1078,6 +1220,7 @@ async function vReport(code){const app=curApp;
    '<div class="card"><h2>👪 '+t('population')+'</h2>'+kv([[t('total'),nf(p.total)],[t('households'),nf(p.households)],[t('men'),nf(p.men)],[t('women'),nf(p.women)],[t('above60'),nf(p.above60)],[t('children'),nf(p.children)],
      [t('pensions'),nf(p.pensions)],[t('rationCards'),nf(p.ration_cards)],[t('voters'),nf(p.voters)],[t('shgs'),nf(p.shgs)],[t('clusterHH'),hhSum?fmt(hhSum):'–'],[t('asOn'),esc(p.as_on||'')]])+
      (pr&&(pr.bc||pr.sc||pr.st||pr.oc||pr.minority)?'<h3>'+t('caste')+'</h3>'+kv([['BC',nf(pr.bc)],['SC',nf(pr.sc)],['ST',nf(pr.st)],['OC',nf(pr.oc)],[t('minority'),nf(pr.minority)]]):'')+'</div>'+
+   (()=>{const dd=d.dept||{};const sec=DEPTS.filter(x=>dd[x[0]]&&deptDefs(x[0]).some(f=>dd[x[0]][f[0]]!=null));return sec.length?'<div class="card"><h2>📝 '+t('surveys')+'</h2>'+sec.map(x=>'<h3>'+x[1]+' '+esc(te()?x[3]:x[2])+'</h3>'+kv(deptDefs(x[0]).filter(f=>dd[x[0]][f[0]]!=null).map(f=>[esc(qLabel(f)),esc(dd[x[0]][f[0]])]))).join('')+'</div>':''})()+
    '<div class="card"><h2>🏫 '+t('counts')+'</h2>'+(facs.length?'<table><tr><th>'+t('type')+'</th><th>'+t('total')+'</th></tr>'+facs.map(x=>'<tr><td>'+x[3]+' '+esc(te()?x[2]:x[1])+'</td><td>'+fmt(typeCount(d,byType,x[0]))+'</td></tr>').join('')+'</table>':'<p class="mute">–</p>')+'</div>'+
    '<div class="card"><h2>📍 '+t('places')+' ('+w.places.length+')</h2>'+(w.places.length?'<table><tr><th>#</th><th>'+t('type')+'</th><th>'+t('name')+'</th><th>'+t('ownership')+'</th><th>'+t('address')+'</th><th>GPS</th></tr>'+
      w.places.map((x,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(typeInfo(x.type,d).label)+'</td><td>'+esc(x.name)+'</td><td>'+(x.ownership?t(x.ownership==='govt'?'govt':'private'):'')+'</td><td>'+esc(x.address||'')+'</td><td>'+(x.lat!=null?(+x.lat).toFixed(5)+', '+(+x.lng).toFixed(5):'')+'</td></tr>').join('')+'</table>':'<p class="mute">'+t('noPlaces')+'</p>')+'</div>'+
@@ -1096,7 +1239,7 @@ async function vAdmin(tab){const app=curApp;
   const me=S.me||{};
   if(!['super','admin'].includes(me.role)){location.hash='#home';return}
   S.atab=tab||S.atab||'requests';
-  const tabs=[['requests',t('requests')],['users',t('users')]].concat(me.role==='super'?[['wards',t('wards')],['compare',t('compare')],['master',t('master')]]:[]);
+  const tabs=[['requests',t('requests')],['users',t('users')]].concat(me.role==='super'?[['wards',t('wards')],['compare',t('compare')],['master',t('master')],['fields',t('fieldsT')]]:[]);
   app.innerHTML='<h1>⚙️ '+t('admin')+' – '+((tabs.find(x=>x[0]===S.atab)||tabs[0])[1])+'</h1><div><div id="ab" class="card"><span class="spin"></span></div>';
   app.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>vAdmin(b.dataset.a));
   const ab=$('ab');
@@ -1112,6 +1255,18 @@ async function vAdmin(tab){const app=curApp;
     ab.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>act(b.dataset.ap,'approve'));
     ab.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{if(confirm(t('confirmDel')))act(b.dataset.rm,'remove')});
     ab.querySelectorAll('[data-pw]').forEach(b=>b.onclick=()=>{const v=prompt(t('newPass')+' (6+)');if(v)act(b.dataset.pw,'password',v)});
+    return;
+  }
+  if(S.atab==='fields'){
+    const fl=await loadFields(true);
+    const scopes=TYPES.map(x=>['place:'+x[0],x[3]+' '+(te()?x[2]:x[1])]).concat(DEPTS.map(d=>['dept:'+d[0],'📝 '+(te()?d[3]:d[2])]));
+    ab.innerHTML='<p class="mute">'+t('fieldsHelp')+'</p><div class="two"><div><label>'+t('addTo')+'</label><select id="fs">'+scopes.map(x=>'<option value="'+x[0]+'">'+esc(x[1])+'</option>').join('')+'</select></div>'+
+      '<div><label>'+t('fLabel')+'</label><input id="fl"></div><div><label>'+t('fKind')+'</label><select id="fk"><option value="text">'+t('kText')+'</option><option value="number">'+t('kNum')+'</option><option value="yesno">'+t('kYn')+'</option><option value="date">'+t('kDate')+'</option><option value="choice">'+t('kChoice')+'</option></select></div>'+
+      '<div><label>'+t('fOptions')+'</label><input id="fo" placeholder="A, B, C"></div></div><button class="btn" type="button" id="fa" style="margin-top:10px">'+t('addField')+'</button>'+
+      '<div class="list" style="margin-top:12px">'+(fl.length?fl.map(f=>{const sc=scopes.find(x=>x[0]===f.scope);return '<div class="it"><div class="grow"><div class="nm">'+esc(f.label)+'</div><div class="mute">'+esc(sc?sc[1]:f.scope)+' · '+esc(f.kind)+(f.options&&f.options.length?' · '+esc(f.options.join(', ')):'')+'</div></div><button class="btn red sm" type="button" data-fd="'+f.id+'">'+t('del')+'</button></div>'}).join(''):'<p class="mute">'+t('noFields')+'</p>')+'</div>';
+    $('fa').onclick=async()=>{const lab=$('fl').value.trim();if(!lab)return;const kind=$('fk').value;
+      try{await rpc('wp_field_save',{p_token:S.token,f:{scope:$('fs').value,label:lab,kind:kind,options:kind==='choice'?$('fo').value.split(',').map(x=>x.trim()).filter(Boolean):[]}});toast(t('saved'));vAdmin('fields')}catch(er){toast(errText(er))}};
+    ab.querySelectorAll('[data-fd]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fd});S.fields=null;vAdmin('fields')}catch(er){toast(errText(er))}});
     return;
   }
   if(S.atab==='master'){
@@ -1208,6 +1363,8 @@ async function route(){
       case 'ward':S.filter='all';return await vWard(h[1],h[2]);
       case 'report':return await vReport(h[1]);
       case 'export':return await vExport(h[1]);
+      case 'survey':return await vSurvey(h[1]);
+      case 'registers':return await vRegisters(h[1]||'all');
       case 'wards':return await vHome('wards');
       case 'edit':return await vEdit(h[1]);
       case 'place':return await vPlace(h[1],h[2]||'new');
