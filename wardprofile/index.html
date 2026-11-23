@@ -55,6 +55,38 @@ h1{font-size:22px;margin:4px 0 8px}h2{font-size:18px;margin:0 0 8px;color:var(--
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(22,160,133,.55)}70%{box-shadow:0 0 0 16px rgba(22,160,133,0)}100%{box-shadow:0 0 0 0 rgba(22,160,133,0)}}
 #chatFab b{background:#fff;color:#e8566c;border-radius:12px;padding:0 7px;font-size:13px;min-width:20px;text-align:center}
 @media print{#chatFab{display:none!important}}
+/* ---- motion ---- */
+.pg{animation:pgIn .42s cubic-bezier(.2,.85,.25,1)}
+.pg.back{animation-name:pgBack}
+@keyframes pgIn{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes pgBack{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+.pg.fresh .card,.pg.fresh .stat,.pg.fresh .fac,.pg.fresh .list>.it,.pg.fresh h1{animation:cardIn .5s cubic-bezier(.2,.85,.25,1) both}
+.pg.fresh .card:nth-of-type(2),.pg.fresh .stat:nth-child(2),.pg.fresh .fac:nth-child(2),.pg.fresh .list>.it:nth-child(2){animation-delay:.05s}
+.pg.fresh .card:nth-of-type(3),.pg.fresh .stat:nth-child(3),.pg.fresh .fac:nth-child(3),.pg.fresh .list>.it:nth-child(3){animation-delay:.1s}
+.pg.fresh .card:nth-of-type(4),.pg.fresh .stat:nth-child(4),.pg.fresh .fac:nth-child(4),.pg.fresh .list>.it:nth-child(4){animation-delay:.15s}
+.pg.fresh .card:nth-of-type(5),.pg.fresh .stat:nth-child(5),.pg.fresh .fac:nth-child(5),.pg.fresh .list>.it:nth-child(5){animation-delay:.2s}
+.pg.fresh .card:nth-of-type(n+6),.pg.fresh .stat:nth-child(n+6),.pg.fresh .fac:nth-child(n+6),.pg.fresh .list>.it:nth-child(n+6){animation-delay:.25s}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
+.rpl{overflow:hidden}
+.rip{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(20,184,166,.25) 45%,transparent 70%);transform:scale(0);animation:rip .6s ease-out;pointer-events:none}
+.btn.alt .rip,.stat .rip,.fac .rip,.it .rip,.chip .rip{background:radial-gradient(circle,rgba(20,184,166,.35),rgba(20,184,166,.12) 45%,transparent 70%)}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+#topbar{position:fixed;top:0;left:0;height:3px;width:100%;z-index:4000;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:linear-gradient(90deg,#14b8a6,#f2a33a,#e8566c,#8b5cf6,#14b8a6);background-size:200% 100%}
+#topbar.on{opacity:1;animation:barflow 1s linear infinite}
+@keyframes barflow{from{background-position:0 0}to{background-position:200% 0}}
+.btn,.stat,.fac,.it,.ni{transition:transform .14s ease,box-shadow .2s ease,background-color .2s}
+.btn:active,.ni:active{transform:scale(.96)}
+.m-phone.navopen #side .ni{animation:niIn .38s cubic-bezier(.2,.85,.25,1) both}
+.m-phone.navopen #side>*:nth-child(2) .ni,.m-phone.navopen #side>.ni:nth-child(2){animation-delay:.04s}
+.m-phone.navopen #side>*:nth-child(3) .ni,.m-phone.navopen #side>.ni:nth-child(3){animation-delay:.08s}
+.m-phone.navopen #side>*:nth-child(4) .ni,.m-phone.navopen #side>.ni:nth-child(4){animation-delay:.12s}
+.m-phone.navopen #side>*:nth-child(n+5) .ni,.m-phone.navopen #side>.ni:nth-child(n+5){animation-delay:.16s}
+@keyframes niIn{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+#side .sub{animation:subOpen .25s ease}
+@keyframes subOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.inchat .pg{animation:none}
+@media (prefers-reduced-motion:reduce){.pg,.pg *,#side *,#topbar{animation:none!important}}
 /* ---- fit every phone screen ---- */
 html,body{max-width:100%;overflow-x:hidden}
 img,video,iframe,select,input,textarea{max-width:100%}
@@ -330,7 +362,7 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
   <button class="hbtn ic" id="modeBtn" type="button"></button>
   <button class="hbtn out" id="outBtn" type="button" hidden>🚪<span class="acnm"></span></button>
 </div></header>
-<div id="scrim"></div><a id="chatFab" href="#chat" hidden title="Chat"><span>💬</span><em>Chat</em><b hidden></b></a><div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
+<div id="topbar"></div><div id="scrim"></div><a id="chatFab" href="#chat" hidden title="Chat"><span>💬</span><em>Chat</em><b hidden></b></a><div class="shell"><nav id="side"></nav><main id="app"><div class="card"><span class="spin"></span></div></main></div>
 <footer>Designed by Sivananda Pujari</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -589,7 +621,10 @@ const fmt=n=>n==null||n===''?'–':Number(n).toLocaleString('en-IN');
 const secName=c=>{const s=S.secs.find(x=>x.code===c);return s?s.name:c};
 function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
 function errText(e){const k='e_'+(e&&e.message||'error');return TX[k]?t(k):t('e_error')}
-async function rpc(fn,args){
+let busyN=0;const QUIET=['wp_chat_rooms','wp_chat_sync','wp_chat_calls','wp_me','wp_push_status','wp_staff_accounts','wp_my_photo'];
+function busy(d){busyN=Math.max(0,busyN+d);const b=document.getElementById('topbar');if(b)b.classList.toggle('on',busyN>0)}
+async function rpc(fn,args){const q=QUIET.includes(fn);if(!q)busy(1);try{return await rpc0(fn,args)}finally{if(!q)busy(-1)}}
+async function rpc0(fn,args){
   let r;
   try{r=await fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json'},body:JSON.stringify(args||{})})}
   catch(e){throw new Error('network')}
@@ -2054,7 +2089,8 @@ async function vPublic(code){const app=curApp;
 /* ---------- router ---------- */
 async function route(){
   header();
-  MAIN.innerHTML='';curApp=document.createElement('div');MAIN.appendChild(curApp);const app=curApp;
+  const hs=location.hash||'#home';S.hist=S.hist||[];const back=S.hist.length>1&&S.hist[S.hist.length-2]===hs;if(back)S.hist.pop();else if(S.hist[S.hist.length-1]!==hs)S.hist.push(hs);if(S.hist.length>40)S.hist.shift();
+  MAIN.innerHTML='';curApp=document.createElement('div');curApp.className='pg fresh'+(back?' back':'');MAIN.appendChild(curApp);const app=curApp;setTimeout(()=>app.classList.remove('fresh'),1100);
   let h=(location.hash||'#home').slice(1).split('/');
   if(S.token&&S.me&&S.me.must_change&&!['account','about'].includes(h[0])){history.replaceState(null,'','#account');h=['account']}
   window.scrollTo(0,0);
@@ -2089,6 +2125,11 @@ async function route(){
     if(de.classList.contains('inchat')&&de.classList.contains('m-phone')){if(window.scrollY)window.scrollTo(0,0);const cm=document.getElementById('cm');if(cm&&cm.dataset.stick!=='0')cm.scrollTop=cm.scrollHeight}};
   vv.addEventListener('resize',f);vv.addEventListener('scroll',f);f()})();
 document.addEventListener('focusin',e=>{if(e.target&&e.target.id==='cf')setTimeout(()=>e.target.scrollIntoView({block:'start',behavior:'smooth'}),300)});
+document.addEventListener('pointerdown',e=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const el=e.target.closest('.btn,.ni,a.stat,.fac,.it,.ch-ib,.ch-send,.hbtn,.chip,.cb-b,.tabs button');if(!el)return;
+  const r=el.getBoundingClientRect(),d=Math.max(r.width,r.height)*2.2,sp=document.createElement('span');sp.className='rip';
+  sp.style.cssText='width:'+d+'px;height:'+d+'px;left:'+(e.clientX-r.left-d/2)+'px;top:'+(e.clientY-r.top-d/2)+'px';
+  if(getComputedStyle(el).position==='static')el.style.position='relative';el.classList.add('rpl');el.appendChild(sp);setTimeout(()=>sp.remove(),650)},{passive:true});
 window.addEventListener('hashchange',()=>{document.documentElement.classList.remove('navopen');if(!(location.hash||'').startsWith('#chat/'))document.documentElement.classList.remove('inchat');route()});
 route();
 if(S.token)rpc('wp_me',{p_token:S.token}).then(me=>{S.me=me;localStorage.setItem('wp_me',JSON.stringify(me));header();chatPoll()}).catch(()=>{});
