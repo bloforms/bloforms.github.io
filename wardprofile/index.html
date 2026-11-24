@@ -512,7 +512,7 @@ const TX={
  myDetails:['My details','నా వివరాలు'], myHelp:['Check and correct your own details here – name, phone, clusters, bank, HRMS etc. Only you and your ward admin can see office-only details.','మీ స్వంత వివరాలు ఇక్కడ సరిచూసి సరిచేయండి – పేరు, ఫోన్, క్లస్టర్లు, బ్యాంక్, HRMS మొదలైనవి. ఆఫీస్ వివరాలు మీకు, మీ వార్డు అడ్మిన్‌కు మాత్రమే కనిపిస్తాయి.'],
  topics:['topics','అంశాలు'], pickDept:['Choose your department, then a topic. Fill what you know and press Save.','మీ శాఖను ఎంచుకోండి, తర్వాత అంశాన్ని ఎంచుకోండి. తెలిసినవి నింపి సేవ్ నొక్కండి.'], surveyView:['Departments of this ward (view only)','ఈ వార్డు శాఖలు (చూడటానికి మాత్రమే)'],
  moreTitle:['➕ Your own fields','➕ మీ సొంత ఫీల్డ్‌లు'], moreHelp:['Anything more you know about this topic – type a heading and its details.','ఈ అంశం గురించి మీకు తెలిసిన మరేదైనా – శీర్షిక, దాని వివరాలు టైప్ చేయండి.'], mHead:['Heading (e.g. Borewells)','శీర్షిక (ఉదా: బోర్‌వెల్స్)'], mVal:['Details','వివరాలు'], addMore:['Add field','ఫీల్డ్ జోడించు'],
- delFieldQ:['Delete this question for all 35 wards? (You can restore it in Admin → Custom fields, or press Undo.)','ఈ ప్రశ్నను 35 వార్డులకూ తొలగించాలా? (అడ్మిన్ → కస్టమ్ ఫీల్డ్‌లలో తిరిగి తెచ్చుకోవచ్చు, లేదా Undo నొక్కండి.)'], fieldDeleted:['Question deleted','ప్రశ్న తొలగించబడింది'],
+ delFieldQ2:['Are you sure? Asking once again: this field will disappear for everyone in all 35 wards. Tap OK to delete, Cancel to keep it.','ఖచ్చితమేనా? మళ్లీ అడుగుతున్నాం: ఈ ఫీల్డ్ 35 వార్డుల్లోని అందరికీ కనిపించదు. తొలగించడానికి OK, ఉంచడానికి Cancel నొక్కండి.'], delFieldQ:['Delete this question for all 35 wards? (You can restore it in Admin → Custom fields, or press Undo.)','ఈ ప్రశ్నను 35 వార్డులకూ తొలగించాలా? (అడ్మిన్ → కస్టమ్ ఫీల్డ్‌లలో తిరిగి తెచ్చుకోవచ్చు, లేదా Undo నొక్కండి.)'], fieldDeleted:['Question deleted','ప్రశ్న తొలగించబడింది'],
  toDesk:['Switch to desktop view','డెస్క్‌టాప్ వ్యూకి మార్చు'], toPhone:['Switch to phone view','ఫోన్ వ్యూకి మార్చు'],
  addUser:['Add user','యూజర్‌ను జోడించు'], addUserHelp:['Add anyone directly – a new secretary, an in-charge, an office staff member. They can log in at once with this phone / mail and password.','ఎవరినైనా నేరుగా జోడించండి – కొత్త సెక్రటరీ, ఇన్‌ఛార్జ్, కార్యాలయ సిబ్బంది. ఈ ఫోన్ / మెయిల్, పాస్‌వర్డ్‌తో వెంటనే లాగిన్ కావచ్చు.'],
  role:['Role','పాత్ర'], roleStaff:['Secretary (own department)','సెక్రటరీ (తన శాఖ)'], roleAdmin:['Ward admin (whole ward)','వార్డు అడ్మిన్ (మొత్తం వార్డు)'], roleSuper:['App admin (all 35 wards)','యాప్ అడ్మిన్ (35 వార్డులు)'], mustChangeFirst:['Ask them to change the password at first login','మొదటి లాగిన్‌లో పాస్‌వర్డ్ మార్చమని అడగండి'], userAdded:['User added','యూజర్ జోడించబడింది'],
@@ -932,8 +932,10 @@ function qInputs(defs,vals,prefix,disabled,delScope){
     return '<div>'+lab+'<input id="'+id+'"'+ty+dis+' value="'+esc(v)+'"></div>'}).join('')+'</div>';
 }
 /* app admin: delete a question for all wards (built-in ones are hidden and can be restored in Admin → Custom fields) */
+/* deleting a field asks twice */
+function confirmFieldDel(label){if(!confirm(t('delFieldQ')+'\n\n'+label))return false;return confirm('⚠️ '+t('delFieldQ2')+'\n\n"'+label+'"')}
 function bindQDel(box,after){box.querySelectorAll('[data-qd]').forEach(b=>b.onclick=async e=>{e.preventDefault();const key=b.dataset.qd,sc=b.dataset.qs;
-  const lab=b.parentNode.firstChild.textContent.trim();if(!confirm(t('delFieldQ')+'\n\n'+lab))return;
+  const lab=b.parentNode.firstChild.textContent.trim();if(!confirmFieldDel(lab))return;
   try{const cus=/^f\d+$/.test(key)?(S.fields||[]).find(f=>'f'+f.id===key):null;
     if(cus){await rpc('wp_field_remove',{p_token:S.token,p_id:cus.id});pushUndo(t('del')+' – '+lab,()=>rpc('wp_field_save',{p_token:S.token,f:{scope:cus.scope,label:cus.label,kind:cus.kind,options:cus.options||[]}}).then(()=>loadFields(true)))}
     else{const id=await rpc('wp_field_save',{p_token:S.token,f:{scope:sc,label:key,kind:'hide',options:[]}});pushUndo(t('del')+' – '+lab,async()=>{const fl=await loadFields(true);const h=fl.find(f=>f.scope===sc&&f.kind==='hide'&&f.label===key);if(h)await rpc('wp_field_remove',{p_token:S.token,p_id:h.id});await loadFields(true)})}
@@ -1289,7 +1291,7 @@ async function vStaff(code,id,self){const app=curApp;await loadFields();
    '<label>'+t('photo')+'</label><div id="sph"></div>'+
    '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div>'+(self?'':'<div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div>')+'</div>'+
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'&&!self?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
-  app.querySelectorAll('[data-ed]').forEach(b=>b.onclick=async e=>{e.preventDefault();const k=b.dataset.ed,f=EMPF.find(x=>x[1]===k);if(!f||!confirm(t('delFieldQ')+'\n\n'+(te()?f[3]:f[2])))return;
+  app.querySelectorAll('[data-ed]').forEach(b=>b.onclick=async e=>{e.preventDefault();const k=b.dataset.ed,f=EMPF.find(x=>x[1]===k);if(!f||!confirmFieldDel(te()?f[3]:f[2]))return;
     try{await rpc('wp_field_save',{p_token:S.token,f:{scope:'emp',label:k,kind:'hide',options:[]}});await loadFields(true);const box=b.closest('label').parentElement;box.remove();toast(t('fieldDeleted'));
       pushUndo(t('del')+' – '+f[2],async()=>{const fl=await loadFields(true);const h=fl.find(x=>x.scope==='emp'&&x.kind==='hide'&&x.label===k);if(h)await rpc('wp_field_remove',{p_token:S.token,p_id:h.id});await loadFields(true)})}catch(er){toast(errText(er))}});
   $('isblo').onchange=()=>{$('bbw').hidden=$('isblo').value!=='yes';if(!$('bbw').hidden)$('bbn').focus()};
@@ -2093,8 +2095,8 @@ async function vAdmin(tab){const app=curApp;
     $('fs').onchange=()=>{S.fscope=$('fs').value;vAdmin('fields')};
     if($('fa'))$('fa').onclick=async()=>{const lab=$('fl').value.trim();if(!lab)return;const kind=$('fk').value;
       try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:lab,kind:kind,options:kind==='choice'?$('fo').value.split(',').map(x=>x.trim()).filter(Boolean):[]}});toast(t('saved'));vAdmin('fields')}catch(er){toast(errText(er))}};
-    ab.querySelectorAll('[data-fh]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:b.dataset.fh,kind:'hide',options:[]}});vAdmin('fields')}catch(er){toast(errText(er))}});
-    ab.querySelectorAll('[data-fd]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fd});vAdmin('fields')}catch(er){toast(errText(er))}});
+    ab.querySelectorAll('[data-fh]').forEach(b=>b.onclick=async()=>{if(!confirmFieldDel(b.closest('.it').querySelector('.nm').textContent))return;try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:b.dataset.fh,kind:'hide',options:[]}});vAdmin('fields')}catch(er){toast(errText(er))}});
+    ab.querySelectorAll('[data-fd]').forEach(b=>b.onclick=async()=>{if(!confirmFieldDel(b.closest('.it').querySelector('.nm').textContent))return;try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fd});vAdmin('fields')}catch(er){toast(errText(er))}});
     ab.querySelectorAll('[data-fr]').forEach(b=>b.onclick=async()=>{try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fr});vAdmin('fields')}catch(er){toast(errText(er))}});
     return;
   }
