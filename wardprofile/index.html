@@ -679,11 +679,13 @@ function typeInfo(key,data){
   const c=((data&&data.types)||[]).find(x=>x.key===key);return {label:c?c.label:key,emo:'📌'};
 }
 function clusterLine(s){const c=s.clusters||[];if(!c.length)return '';return '<div class="mute">🏘 '+t('clusters')+': '+c.map(x=>esc(x.no)+(x.households!=null&&x.households!==''?' ('+fmt(x.households)+')':'')).join(' + ')+'</div>'}
+const empHidden=()=>(S.fields||[]).filter(f=>f.scope==='emp'&&f.kind==='hide').map(f=>f.label);
+const empFields=()=>{const h=empHidden();return EMPF.filter(f=>!h.includes(f[1]))};
 function empForm(pv){
-  pv=pv||{};
-  return EMPG.map(g=>{const fs=EMPF.filter(f=>f[4]===g[0]);
+  pv=pv||{};const canDel=(S.me||{}).role==='super';const EF=empFields();
+  return EMPG.map(g=>{const fs=EF.filter(f=>f[4]===g[0]);if(!fs.length)return '';
     return '<details class="card" style="padding:10px 12px;margin:8px 0"'+(['svc','con','bank'].includes(g[0])?' open':'')+'><summary style="font-weight:700;color:var(--c);cursor:pointer">'+(te()?g[2]:g[1])+'</summary><div class="two">'+
-      fs.map(f=>{const v=pv[f[1]]==null?'':String(pv[f[1]]);const lab='<label>'+esc(te()?f[3]:f[2])+'</label>';const id='ef_'+f[1];
+      fs.map(f=>{const v=pv[f[1]]==null?'':String(pv[f[1]]);const lab='<label>'+esc(te()?f[3]:f[2])+(canDel?' <button type="button" class="qdel" data-ed="'+f[1]+'" title="'+esc(t('del'))+'">🗑</button>':'')+'</label>';const id='ef_'+f[1];
         if(Array.isArray(f[5]))return '<div>'+lab+'<select id="'+id+'"><option value="">–</option>'+f[5].concat(v&&!f[5].some(o=>o.toLowerCase()===v.toLowerCase())?[v]:[]).map(o=>'<option'+(o.toLowerCase()===v.toLowerCase()?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select></div>';
         if(f[5]==='area')return '<div style="grid-column:1/-1">'+lab+'<textarea id="'+id+'">'+esc(v)+'</textarea></div>';
         const ty=f[5]==='num'?' inputmode="numeric"':f[5]==='tel'?' type="tel"':f[5]==='aadhaar'?' inputmode="numeric" maxlength="14"':f[5]==='date'?' placeholder="dd/mm/yyyy" inputmode="numeric"':'';
@@ -711,9 +713,9 @@ function liveRows(rows){
   return out;
 }
 function exportEmployees(staffList,fname){
-  const head=['S.No','Secretariat','Name','Designation'].concat(EMPF.map(f=>f[2])).concat(['WhatsApp mobile','Clusters']);
+  const head=['S.No','Secretariat','Name','Designation'].concat(empFields().map(f=>f[2])).concat(['WhatsApp mobile','Clusters']);
   const q=v=>{v=v==null?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-  const rows=staffList.map((x,i)=>{const pv=x.private||{};return [i+1,secName(x.code),x.name,x.designation].concat(EMPF.map(f=>pv[f[1]]||'')).concat([x.phone||'',(x.clusters||[]).map(c=>c.no+(c.households!=null?':'+c.households:'')).join(' + ')])});
+  const rows=staffList.map((x,i)=>{const pv=x.private||{};return [i+1,secName(x.code),x.name,x.designation].concat(empFields().map(f=>pv[f[1]]||'')).concat([x.phone||'',(x.clusters||[]).map(c=>c.no+(c.households!=null?':'+c.households:'')).join(' + ')])});
   const blob=new Blob(['﻿'+[head].concat(rows).map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname;a.click();
 }
@@ -1264,7 +1266,7 @@ async function vPlace(code,id,preType){const app=curApp;
     pushUndo(t('deletedL')+': '+old.name,()=>rpc('wp_save_place',{p_token:S.token,p:Object.assign({},old,{id:''})}));S.tab='places';location.hash='#ward/'+code}catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>'}};
 }
 
-async function vStaff(code,id,self){const app=curApp;
+async function vStaff(code,id,self){const app=curApp;await loadFields();
   if(!S.token){location.hash='#login';return}
   let w,s;
   if(self){app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';s=await rpc('wp_my_staff',{p_token:S.token});code=s.code;id=s.id||'new';await loadSecs();w={sec:S.secs.find(x=>x.code===code)||{name:code,code:code},staff:[]}}
@@ -1287,6 +1289,9 @@ async function vStaff(code,id,self){const app=curApp;
    '<label>'+t('photo')+'</label><div id="sph"></div>'+
    '<div class="two"><div><label>'+t('joined')+'</label><input id="jd" type="date" value="'+esc(s.joined||'')+'"></div>'+(self?'':'<div><label>'+t('order')+'</label><input id="so" type="number" value="'+esc(s.sort==null?'':s.sort)+'"></div>')+'</div>'+
    '<div id="m"></div><div class="row" style="margin-top:12px"><button class="btn" id="sv">💾 '+t('save')+'</button>'+(id!=='new'&&!self?'<button type="button" class="btn red" id="dl">'+t('del')+'</button>':'')+'</div></form>';
+  app.querySelectorAll('[data-ed]').forEach(b=>b.onclick=async e=>{e.preventDefault();const k=b.dataset.ed,f=EMPF.find(x=>x[1]===k);if(!f||!confirm(t('delFieldQ')+'\n\n'+(te()?f[3]:f[2])))return;
+    try{await rpc('wp_field_save',{p_token:S.token,f:{scope:'emp',label:k,kind:'hide',options:[]}});await loadFields(true);const box=b.closest('label').parentElement;box.remove();toast(t('fieldDeleted'));
+      pushUndo(t('del')+' – '+f[2],async()=>{const fl=await loadFields(true);const h=fl.find(x=>x.scope==='emp'&&x.kind==='hide'&&x.label===k);if(h)await rpc('wp_field_remove',{p_token:S.token,p_id:h.id});await loadFields(true)})}catch(er){toast(errText(er))}});
   $('isblo').onchange=()=>{$('bbw').hidden=$('isblo').value!=='yes';if(!$('bbw').hidden)$('bbn').focus()};
   const bloVal=()=>$('isblo').value==='yes'?$('bbn').value.trim():'';
   const readCl=()=>{$('cl').querySelectorAll('[data-ci]').forEach(r=>{const k=+r.dataset.ci;cls[k]={no:r.querySelector('.cn').value.trim(),households:num(r.querySelector('.ch').value)}})};
@@ -1428,6 +1433,7 @@ async function vImport(code){const app=curApp;
 function exportCols(){
   const live=[['sno','S.No','క్ర.సం.']];
   EMPF.forEach(f=>{
+    if(empHidden().includes(f[1])&&![5,42].includes(f[0]))return;
     if(f[0]===3)return;
     if(f[0]===5){live.push(['name','Name','పేరు'],['designation','Designation in full form','హోదా'])}
     if(f[0]===42)live.push(['phone','Regular (WhatsApp) mobile number','వాట్సాప్ మొబైల్ నంబర్']);
@@ -1639,7 +1645,7 @@ function bCatalog(mode){
     add('👥 '+t('gEmp'),[['e.name','Employee name',(c,i,e)=>e.name],['e.des','Designation',(c,i,e)=>e.designation||''],['e.phone','WhatsApp mobile',(c,i,e)=>e.phone||''],
       ['e.clus','Clusters',(c,i,e)=>(e.clusters||[]).map(k=>k.no+(k.households!=null&&k.households!==''?' ('+k.households+')':'')).join(' + ')],
       ['e.hh','Households in clusters',(c,i,e)=>(e.clusters||[]).reduce((a,k)=>a+(+k.households||0),0)||''],['e.blo','BLO booth no.',(c,i,e)=>e.blo_booth||''],['e.joined','Joining date',(c,i,e)=>e.joined||'']]
-      .concat(EMPF.map(f=>['e.'+f[1],f[2],(c,i,e)=>((e.private||{})[f[1]])||''])));
+      .concat(empFields().map(f=>['e.'+f[1],f[2],(c,i,e)=>((e.private||{})[f[1]])||''])));
   }
   return G;
 }
@@ -2075,17 +2081,17 @@ async function vAdmin(tab){const app=curApp;
   }
   if(S.atab==='fields'){
     const fl=await loadFields(true);
-    const scopes=TYPES.map(x=>['place:'+x[0],x[3]+' '+(te()?x[2]:x[1]),REG[x[0]]||[]]).concat(DEPTS.map(d=>['dept:'+d[0],'📝 '+(te()?d[3]:d[2]),d[4]]));
+    const scopes=[['emp','👥 '+t('empDetails'),EMPF.map(f=>[f[1],f[2],f[3],'text'])]].concat(TYPES.map(x=>['place:'+x[0],x[3]+' '+(te()?x[2]:x[1]),REG[x[0]]||[]])).concat(DEPTS.map(d=>['dept:'+d[0],'📝 '+(te()?d[3]:d[2]),d[4]]));
     S.fscope=S.fscope||scopes[0][0];const sc=scopes.find(x=>x[0]===S.fscope)||scopes[0];
     const hid=fl.filter(f=>f.scope===sc[0]&&f.kind==='hide');const cus=fl.filter(f=>f.scope===sc[0]&&f.kind!=='hide');
     ab.innerHTML='<p class="mute">'+t('fieldsHelp')+'</p><label>'+t('pickSection')+'</label><select id="fs">'+scopes.map(x=>'<option value="'+x[0]+'"'+(x[0]===sc[0]?' selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select>'+
       '<div class="list" style="margin-top:10px">'+sc[2].filter(f=>!hid.some(h=>h.label===f[0])).map(f=>'<div class="it"><div class="grow"><div class="nm">'+esc(qLabel(f))+'</div><div class="mute">'+t('builtIn')+'</div></div><button class="btn red sm" type="button" data-fh="'+esc(f[0])+'">'+t('del')+'</button></div>').join('')+
         cus.map(f=>'<div class="it"><div class="grow"><div class="nm">'+esc(f.label)+'</div><div class="mute">'+t('custom')+' · '+esc(f.kind)+(f.options&&f.options.length?' · '+esc(f.options.join(', ')):'')+'</div></div><button class="btn red sm" type="button" data-fd="'+f.id+'">'+t('del')+'</button></div>').join('')+'</div>'+
       (hid.length?'<h3>'+t('hiddenF')+'</h3><div class="list">'+hid.map(h=>{const f=sc[2].find(x=>x[0]===h.label);return '<div class="it"><div class="grow mute">'+esc(f?qLabel(f):h.label)+'</div><button class="btn alt sm" type="button" data-fr="'+h.id+'">'+t('restore')+'</button></div>'}).join('')+'</div>':'')+
-      '<div class="card" style="margin-top:12px;background:#f6fafa"><b>'+t('addField')+'</b><div class="two"><div><label>'+t('fLabel')+'</label><input id="fl"></div><div><label>'+t('fKind')+'</label><select id="fk"><option value="text">'+t('kText')+'</option><option value="number">'+t('kNum')+'</option><option value="yesno">'+t('kYn')+'</option><option value="date">'+t('kDate')+'</option><option value="choice">'+t('kChoice')+'</option></select></div>'+
-      '<div style="grid-column:1/-1"><label>'+t('fOptions')+'</label><input id="fo" placeholder="A, B, C"></div></div><button class="btn" type="button" id="fa" style="margin-top:10px">'+t('addField')+'</button></div>';
+      (sc[0]==='emp'?'':'<div class="card" style="margin-top:12px;background:#f6fafa"><b>'+t('addField')+'</b><div class="two"><div><label>'+t('fLabel')+'</label><input id="fl"></div><div><label>'+t('fKind')+'</label><select id="fk"><option value="text">'+t('kText')+'</option><option value="number">'+t('kNum')+'</option><option value="yesno">'+t('kYn')+'</option><option value="date">'+t('kDate')+'</option><option value="choice">'+t('kChoice')+'</option></select></div>'+
+      '<div style="grid-column:1/-1"><label>'+t('fOptions')+'</label><input id="fo" placeholder="A, B, C"></div></div><button class="btn" type="button" id="fa" style="margin-top:10px">'+t('addField')+'</button></div>');
     $('fs').onchange=()=>{S.fscope=$('fs').value;vAdmin('fields')};
-    $('fa').onclick=async()=>{const lab=$('fl').value.trim();if(!lab)return;const kind=$('fk').value;
+    if($('fa'))$('fa').onclick=async()=>{const lab=$('fl').value.trim();if(!lab)return;const kind=$('fk').value;
       try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:lab,kind:kind,options:kind==='choice'?$('fo').value.split(',').map(x=>x.trim()).filter(Boolean):[]}});toast(t('saved'));vAdmin('fields')}catch(er){toast(errText(er))}};
     ab.querySelectorAll('[data-fh]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_save',{p_token:S.token,f:{scope:sc[0],label:b.dataset.fh,kind:'hide',options:[]}});vAdmin('fields')}catch(er){toast(errText(er))}});
     ab.querySelectorAll('[data-fd]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmDel')))return;try{await rpc('wp_field_remove',{p_token:S.token,p_id:+b.dataset.fd});vAdmin('fields')}catch(er){toast(errText(er))}});
