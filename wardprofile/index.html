@@ -179,6 +179,29 @@ main{padding-bottom:96px}
 .ch-pb.rec{background:#fde8ec;animation:ring 1.4s infinite}
 .ch-send{width:50px;height:50px;border-radius:50%;border:0;color:#fff;font-size:20px;cursor:pointer;flex:none;background:linear-gradient(135deg,#0f766e,#10b981);box-shadow:0 4px 14px rgba(16,185,129,.45);transition:transform .15s}
 .ch-send:active{transform:scale(.9)}.ch-send:disabled{opacity:.6}
+/* emoji / sticker / gif panel */
+.ch-emp{flex:none;height:min(280px,42vh);background:#fff;border-radius:18px;margin-top:6px;box-shadow:0 -2px 12px rgba(15,92,92,.12);display:flex;flex-direction:column;overflow:hidden;animation:sheetup .2s ease-out}
+.ch-emp[hidden]{display:none}
+.emp-tabs{display:flex;gap:4px;padding:6px;border-bottom:1px solid var(--line);flex:none}
+.emp-tabs button{flex:1;border:0;background:#f1f7f6;border-radius:12px;padding:8px 4px;font-weight:700;font-size:14px;cursor:pointer;color:#0f5c5c}
+.emp-tabs button.on{background:linear-gradient(135deg,#0f766e,#10b981);color:#fff}
+.emp-tabs .emp-x{flex:0 0 46px}
+.emp-body{flex:1;overflow-y:auto;padding:6px 8px}
+.emp-cat{font-size:13px;color:#7a8f8c;margin:6px 2px 2px}
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr))}
+.emp-grid button{border:0;background:none;font-size:27px;padding:5px 0;cursor:pointer;border-radius:10px}
+.emp-grid button:active{background:#eef7f5}
+.stk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(94px,1fr));gap:6px;justify-items:center}
+.stk-grid button{border:0;background:none;padding:2px;cursor:pointer}
+.stk-new{width:86px;height:86px;border:2px dashed #9fd3d3!important;border-radius:20px;color:#0f766e;font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.stk-new b{font-size:28px}
+.stk{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;border-radius:28%;color:#fff;text-align:center;line-height:1.1;box-shadow:0 0 0 4px #fff,0 6px 16px rgba(0,0,0,.22);transform:rotate(-4deg);font-family:Inter,'Noto Sans Telugu',sans-serif;padding:4px}
+.stk .se{filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));line-height:1.1}.stk .s1{font-weight:800;margin-top:2px;text-shadow:0 1px 2px rgba(0,0,0,.3)}.stk .s2{font-weight:600;opacity:.95}
+.stkw{background:none!important;box-shadow:none!important;padding:4px!important;max-width:70%}
+.stkw .ch-tm{background:rgba(255,255,255,.85);border-radius:8px;padding:1px 6px;display:inline-block;float:right;color:#3d5c58}
+.ch-row.them .stkw .ch-tm{float:none}
+.ustk{width:150px;height:150px;border-radius:24px;object-fit:cover;box-shadow:0 0 0 4px #fff,0 6px 16px rgba(0,0,0,.22);display:block}
+.gif-box{text-align:center;padding:16px 10px;color:#3d5c58}
 /* chat room fills the screen like WhatsApp: top bar stays, box sits on the keyboard */
 .inchat footer,.inchat #chatFab{display:none!important}
 .m-phone.inchat body{overflow:hidden}
@@ -502,6 +525,7 @@ const TX={
  isBlo:['Are you a BLO?','మీరు BLO నా?'], yesW:['Yes','అవును'], noW:['No','కాదు'], boothNo:['Booth (part) number','బూత్ (పార్ట్) నంబర్'], needBooth:['Enter the booth number','బూత్ నంబర్ నమోదు చేయండి'],
  autoDel:['Photos and files shared in chat are deleted automatically after 3 days. Messages stay. Download anything you need to keep.','చాట్‌లో పంపిన ఫోటోలు, ఫైళ్లు 3 రోజుల తర్వాత ఆటోమేటిక్‌గా తొలగించబడతాయి. సందేశాలు అలాగే ఉంటాయి. అవసరమైనవి డౌన్‌లోడ్ చేసుకోండి.'], autoDelShort:['Photos & files auto-delete after 3 days','ఫోటోలు & ఫైళ్లు 3 రోజుల్లో ఆటో-డిలీట్'], fileExpired:['File deleted after 3 days','3 రోజుల తర్వాత ఫైల్ తొలగించబడింది'], photoExpired:['Photo deleted after 3 days','3 రోజుల తర్వాత ఫోటో తొలగించబడింది'],
  papers:['High secured papers','హై సెక్యూర్డ్ పేపర్లు'], fullScreen:['Open full screen','పూర్తి స్క్రీన్‌లో తెరవండి'], papersHelp:['Enter bond papers received and issued (Paper Register). Log in once with your Paper Register login.','అందిన, జారీ చేసిన బాండ్ పేపర్లను నమోదు చేయండి (పేపర్ రిజిస్టర్). మీ పేపర్ రిజిస్టర్ లాగిన్‌తో ఒకసారి లాగిన్ అవ్వండి.'],
+ emojiT:['Emoji','ఎమోజీ'], stickersT:['Stickers','స్టిక్కర్లు'], makeSticker:['Make from photo','ఫోటో నుంచి చేయండి'], makingSticker:['Making sticker…','స్టిక్కర్ తయారవుతోంది…'], gifHelp:['Send a moving GIF saved on your phone (from Gboard or WhatsApp, save the GIF first).','మీ ఫోన్‌లో సేవ్ చేసిన GIF పంపండి (Gboard లేదా WhatsApp నుంచి ముందు సేవ్ చేయండి).'], pickGif:['Choose GIF from phone','ఫోన్ నుంచి GIF ఎంచుకోండి'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -1793,6 +1817,21 @@ async function pickPerson(){const d=document.createElement('div');d.className='c
     $('pl').innerHTML=L.map(x=>'<button type="button" class="it" data-pu="'+x.id+'" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);cursor:pointer;font:inherit;gap:10px">'+avatar(x.name,x.photo,40)+'<div class="grow"><b>'+esc(x.name)+'</b><div class="mute" style="font-size:12px">'+esc(desigLabel(x.desig||''))+(x.code?' · '+esc(secName(x.code)):'')+'</div></div></button>').join('')||'<p class="mute">–</p>';
     $('pl').querySelectorAll('[data-pu]').forEach(b=>b.onclick=()=>{const x=ppl.find(y=>y.id===b.dataset.pu);d.remove();openDm(x.id,x.name)})};
   $('pp').oninput=draw;draw();$('pp').focus()}
+/* chat stickers (our own designs, drawn in the app – no storage used) and emoji */
+const STICKERS=[['done','✅','Done','పూర్తయింది','#10b981','#047857'],['thanks','🙏','Thank you','ధన్యవాదాలు','#f59e0b','#b45309'],['ok','👍','OK sir','సరే సార్','#3b82f6','#1d4ed8'],
+ ['gm','☀️','Good morning','శుభోదయం','#fbbf24','#ea580c'],['gn','🌙','Good night','శుభరాత్రి','#6366f1','#312e81'],['noted','📝','Noted','నోట్ చేశాను','#14b8a6','#0f766e'],
+ ['meeting','📅','Meeting','సమావేశం','#8b5cf6','#6d28d9'],['urgent','⚡','Urgent','అత్యవసరం','#ef4444','#b91c1c'],['onway','🏃','On the way','దారిలో ఉన్నా','#06b6d4','#0e7490'],
+ ['field','🛵','In field','ఫీల్డ్‌లో ఉన్నా','#84cc16','#4d7c0f'],['office','🏢','In office','ఆఫీసులో ఉన్నా','#0ea5e9','#0369a1'],['wait','⏳','Please wait','కొంచెం ఆగండి','#a3a3a3','#525252'],
+ ['great','👏','Great work','చాలా బాగుంది','#ec4899','#be185d'],['sorry','🙇','Sorry','క్షమించండి','#f97316','#c2410c'],['callme','📞','Call me','కాల్ చేయండి','#22c55e','#15803d'],
+ ['report','📊','Report sent','రిపోర్ట్ పంపాను','#0d9488','#134e4a'],['lunch','🍛','Lunch break','భోజన విరామం','#eab308','#a16207'],['festival','🎉','Happy festival','పండుగ శుభాకాంక్షలు','#d946ef','#86198f'],
+ ['yes','✔️','Yes','అవును','#16a34a','#14532d'],['no','✖️','No','కాదు','#dc2626','#7f1d1d']];
+function stickerHtml(id,size){const x=STICKERS.find(y=>y[0]===id);if(!x)return '<span class="stk" style="font-size:40px">🏷️</span>';size=size||130;
+  return '<span class="stk" style="width:'+size+'px;height:'+size+'px;background:radial-gradient(circle at 30% 25%,'+x[4]+','+x[5]+')"><span class="se" style="font-size:'+Math.round(size*.38)+'px">'+x[1]+'</span><span class="s1" style="font-size:'+Math.round(size*.135)+'px">'+esc(x[2])+'</span><span class="s2" style="font-size:'+Math.round(size*.105)+'px">'+esc(x[3])+'</span></span>'}
+const EMOJIS={'😊':'😀 😃 😄 😁 😆 😅 🤣 😂 🙂 😉 😊 😇 🥰 😍 🤩 😘 😋 😛 😜 🤪 🤗 🤭 🤫 🤔 🤐 😐 😑 😶 😏 😒 🙄 😬 😌 😔 😪 😴 😷 🤒 🤕 🥵 🥶 😵 🤯 🥳 😎 🤓 😕 😟 🙁 😮 😲 😳 🥺 😦 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 😤 😡 😠',
+ '👍':'👍 👎 👌 ✌️ 🤞 🤟 🤘 🤙 👈 👉 👆 👇 ☝️ ✋ 🤚 🖐️ 🖖 👋 🙏 👏 🙌 👐 🤲 🤝 💪 🫡 🙇 🙋 🙆 🙅 🤷 🤦 💁 🧑‍💼 👮 👩‍🏫 👨‍🌾 👷',
+ '❤️':'❤️ 🧡 💛 💚 💙 💜 🤎 🖤 🤍 💯 💥 💫 ⭐ 🌟 ✨ ⚡ 🔥 🎉 🎊 🎈 🎁 🏆 🥇 🎖️ ✅ ☑️ ✔️ ❌ ❎ ⚠️ ❗ ❓ ‼️ 🔔 📢 📣',
+ '🏢':'🏢 🏛️ 🏫 🏥 🏦 🏪 🏠 🏡 🛕 🕌 ⛪ 🌳 🌴 🌊 💧 🚰 💡 🔌 🛣️ 🚧 🚌 🛵 🚲 🚗 🛺 📍 🗺️ 📅 📆 ⏰ ⏳ 📞 📱 💻 🖨️ 📄 📑 📊 📈 📝 ✏️ 📌 📎 🗂️ 📁 📦 💰 🧾 🎫',
+ '🍛':'🍛 🍚 🍲 🥘 🍜 🍝 🫓 🥟 🍱 🍳 🥗 🍌 🍎 🥭 🍉 🍇 ☕ 🍵 🥛 🧃 🍬 🍫 🍰 🎂 🍦'};
 async function vChat(room){const app=curApp;
   if(!S.token){location.hash='#login';return}
   await loadSecs();
@@ -1826,8 +1865,8 @@ async function vChat(room){const app=curApp;
     '<div id="cm" class="ch-bg"></div>'+
     '<div id="rp" hidden class="ch-reply"></div><div id="up" class="mute" style="font-size:13px;flex:none;padding:0 6px"></div>'+
     '<div class="ch-note">🕒 '+t('autoDelShort')+'</div><form id="cs" class="ch-bar"><input type="file" id="cfi" hidden accept="image/*,application/pdf,.xlsx,.xls,.docx,.doc,.csv,.txt">'+
-      '<div class="ch-pill"><button type="button" class="ch-pb" id="cat" title="'+esc(t('attach'))+'">📎</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsgS'))+'"></textarea><button type="button" class="ch-pb" id="cdic" title="'+esc(t('dictate'))+'">🎙️</button></div>'+
-      '<button class="ch-send" id="cb" title="Send">➤</button></form></div>';
+      '<div class="ch-pill"><button type="button" class="ch-pb" id="cemo" title="Emoji / stickers / GIF">😊</button><button type="button" class="ch-pb" id="cat" title="'+esc(t('attach'))+'">📎</button><textarea id="ct" rows="1" maxlength="2000" placeholder="'+esc(t('typeMsgS'))+'"></textarea><button type="button" class="ch-pb" id="cdic" title="'+esc(t('dictate'))+'">🎙️</button></div>'+
+      '<button class="ch-send" id="cb" title="Send">➤</button></form><div id="emp" class="ch-emp" hidden></div><input type="file" id="cgif" hidden accept="image/gif"><input type="file" id="cstk" hidden accept="image/*"></div>';
   let last=0,msgs=[],reads=[],members=0,readKey='',replyTo=null;const box=$('cm');
   box.addEventListener('scroll',()=>{box.dataset.stick=box.scrollHeight-box.scrollTop-box.clientHeight<80?'1':'0'},{passive:true});
   const isBoss=['super','commissioner'].includes((S.me||{}).role);
@@ -1839,6 +1878,9 @@ async function vChat(room){const app=curApp;
   const dayLabel=a=>{const d=new Date(a),n=new Date(),y=new Date(n-864e5);return d.toDateString()===n.toDateString()?t('today'):d.toDateString()===y.toDateString()?t('yesterday'):d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})};
   let popAfter=Infinity;
   const bubble0=(m,first)=>{const me=m.mine;
+    if(!m.deleted&&(m.kind==='sticker'||(m.kind==='image'&&m.fname==='sticker'&&m.url))){
+      return '<div class="ch-row '+(me?'me':'them')+(first?' first':'')+(m.id>popAfter?' pop':'')+'">'+(me?'':first?'<span class="avbtn" data-av="'+m.id+'">'+avatar(m.name,m.photo,34)+'</span>':'<span class="ch-sp"></span>')+
+        '<div class="cmsg stkw" data-mid="'+m.id+'">'+(!me&&first&&!isDm?'<div class="ch-nm" style="color:'+nameColor(m.name)+'">'+esc(m.name||'')+'</div>':'')+(m.kind==='sticker'?stickerHtml(String(m.body||'').slice(3)):'<img class="ustk" src="'+esc(m.url)+'" alt="">')+'<div class="ch-tm">'+esc(chatTime(m.at).replace(/^.*?,\s*/,''))+ticks(m)+'</div></div></div>'}
     const media=m.deleted?'':m.expired?'<div class="ch-exp">⌛ '+(m.kind==='image'?t('photoExpired'):t('fileExpired'))+(m.fname&&m.kind!=='image'?'<small>'+esc(m.fname)+'</small>':'')+'</div>':m.kind==='image'&&m.url?'<a href="'+esc(m.url)+'" target="_blank" rel="noopener" class="ch-img"><img src="'+esc(m.url)+'" loading="lazy"></a>':
       m.kind==='call'&&m.url?'<div class="ch-call"><span>📹</span><div><b>'+t('videoCall')+'</b><a href="'+esc(m.url)+'#userInfo.displayName=%22'+encodeURIComponent((S.me||{}).name||'')+'%22&config.prejoinConfig.enabled=false" target="_blank" rel="noopener">'+t('joinCall')+'</a></div></div>':
       m.kind==='audio'&&m.url?'<audio controls preload="none" src="'+esc(m.url)+'" style="max-width:230px;height:40px"></audio>':
@@ -1903,6 +1945,33 @@ async function vChat(room){const app=curApp;
       else j=await chatUpload(room,f,f.name,mime||'application/octet-stream');
       await send({url:j.url,kind:kind,name:f.name,size:j.size,mime:mime})}catch(er){toast(t(er.message==='bad_file'?'badFile':er.message==='too_big'?'e_too_big':'e_error'))}
     $('up').innerHTML=''};
+  // 😊 panel: emoji / stickers / GIF
+  let empTab='emoji';
+  const drawEmp=()=>{const p=$('emp');
+    p.innerHTML='<div class="emp-tabs">'+[['emoji','😊 '+t('emojiT')],['stk','🏷️ '+t('stickersT')],['gif','GIF']].map(x=>'<button type="button" data-et="'+x[0]+'" class="'+(empTab===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'<button type="button" class="emp-x" id="empx">⌨️</button></div>'+
+      '<div class="emp-body">'+(empTab==='emoji'?Object.entries(EMOJIS).map(([k,v])=>'<div class="emp-cat">'+k+'</div><div class="emp-grid">'+v.split(' ').map(e=>'<button type="button" data-e="'+e+'">'+e+'</button>').join('')+'</div>').join(''):
+        empTab==='stk'?'<div class="stk-grid"><button type="button" class="stk-new" id="stkNew"><b>＋</b>'+t('makeSticker')+'</button>'+STICKERS.map(x=>'<button type="button" data-st="'+x[0]+'">'+stickerHtml(x[0],86)+'</button>').join('')+'</div>':
+        '<div class="gif-box"><div style="font-size:46px">🎞️</div><p>'+t('gifHelp')+'</p><button type="button" class="btn" id="gifPick">🎞️ '+t('pickGif')+'</button></div>')+'</div>';
+    p.querySelectorAll('[data-et]').forEach(b=>b.onclick=()=>{empTab=b.dataset.et;drawEmp()});
+    $('empx').onclick=()=>{p.hidden=true;$('cemo').textContent='😊';ta.focus()};
+    p.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{const e=b.dataset.e,st=ta.selectionStart??ta.value.length,en=ta.selectionEnd??st;ta.value=ta.value.slice(0,st)+e+ta.value.slice(en);ta.selectionStart=ta.selectionEnd=st+e.length;ta.oninput()});
+    p.querySelectorAll('[data-st]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await rpc('wp_chat_send',{p_token:S.token,p_room:room,p_body:'st:'+b.dataset.st,p_att:{kind:'sticker'},p_reply:replyTo?replyTo.id:null});replyTo=null;drawReply();await pull();box.scrollTop=box.scrollHeight}catch(er){toast(errText(er))}b.disabled=false});
+    if($('stkNew'))$('stkNew').onclick=()=>$('cstk').click();
+    if($('gifPick'))$('gifPick').onclick=()=>$('cgif').click()};
+  $('cemo').onclick=()=>{const p=$('emp');if(p.hidden){ta.blur();p.hidden=false;$('cemo').textContent='⌨️';drawEmp();setTimeout(()=>{box.scrollTop=box.scrollHeight},50)}else{p.hidden=true;$('cemo').textContent='😊';ta.focus()}};
+  ta.addEventListener('focus',()=>{const p=$('emp');if(!p.hidden){p.hidden=true;$('cemo').textContent='😊'}});
+  // GIF: sent as-is so it keeps moving
+  $('cgif').onchange=async()=>{const f=$('cgif').files[0];$('cgif').value='';if(!f)return;if(f.size>8*1048576){toast(t('e_too_big'));return}
+    $('up').innerHTML='<span class="spin"></span> '+t('uploading')+' GIF';
+    try{const j=await chatUpload(room,f,f.name||'animation.gif','image/gif');await send({url:j.url,kind:'image',name:f.name||'animation.gif',size:j.size,mime:'image/gif'})}catch(er){toast(t(er.message==='too_big'?'e_too_big':'e_error'))}$('up').innerHTML=''};
+  // make a sticker from a photo: square crop, 512px, no bubble
+  $('cstk').onchange=async()=>{const f=$('cstk').files[0];$('cstk').value='';if(!f)return;
+    $('up').innerHTML='<span class="spin"></span> '+t('makingSticker');
+    try{const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(f)});
+      const sz=Math.min(img.width,img.height),c=document.createElement('canvas');c.width=c.height=512;const g=c.getContext('2d');
+      g.beginPath();const r=60;g.moveTo(r,0);g.arcTo(512,0,512,512,r);g.arcTo(512,512,0,512,r);g.arcTo(0,512,0,0,r);g.arcTo(0,0,512,0,r);g.closePath();g.clip();
+      g.drawImage(img,(img.width-sz)/2,(img.height-sz)/2,sz,sz,0,0,512,512);
+      const d=c.toDataURL('image/jpeg',.82);const j=await chatUpload(room,d,'sticker','image/jpeg');await send({url:j.url,kind:'image',name:'sticker',size:j.size,mime:'image/jpeg'})}catch(er){toast(errText(er))}$('up').innerHTML=''};
   // speak to type (speech → text in the message box)
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let sr=null;
   $('cdic').onclick=()=>{
