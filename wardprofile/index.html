@@ -526,6 +526,8 @@ const TX={
  autoDel:['Photos and files shared in chat are deleted automatically after 3 days. Messages stay. Download anything you need to keep.','చాట్‌లో పంపిన ఫోటోలు, ఫైళ్లు 3 రోజుల తర్వాత ఆటోమేటిక్‌గా తొలగించబడతాయి. సందేశాలు అలాగే ఉంటాయి. అవసరమైనవి డౌన్‌లోడ్ చేసుకోండి.'], autoDelShort:['Photos & files auto-delete after 3 days','ఫోటోలు & ఫైళ్లు 3 రోజుల్లో ఆటో-డిలీట్'], fileExpired:['File deleted after 3 days','3 రోజుల తర్వాత ఫైల్ తొలగించబడింది'], photoExpired:['Photo deleted after 3 days','3 రోజుల తర్వాత ఫోటో తొలగించబడింది'],
  papers:['High secured papers','హై సెక్యూర్డ్ పేపర్లు'], fullScreen:['Open full screen','పూర్తి స్క్రీన్‌లో తెరవండి'], papersHelp:['Enter bond papers received and issued (Paper Register). Log in once with your Paper Register login.','అందిన, జారీ చేసిన బాండ్ పేపర్లను నమోదు చేయండి (పేపర్ రిజిస్టర్). మీ పేపర్ రిజిస్టర్ లాగిన్‌తో ఒకసారి లాగిన్ అవ్వండి.'],
  emojiT:['Emoji','ఎమోజీ'], stickersT:['Stickers','స్టిక్కర్లు'], makeSticker:['Make from photo','ఫోటో నుంచి చేయండి'], makingSticker:['Making sticker…','స్టిక్కర్ తయారవుతోంది…'], gifHelp:['Send a moving GIF saved on your phone (from Gboard or WhatsApp, save the GIF first).','మీ ఫోన్‌లో సేవ్ చేసిన GIF పంపండి (Gboard లేదా WhatsApp నుంచి ముందు సేవ్ చేయండి).'], pickGif:['Choose GIF from phone','ఫోన్ నుంచి GIF ఎంచుకోండి'],
+ draftBack:['Your unsaved entries ({n}) were brought back. Press Save to send them.','మీరు సేవ్ చేయని నమోదులు ({n}) తిరిగి తెచ్చాం. పంపడానికి సేవ్ నొక్కండి.'], discard:['Discard','వదిలేయి'], keptPhone:['Kept on this phone at {t} – press Save to send','{t} కి ఈ ఫోన్‌లో ఉంచాం – పంపడానికి సేవ్ నొక్కండి'],
+ namePending:['name pending','పేరు పెండింగ్'], savedPartly:['Saved. Please complete these later:','సేవ్ అయింది. వీటిని తర్వాత పూర్తి చేయండి:'], aadhaarLater:['Aadhaar has only {n} digits – complete it later','ఆధార్‌లో {n} అంకెలే ఉన్నాయి – తర్వాత పూర్తి చేయండి'], boothLater:['Booth number not entered – BLO not saved yet','బూత్ నంబర్ లేదు – BLO ఇంకా సేవ్ కాలేదు'],
  reply:['Reply','రిప్లై'], copy:['Copy','కాపీ'], msgInfo:['Message info','సందేశ వివరాలు'], seenBy:['Seen by','చూసినవారు'], notSeen:['Not seen yet','ఇంకా చూడనివారు'], you:['You','మీరు'], close:['Close','మూసివేయి'],
  incomingCall:['Incoming video call','వీడియో కాల్ వస్తోంది'], later:['Later','తర్వాత'], commShort:['C/H.A','C/H.A'], roomAll:['All Guntakal (everyone)','మొత్తం గుంతకల్ (అందరూ)'], roomAdmins:['WS + C/H.A','WS + C/H.A'], noMsgs:['No messages yet','ఇంకా సందేశాలు లేవు'], typeMsg:['Type a message…','సందేశం టైప్ చేయండి…'], typeMsgS:['Message','సందేశం'], msgDeleted:['message deleted','సందేశం తొలగించబడింది'],
  notifOn:['Notifications are ON on this phone','ఈ ఫోన్‌లో నోటిఫికేషన్లు ఆన్'], notifOff:['Notifications are off','నోటిఫికేషన్లు ఆఫ్'], notifHelp:['Get a phone alert for every new message, even when the app is closed.','యాప్ మూసి ఉన్నా ప్రతి కొత్త సందేశానికి ఫోన్‌లో అలర్ట్ వస్తుంది.'],
@@ -932,6 +934,18 @@ function qInputs(defs,vals,prefix,disabled,delScope){
     return '<div>'+lab+'<input id="'+id+'"'+ty+dis+' value="'+esc(v)+'"></div>'}).join('')+'</div>';
 }
 /* app admin: delete a question for all wards (built-in ones are hidden and can be restored in Admin → Custom fields) */
+/* keep what is typed on this phone until it is saved */
+function draftKeep(key,root){root=root||curApp;const K='wp_draft:'+key;
+  const fields=()=>[...root.querySelectorAll('input[id],select[id],textarea[id]')].filter(el=>!['file','password','hidden','checkbox','radio'].includes(el.type)&&!['mq','cf','pp','ct'].includes(el.id));
+  let d=null;try{d=JSON.parse(localStorage.getItem(K)||'null')}catch(e){}
+  if(d&&d.v&&Date.now()-d.t<21*864e5){let n=0;fields().forEach(el=>{const v=d.v[el.id];if(v!=null&&el.value!==v){el.value=v;n++;try{el.dispatchEvent(new Event('change',{bubbles:false}))}catch(e){}}});
+    if(n){const bar=document.createElement('div');bar.className='msg info';bar.style.cssText='display:flex;gap:8px;align-items:center;justify-content:space-between';bar.innerHTML='<span>📝 '+t('draftBack').replace('{n}',n)+'</span><button type="button" class="btn alt sm">'+t('discard')+'</button>';root.prepend(bar);
+      bar.querySelector('button').onclick=()=>{try{localStorage.removeItem(K)}catch(e){}route()}}}
+  const note=document.createElement('p');note.className='mute dnote';note.style.cssText='font-size:12px;margin:6px 2px';root.appendChild(note);
+  let tm=null;const save=()=>{const v={};fields().forEach(el=>{v[el.id]=el.value});try{localStorage.setItem(K,JSON.stringify({t:Date.now(),v:v}));note.textContent='💾 '+t('keptPhone').replace('{t}',new Date().toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'}))}catch(e){}};
+  root.addEventListener('input',()=>{clearTimeout(tm);tm=setTimeout(save,400)});root.addEventListener('change',e=>{if(e.isTrusted){clearTimeout(tm);tm=setTimeout(save,250)}});
+  S.draftKey=K}
+function draftDone(){if(S.draftKey){try{localStorage.removeItem(S.draftKey)}catch(e){}S.draftKey=null}}
 /* deleting a field asks twice */
 function confirmFieldDel(label){if(!confirm(t('delFieldQ')+'\n\n'+label))return false;return confirm('⚠️ '+t('delFieldQ2')+'\n\n"'+label+'"')}
 function bindQDel(box,after){box.querySelectorAll('[data-qd]').forEach(b=>b.onclick=async e=>{e.preventDefault();const key=b.dataset.qd,sc=b.dataset.qs;
@@ -1223,9 +1237,10 @@ async function vEdit(code,focus){const app=curApp;
     const la=num(v('olat')),ln=num(v('olng'));
     const moved=la!=null&&ln!=null&&(la!==w.sec.lat||ln!==w.sec.lng);
     const oldD=JSON.parse(JSON.stringify(w.data||{})),oldP=JSON.parse(JSON.stringify(w.private||{})),oLa=w.sec.lat,oLn=w.sec.lng;
-    try{await rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:nd,p_private:npr,p_lat:moved?la:null,p_lng:moved?ln:null});toast(t('saved'));
+    try{await rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:nd,p_private:npr,p_lat:moved?la:null,p_lng:moved?ln:null});draftDone();toast(t('saved'));
       pushUndo(t('edit')+' – '+w.sec.name,()=>rpc('wp_save_profile',{p_token:S.token,p_code:code,p_data:oldD,p_private:oldP,p_lat:moved?oLa:null,p_lng:moved?oLn:null}));S.tab='overview';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';bt.disabled=false}};
+  draftKeep('edit:'+code);
   if(focus){setTimeout(()=>{const el=$(focus);if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});const box=el.closest('div')||el;box.classList.add('flashin');setTimeout(()=>box.classList.remove('flashin'),2200);if(el.focus&&/INPUT|TEXTAREA/.test(el.tagName))el.focus({preventScroll:true})},350)}
 }
 
@@ -1240,7 +1255,7 @@ async function vPlace(code,id,preType){const app=curApp;
   app.innerHTML='<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addPlace'):esc(p.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p><form id="f" class="card">'+
    '<label>'+t('type')+'</label><select id="ty">'+types.map(x=>'<option value="'+esc(x[0])+'"'+(x[0]===p.type?' selected':'')+'>'+x[3]+' '+esc(te()?x[2]:x[1])+'</option>').join('')+'</select>'+
    '<label>'+t('ownership')+'</label><select id="ow"><option value="govt"'+(p.ownership==='govt'?' selected':'')+'>'+t('govt')+'</option><option value="private"'+(p.ownership==='private'?' selected':'')+'>'+t('private')+'</option></select>'+
-   '<label>'+t('name')+'</label><input id="nm" required value="'+esc(p.name||'')+'">'+
+   '<label>'+t('name')+'</label><input id="nm" value="'+esc(p.name||'')+'">'+
    '<label>'+t('address')+'</label><input id="ad" value="'+esc(p.address||'')+'">'+
    '<label>📍 GPS</label><div class="row"><button type="button" class="btn alt sm" id="gps">'+t('useLoc')+'</button><span class="mute">'+t('tapMap')+'</span></div>'+
    '<div class="two"><div><label>'+t('lat')+'</label><input id="la" type="number" step="any" value="'+esc(p.lat==null?'':p.lat)+'"></div><div><label>'+t('lng')+'</label><input id="ln" type="number" step="any" value="'+esc(p.lng==null?'':p.lng)+'"></div></div>'+
@@ -1258,10 +1273,12 @@ async function vPlace(code,id,preType){const app=curApp;
   pickMap('pm','la','ln',p.lat!=null?[p.lat,p.lng]:(w.sec.lat!=null?[w.sec.lat,w.sec.lng]:null));
   $('gps').onclick=()=>gpsInto('la','ln',()=>{const f=$('la').onchange;f&&f()});
   if(id==='new'&&!p.lat)setTimeout(()=>{if(!$('la').value)gpsInto('la','ln',()=>$('la').onchange&&$('la').onchange())},400);
+  draftKeep('place:'+code+':'+id);
   $('f').onsubmit=async e=>{e.preventDefault();$('sv').disabled=true;
+    if(!$('nm').value.trim())$('nm').value=typeInfo($('ty').value,w.data).label+' ('+t('namePending')+')';
     const o={id:id==='new'?'':id,code:code,type:$('ty').value,ownership:$('ow').value,name:$('nm').value.trim(),address:$('ad').value.trim(),lat:$('la').value,lng:$('ln').value,contact:$('ct').value.trim(),notes:$('no').value.trim(),photos:p.photos,extra:(()=>{const x=Object.assign({},p.extra||{});regDefs($('ty').value).forEach(f=>delete x[f[0]]);Object.assign(x,readQ(regDefs($('ty').value),'x_'));const m=getMore();if(m.length)x._more=m;else delete x._more;return x})()};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||null));
-    try{const nid=await rpc('wp_save_place',{p_token:S.token,p:o});toast(t('saved'));
+    try{const nid=await rpc('wp_save_place',{p_token:S.token,p:o});draftDone();toast(t('saved'));
       pushUndo(t('places')+' – '+o.name,old?()=>rpc('wp_save_place',{p_token:S.token,p:old}):()=>rpc('wp_delete_place',{p_token:S.token,p_id:nid}));S.tab='places';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
   if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;const old=JSON.parse(JSON.stringify(w.places.find(x=>x.id===id)||{}));try{await rpc('wp_delete_place',{p_token:S.token,p_id:id});
@@ -1281,7 +1298,7 @@ async function vStaff(code,id,self){const app=curApp;await loadFields();
    '<a href="#ward/'+code+'">'+t('back')+'</a><h1>'+(id==='new'?t('addStaff'):esc(s.name))+'</h1><p class="mute">'+esc(w.sec.name)+'</p>'+
    '<div class="card" style="background:#fff8ea;border-color:#f2d39b"><h3 style="margin-top:0">'+t('fillSaved')+'</h3><p class="mute">'+t('fillHelp')+'</p><input id="mq" placeholder="🔍 '+esc(t('search'))+'" value="'+esc(id==='new'?'':(s.name||''))+'"><div id="mres" class="list"></div></div>')+
    '<form id="f" class="card">'+
-   '<label>'+t('name')+'</label><input id="nm" required value="'+esc(s.name||'')+'">'+
+   '<label>'+t('name')+'</label><input id="nm" value="'+esc(s.name||'')+'">'+
    '<label>'+t('designation')+'</label><select id="dg"'+(self?' disabled':'')+'>'+opts.map(d=>'<option value="'+esc(d[0])+'"'+(d[0]===s.designation?' selected':'')+'>'+esc(te()?d[1]:d[0])+'</option>').join('')+'</select>'+
    '<div class="two"><div><label>🗳️ '+t('isBlo')+'</label><select id="isblo"><option value="no"'+(s.blo_booth?'':' selected')+'>'+t('noW')+'</option><option value="yes"'+(s.blo_booth?' selected':'')+'>'+t('yesW')+'</option></select></div>'+
    '<div id="bbw"'+(s.blo_booth?'':' hidden')+'><label>'+t('boothNo')+'</label><input id="bbn" inputmode="numeric" value="'+esc(s.blo_booth||'')+'" placeholder="e.g. 159"></div></div>'+
@@ -1310,19 +1327,22 @@ async function vStaff(code,id,self){const app=curApp;await loadFields();
         try{const nid=await rpc('wp_add_from_master',{p_token:S.token,p_code:code,p_master:+x.id,p_staff:id==='new'?null:id,p_name:titleCase(x.name),p_designation:matchDesig(x.designation)});
           pushUndo(t('fillSaved')+' – '+x.name,old?()=>rpc('wp_save_staff',{p_token:S.token,s:old}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}));
           toast(t('filled'));S.ward=null;if(location.hash==='#staff/'+code+'/'+nid)route();else location.hash='#staff/'+code+'/'+nid}catch(er){toast(errText(er))}})}catch(e){}};
+  draftKeep(self?'me':'staff:'+code+':'+id);
   let mt=null;if($('mq')){$('mq').oninput=()=>{clearTimeout(mt);mt=setTimeout(msearch,300)};
   if(id!=='new'&&Object.keys(pv).length<5)msearch();}
   $('f').onsubmit=async e=>{e.preventDefault();readCl();
-    const epv=readEmpForm(pv);const aa=epv.aadhaar||'';if(aa&&aa.length!==12){$('m').innerHTML='<div class="msg err">'+t('badAadhaar')+'</div>';return}
+    const epv=readEmpForm(pv);const aa=epv.aadhaar||'';const warns=[];if(aa&&aa.length!==12)warns.push(t('aadhaarLater').replace('{n}',aa.length));
     $('sv').disabled=true;
-    if($('isblo').value==='yes'&&!$('bbn').value.trim()){$('m').innerHTML='<div class="msg err">'+t('needBooth')+'</div>';$('sv').disabled=false;$('bbn').focus();return}
+    if($('isblo').value==='yes'&&!$('bbn').value.trim())warns.push(t('boothLater'));
+    if(!$('nm').value.trim())$('nm').value=desigLabel($('dg').value)+' ('+t('namePending')+')';
+    if(warns.length)setTimeout(()=>alert('✅ '+t('savedPartly')+'\n\n• '+warns.join('\n• ')),300);
     if(self){const o={blo_booth:bloVal(),name:$('nm').value.trim(),phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,clusters:cls.filter(c=>c.no),private:epv};
-      try{await rpc('wp_save_my_staff',{p_token:S.token,s:o});if(S.me){S.me.name=o.name;localStorage.setItem('wp_me',JSON.stringify(S.me))}S.ward=null;toast(t('saved'));location.hash='#ward/'+code}
+      try{await rpc('wp_save_my_staff',{p_token:S.token,s:o});draftDone();if(S.me){S.me.name=o.name;localStorage.setItem('wp_me',JSON.stringify(S.me))}S.ward=null;toast(t('saved'));location.hash='#ward/'+code}
       catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}return}
     const o={blo_booth:bloVal(),id:id==='new'?'':id,code:code,name:$('nm').value.trim(),designation:$('dg').value,phone:$('phn').value.trim(),photo:ph[0]||'',joined:$('jd').value,sort:$('so').value,
       clusters:cls.filter(c=>c.no),private:epv};
     const old=id==='new'?null:JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||null));
-    try{const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});toast(t('saved'));
+    try{const nid=await rpc('wp_save_staff',{p_token:S.token,s:o});draftDone();toast(t('saved'));
       pushUndo(t('staff')+' – '+o.name,old?()=>rpc('wp_save_staff',{p_token:S.token,s:old}):()=>rpc('wp_delete_staff',{p_token:S.token,p_id:nid}));S.tab='staff';location.hash='#ward/'+code}
     catch(er){$('m').innerHTML='<div class="msg err">'+errText(er)+'</div>';$('sv').disabled=false}};
   if($('dl'))$('dl').onclick=async()=>{if(!confirm(t('confirmDel')))return;const old=JSON.parse(JSON.stringify(w.staff.find(x=>x.id===id)||{}));try{await rpc('wp_delete_staff',{p_token:S.token,p_id:id});
@@ -1575,11 +1595,12 @@ async function vSurvey(code,dept,topic){const app=curApp;
     (ok?'<button class="btn" type="button" id="sv">💾 '+t('save')+'</button>':'')+
     (k<tl.length-1?'<a class="btn alt sm" href="#survey/'+code+'/'+dept+'/'+tl[k+1].key+'">'+esc(te()?tl[k+1].te:tl[k+1].en)+' →</a>':'<span></span>')+'</div></div>';
   const getMore=moreBox('mb',myMore,!ok);bindQDel(app,()=>route());
+  if(ok)draftKeep('survey:'+code+':'+dept+':'+tp.key);
   if(ok)$('sv').onclick=async()=>{const b=$('sv');b.disabled=true;
     const ans=readQ(tp.defs,'q_');const send={};tp.defs.forEach(f=>{send[f[0]]=ans[f[0]]==null?null:ans[f[0]]});
     send._more=allMore.filter(m=>m.t!==tp.key).concat(getMore().map(m=>({t:tp.key,h:m.h,v:m.v})));
     const old={};tp.defs.forEach(f=>{old[f[0]]=v[f[0]]==null?null:v[f[0]]});old._more=v._more||[];
-    try{await rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:dept,p_answers:send});toast(t('saved'));S.ward=null;
+    try{await rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:dept,p_answers:send});draftDone();toast(t('saved'));S.ward=null;
       pushUndo(t('surveys')+' – '+(te()?tp.te:tp.en),()=>rpc('wp_save_dept',{p_token:S.token,p_code:code,p_dept:dept,p_answers:old}));
       location.hash=k<tl.length-1?'#survey/'+code+'/'+dept+'/'+tl[k+1].key:'#survey/'+code+'/'+dept}catch(er){toast(errText(er));b.disabled=false}};
 }
