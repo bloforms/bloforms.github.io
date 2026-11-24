@@ -458,6 +458,10 @@ const TX={
  installHelp:['Open the Chrome menu (⋮) and tap "Add to Home screen". On iPhone: Share → Add to Home Screen.','Chrome మెనూ (⋮) తెరిచి "Add to Home screen" నొక్కండి. iPhone లో: Share → Add to Home Screen.'],
  confirmDel:['Delete this? It cannot be undone.','దీన్ని తొలగించాలా? తిరిగి రాదు.'],
  gpsFail:['Could not get location. Turn on GPS and allow location, or tap on the map.','లొకేషన్ రాలేదు. GPS ఆన్ చేసి అనుమతి ఇవ్వండి, లేదా మ్యాప్ పై నొక్కండి.'],
+ gpsDeniedT:['Location is blocked','లొకేషన్ బ్లాక్ అయింది'], gpsDenied1:['This phone has blocked location for this app. Allow it once:','ఈ ఫోన్‌లో ఈ యాప్‌కు లొకేషన్ బ్లాక్ అయింది. ఒక్కసారి అనుమతించండి:'],
+ gpsStepsApp:['<li>Long-press the <b>Ward Sarathi</b> app icon → <b>App info</b></li><li><b>Permissions</b> → <b>Location</b> → <b>Allow</b></li><li>Turn on phone <b>Location / GPS</b> from the top quick settings</li><li>Come back and tap <b>Use my location</b> again</li>','<li><b>Ward Sarathi</b> యాప్ ఐకాన్‌పై వేలు నొక్కి పట్టుకోండి → <b>App info</b></li><li><b>Permissions</b> → <b>Location</b> → <b>Allow</b></li><li>పై క్విక్ సెట్టింగ్స్‌లో ఫోన్ <b>Location / GPS</b> ఆన్ చేయండి</li><li>తిరిగి వచ్చి <b>Use my location</b> మళ్లీ నొక్కండి</li>'],
+ gpsStepsWeb:['<li>Tap the <b>🔒 / ⓘ</b> icon left of the address bar in Chrome</li><li><b>Permissions</b> → <b>Location</b> → <b>Allow</b></li><li>Turn on phone <b>Location / GPS</b> from the top quick settings</li><li>Come back and tap <b>Use my location</b> again</li>','<li>Chrome అడ్రస్ బార్ ఎడమవైపు <b>🔒 / ⓘ</b> నొక్కండి</li><li><b>Permissions</b> → <b>Location</b> → <b>Allow</b></li><li>పై క్విక్ సెట్టింగ్స్‌లో ఫోన్ <b>Location / GPS</b> ఆన్ చేయండి</li><li>తిరిగి వచ్చి <b>Use my location</b> మళ్లీ నొక్కండి</li>'],
+ gpsOrMap:['Or simply tap the office place on the map – that also works.','లేదా మ్యాప్‌పై ఆఫీసు ఉన్న చోట నొక్కండి – అదీ సరిపోతుంది.'],
  gpsOk:['Location taken','లొకేషన్ తీసుకోబడింది'], mapOff:['Map needs internet.','మ్యాప్‌కి ఇంటర్నెట్ అవసరం.'],
  todo:['To complete this ward','ఈ వార్డు పూర్తి కావడానికి'],
  c_loc:['Exact office location','ఖచ్చితమైన కార్యాలయ లొకేషన్'], c_addr:['Office address','కార్యాలయ చిరునామా'], c_bound:['Boundaries (at least 2 sides)','సరిహద్దులు (కనీసం 2 వైపులు)'], c_door:['Door number range','డోర్ నంబర్ల పరిధి'],
@@ -807,8 +811,16 @@ function photoPicker(holderId,list,max,code,onChange){
 function gpsInto(latId,lngId,cb){
   if(!navigator.geolocation){toast(t('gpsFail'));return}
   toast(t('loading'));
-  navigator.geolocation.getCurrentPosition(p=>{$(latId).value=p.coords.latitude.toFixed(6);$(lngId).value=p.coords.longitude.toFixed(6);toast(t('gpsOk'));cb&&cb()},
-    ()=>toast(t('gpsFail')),{enableHighAccuracy:true,timeout:20000,maximumAge:0});
+  const ok=p=>{$(latId).value=p.coords.latitude.toFixed(6);$(lngId).value=p.coords.longitude.toFixed(6);toast(t('gpsOk')+(p.coords.accuracy>100?' (±'+Math.round(p.coords.accuracy)+' m)':''));cb&&cb()};
+  const denied=()=>{const sa=matchMedia('(display-mode: standalone)').matches;
+    const box=document.createElement('div');box.className='csheet top';box.style.zIndex=9999;
+    box.innerHTML='<div class="card" style="max-width:520px;margin:12px auto;padding:18px"><h3 style="margin:0 0 8px">📍 '+t('gpsDeniedT')+'</h3><p style="margin:0 0 10px">'+t('gpsDenied1')+'</p><ol style="margin:0 0 12px;padding-left:20px;line-height:1.6">'+t(sa?'gpsStepsApp':'gpsStepsWeb')+'</ol><p class="mute" style="margin:0 0 12px">'+t('gpsOrMap')+'</p><button class="btn" type="button">OK</button></div>';
+    document.body.appendChild(box);box.querySelector('button').onclick=()=>box.remove();box.onclick=e=>{if(e.target===box)box.remove()}};
+  // 1st try: quick, any accuracy (works indoors with Wi-Fi/mobile network); 2nd try: GPS
+  navigator.geolocation.getCurrentPosition(ok,e=>{
+    if(e&&e.code===1){denied();return}
+    navigator.geolocation.getCurrentPosition(ok,e2=>{if(e2&&e2.code===1)denied();else toast(t('gpsFail'))},{enableHighAccuracy:true,timeout:30000,maximumAge:300000});
+  },{enableHighAccuracy:false,timeout:12000,maximumAge:120000});
 }
 function pickMap(mapId,latId,lngId,center){
   const m=mkMap(mapId,center||CENTER,center?17:14);if(!m)return;
