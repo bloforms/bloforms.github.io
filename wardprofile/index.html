@@ -375,6 +375,7 @@ footer{text-align:center;color:var(--mute);font-size:13px;padding:20px 10px 30px
 .spin{display:inline-block;width:18px;height:18px;border:3px solid #cfe2e2;border-top-color:var(--c);border-radius:50%;animation:sp 1s linear infinite;vertical-align:middle}
 @keyframes sp{to{transform:rotate(360deg)}}
 .leaflet-div-icon.emoji{background:none;border:0;font-size:24px;line-height:24px;text-shadow:0 1px 2px #fff}
+.leaflet-tooltip.seclbl{background:rgba(255,255,255,.92);border:1px solid var(--c);color:var(--c);font-size:10.5px;font-weight:700;padding:1px 5px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.25);white-space:nowrap}.leaflet-tooltip.seclbl:before{display:none}
 .secpin{background:var(--c);color:#fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 </style>
 </head>
@@ -768,6 +769,7 @@ function mkMap(id,center,zoom){
   return m;
 }
 const emojiIcon=e=>window.L?L.divIcon({className:'emoji',html:e,iconSize:[26,26],iconAnchor:[13,13]}):null;
+const secLbl=(mk,name)=>mk.bindTooltip(esc(name),{permanent:true,direction:'bottom',offset:[0,12],className:'seclbl'});
 const secIcon=n=>window.L?L.divIcon({className:'',html:'<div class="secpin">'+n+'</div>',iconSize:[26,26],iconAnchor:[13,13]}):null;
 
 /* ---------- photos ---------- */
@@ -1023,7 +1025,7 @@ async function vHome(mode){const app=curApp;
     app.innerHTML='<div class="card hero"><h1>'+t('heroTitle')+'</h1><p>'+t('heroText')+'</p><div class="row"><a class="btn" href="#login">'+t('login')+'</a><a class="btn alt" href="#signup">'+t('request')+'</a><a class="btn alt" href="#about">'+t('about')+'</a></div></div>'+
       '<div class="card"><h2>'+t('allWards')+'</h2><div id="map" class="map"></div><a class="btn alt sm" href="#public">'+t('publicPages')+'</a></div>'+installCard();
     wireInstall();
-    const m=mkMap('map');if(m)S.secs.forEach(s=>{if(s.lat!=null)L.marker([s.lat,s.lng],{icon:secIcon(s.sl)}).addTo(m).bindPopup('<b>'+esc(s.name)+'</b><br>'+s.code)});
+    const m=mkMap('map');if(m)S.secs.forEach(s=>{if(s.lat!=null)secLbl(L.marker([s.lat,s.lng],{icon:secIcon(s.sl)}).addTo(m),s.name).bindPopup('<b>'+esc(s.name)+'</b><br>'+s.code)});
     return;
   }
   app.innerHTML='<div class="card"><span class="spin"></span> '+t('loading')+'</div>';
@@ -1046,7 +1048,7 @@ async function vHome(mode){const app=curApp;
   wireInstall();
   if(!listOnly)return;
   $('goSel').onchange=e=>{if(e.target.value)location.hash='#ward/'+e.target.value};
-  const m=mkMap('map');if(m)ov.forEach(o=>{if(o.lat!=null)L.marker([o.lat,o.lng],{icon:secIcon(o.sl)}).addTo(m).bindPopup('<b>'+esc(o.name)+'</b><br>'+completion(o)+'% '+t('complete')+'<br><a href="#ward/'+o.code+'">'+t('openWard')+' →</a>')});
+  const m=mkMap('map');if(m)ov.forEach(o=>{if(o.lat!=null)secLbl(L.marker([o.lat,o.lng],{icon:secIcon(o.sl)}).addTo(m),o.name).bindPopup('<b>'+esc(o.name)+'</b><br>'+completion(o)+'% '+t('complete')+'<br><a href="#ward/'+o.code+'">'+t('openWard')+' →</a>')});
 }
 
 function vAbout(){const app=curApp;
@@ -1149,7 +1151,7 @@ function vWardTab(w){
         '<div class="row" style="margin-top:4px">'+(p.lat!=null?'<a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(p.lat,p.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+(w.can_edit?'<a class="btn alt sm" href="#place/'+code+'/'+p.id+'">'+t('editB')+'</a>':'')+'</div></div></div>'}).join(''):'<p class="mute">'+t('noPlaces')+'</p>')+'</div></div>';
     $('flt').onchange=e=>{S.filter=e.target.value;vWardTab(w)};
     const m=mkMap('pmap',w.sec.lat!=null?[w.sec.lat,w.sec.lng]:CENTER,15);
-    if(m){const pts=[];if(w.sec.lat!=null){L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m).bindPopup('<b>'+esc(w.sec.name)+'</b>');pts.push([w.sec.lat,w.sec.lng])}
+    if(m){const pts=[];if(w.sec.lat!=null){secLbl(L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m),w.sec.name).bindPopup('<b>'+esc(w.sec.name)+'</b>');pts.push([w.sec.lat,w.sec.lng])}
       list.forEach(p=>{if(p.lat!=null){L.marker([p.lat,p.lng],{icon:emojiIcon(typeInfo(p.type,d).emo)}).addTo(m).bindPopup('<b>'+esc(p.name)+'</b><br>'+esc(typeInfo(p.type,d).label));pts.push([p.lat,p.lng])}});
       if(pts.length>1)m.fitBounds(pts,{padding:[30,30],maxZoom:17})}
     return;
@@ -1201,7 +1203,7 @@ function vWardTab(w){
      (w.sec.lat!=null?'<div class="mute" style="margin-top:8px">'+t('mapStatus')+': '+esc(w.sec.map_status||'')+(['Area only','Likely'].includes(w.sec.map_status)?' – <a href="'+(ed?E('olat'):'#')+'">'+t('areaOnly')+'</a>':'')+'</div><div id="omap" class="map small"></div><a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(w.sec.lat,w.sec.lng)+'">🗺 '+t('openGmaps')+'</a>':'')+'</div>'+
    (w.updated_at?'<p class="mute">'+t('lastUpd')+': '+new Date(w.updated_at).toLocaleString('en-IN')+'</p>':'');
   body.querySelectorAll('[data-go]').forEach(r=>r.onclick=e=>{if(e.target.closest('a'))return;location.hash=r.dataset.go});
-  if(w.sec.lat!=null){const m=mkMap('omap',[w.sec.lat,w.sec.lng],17);if(m)L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m)}
+  if(w.sec.lat!=null){const m=mkMap('omap',[w.sec.lat,w.sec.lng],17);if(m)secLbl(L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m),w.sec.name)}
 }
 
 async function vEdit(code,focus){const app=curApp;
@@ -2234,7 +2236,7 @@ async function vPublic(code){const app=curApp;
    '<div class="card"><h2>'+t('staff')+'</h2><div class="list">'+(w.staff.length?w.staff.map(s=>'<div class="it">'+(safeUrl(s.photo)?'<img class="av" src="'+esc(safeUrl(s.photo))+'" data-full="'+esc(safeUrl(s.photo))+'" alt="">':'<div class="av">👤</div>')+'<div class="grow"><div class="nm">'+esc(s.name)+'</div><div class="mute">'+esc(desigLabel(s.designation))+'</div></div>'+(s.phone?'<a class="btn sm" href="tel:'+esc(String(s.phone).replace(/[^0-9+]/g,''))+'">'+t('call')+'</a>':'')+'</div>').join(''):'<p class="mute">'+t('noStaff')+'</p>')+'</div></div>'+
    '<div class="card"><h2>'+t('places')+'</h2><div id="pm" class="map"></div><div class="list">'+w.places.map(p=>{const ti=typeInfo(p.type,d);return '<div class="it"><div class="emo">'+ti.emo+'</div><div class="grow"><div class="nm">'+esc(p.name)+'</div><div class="mute">'+esc(ti.label)+(p.address?' · '+esc(p.address):'')+'</div><div class="thumbs">'+(p.photos||[]).map(u=>'<img src="'+esc(safeUrl(u))+'" data-full="'+esc(safeUrl(u))+'" alt="" loading="lazy">').join('')+'</div></div>'+(p.lat!=null?'<a class="btn alt sm" target="_blank" rel="noopener" href="'+gmaps(p.lat,p.lng)+'">🗺</a>':'')+'</div>'}).join('')+'</div></div>';
   const m=mkMap('pm',w.sec.lat!=null?[w.sec.lat,w.sec.lng]:CENTER,15);
-  if(m){const pts=[];if(w.sec.lat!=null){L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m);pts.push([w.sec.lat,w.sec.lng])}
+  if(m){const pts=[];if(w.sec.lat!=null){secLbl(L.marker([w.sec.lat,w.sec.lng],{icon:emojiIcon('🏢')}).addTo(m),w.sec.name);pts.push([w.sec.lat,w.sec.lng])}
     w.places.forEach(p=>{if(p.lat!=null){L.marker([p.lat,p.lng],{icon:emojiIcon(typeInfo(p.type,d).emo)}).addTo(m).bindPopup(esc(p.name));pts.push([p.lat,p.lng])}});
     if(pts.length>1)m.fitBounds(pts,{padding:[30,30],maxZoom:17})}
 }
